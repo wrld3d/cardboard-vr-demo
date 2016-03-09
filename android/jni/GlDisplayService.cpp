@@ -165,8 +165,9 @@ bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
 		Eegeo_ERROR("unable to find a good display type");
 		return false;
 	}
-
-	eglGetConfigAttrib(m_display, config, EGL_NATIVE_VISUAL_ID, &format);
+    
+    
+    eglGetConfigAttrib(m_display, config, EGL_NATIVE_VISUAL_ID, &format);
 
 	ANativeWindow_setBuffersGeometry(&window, 0, 0, format);
 
@@ -176,27 +177,26 @@ bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
 		2,
 		EGL_NONE
 	};
+//	surface = eglCreateWindowSurface(m_display, config, &window, NULL);
+	surface =  eglGetCurrentSurface(EGL_DRAW);
 
-	surface = eglCreateWindowSurface(m_display, config, &window, NULL);
-
+    
 	if(m_context == EGL_NO_CONTEXT)
 	{
-		m_context = eglCreateContext(m_display, config, NULL, contextAttribs);
+		m_context = eglGetCurrentContext();
 	}
 
-	if (eglMakeCurrent(m_display, surface, surface, m_context) == EGL_FALSE)
-	{
-		Eegeo_ERROR("Unable to eglMakeCurrent");
-		return false;
-	}
-
-	//Eegeo_TTY("printing extensions\n");
-	//char * extensionsString =  (char *) glGetString(GL_EXTENSIONS);
-	//Eegeo_TTY("%s\n",extensionsString);
+//	if (eglMakeCurrent(m_display, surface, surface, m_context) == EGL_FALSE)
+//	{
+//		Eegeo_ERROR("Unable to eglMakeCurrent");
+//		return false;
+//	}
 
 	Eegeo_GL(eglQuerySurface(m_display, surface, EGL_WIDTH, &w));
 	Eegeo_GL(eglQuerySurface(m_display, surface, EGL_HEIGHT, &h));
 
+    Eegeo_TTY("Sizes: %.2f , %.2f", w, h);
+    
 	m_surface = surface;
 
 #ifdef EEGEO_DROID_EMULATOR
@@ -216,6 +216,7 @@ bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
 		EGL_TEXTURE_FORMAT, EGL_NO_TEXTURE,
 		EGL_NONE
 	};
+    
 	EGLConfig sharedSurfaceConfig;
 	if (!DefaultEGLChooser(m_display, EGL_PBUFFER_BIT, sharedSurfaceConfig))
 	{
@@ -225,6 +226,7 @@ bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
 	m_sharedSurface = eglCreatePbufferSurface(m_display, sharedSurfaceConfig, pBufferAttribs);
 #endif
 
+    
     w = w/2.0f;
 	m_displayWidth = w;
 	m_displayHeight = h;
@@ -256,51 +258,51 @@ bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
 
 	Eegeo_GL(glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 
-	eglSwapInterval(m_display, 1);
+//	eglSwapInterval(m_display, 1);
 
-	m_displayBound = true;
+//	m_displayBound = true;
 
-	return m_displayBound;
+	return true;
 }
 
 void GlDisplayService::ReleaseDisplay(bool destroyEGL)
 {
-	if (m_display != EGL_NO_DISPLAY)
-	{
-		Eegeo_GL(eglMakeCurrent(m_display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT));
-
-		if (m_surface != EGL_NO_SURFACE)
-		{
-			Eegeo_GL(eglDestroySurface(m_display, m_surface));
-		}
-
-		if (m_sharedSurface != EGL_NO_SURFACE)
-		{
-			Eegeo_GL(eglDestroySurface(m_display, m_sharedSurface));
-		}
-
-		if(destroyEGL)
-		{
-			if (m_context != EGL_NO_CONTEXT)
-			{
-				Eegeo_GL(eglDestroyContext(m_display, m_context));
-			}
-
-			if(m_resourceBuildSharedContext != EGL_NO_CONTEXT)
-			{
-				Eegeo_GL(eglDestroyContext(m_display, m_resourceBuildSharedContext));
-			}
-
-			Eegeo_GL(eglTerminate(m_display));
-
-			m_display = EGL_NO_DISPLAY;
-			m_context = EGL_NO_CONTEXT;
-			m_resourceBuildSharedContext = EGL_NO_CONTEXT;
-		}
-	}
-
-	m_surface = EGL_NO_SURFACE;
-	m_sharedSurface = EGL_NO_SURFACE;
+//	if (m_display != EGL_NO_DISPLAY)
+//	{
+//		Eegeo_GL(eglMakeCurrent(m_display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT));
+//
+//		if (m_surface != EGL_NO_SURFACE)
+//		{
+//			Eegeo_GL(eglDestroySurface(m_display, m_surface));
+//		}
+//
+//		if (m_sharedSurface != EGL_NO_SURFACE)
+//		{
+//			Eegeo_GL(eglDestroySurface(m_display, m_sharedSurface));
+//		}
+//
+//		if(destroyEGL)
+//		{
+//			if (m_context != EGL_NO_CONTEXT)
+//			{
+//				Eegeo_GL(eglDestroyContext(m_display, m_context));
+//			}
+//
+//			if(m_resourceBuildSharedContext != EGL_NO_CONTEXT)
+//			{
+//				Eegeo_GL(eglDestroyContext(m_display, m_resourceBuildSharedContext));
+//			}
+//
+//			Eegeo_GL(eglTerminate(m_display));
+//
+//			m_display = EGL_NO_DISPLAY;
+//			m_context = EGL_NO_CONTEXT;
+//			m_resourceBuildSharedContext = EGL_NO_CONTEXT;
+//		}
+//	}
+//
+//	m_surface = EGL_NO_SURFACE;
+//	m_sharedSurface = EGL_NO_SURFACE;
 
 	m_displayBound = false;
 }

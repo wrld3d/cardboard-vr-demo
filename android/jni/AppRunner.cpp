@@ -70,7 +70,7 @@ void AppRunner::ActivateSurface()
 {
 	Pause();
 	bool displayBound = TryBindDisplay();
-	Eegeo_ASSERT(displayBound);
+//	Eegeo_ASSERT(displayBound);
 	CreateAppHost();
 	Resume();
 }
@@ -121,8 +121,8 @@ void AppRunner::Update(float deltaSeconds)
 	{
 		m_pAppHost->Update(deltaSeconds);
 
-		Eegeo_GL(eglSwapBuffers(m_displayService.GetDisplay(), m_displayService.GetSurface()));
-		Eegeo::Helpers::GLHelpers::ClearBuffers();
+//		Eegeo_GL(eglSwapBuffers(m_displayService.GetDisplay(), m_displayService.GetSurface()));
+//		Eegeo::Helpers::GLHelpers::ClearBuffers();
 
 		m_pAppHost->Draw(deltaSeconds);
 	}

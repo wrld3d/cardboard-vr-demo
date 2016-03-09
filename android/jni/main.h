@@ -17,7 +17,7 @@ extern "C"
 	JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateNativeCode(JNIEnv* jenv, jobject obj, jfloat deltaSeconds);
 
 	//input
-	JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_EegeoSurfaceView_processNativePointerDown(JNIEnv* jenv, jobject obj,
+	JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_CardboardViewWithSurfaceHolder_processNativePointerDown(JNIEnv* jenv, jobject obj,
 	        jint primaryActionIndex,
 	        jint primaryActionIdentifier,
 	        jint numPointers,
@@ -26,7 +26,7 @@ extern "C"
 	        jintArray pointerIdentity,
 	        jintArray pointerIndex);
 
-	JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_EegeoSurfaceView_processNativePointerUp(JNIEnv* jenv, jobject obj,
+	JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_CardboardViewWithSurfaceHolder_processNativePointerUp(JNIEnv* jenv, jobject obj,
 	        jint primaryActionIndex,
 	        jint primaryActionIdentifier,
 	        jint numPointers,
@@ -35,7 +35,7 @@ extern "C"
 	        jintArray pointerIdentity,
 	        jintArray pointerIndex);
 
-	JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_EegeoSurfaceView_processNativePointerMove(JNIEnv* jenv, jobject obj,
+	JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_CardboardViewWithSurfaceHolder_processNativePointerMove(JNIEnv* jenv, jobject obj,
 	        jint primaryActionIndex,
 	        jint primaryActionIdentifier,
 	        jint numPointers,
