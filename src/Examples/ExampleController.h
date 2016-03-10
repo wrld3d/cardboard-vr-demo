@@ -64,8 +64,8 @@ public:
 	void RegisterExample(IExampleFactory* pFactory);
     
     
-    Eegeo::Camera::CameraState GetCurrentLeftCameraState() const;
-    Eegeo::Camera::CameraState GetCurrentRightCameraState() const;
+    Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const;
+    Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const;
     Eegeo::Camera::CameraState GetCurrentCameraState() const;
     
     Eegeo::Streaming::IStreamingVolume& GetCurrentStreamingVolume() const;

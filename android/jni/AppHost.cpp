@@ -220,15 +220,15 @@ void AppHost::HandleTouchInputEvent(const Eegeo::Android::Input::TouchInputEvent
 	m_pInputProcessor->HandleInput(event);
 }
 
-void AppHost::Update(float dt)
+void AppHost::Update(float dt, float headTansform[])
 {
 	m_pInputProcessor->Update(dt);
-	m_pApp->Update(dt);
+	m_pApp->Update(dt, headTansform);
 }
 
-void AppHost::Draw(float dt)
+void AppHost::Draw(float dt, float headTansform[])
 {
-	m_pApp->Draw(dt);
+	m_pApp->Draw(dt, headTansform);
 }
 
 void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties)
@@ -246,49 +246,50 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 
 void AppHost::RegisterAndroidSpecificExamples()
 {
-	m_pAndroidRouteMatchingExampleViewFactory = new Examples::AndroidRouteMatchingExampleViewFactory(
-	    m_nativeState);
-
-	m_pApp->GetExampleController().RegisterExample(new Examples::RouteMatchingExampleFactory(
-	        *m_pWorld,
-	        *m_pAndroidRouteMatchingExampleViewFactory,
-	        m_pApp->GetDefaultCameraControllerFactory(),
-	        m_pApp->GetTouchController()));
-
-	m_pAndroidRouteSimulationExampleViewFactory = new Examples::AndroidRouteSimulationExampleViewFactory(
-	    m_nativeState);
-
-	Examples::ExampleController& exampleController = m_pApp->GetExampleController();
-	exampleController.RegisterExample(new Examples::RouteSimulationExampleFactory(
-	        *m_pWorld,
-	        m_pApp->GetDefaultCameraControllerFactory(),
-	        m_pApp->GetTouchController(),
-	        m_pApp->GetScreenPropertiesProvider(),
-	        *m_pAndroidRouteSimulationExampleViewFactory));
-
-	exampleController.RegisterExample(new Examples::JavaHudCrossThreadCommunicationExampleFactory(
-			*m_pWorld,
-			m_nativeState,
-			m_pApp->GetDefaultCameraControllerFactory(),
-			m_pApp->GetTouchController()));
-
-	exampleController.RegisterExample(new Examples::PinsWithAttachedJavaUIExampleFactory(
-			*m_pWorld,
-			m_nativeState,
-			m_pApp->GetDefaultCameraControllerFactory(),
-			m_pApp->GetTouchController(),
-			m_pApp->GetScreenPropertiesProvider()));
-
-	exampleController.RegisterExample(new Examples::PositionJavaPinButtonExampleFactory(
-			*m_pWorld,
-			m_nativeState,
-			m_pApp->GetDefaultCameraControllerFactory(),
-			m_pApp->GetTouchController()));
-
-	exampleController.RegisterExample(new Examples::ShowJavaPlaceJumpUIExampleFactory(
-			m_nativeState,
-			m_pApp->GetDefaultCameraControllerFactory(),
-			m_pApp->GetTouchController()));
+//	m_pAndroidRouteMatchingExampleViewFactory = new Examples::AndroidRouteMatchingExampleViewFactory(
+//	    m_nativeState);
+//
+//	m_pApp->GetExampleController().RegisterExample(new Examples::RouteMatchingExampleFactory(
+//	        *m_pWorld,
+//	        *m_pAndroidRouteMatchingExampleViewFactory,
+//	        m_pApp->GetDefaultCameraControllerFactory(),
+//	        m_pApp->GetTouchController()));
+//
+//	m_pAndroidRouteSimulationExampleViewFactory = new Examples::AndroidRouteSimulationExampleViewFactory(
+//	    m_nativeState);
+//
+//	Examples::ExampleController& exampleController = m_pApp->GetExampleController();
+//	exampleController.RegisterExample(new Examples::RouteSimulationExampleFactory(
+//	        *m_pWorld,
+//	        m_pApp->GetDefaultCameraControllerFactory(),
+//	        m_pApp->GetTouchController(),
+//	        m_pApp->GetScreenPropertiesProvider(),
+//	        *m_pAndroidRouteSimulationExampleViewFactory));
+//
+//	exampleController.RegisterExample(new Examples::JavaHudCrossThreadCommunicationExampleFactory(
+//			*m_pWorld,
+//			m_nativeState,
+//			m_pApp->GetDefaultCameraControllerFactory(),
+//			m_pApp->GetTouchController()));
+//
+//	exampleController.RegisterExample(new Examples::PinsWithAttachedJavaUIExampleFactory(
+//			*m_pWorld,
+//			m_nativeState,
+//			m_pApp->GetDefaultCameraControllerFactory(),
+//			m_pApp->GetTouchController(),
+//			m_pApp->GetScreenPropertiesProvider()));
+//
+//	exampleController.RegisterExample(new Examples::PositionJavaPinButtonExampleFactory(
+//			*m_pWorld,
+//			m_nativeState,
+//			m_pApp->GetDefaultCameraControllerFactory(),
+//			m_pApp->GetTouchController()));
+//
+//	exampleController.RegisterExample(new Examples::ShowJavaPlaceJumpUIExampleFactory(
+//			m_nativeState,
+//			m_pApp->GetDefaultCameraControllerFactory(),
+//			m_pApp->GetTouchController()));
+    
 }
 
 void AppHost::DestroyExamples()

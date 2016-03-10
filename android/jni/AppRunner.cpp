@@ -115,16 +115,16 @@ bool AppRunner::TryBindDisplay()
 	return false;
 }
 
-void AppRunner::Update(float deltaSeconds)
+void AppRunner::Update(float deltaSeconds, float headTansform[])
 {
 	if(m_pAppHost != NULL && m_displayService.IsDisplayAvailable())
 	{
-		m_pAppHost->Update(deltaSeconds);
+		m_pAppHost->Update(deltaSeconds, headTansform);
 
 		Eegeo_GL(eglSwapBuffers(m_displayService.GetDisplay(), m_displayService.GetSurface()));
 		Eegeo::Helpers::GLHelpers::ClearBuffers();
 
-		m_pAppHost->Draw(deltaSeconds);
+		m_pAppHost->Draw(deltaSeconds, headTansform);
 	}
 }
 

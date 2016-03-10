@@ -172,12 +172,14 @@ void AppHost::Update(float dt)
     {
         mapModule.Start();
     }
-	m_pApp->Update(dt);
+    float items[] = {0,0,0,0,0,0,0,0,0,0,0,0};
+	m_pApp->Update(dt, items);
 }
 
 void AppHost::Draw(float dt)
 {
-	m_pApp->Draw(dt);
+    float items[] = {0,0,0,0,0,0,0,0,0,0,0,0};
+	m_pApp->Draw(dt,items);
 }
 
 void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties)
@@ -186,7 +188,7 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 
 	m_pApp = new ExampleApp(m_pWorld, *m_piOSExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
-	RegisteriOSSpecificExamples();
+//	RegisteriOSSpecificExamples();
 
 	m_piOSExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 

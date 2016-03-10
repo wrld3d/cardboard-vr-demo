@@ -30,8 +30,8 @@ namespace Examples
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties) = 0;
         
         virtual Eegeo::Camera::CameraState GetCurrentCameraState() const = 0;
-        virtual Eegeo::Camera::CameraState GetCurrentLeftCameraState() const {return GetCurrentCameraState();}
-        virtual Eegeo::Camera::CameraState GetCurrentRightCameraState() const{return GetCurrentCameraState();}
+        virtual Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const {return GetCurrentCameraState();}
+        virtual Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const{return GetCurrentCameraState();}
 
         virtual void NotifyViewNeedsLayout() = 0;
         

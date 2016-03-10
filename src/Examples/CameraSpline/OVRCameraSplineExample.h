@@ -1,8 +1,9 @@
 // Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
-#ifndef __ExampleApp__CameraSplineDualCameraExample__
-#define __ExampleApp__CameraSplineDualCameraExample__
+#ifndef __ExampleApp__OVRCameraSplineExample__
+#define __ExampleApp__OVRCameraSplineExample__
 
+#include "OVREegeoCameraController.h"
 #include "IExample.h"
 #include "Camera.h"
 #include "Geometry.h"
@@ -11,27 +12,26 @@
 namespace Examples
 {
 /*!
- *  CameraSplineDualCameraExample demonstrates a camera controller that can animate the camera along a spline
+ *  OVRCameraSplineExample demonstrates a camera controller that can animate the camera along a spline
  */
-class CameraSplineDualCameraExample : public IExample, Eegeo::NonCopyable
+class OVRCameraSplineExample : public IExample, Eegeo::NonCopyable
 {
 private:
 	
     Eegeo::EegeoWorld& m_world;
-    Eegeo::Streaming::ResourceCeilingProvider& m_resourceCeilingProvider;
     
     Eegeo::Geometry::CatmullRomSpline* m_pPositionSpline;
 	Eegeo::Geometry::CatmullRomSpline* m_pTargetSpline;
-    Eegeo::Camera::SplinePlayback::CameraSplinePlaybackController* m_pSplineCameraController;
+    Eegeo::OVR::OVREegeoCameraController* m_pSplineCameraController;
     
 public:
-	CameraSplineDualCameraExample(Eegeo::EegeoWorld& eegeoWorld,
-                        Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
+    OVRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
+                           Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
                         const Eegeo::Rendering::ScreenProperties& initialScreenProperties);
     
 	static std::string GetName()
 	{
-		return "CameraSplineDualCameraExample";
+		return "OVRCameraSplineExample";
 	}
 	std::string Name() const
 	{
@@ -74,4 +74,4 @@ public:
 };
 }
 
-#endif /* defined(__ExampleApp__CameraSplineDualCameraExample__) */
+#endif /* defined(__ExampleApp__OVRCameraSplineExample__) */

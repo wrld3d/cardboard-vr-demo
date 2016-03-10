@@ -45,8 +45,13 @@
 #include "ToggleTrafficExampleFactory.h"
 #include "TrafficCongestionExampleFactory.h"
 #include "WebRequestExampleFactory.h"
+
+
+#include "Examples/VRCameraSpline/VRCameraSplineExampleFactory.h"
 #include "CameraSplineExampleFactory.h"
 #include "CameraSplineDualCameraExampleFactory.h"
+#include "OVRCameraSplineExampleFactory.h"
+
 #include "ReadHeadingExampleFactory.h"
 #include "FireworksExampleFactory.h"
 #include "MeshExampleFactory.h"
@@ -140,50 +145,55 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 	//register all generic examples
 
-    m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();
-    m_pExampleController->RegisterExample(Eegeo_NEW(Examples::BuildingSelectionExampleFactory)(World(),
-                                                                                               *m_pCameraControllerFactory,
-                                                                                               *m_pCameraTouchController,
-                                                                                               collisionVisualizationModule,
-                                                                                               buildingFootprintsModule));
-    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
-        m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineDualCameraExampleFactory>(m_screenPropertiesProvider);
-    m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
-    m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
-    m_pExampleController->RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>();
-    // TODO: Completely remove DebugSphere example as we should be using DebugRenderer now
-	//m_pExampleController->RegisterCameraExample<Examples::DebugSphereExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::DynamicText3DExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::EnvironmentFlatteningExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>();
-    m_pExampleController->RegisterCameraExample<Examples::EnvironmentRayCasterExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::FileIOExampleFactory>();
-    m_pExampleController->RegisterCameraExample<Examples::FireworksExampleFactory>();
-    m_pExampleController->RegisterCameraExample<Examples::GeofenceExampleFactory>();
-    m_pExampleController->RegisterCameraExample<Examples::HeatmapExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::LoadModelExampleFactory>();
-    m_pExampleController->RegisterCameraExample<Examples::MeshExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ModifiedRenderingExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::NavigationGraphExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::Pick3DObjectExampleFactory>();
-	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinsExampleFactory>(m_screenPropertiesProvider);
-	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinOverModelExampleFactory>(m_screenPropertiesProvider  );
-	m_pExampleController->RegisterCameraExample<Examples::PODAnimationExampleFactory>();
-    m_pExampleController->RegisterCameraExample<Examples::PolyChartExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ReadHeadingExampleFactory>();
-    m_pExampleController->RegisterCameraExample<Examples::RemoveMapLayerExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::RouteDrawingExampleFactory>();
-	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RouteSimulationAnimationExampleFactory>(m_screenPropertiesProvider);
-	m_pExampleController->RegisterCameraExample<Examples::RouteThicknessPolicyExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ScreenPickExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ScreenUnprojectExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::SingleCityExampleFactory>();
-    m_pExampleController->RegisterCameraExample<Examples::StencilAreaExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::ToggleTrafficExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
-	m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
-    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
+//    m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();
+//    m_pExampleController->RegisterExample(Eegeo_NEW(Examples::BuildingSelectionExampleFactory)(World(),
+//                                                                                               *m_pCameraControllerFactory,
+//                                                                                               *m_pCameraTouchController,
+//                                                                                               collisionVisualizationModule,
+//                                                                                               buildingFootprintsModule));
+    
+//    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::OVRCameraSplineExampleFactory>(m_screenPropertiesProvider);
+//    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
+//        m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineDualCameraExampleFactory>(m_screenPropertiesProvider);
+    
+        m_pExampleController->RegisterCameraExample<Examples::VRCameraSplineExampleFactory>();
+    //    m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
+    
+//    m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>();
+//    // TODO: Completely remove DebugSphere example as we should be using DebugRenderer now
+//	//m_pExampleController->RegisterCameraExample<Examples::DebugSphereExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::DynamicText3DExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::EnvironmentFlatteningExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<Examples::EnvironmentRayCasterExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::FileIOExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<Examples::FireworksExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<Examples::GeofenceExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<Examples::HeatmapExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::LoadModelExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<Examples::MeshExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::ModifiedRenderingExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::NavigationGraphExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::Pick3DObjectExampleFactory>();
+//	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinsExampleFactory>(m_screenPropertiesProvider);
+//	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinOverModelExampleFactory>(m_screenPropertiesProvider  );
+//	m_pExampleController->RegisterCameraExample<Examples::PODAnimationExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<Examples::PolyChartExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::ReadHeadingExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<Examples::RemoveMapLayerExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::RouteDrawingExampleFactory>();
+//	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RouteSimulationAnimationExampleFactory>(m_screenPropertiesProvider);
+//	m_pExampleController->RegisterCameraExample<Examples::RouteThicknessPolicyExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::ScreenPickExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::ScreenUnprojectExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::SingleCityExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<Examples::StencilAreaExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::ToggleTrafficExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
+//	m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
+//    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
 }
 
 ExampleApp::~ExampleApp()
@@ -205,7 +215,7 @@ void ExampleApp::OnResume()
 	eegeoWorld.OnResume();
 }
 
-void ExampleApp::Update (float dt)
+void ExampleApp::Update (float dt, float headTansform[])
 {
 	Eegeo::EegeoWorld& eegeoWorld = World();
     
@@ -233,7 +243,7 @@ void ExampleApp::Update (float dt)
     UpdateLoadingScreen(dt);
 }
 
-void ExampleApp::Draw (float dt)
+void ExampleApp::Draw (float dt, float headTansform[])
 {
     
     glViewport(0,0,m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
@@ -242,7 +252,7 @@ void ExampleApp::Draw (float dt)
     
     Eegeo::EegeoWorld& eegeoWorld = World();
     
-    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentLeftCameraState());
+    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentLeftCameraState(headTansform));
     
     Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
                                               cameraState.InterestPointEcef(),
@@ -259,12 +269,14 @@ void ExampleApp::Draw (float dt)
         m_pLoadingScreen->Draw();
     }
     
+    Update(dt, headTansform);
+    
     glViewport(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),0,m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     
     
     m_pExampleController->PreWorldDraw();
     
-    Eegeo::Camera::CameraState cameraState2(m_pExampleController->GetCurrentRightCameraState());
+    Eegeo::Camera::CameraState cameraState2(m_pExampleController->GetCurrentRightCameraState(headTansform));
     
     Eegeo::EegeoDrawParameters drawParameters2(cameraState2.LocationEcef(),
                                               cameraState2.InterestPointEcef(),

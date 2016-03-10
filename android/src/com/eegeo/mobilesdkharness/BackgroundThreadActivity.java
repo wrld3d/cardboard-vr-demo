@@ -2,23 +2,31 @@
 
 package com.eegeo.mobilesdkharness;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
-import android.app.Activity;
+import android.view.View;
+import android.view.WindowManager;
+
+import com.google.vrtoolkit.cardboard.sensors.HeadTracker;
 
 
 public class BackgroundThreadActivity extends MainActivity
 {
+	
 	private EegeoSurfaceView m_surfaceView;
 	private SurfaceHolder m_surfaceHolder;
 	private long m_nativeAppWindowPtr;
 	private ThreadedUpdateRunner m_threadedRunner;
 	private Thread m_updater;
 
+	private HeadTracker m_headTracker; 
+	
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
 	}
@@ -34,6 +42,12 @@ public class BackgroundThreadActivity extends MainActivity
 		m_surfaceView.getHolder().addCallback(this);
 		m_surfaceView.setActivity(this);
 
+		m_headTracker = HeadTracker.createFromContext(this);
+		m_headTracker.startTracking();
+
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		goFullScreen();
+	    
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		final float dpi = dm.ydpi;
 		final Activity activity = this;
@@ -57,7 +71,17 @@ public class BackgroundThreadActivity extends MainActivity
 			}
 		});
 	}
-
+	
+	@SuppressLint("InlinedApi") 
+	private void goFullScreen(){
+		if(android.os.Build.VERSION.SDK_INT<16)
+			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+		else if(android.os.Build.VERSION.SDK_INT<19)
+			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN);
+		else
+			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN);
+	}
+	
 	public void runOnNativeThread(Runnable runnable)
 	{
 		m_threadedRunner.postTo(runnable);
@@ -220,9 +244,11 @@ public class BackgroundThreadActivity extends MainActivity
 						
 						if(deltaSeconds > m_frameThrottleDelaySeconds)
 						{
+							float[] headTransform = new float[16];
+							m_headTracker.getLastHeadView(headTransform, 0);
 							if(m_running)
 							{
-								NativeJniCalls.updateNativeCode(deltaSeconds);
+								NativeJniCalls.updateNativeCode(deltaSeconds, headTransform);
 							}
 							else
 							{

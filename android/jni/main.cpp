@@ -97,9 +97,11 @@ JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_resumeNati
 	g_pAppRunner->Resume();
 }
 
-JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateNativeCode(JNIEnv* jenv, jobject obj, jfloat deltaSeconds)
+JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateNativeCode(JNIEnv* jenv, jobject obj, jfloat deltaSeconds, jfloatArray headTransform)
 {
-	g_pAppRunner->Update((float)deltaSeconds);
+    jfloat* hT = jenv->GetFloatArrayElements(headTransform, 0);
+	g_pAppRunner->Update((float)deltaSeconds, hT);
+    jenv->ReleaseFloatArrayElements(headTransform, hT, 0);
 }
 
 JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_setNativeSurface(JNIEnv* jenv, jobject obj, jobject surface)

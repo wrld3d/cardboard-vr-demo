@@ -45,6 +45,7 @@ namespace Examples
         m_pTargetSpline->AddPoint(Eegeo::Space::LatLongAltitude::FromDegrees(37.802241, -122.429776, 0).ToECEF());
         m_pTargetSpline->AddPoint(Eegeo::Space::LatLongAltitude::FromDegrees(37.803461, -122.447843, 0).ToECEF());
         
+        
         // Initialise the camera controller and assign which splines we want to use for the animation
         
         m_pSplineCameraController->SetSplines(m_pPositionSpline, m_pTargetSpline);
@@ -81,7 +82,7 @@ namespace Examples
     }
     
     
-    Eegeo::Camera::CameraState CameraSplineDualCameraExample::GetCurrentLeftCameraState() const
+    Eegeo::Camera::CameraState CameraSplineDualCameraExample::GetCurrentLeftCameraState(float headTansform[]) const
     {
         
 //        m_pSplineCameraController->GetRenderCamera().GetEcefLocation()
@@ -94,27 +95,48 @@ namespace Examples
                   ,renderCamera.GetEcefLocation().Norm().GetZ()
                   );
         
+        Eegeo::m44 m4;
+        Eegeo::m33 m3;
+
+        for(int lop=0; lop<16;lop+=4){
+            m4.SetRow(lop/4, Eegeo::v4(headTansform[lop], headTansform[lop+1], headTansform[lop+2], headTansform[lop+3]));
+            if(lop<12)
+                m3.SetRow(lop/4, Eegeo::v3(headTansform[lop], headTansform[lop+1], headTansform[lop+2]));
+        }
+        
         renderCamera.SetEcefLocation(Eegeo::dv3::Add(renderCamera.GetEcefLocation(), renderCamera.GetEcefLocation().Norm()*0.3f));
-//        Eegeo_TTY("Model matrix") ;
-//        for(int lop=0; lop<4;lop++){
-//            Eegeo_TTY("%.2f   %.2f    %.2f   %.2f",renderCamera.GetModelMatrix().GetRow(lop).Norm(). GetX()
-//                      ,renderCamera.GetModelMatrix().GetRow(lop).GetY()
-//                      ,renderCamera.GetModelMatrix().GetRow(lop).GetZ()
-//                      ,renderCamera.GetModelMatrix().GetRow(lop).GetW()) ;
-//        }
+        
+        renderCamera.SetOrientationMatrix(m3);
+//        renderCamera.SetOrientationMatrix(<#const Eegeo::m33 &m#>)
+//        Eegeo_TTY("Head Transform") ;
+//        for(int lop=0; lop<16;lop+=4){
+//            Eegeo_TTY("%.2f   %.2f    %.2f   %.2f",headTansform[lop]
+//                      ,headTansform[lop+1]
+//                      ,headTansform[lop+2]
+//                      ,headTansform[lop+3]) ;
         return Eegeo::Camera::CameraState(renderCamera.GetEcefLocation(),
                                           interestPoint,
                                           renderCamera.GetViewMatrix(),
                                           renderCamera.GetProjectionMatrix());
     }
     
-    Eegeo::Camera::CameraState CameraSplineDualCameraExample::GetCurrentRightCameraState() const
+    Eegeo::Camera::CameraState CameraSplineDualCameraExample::GetCurrentRightCameraState(float headTansform[]) const
     {
         Eegeo::dv3 interestPoint(m_pSplineCameraController->GetRenderCamera().GetEcefLocation().Norm() * Eegeo::Space::EarthConstants::Radius);
         
         Eegeo::Camera::RenderCamera renderCamera(m_pSplineCameraController->GetRenderCamera());
         
+        Eegeo::m44 m4;
+        Eegeo::m33 m3;
+        
+        for(int lop=0; lop<16;lop+=4){
+            m4.SetRow(lop/4, Eegeo::v4(headTansform[lop], headTansform[lop+1], headTansform[lop+2], headTansform[lop+3]));
+            if(lop<12)
+                m3.SetRow(lop/4, Eegeo::v3(headTansform[lop], headTansform[lop+1], headTansform[lop+2]));
+        }
+        
         renderCamera.SetEcefLocation(Eegeo::dv3::Add(renderCamera.GetEcefLocation(), renderCamera.GetEcefLocation().Norm()*-0.3f));
+        renderCamera.SetOrientationMatrix(m3);
         
         return Eegeo::Camera::CameraState(renderCamera.GetEcefLocation(),
                                           interestPoint,

@@ -51,8 +51,8 @@ public:
 	);
 	~AppHost();
 
-	void Update(float dt);
-	void Draw(float dt);
+	void Update(float dt, float headTansform[]);
+	void Draw(float dt, float headTansform[]);
 
 	void OnPause();
 	void OnResume();

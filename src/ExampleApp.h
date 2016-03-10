@@ -42,9 +42,9 @@ public:
 
 	void OnResume();
 
-	void Update (float dt);
+	void Update (float dt, float headTansform[]);
 
-	void Draw (float dt);
+	void Draw (float dt, float headTansform[]);
     
     void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
     

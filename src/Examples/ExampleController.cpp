@@ -83,7 +83,8 @@ void ExampleController::UpdateSelectedExample()
 		}
 	}
 }
-
+ 
+    
 void ExampleController::ActivatePrevious()
 {
 	if(m_factories.size() == 0)
@@ -170,14 +171,14 @@ void ExampleController::DestroyCurrentExample()
 }
 
     
-    Eegeo::Camera::CameraState ExampleController::GetCurrentLeftCameraState() const
+    Eegeo::Camera::CameraState ExampleController::GetCurrentLeftCameraState(float headTansform[]) const
     {
-        return m_pCurrentExample->GetCurrentLeftCameraState();
+        return m_pCurrentExample->GetCurrentLeftCameraState(headTansform);
     }
     
-    Eegeo::Camera::CameraState ExampleController::GetCurrentRightCameraState() const
+    Eegeo::Camera::CameraState ExampleController::GetCurrentRightCameraState(float headTansform[]) const
     {
-        return m_pCurrentExample->GetCurrentRightCameraState();
+        return m_pCurrentExample->GetCurrentRightCameraState(headTansform);
     }
     
 

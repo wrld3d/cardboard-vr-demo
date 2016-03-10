@@ -20,7 +20,7 @@ public:
 	void Pause();
 	void Resume();
 	void ActivateSurface();
-	void Update(float deltaSeconds);
+	void Update(float deltaSeconds, float headTansform[]);
 
 	void HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& message);
 

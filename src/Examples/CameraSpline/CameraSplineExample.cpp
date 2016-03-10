@@ -82,8 +82,13 @@ namespace Examples
     
     Eegeo::Camera::CameraState CameraSplineExample::GetCurrentCameraState() const
     {
+        
+        
         Eegeo::dv3 interestPoint(m_pSplineCameraController->GetRenderCamera().GetEcefLocation().Norm() * Eegeo::Space::EarthConstants::Radius);
         Eegeo::Camera::RenderCamera renderCamera(m_pSplineCameraController->GetRenderCamera());
+        
+        
+        Eegeo_TTY("%.2f, %.2f, %.2f", renderCamera.GetFOV(), renderCamera.GetNearClip(), renderCamera.GetFarClip());
         
         return Eegeo::Camera::CameraState(renderCamera.GetEcefLocation(),
                                           interestPoint,
