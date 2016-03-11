@@ -152,11 +152,13 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 //                                                                                               collisionVisualizationModule,
 //                                                                                               buildingFootprintsModule));
     
-//    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::OVRCameraSplineExampleFactory>(m_screenPropertiesProvider);
+    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::OVRCameraSplineExampleFactory>(m_screenPropertiesProvider);
+    
 //    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
 //        m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineDualCameraExampleFactory>(m_screenPropertiesProvider);
     
-        m_pExampleController->RegisterCameraExample<Examples::VRCameraSplineExampleFactory>();
+//        m_pExampleController->RegisterCameraExample<Examples::VRCameraSplineExampleFactory>();
+    
     //    m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
     
 //    m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
@@ -268,8 +270,6 @@ void ExampleApp::Draw (float dt, float headTansform[])
     {
         m_pLoadingScreen->Draw();
     }
-    
-    Update(dt, headTansform);
     
     glViewport(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),0,m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     

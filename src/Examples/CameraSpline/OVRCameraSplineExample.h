@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Geometry.h"
 #include "Streaming.h"
+#include "GlobeCamera.h"
 
 namespace Examples
 {
@@ -18,6 +19,8 @@ class OVRCameraSplineExample : public IExample, Eegeo::NonCopyable
 {
 private:
 	
+//    bool firstCall;
+//    Eegeo::m33 reverseMatrix;
     Eegeo::EegeoWorld& m_world;
     
     Eegeo::Geometry::CatmullRomSpline* m_pPositionSpline;
@@ -25,9 +28,11 @@ private:
     Eegeo::OVR::OVREegeoCameraController* m_pSplineCameraController;
     
 public:
+    
     OVRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
                            Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
-                        const Eegeo::Rendering::ScreenProperties& initialScreenProperties);
+                           Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
+                           const Eegeo::Rendering::ScreenProperties& initialScreenProperties);
     
 	static std::string GetName()
 	{

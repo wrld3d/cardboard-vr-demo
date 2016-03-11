@@ -26,10 +26,10 @@
     <application android:label="EegeoDroid" android:theme="@android:style/Theme.NoTitleBar">
        
         <activity android:name=".BackgroundThreadActivity"
-                  android:label="EegeoMobileSdkHarness"
+                  android:label="EegeoCardboard"
                   android:configChanges="orientation|keyboardHidden|screenSize"
               	  android:launchMode="singleInstance"
-              	  android:screenOrientation="sensorLandscape"
+              	  android:screenOrientation="reverseLandscape"
               	  android:hardwareAccelerated="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

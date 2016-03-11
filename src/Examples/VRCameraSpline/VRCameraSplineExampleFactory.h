@@ -16,8 +16,8 @@ class VRCameraSplineExampleFactory : public IExampleFactory
     Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
 
 public:
-	VRCameraSplineExampleFactory(Eegeo::EegeoWorld& world,
-	                               DefaultCameraControllerFactory& defaultCameraControllerFactory,
+    VRCameraSplineExampleFactory(Eegeo::EegeoWorld& world,
+                                 DefaultCameraControllerFactory& defaultCameraControllerFactory,
                                    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
 
 	std::string ExampleName() const;

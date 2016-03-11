@@ -13,10 +13,12 @@ namespace Examples
     {
         Eegeo::EegeoWorld& m_world;
         const IScreenPropertiesProvider& m_screenPropertiesProvider;
+        DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
         
     public:
         OVRCameraSplineExampleFactory(Eegeo::EegeoWorld& world,
-                                   const IScreenPropertiesProvider& screenPropertiesProvider);
+                                      DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                      const IScreenPropertiesProvider& screenPropertiesProvider);
         
         std::string ExampleName() const;
         

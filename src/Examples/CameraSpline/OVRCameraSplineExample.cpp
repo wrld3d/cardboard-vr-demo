@@ -7,7 +7,6 @@
 #include "CameraSplinePlaybackController.h"
 #include "ResourceCeilingProvider.h"
 #include "GlobeCameraController.h"
-#include "GlobeCameraTouchController.h"
 #include "EegeoWorld.h"
 #include "EarthConstants.h"
 #include "ScreenProperties.h"
@@ -16,11 +15,16 @@ namespace Examples
 {
     OVRCameraSplineExample::OVRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
                                                    Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
+                                                   Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
                                              const Eegeo::Rendering::ScreenProperties& initialScreenProperties)
     : m_world(eegeoWorld)
     {
         NotifyScreenPropertiesChanged(initialScreenProperties);
+//        firstCall = true;
+        Eegeo::m44 projectionMatrix = Eegeo::m44(cameraController->GetRenderCamera().GetProjectionMatrix());
         m_pSplineCameraController = new Eegeo::OVR::OVREegeoCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
+        m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
+        m_pSplineCameraController->GetCamera().SetProjection(0.65, 0.1, 4000);
     }
     
     void OVRCameraSplineExample::Start()
@@ -67,19 +71,19 @@ namespace Examples
     {
 
         
-        Eegeo::m44 m4;
         Eegeo::m33 orientation;
-        
-        
-        
-        for(int lop=0; lop<16;lop+=4){
-            m4.SetRow(lop/4, Eegeo::v4(headTansform[lop], headTansform[lop+1], headTansform[lop+2], headTansform[lop+3]));
-            if(lop<12)
+        for(int lop=0; lop<12;lop+=4){
                 orientation.SetRow(lop/4, Eegeo::v3(headTansform[lop], headTansform[lop+1], headTansform[lop+2]));
         }
         
+//        if(firstCall)
+//        {
+//            Eegeo::m33 inverse;
+//            Eegeo::m33::Inverse(inverse, orientation);
+//            firstCall = FALSE;
+//        }
         
-        Eegeo::dv3 eyeDistanceD = m_pSplineCameraController->GetCameraPosition().Norm()*0.013f;
+        Eegeo::dv3 eyeDistanceD = m_pSplineCameraController->GetCameraPosition().Norm()*0.03f;
         Eegeo::v3 eD(eyeDistanceD.GetX(), eyeDistanceD.GetY(), eyeDistanceD.GetZ());
         m_pSplineCameraController->UpdateFromPose(orientation, eD);
         
@@ -89,9 +93,10 @@ namespace Examples
     Eegeo::Camera::CameraState OVRCameraSplineExample::GetCurrentRightCameraState(float headTansform[]) const
     {
         
+        Eegeo_TTY("  Projection %.2f, %.2f, %.2f",m_pSplineCameraController->GetCamera().GetFOV(), m_pSplineCameraController->GetCamera().GetNearClip(), m_pSplineCameraController->GetCamera().GetFarClip());
+        
         Eegeo::m44 m4;
         Eegeo::m33 orientation;
-        
         
         for(int lop=0; lop<16;lop+=4){
             m4.SetRow(lop/4, Eegeo::v4(headTansform[lop], headTansform[lop+1], headTansform[lop+2], headTansform[lop+3]));
@@ -100,7 +105,7 @@ namespace Examples
         }
         
         
-        Eegeo::dv3 eyeDistanceD = m_pSplineCameraController->GetCameraPosition().Norm()*-0.013f;
+        Eegeo::dv3 eyeDistanceD = m_pSplineCameraController->GetCameraPosition().Norm()*-0.03f;
         Eegeo::v3 eD(eyeDistanceD.GetX(), eyeDistanceD.GetY(), eyeDistanceD.GetZ());
         m_pSplineCameraController->UpdateFromPose(orientation, eD);
         

@@ -45,8 +45,8 @@ namespace Eegeo
                 
                 m_orientation.Identity();
                 
-                m_renderCamera.SetViewport(0,0,screenWidth, screenHeight);
-                m_renderCamera.SetProjection(0.7, 0.001, 4000);
+//                m_renderCamera.SetViewport(0,0,screenWidth, screenHeight);
+//                m_renderCamera.SetProjection(0.7, 0.001, 4000);
                 
                 m_OVRCameraPositionSpline.Start();
 

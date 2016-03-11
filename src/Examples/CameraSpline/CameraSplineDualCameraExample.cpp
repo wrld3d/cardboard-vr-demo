@@ -51,7 +51,7 @@ namespace Examples
         m_pSplineCameraController->SetSplines(m_pPositionSpline, m_pTargetSpline);
         
         // Select a playback speed
-        m_pSplineCameraController->SetPlaybackSpeed(0.005);
+        m_pSplineCameraController->SetPlaybackSpeed(0.1);
         
         // Loop the animation
         m_pSplineCameraController->SetLooped(true);
