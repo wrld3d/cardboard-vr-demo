@@ -23,8 +23,8 @@ namespace Examples
 //        firstCall = true;
         Eegeo::m44 projectionMatrix = Eegeo::m44(cameraController->GetRenderCamera().GetProjectionMatrix());
         m_pSplineCameraController = new Eegeo::OVR::OVREegeoCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
-        m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
-        m_pSplineCameraController->GetCamera().SetProjection(0.65, 0.1, 4000);
+//        m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
+        m_pSplineCameraController->GetCamera().SetProjection(0.7, 0.1, 4000);
     }
     
     void OVRCameraSplineExample::Start()

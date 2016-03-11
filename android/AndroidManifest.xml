@@ -29,7 +29,7 @@
                   android:label="EegeoCardboard"
                   android:configChanges="orientation|keyboardHidden|screenSize"
               	  android:launchMode="singleInstance"
-              	  android:screenOrientation="reverseLandscape"
+              	  android:screenOrientation="landscape"
               	  android:hardwareAccelerated="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

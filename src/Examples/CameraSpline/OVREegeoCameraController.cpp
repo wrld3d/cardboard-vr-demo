@@ -86,7 +86,7 @@ namespace Eegeo
                 m_OVRCameraPositionSpline.Update(dt);
                 m_OVRCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
                 
-                m_orientation.Identity();
+//                m_orientation.Identity();
                 
                 if (!IsFollowingSpline())
                 {
