@@ -51,7 +51,7 @@ namespace Examples
         m_pSplineCameraController->SetSplines(m_pPositionSpline, m_pTargetSpline);
         
         // Select a playback speed
-        m_pSplineCameraController->SetPlaybackSpeed(0.1);
+        m_pSplineCameraController->SetPlaybackSpeed(0.01);
         
         // Loop the animation
         m_pSplineCameraController->SetLooped(true);
@@ -95,18 +95,17 @@ namespace Examples
                   ,renderCamera.GetEcefLocation().Norm().GetZ()
                   );
         
-        Eegeo::m44 m4;
-        Eegeo::m33 m3;
-
-        for(int lop=0; lop<16;lop+=4){
-            m4.SetRow(lop/4, Eegeo::v4(headTansform[lop], headTansform[lop+1], headTansform[lop+2], headTansform[lop+3]));
-            if(lop<12)
-                m3.SetRow(lop/4, Eegeo::v3(headTansform[lop], headTansform[lop+1], headTansform[lop+2]));
-        }
+        Eegeo::m33 orientation;
+        Eegeo::v3 right = Eegeo::v3(headTansform[0],headTansform[4],headTansform[8]);
+        Eegeo::v3 up = Eegeo::v3(headTansform[1],headTansform[5],headTansform[9]);
+        Eegeo::v3 forward = Eegeo::v3(-headTansform[2],-headTansform[6],-headTansform[10]);
+        orientation.SetRow(0, right);
+        orientation.SetRow(1, up);
+        orientation.SetRow(2, forward);
         
         renderCamera.SetEcefLocation(Eegeo::dv3::Add(renderCamera.GetEcefLocation(), renderCamera.GetEcefLocation().Norm()*0.3f));
+        renderCamera.SetOrientationMatrix(orientation);
         
-        renderCamera.SetOrientationMatrix(m3);
 //        renderCamera.SetOrientationMatrix(<#const Eegeo::m33 &m#>)
 //        Eegeo_TTY("Head Transform") ;
 //        for(int lop=0; lop<16;lop+=4){
@@ -126,17 +125,17 @@ namespace Examples
         
         Eegeo::Camera::RenderCamera renderCamera(m_pSplineCameraController->GetRenderCamera());
         
-        Eegeo::m44 m4;
-        Eegeo::m33 m3;
         
-        for(int lop=0; lop<16;lop+=4){
-            m4.SetRow(lop/4, Eegeo::v4(headTansform[lop], headTansform[lop+1], headTansform[lop+2], headTansform[lop+3]));
-            if(lop<12)
-                m3.SetRow(lop/4, Eegeo::v3(headTansform[lop], headTansform[lop+1], headTansform[lop+2]));
-        }
+        Eegeo::m33 orientation;
+        Eegeo::v3 right = Eegeo::v3(headTansform[0],headTansform[4],headTansform[8]);
+        Eegeo::v3 up = Eegeo::v3(headTansform[1],headTansform[5],headTansform[9]);
+        Eegeo::v3 forward = Eegeo::v3(-headTansform[2],-headTansform[6],-headTansform[10]);
+        orientation.SetRow(0, right);
+        orientation.SetRow(1, up);
+        orientation.SetRow(2, forward);
         
         renderCamera.SetEcefLocation(Eegeo::dv3::Add(renderCamera.GetEcefLocation(), renderCamera.GetEcefLocation().Norm()*-0.3f));
-        renderCamera.SetOrientationMatrix(m3);
+        renderCamera.SetOrientationMatrix(orientation);
         
         return Eegeo::Camera::CameraState(renderCamera.GetEcefLocation(),
                                           interestPoint,
@@ -157,13 +156,6 @@ namespace Examples
 //                      ,mat.GetRow(lop).GetZ()
 //                      ,mat.GetRow(lop).GetW());
 //        }
-        
-        Eegeo_TTY("DIRECTION") ;
-
-            Eegeo_TTY("%.2f   %.2f    %.2f",renderCamera.GetEcefLocation().GetX()
-                      ,renderCamera.GetEcefLocation().GetY()
-                      ,renderCamera.GetEcefLocation().GetZ()
-                      );
 
         
         return Eegeo::Camera::CameraState(renderCamera.GetEcefLocation(),

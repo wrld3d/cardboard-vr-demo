@@ -44,6 +44,7 @@ public:
 	}
     
 	void Start();
+    void OrientationUpdate();
 	void EarlyUpdate(float dt);
 	void Update(float dt) { }
     void PreWorldDraw() { }

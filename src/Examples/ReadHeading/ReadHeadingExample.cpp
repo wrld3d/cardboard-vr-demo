@@ -10,6 +10,7 @@
 #include "Colors.h"
 #include "CameraHelpers.h"
 #include "EcefTangentBasis.h"
+#include "GlobeCameraController.h"
 
 namespace Examples
 {
@@ -20,6 +21,7 @@ namespace Examples
                                            Eegeo::Location::ILocationService& locationService)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
     , m_world(eegeoWorld)
+    , m_cameraController(pCameraController)
 	, m_debugRenderer(debugRenderer)
     , m_locationService(locationService)
     {
@@ -27,6 +29,12 @@ namespace Examples
     
     void ReadHeadingExample::Update(float dt)
     {
+        EXAMPLE_LOG("%.2f	\n", m_cameraController->GetRenderCamera().GetAltitude());
+        
+        EXAMPLE_LOG("%.2f, %.2f, %.2f\n", m_cameraController->GetRenderCamera().GetFOV(), m_cameraController->GetRenderCamera().GetNearClip(), m_cameraController->GetRenderCamera().GetFarClip());
+        
+        
+        
     	double degrees;
     	if(m_locationService.GetHeadingDegrees(degrees))
     	{
@@ -40,7 +48,7 @@ namespace Examples
     	}
     	else
     	{
-    		EXAMPLE_LOG("Unable to read heading from device.\n");
+//    		EXAMPLE_LOG("Unable to read heading from device.\n");
     	}
     }
 

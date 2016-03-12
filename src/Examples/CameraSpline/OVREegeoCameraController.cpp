@@ -8,6 +8,7 @@
 #include "Quaternion.h"
 #include "EarthConstants.h"
 #include "MathFunc.h"
+#include "Logger.h"
 
 namespace Eegeo
 {
@@ -47,10 +48,15 @@ namespace Eegeo
             m33::Mul(orientationMatrix, m_orientation, orientation);
             
             v3 eyeOffsetModified = eyeOffset;
-            v3 rotatedEyeOffset = v3::Mul(eyeOffsetModified, m_orientation);
+            v3 rotatedEyeOffset = v3::Mul(eyeOffsetModified, orientationMatrix);
+            
+            float near, far;
+            GetNearFarPlaneDistances(near,far);
+            m_renderCamera.SetProjection(0.75f, near, far);
             
             m_renderCamera.SetOrientationMatrix(orientationMatrix);
             m_renderCamera.SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
+
         }
         
         void OVREegeoCameraController::SetEcefPosition(const Eegeo::dv3& ecef)
@@ -76,6 +82,12 @@ namespace Eegeo
         
         void OVREegeoCameraController::Update(float dt)
         {
+            
+            float near = 0.1f;
+            float far = 4000.0f;
+            GetNearFarPlaneDistances(near, far);
+            m_renderCamera.SetProjection(m_renderCamera.GetFOV(), near, far);
+            
             if(IsFalling())
             {
                 Eegeo_TTY("Update Fall : %.2f",dt);
@@ -98,6 +110,72 @@ namespace Eegeo
             {
                 Move(dt);
             }
+        }
+        
+        m44 OVREegeoCameraController::CreateProjection( bool rightHanded, float tanHalfFov,
+                                  float zNear /*= 0.01f*/, float zFar /*= 10000.0f*/ )
+        {
+            // A projection matrix is very like a scaling from NDC, so we can start with that.
+            ScaleAndOffset2D scaleAndOffset = CreateNDCScaleAndOffsetFromFov ( tanHalfFov );
+            
+            float handednessScale = 1.0f;
+            if ( rightHanded )
+            {
+                handednessScale = -1.0f;
+            }
+            
+            float M[4][4];
+            m44 projection;
+            // Produces X result, mapping clip edges to [-w,+w]
+            M[0][0] = scaleAndOffset.Scale.x;
+            M[0][1] = 0.0f;
+            M[0][2] = handednessScale * scaleAndOffset.Offset.x;
+            M[0][3] = 0.0f;
+            
+            // Produces Y result, mapping clip edges to [-w,+w]
+            // Hey - why is that YOffset negated?
+            // It's because a projection matrix transforms from world coords with Y=up,
+            // whereas this is derived from an NDC scaling, which is Y=down.
+            M[1][0] = 0.0f;
+            M[1][1] = scaleAndOffset.Scale.y;
+            M[1][2] = handednessScale * -scaleAndOffset.Offset.y;
+            M[1][3] = 0.0f;
+            
+            // Produces Z-buffer result - app needs to fill this in with whatever Z range it wants.
+            // We'll just use some defaults for now.
+            M[2][0] = 0.0f;
+            M[2][1] = 0.0f;
+            M[2][2] = -handednessScale * zFar / (zNear - zFar);
+            M[2][3] = (zFar * zNear) / (zNear - zFar);
+            
+            // Produces W result (= Z in)
+            M[3][0] = 0.0f;
+            M[3][1] = 0.0f;
+            M[3][2] = handednessScale;
+            M[3][3] = 0.0f;
+            
+            for(int lop=0; lop<4; lop++)
+                projection.SetRow(lop, Eegeo::v4(M[0][lop],M[1][lop],M[2][lop],M[3][lop]));
+            
+            return projection;
+        }
+        
+        
+        ScaleAndOffset2D OVREegeoCameraController::CreateNDCScaleAndOffsetFromFov ( FovPort tanHalfFov )
+        {
+            float projXScale = 2.0f / ( tanHalfFov.LeftTan + tanHalfFov.RightTan );
+            float projXOffset = ( tanHalfFov.LeftTan - tanHalfFov.RightTan ) * projXScale * 0.5f;
+            float projYScale = 2.0f / ( tanHalfFov.UpTan + tanHalfFov.DownTan );
+            float projYOffset = ( tanHalfFov.UpTan - tanHalfFov.DownTan ) * projYScale * 0.5f;
+            
+            ScaleAndOffset2D result;
+            result.Scale    = Eegeo::v2(projXScale, projYScale);
+            result.Offset   = Eegeo::v2(projXOffset, projYOffset);
+            // Hey - why is that Y.Offset negated?
+            // It's because a projection matrix transforms from world coords with Y=up,
+            // whereas this is from NDC which is Y=down.
+            
+            return result;
         }
         
         bool OVREegeoCameraController::CanAcceptUserInput() const

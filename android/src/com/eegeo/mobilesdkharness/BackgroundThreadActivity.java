@@ -43,6 +43,8 @@ public class BackgroundThreadActivity extends MainActivity
 		m_surfaceView.setActivity(this);
 
 		m_headTracker = HeadTracker.createFromContext(this);
+		m_headTracker.setGyroBiasEstimationEnabled(true);
+//		m_headTracker.setNeckModelEnabled(true);
 		m_headTracker.startTracking();
 
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
