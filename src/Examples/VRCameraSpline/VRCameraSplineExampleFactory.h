@@ -4,26 +4,27 @@
 #define __ExampleApp__VRCameraSplineExampleFactory__
 
 #include "IExampleFactory.h"
-#include "GlobeCameraExampleBase.h"
-#include "EegeoWorld.h"
+#include "EegeoRootDeclarations.h"
+#include "ScreenPropertiesProvider.h"
 
 namespace Examples
 {
-class VRCameraSplineExampleFactory : public IExampleFactory
-{
-	Eegeo::EegeoWorld& m_world;
-    DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
-    Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
-
-public:
-    VRCameraSplineExampleFactory(Eegeo::EegeoWorld& world,
-                                 DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                                   Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController);
-
-	std::string ExampleName() const;
-
-	IExample* CreateExample() const;
-};
+    class VRCameraSplineExampleFactory : public IExampleFactory
+    {
+        Eegeo::EegeoWorld& m_world;
+        const IScreenPropertiesProvider& m_screenPropertiesProvider;
+        DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+        
+    public:
+        VRCameraSplineExampleFactory(Eegeo::EegeoWorld& world,
+                                      DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                      const IScreenPropertiesProvider& screenPropertiesProvider);
+        
+        std::string ExampleName() const;
+        
+        IExample* CreateExample() const;
+    };
 }
+
 
 #endif /* defined(__ExampleApp__VRCameraSplineExampleFactory__) */

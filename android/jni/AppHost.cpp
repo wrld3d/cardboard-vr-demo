@@ -220,6 +220,10 @@ void AppHost::HandleTouchInputEvent(const Eegeo::Android::Input::TouchInputEvent
 	m_pInputProcessor->HandleInput(event);
 }
 
+void AppHost::MagnetTriggered(){
+    m_pApp->MagnetTriggered();
+}
+
 void AppHost::Update(float dt, float headTansform[])
 {
 	m_pInputProcessor->Update(dt);

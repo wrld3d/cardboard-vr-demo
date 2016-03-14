@@ -24,6 +24,8 @@ public:
 
 	void HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& message);
 
+    void MagnetTriggered();
+    
 private:
 	const std::string& m_apiKey;
 	AndroidNativeState* m_pNativeState;

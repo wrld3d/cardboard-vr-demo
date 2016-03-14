@@ -60,7 +60,9 @@ public:
 	void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
 
 	void HandleTouchInputEvent(const Eegeo::Android::Input::TouchInputEvent& event);
-
+    
+    void MagnetTriggered();
+    
 	void SetEnvironmentFlatten(bool flattenState);
 	void SetCameraLocation(const Eegeo::Space::LatLongAltitude& interestPoint, double distanceToInterestPoint, double orientationInDegrees);
 	void SendCameraLocationToGUI();

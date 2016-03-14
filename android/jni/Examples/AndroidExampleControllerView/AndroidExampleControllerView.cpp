@@ -61,11 +61,12 @@ void AndroidExampleControllerView::Show()
 	AndroidSafeNativeThreadAttachment attached(m_nativeState);
 	JNIEnv* env = attached.envForThread;
 
-	jmethodID showButtons = env->GetMethodID(m_androidExampleControllerViewClass, "showViews", "()V");
+//  Not showing Controller UI for now. It will be replaced with a VR based UI.
+//	jmethodID showButtons = env->GetMethodID(m_androidExampleControllerViewClass, "showViews", "()V");
 
-	env->CallVoidMethod(
-	    m_androidExampleControllerView,
-	    showButtons);
+//	env->CallVoidMethod(
+//	    m_androidExampleControllerView,
+//	    showButtons);
 }
 
 void AndroidExampleControllerView::PopulateExampleList(const std::vector<std::string>& exampleNames)

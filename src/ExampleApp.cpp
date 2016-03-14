@@ -13,6 +13,10 @@
 // Modules
 #include "MapModule.h"
 #include "TerrainModelModule.h"
+#include "GlobalFogging.h"
+#include "CityThemesModule.h"
+#include "CityThemesService.h"
+
 
 //example factories
 #include "BuildingHighlightExampleFactory.h"
@@ -46,12 +50,8 @@
 #include "TrafficCongestionExampleFactory.h"
 #include "WebRequestExampleFactory.h"
 
-
 #include "Examples/VRCameraSpline/VRCameraSplineExampleFactory.h"
 #include "CameraSplineExampleFactory.h"
-#include "CameraSplineDualCameraExampleFactory.h"
-#include "OVRCameraSplineExampleFactory.h"
-
 #include "ReadHeadingExampleFactory.h"
 #include "FireworksExampleFactory.h"
 #include "MeshExampleFactory.h"
@@ -90,8 +90,6 @@ namespace
 }
 
 
-
-
 ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                        Examples::IExampleControllerView& view,
                        const Eegeo::Rendering::ScreenProperties& screenProperties,
@@ -100,8 +98,14 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 	: m_pCameraControllerFactory(NULL)
 	, m_pCameraTouchController(NULL)
 	, m_pWorld(pWorld)
+    , m_nightTParam(0.0f)
+    , m_night(false)
+    , m_foggingFar(4000)
     , m_pLoadingScreen(NULL)
-	, m_pExampleController(NULL)
+    , m_pExampleController(NULL)
+    , m_currentClearColor(135.f/255.0f, 206.f/255.0f, 235.f/255.0f)
+    , m_startClearColor(0.f/255.f,24.f/255.f,72.f/255.f)
+    , m_destClearColor(135.f/255.0f, 206.f/255.0f, 235.f/255.0f)
     , m_screenPropertiesProvider(screenProperties)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
@@ -152,28 +156,27 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 //                                                                                               collisionVisualizationModule,
 //                                                                                               buildingFootprintsModule));
     
-    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::OVRCameraSplineExampleFactory>(m_screenPropertiesProvider);
+    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider);
     
 //    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
-//        m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineDualCameraExampleFactory>(m_screenPropertiesProvider);
+//    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineDualCameraExampleFactory>(m_screenPropertiesProvider);
     
-//        m_pExampleController->RegisterCameraExample<Examples::VRCameraSplineExampleFactory>();
-    
-    //    m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<Examples::VRCameraSplineExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
     
 //    m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
 //    m_pExampleController->RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>();
-//    // TODO: Completely remove DebugSphere example as we should be using DebugRenderer now
-//	//m_pExampleController->RegisterCameraExample<Examples::DebugSphereExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::DynamicText3DExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::EnvironmentFlatteningExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>();
+//    TODO: Completely remove DebugSphere example as we should be using DebugRenderer now
+//	  m_pExampleController->RegisterCameraExample<Examples::DebugSphereExampleFactory>();
+//	  m_pExampleController->RegisterCameraExample<Examples::DynamicText3DExampleFactory>();
+//	  m_pExampleController->RegisterCameraExample<Examples::EnvironmentFlatteningExampleFactory>();
+//	  m_pExampleController->RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>();
 //    m_pExampleController->RegisterCameraExample<Examples::EnvironmentRayCasterExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::FileIOExampleFactory>();
+//	  m_pExampleController->RegisterCameraExample<Examples::FileIOExampleFactory>();
 //    m_pExampleController->RegisterCameraExample<Examples::FireworksExampleFactory>();
 //    m_pExampleController->RegisterCameraExample<Examples::GeofenceExampleFactory>();
 //    m_pExampleController->RegisterCameraExample<Examples::HeatmapExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::LoadModelExampleFactory>();
+//	  m_pExampleController->RegisterCameraExample<Examples::LoadModelExampleFactory>();
 //    m_pExampleController->RegisterCameraExample<Examples::MeshExampleFactory>();
 //	m_pExampleController->RegisterCameraExample<Examples::ModifiedRenderingExampleFactory>();
 //	m_pExampleController->RegisterCameraExample<Examples::NavigationGraphExampleFactory>();
@@ -196,6 +199,9 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 //	m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
 //	m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
 //    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
+
+    
+    
 }
 
 ExampleApp::~ExampleApp()
@@ -242,20 +248,27 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     m_pExampleController->Update(dt);
     
+    UpdateNightTParam(dt);
+    UpdateFogging();
+    
     UpdateLoadingScreen(dt);
+    
 }
+
 
 void ExampleApp::Draw (float dt, float headTansform[])
 {
+    DrawLeftEye(dt, headTansform);
+    DrawRightEye(dt, headTansform);
+}
+
+void ExampleApp::DrawLeftEye (float dt, float headTansform[]){
     
     glViewport(0,0,m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
-    
     m_pExampleController->PreWorldDraw();
     
     Eegeo::EegeoWorld& eegeoWorld = World();
-    
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentLeftCameraState(headTansform));
-    
     Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
                                               cameraState.InterestPointEcef(),
                                               cameraState.ViewMatrix(),
@@ -265,35 +278,77 @@ void ExampleApp::Draw (float dt, float headTansform[])
     eegeoWorld.Draw(drawParameters);
     
     m_pExampleController->Draw();
-    
     if (m_pLoadingScreen != NULL)
     {
         m_pLoadingScreen->Draw();
     }
+    
+}
+
+void ExampleApp::DrawRightEye (float dt, float headTansform[]){
     
     glViewport(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),0,m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     
-    
+    Eegeo::EegeoWorld& eegeoWorld = World();
     m_pExampleController->PreWorldDraw();
+    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentRightCameraState(headTansform));
+    Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
+                                               cameraState.InterestPointEcef(),
+                                               cameraState.ViewMatrix(),
+                                               cameraState.ProjectionMatrix(),
+                                               m_screenPropertiesProvider.GetScreenProperties());
     
-    Eegeo::Camera::CameraState cameraState2(m_pExampleController->GetCurrentRightCameraState(headTansform));
-    
-    Eegeo::EegeoDrawParameters drawParameters2(cameraState2.LocationEcef(),
-                                              cameraState2.InterestPointEcef(),
-                                              cameraState2.ViewMatrix(),
-                                              cameraState2.ProjectionMatrix(),
-                                              m_screenPropertiesProvider.GetScreenProperties());
-    
-    eegeoWorld.Draw(drawParameters2);
+    eegeoWorld.Draw(drawParameters);
     
     m_pExampleController->Draw();
-    
     if (m_pLoadingScreen != NULL)
     {
         m_pLoadingScreen->Draw();
     }
     
+}
+void ExampleApp::UpdateNightTParam(float dt)
+{
+    m_nightTParam += dt;
+    m_nightTParam = Eegeo::Math::Clamp01(m_nightTParam);
+    m_currentClearColor = Eegeo::v3::Lerp(m_startClearColor, m_destClearColor, m_nightTParam);
+}
+
+
+void ExampleApp::ToggleNight()
+{
+    m_night = !m_night;
+    std::stringstream themeNameBuidler;
+    themeNameBuidler << (m_night ? "Night" : "Day");
+    themeNameBuidler << "Default";
+    m_pWorld->GetMapModule().GetCityThemesModule().GetCityThemesService().RequestTransitionToState(themeNameBuidler.str(), 1.f);
+
+    if (m_night)
+    {
+        m_startClearColor = Eegeo::v3(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f);
+        m_destClearColor = Eegeo::v3(0.0f/255.f,24.0f/255.f,72.0f/255.f) ;
+    }
+    else
+    {
+        m_startClearColor = Eegeo::v3(0.0f/255.f,24.0f/255.f,72.0f/255.f);
+        m_destClearColor = Eegeo::v3(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f);
+    }
     
+    m_nightTParam = 0.f;
+}
+
+
+void ExampleApp::MagnetTriggered(){
+    ToggleNight();
+}
+
+void ExampleApp::UpdateFogging(){
+    Eegeo::Lighting::GlobalFogging& fogging = m_pWorld->GetCoreModule().GetLightingModule().GetGlobalFogging();
+    fogging.SetHeightFogIntensity(0.0f);
+    fogging.SetDistanceFogIntensity(1.0f);
+    fogging.SetDistanceFogDistances(m_foggingFar - 500.0f, m_foggingFar);
+    fogging.SetFogColour(Eegeo::v4(m_currentClearColor,1.0f));
+    fogging.SetFogDensity(1.0f);
 }
 
 void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)

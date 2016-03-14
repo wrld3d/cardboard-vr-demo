@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.google.vrtoolkit.cardboard.sensors.HeadTracker;
+import com.google.vrtoolkit.cardboard.sensors.MagnetSensor;
+import com.google.vrtoolkit.cardboard.sensors.MagnetSensor.OnCardboardTriggerListener;
 
 
 public class BackgroundThreadActivity extends MainActivity
@@ -26,6 +28,7 @@ public class BackgroundThreadActivity extends MainActivity
 	private Thread m_updater;
 
 	private HeadTracker m_headTracker; 
+	private MagnetSensor m_magnetSensor;
 	
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
@@ -44,8 +47,21 @@ public class BackgroundThreadActivity extends MainActivity
 
 		m_headTracker = HeadTracker.createFromContext(this);
 		m_headTracker.setGyroBiasEstimationEnabled(true);
-//		m_headTracker.setNeckModelEnabled(true);
 		m_headTracker.startTracking();
+		
+		m_magnetSensor = new MagnetSensor(this);
+		m_magnetSensor.setOnCardboardTriggerListener(new OnCardboardTriggerListener() {
+			
+			@Override
+			public void onCardboardTrigger() {
+				runOnNativeThread(new Runnable() {
+					public void run() {
+						NativeJniCalls.magnetTriggered();
+					}
+				});
+			}
+		});
+		m_magnetSensor.start();
 
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		goFullScreen();
@@ -195,7 +211,8 @@ public class BackgroundThreadActivity extends MainActivity
 			m_running = false;
 			m_destroyed = false;
 
-			float targetFramesPerSecond = 30.f;
+			// We need higher FPS of 60 for better VR
+			float targetFramesPerSecond = 60.f; //30.f;
 			m_frameThrottleDelaySeconds = 1.f/targetFramesPerSecond;
 		}
 

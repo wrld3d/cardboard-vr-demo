@@ -233,7 +233,9 @@ bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
 
 	// Initialize GL state.
 	Eegeo_GL(glClearDepthf(1.0f));
-	Eegeo_GL(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+    
+//    Eegeo_GL(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+    Eegeo_GL(glClearColor(1.0f, 1.0f, 1.0f, 1.0f));
 
 	// Set up default Depth test.
 	Eegeo_GL(glEnable(GL_DEPTH_TEST));

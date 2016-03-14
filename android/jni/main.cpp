@@ -123,6 +123,11 @@ JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_setNativeS
 	}
 }
 
+JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_magnetTriggered(JNIEnv* jenv, jobject obj)
+{
+    g_pAppRunner->MagnetTriggered();
+}
+
 JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_EegeoSurfaceView_processNativePointerDown(JNIEnv* jenv, jobject obj,
         jint primaryActionIndex,
         jint primaryActionIdentifier,
@@ -164,6 +169,8 @@ JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_EegeoSurfaceView_processN
 	FillEventFromJniData(jenv, primaryActionIndex, primaryActionIdentifier, numPointers, x, y, pointerIdentity, pointerIndex, event);
 	g_pAppRunner->HandleTouchEvent(event);
 }
+
+
 
 namespace
 {

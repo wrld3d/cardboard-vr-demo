@@ -8,12 +8,12 @@
 
 namespace Eegeo
 {
-    namespace OVR
+    namespace VR
     {
-        class OVRCameraPositionSpline : protected Eegeo::NonCopyable
+        class VRCameraPositionSpline : protected Eegeo::NonCopyable
         {
         public:
-            OVRCameraPositionSpline()
+            VRCameraPositionSpline()
             : m_playbackSpeed(0.03)
             , m_playing(false)
             , m_time(0.0)

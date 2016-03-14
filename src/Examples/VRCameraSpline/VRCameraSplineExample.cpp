@@ -1,94 +1,90 @@
 // Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
-
 #include "VRCameraSplineExample.h"
+#include "VectorMath.h"
+#include "LatLongAltitude.h"
+#include "CatmullRomSpline.h"
+#include "CameraSplinePlaybackController.h"
+#include "ResourceCeilingProvider.h"
 #include "GlobeCameraController.h"
+#include "EegeoWorld.h"
 #include "EarthConstants.h"
+#include "ScreenProperties.h"
 
 namespace Examples
 {
-
-VRCameraSplineExample::VRCameraSplineExample(Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-                                                 Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController)
-	: GlobeCameraExampleBase(pCameraController, cameraTouchController)
-    {
-        m_CameraController = pCameraController;
-        m_OVRCameraPositionSpline.Start();
-    }
-    
-    
-    void VRCameraSplineExample::Start() {
-    }
-
-    void VRCameraSplineExample::Update(float dt)
+    VRCameraSplineExample::VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
+                                                   Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
+                                                   Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
+                                             const Eegeo::Rendering::ScreenProperties& initialScreenProperties)
+    : m_world(eegeoWorld)
     {
         
-        m_OVRCameraPositionSpline.Update(dt);
-        if (!m_OVRCameraPositionSpline.IsPlaying())
-        {
-            m_OVRCameraPositionSpline.NextSpline();
-            m_OVRCameraPositionSpline.Start();
-        }
+        NotifyScreenPropertiesChanged(initialScreenProperties);
+        Eegeo::m44 projectionMatrix = Eegeo::m44(cameraController->GetRenderCamera().GetProjectionMatrix());
+        m_pSplineCameraController = new Eegeo::VR::VREegeoCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
+        m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
     }
+    
+    void VRCameraSplineExample::Start()
+    {
+        
+        Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(37.7858,-122.401, 100);
+        m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla);
+    }
+    
+    void VRCameraSplineExample::Suspend()
+    {
+    }
+    
+    void VRCameraSplineExample::EarlyUpdate(float dt)
+    {
+        m_pSplineCameraController->Update(dt);
+        
+    }
+    
+    void VRCameraSplineExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
+    {
+//        m_pSplineCameraController->UpdateScreenProperties(screenProperties);
+    }
+    
     
     Eegeo::Camera::CameraState VRCameraSplineExample::GetCurrentLeftCameraState(float headTansform[]) const
     {
-        
-        
-        
         Eegeo::m33 orientation;
-        Eegeo::dv3 position;
+        Eegeo::v3 right = Eegeo::v3(headTansform[0],headTansform[4],headTansform[8]);
+        Eegeo::v3 up = Eegeo::v3(headTansform[1],headTansform[5],headTansform[9]);
+        Eegeo::v3 forward = Eegeo::v3(-headTansform[2],-headTansform[6],-headTansform[10]);
+        orientation.SetRow(0, right);
+        orientation.SetRow(1, up);
+        orientation.SetRow(2, forward);
         
-        m_OVRCameraPositionSpline.GetCurrentCameraPosition(position, orientation);
+        Eegeo::dv3 eyeDistanceD = m_pSplineCameraController->GetCameraPosition().Norm()*0.03f;
+        Eegeo::v3 eD(eyeDistanceD.GetX(), eyeDistanceD.GetY(), eyeDistanceD.GetZ());
+        m_pSplineCameraController->UpdateFromPose(orientation, eD);
         
-        Eegeo_TTY(" Update Left %.2f, %.2f, %.2f", position.GetX(), position.GetY(), position.GetZ());
-        
-        for(int lop=0; lop<12;lop+=4){
-            orientation.SetRow(lop/4, Eegeo::v3(headTansform[lop], headTansform[lop+1], headTansform[lop+2]));
-        }
-        
-        Eegeo::dv3 eyeSeparation = Eegeo::dv3::Mul(position.Norm()*0.013, orientation);
-//        Eegeo::m44 projectionMatrix(m_CameraController->GetRenderCamera().GetProjectionMatrix());
-
-        
-        Eegeo::Camera::RenderCamera renderCamera(m_CameraController->GetRenderCamera());
-//        renderCamera.SetProjectionMatrix(projectionMatrix);
-        renderCamera.SetEcefLocation(position+eyeSeparation);
-        renderCamera.SetOrientationMatrix(orientation);
-        
-        return Eegeo::Camera::CameraState(position+eyeSeparation,
-                                   (position+eyeSeparation).Norm() * Eegeo::Space::EarthConstants::Radius,
-                                   renderCamera.GetViewMatrix(),
-                                   renderCamera.GetProjectionMatrix());
-        
+        return m_pSplineCameraController->GetCameraState();
     }
     
     Eegeo::Camera::CameraState VRCameraSplineExample::GetCurrentRightCameraState(float headTansform[]) const
     {
         Eegeo::m33 orientation;
-        Eegeo::dv3 position;
+        Eegeo::v3 right = Eegeo::v3(headTansform[0],headTansform[4],headTansform[8]);
+        Eegeo::v3 up = Eegeo::v3(headTansform[1],headTansform[5],headTansform[9]);
+        Eegeo::v3 forward = Eegeo::v3(-headTansform[2],-headTansform[6],-headTansform[10]);
+        orientation.SetRow(0, right);
+        orientation.SetRow(1, up);
+        orientation.SetRow(2, forward);
+
+        Eegeo::dv3 eyeDistanceD = m_pSplineCameraController->GetCameraPosition().Norm()*-0.03f;
+        Eegeo::v3 eD(eyeDistanceD.GetX(), eyeDistanceD.GetY(), eyeDistanceD.GetZ());
+        m_pSplineCameraController->UpdateFromPose(orientation, eD);
         
-        m_OVRCameraPositionSpline.GetCurrentCameraPosition(position, orientation);
-        
-        for(int lop=0; lop<12;lop+=4){
-            orientation.SetRow(lop/4, Eegeo::v3(headTansform[lop], headTansform[lop+1], headTansform[lop+2]));
-        }
-        
-        Eegeo::dv3 eyeSeparation = Eegeo::dv3::Mul(position.Norm()*-0.013, orientation);
-        Eegeo::m44 projectionMatrix(m_CameraController->GetRenderCamera().GetProjectionMatrix());
-        
-        Eegeo::Camera::RenderCamera renderCamera;
-        renderCamera.SetProjectionMatrix(projectionMatrix);
-        renderCamera.SetEcefLocation(position+eyeSeparation);
-        renderCamera.SetOrientationMatrix(orientation);
-        
-        return Eegeo::Camera::CameraState(renderCamera.GetEcefLocation(),
-                                          renderCamera.GetEcefLocation().Norm() * Eegeo::Space::EarthConstants::Radius,
-                                          renderCamera.GetViewMatrix(),
-                                          renderCamera.GetProjectionMatrix());
+        return m_pSplineCameraController->GetCameraState();
     }
     
-
-
-
+    Eegeo::Camera::CameraState VRCameraSplineExample::GetCurrentCameraState() const
+    {
+        return m_pSplineCameraController->GetCameraState();
+    }
 }

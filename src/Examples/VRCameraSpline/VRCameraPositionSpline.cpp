@@ -1,12 +1,12 @@
 //  Copyright (c) 2014 eeGeo Ltd. All rights reserved.
 
-#include "OVRCameraPositionSpline.h"
+#include "VRCameraPositionSpline.h"
 
 namespace Eegeo
 {
-    namespace OVR
+    namespace VR
     {
-        void OVRCameraPositionSpline::AddPoint(const dv3& ecefEyePoint, const m33& orientation)
+        void VRCameraPositionSpline::AddPoint(const dv3& ecefEyePoint, const m33& orientation)
         {
             m_positionSpline.AddPoint(ecefEyePoint);
             
@@ -19,7 +19,7 @@ namespace Eegeo
             m_forwardSpline.AddPoint(dv3(forward.x, forward.y, forward.z));
         }
         
-        void OVRCameraPositionSpline::Clear()
+        void VRCameraPositionSpline::Clear()
         {
             m_positionSpline.Clear();
             m_rightSpline.Clear();
@@ -27,7 +27,7 @@ namespace Eegeo
             m_forwardSpline.Clear();
         }
         
-        void OVRCameraPositionSpline::Spew()
+        void VRCameraPositionSpline::Spew()
         {
             const std::vector<Geometry::CatmullRomSplinePoint>& rightPoints = m_rightSpline.GetPoints();
             const std::vector<Geometry::CatmullRomSplinePoint>& upPoints = m_upSpline.GetPoints();
@@ -46,7 +46,7 @@ namespace Eegeo
             }
         }
         
-        void OVRCameraPositionSpline::Start()
+        void VRCameraPositionSpline::Start()
         {
             
             if(m_positionSpline.GetNumberOfPoints() == 0)
@@ -58,12 +58,12 @@ namespace Eegeo
             m_playing = true;
         }
         
-        void OVRCameraPositionSpline::Stop()
+        void VRCameraPositionSpline::Stop()
         {
             m_playing = false;
         }
         
-        void OVRCameraPositionSpline::Update(float dt)
+        void VRCameraPositionSpline::Update(float dt)
         {
             if(m_playing)
             {
@@ -77,7 +77,7 @@ namespace Eegeo
             }
         }
         
-        void OVRCameraPositionSpline::GetCurrentCameraPosition(dv3& interpolatedPositionEcef, m33& interpolatedOrientation) const
+        void VRCameraPositionSpline::GetCurrentCameraPosition(dv3& interpolatedPositionEcef, m33& interpolatedOrientation) const
         {
             m_positionSpline.GetInterpolatedPositionInPlace(m_time, interpolatedPositionEcef);
             dv3 forward;
@@ -92,7 +92,7 @@ namespace Eegeo
             
         }
         
-        void OVRCameraPositionSpline::NextSpline()
+        void VRCameraPositionSpline::NextSpline()
         {
             const int MaxSpline = 1;
             ++m_currentSpline;
@@ -103,7 +103,7 @@ namespace Eegeo
             SetSpline(m_currentSpline);
         }
         
-        void OVRCameraPositionSpline::SetSpline(int splineId)
+        void VRCameraPositionSpline::SetSpline(int splineId)
         {
             Clear();
             

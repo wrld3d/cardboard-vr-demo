@@ -1,10 +1,14 @@
-set(headers ${headers} ../src/Examples/CameraTransition
+set(headers ${headers} ../src/Examples/CameraSpline
 )
 set(currsources
-  ../src/Examples/CameraTransition/CameraTransitionExample.cpp
-  ../src/Examples/CameraTransition/CameraTransitionExample.h
-  ../src/Examples/CameraTransition/CameraTransitionExampleFactory.cpp
-  ../src/Examples/CameraTransition/CameraTransitionExampleFactory.h
+  ../src/Examples/VRCameraSpline/VRCameraSplineExample.cpp
+  ../src/Examples/VRCameraSpline/VRCameraSplineExample.h
+  ../src/Examples/VRCameraSpline/VRCameraSplineExampleFactory.cpp
+  ../src/Examples/VRCameraSpline/VRCameraSplineExampleFactory.h
+  ../src/Examples/VRCameraSpline/VRCameraPositionSpline.cpp
+  ../src/Examples/VRCameraSpline/VRCameraPositionSpline.h
+  ../src/Examples/VRCameraSpline/VREegeoCameraController.cpp
+  ../src/Examples/VRCameraSpline/VREegeoCameraController.h
 )
 set(sources ${sources} ${currsources})
-source_group(\\src\\Examples\\CameraTransition FILES ${currsources})
+source_group(\\src\\Examples\\VRCameraSpline FILES ${currsources})

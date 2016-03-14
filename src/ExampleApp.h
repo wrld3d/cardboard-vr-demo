@@ -14,6 +14,7 @@
 class ExampleApp : private Eegeo::NonCopyable
 {
 private:
+    
     Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
 	Eegeo::EegeoWorld* m_pWorld;
@@ -21,6 +22,13 @@ private:
 	Examples::ExampleController* m_pExampleController;
     Examples::ScreenPropertiesProvider m_screenPropertiesProvider;
     
+    bool m_night;
+    float m_foggingFar;
+    float m_nightTParam;
+    
+    Eegeo::v3 m_currentClearColor;
+    Eegeo::v3 m_startClearColor;
+    Eegeo::v3 m_destClearColor;
 
 	Eegeo::EegeoWorld& World()
 	{
@@ -42,9 +50,17 @@ public:
 
 	void OnResume();
 
+    
 	void Update (float dt, float headTansform[]);
-
-	void Draw (float dt, float headTansform[]);
+    
+    void Draw (float dt, float headTansform[]);
+    void DrawLeftEye (float dt, float headTansform[]);
+    void DrawRightEye (float dt, float headTansform[]);
+    
+    void UpdateNightTParam(float dt);
+    void ToggleNight();
+    void UpdateFogging();
+    void MagnetTriggered();
     
     void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
     

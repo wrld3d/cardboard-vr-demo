@@ -78,10 +78,18 @@ void AppRunner::ActivateSurface()
 
 void AppRunner::HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& event)
 {
-	if(m_pAppHost != NULL)
-	{
-		m_pAppHost->HandleTouchInputEvent(event);
-	}
+    if(m_pAppHost != NULL)
+    {
+        m_pAppHost->HandleTouchInputEvent(event);
+    }
+}
+
+void AppRunner::MagnetTriggered()
+{
+    if(m_pAppHost != NULL)
+    {
+        m_pAppHost->MagnetTriggered();
+    }
 }
 
 void AppRunner::ReleaseDisplay()
