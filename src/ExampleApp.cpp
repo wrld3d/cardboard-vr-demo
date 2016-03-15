@@ -264,8 +264,9 @@ void ExampleApp::Draw (float dt, float headTansform[])
 
 void ExampleApp::DrawLeftEye (float dt, float headTansform[]){
     
-    glViewport(0,0,m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     m_pExampleController->PreWorldDraw();
+    
+    glViewport(0,0,m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     
     Eegeo::EegeoWorld& eegeoWorld = World();
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentLeftCameraState(headTansform));
@@ -290,7 +291,7 @@ void ExampleApp::DrawRightEye (float dt, float headTansform[]){
     glViewport(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),0,m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     
     Eegeo::EegeoWorld& eegeoWorld = World();
-    m_pExampleController->PreWorldDraw();
+    
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentRightCameraState(headTansform));
     Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
                                                cameraState.InterestPointEcef(),
@@ -310,10 +311,15 @@ void ExampleApp::DrawRightEye (float dt, float headTansform[]){
 void ExampleApp::UpdateNightTParam(float dt)
 {
     m_nightTParam += dt;
+    if(m_nightTParam>1.0f)
+        m_nightTParam = 0.99f;
+    
     m_nightTParam = Eegeo::Math::Clamp01(m_nightTParam);
     m_currentClearColor = Eegeo::v3::Lerp(m_startClearColor, m_destClearColor, m_nightTParam);
+    
+    glClearColor(m_currentClearColor.GetX(), m_currentClearColor.GetY(), m_currentClearColor.GetZ(), 1.0f);
+    
 }
-
 
 void ExampleApp::ToggleNight()
 {

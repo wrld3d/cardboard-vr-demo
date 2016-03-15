@@ -39,6 +39,7 @@ namespace Eegeo
             , m_moveDirection(0.f, 0.f, 0.f)
             , m_ecefPosition(0.0, 0.0, 0.0)
             , m_falling(false)
+            , m_time(0.0f)
             , m_pTerrainHeightProvider(NULL)
             , m_shiftDown(false)
             {
@@ -110,6 +111,8 @@ namespace Eegeo
             
             float m_currentFallSpeed;
             bool m_falling;
+            
+            float m_time;
             
             Eegeo::Camera::RenderCamera m_renderCamera;
             Eegeo::Resources::Terrain::Heights::TerrainHeightProvider * m_pTerrainHeightProvider;

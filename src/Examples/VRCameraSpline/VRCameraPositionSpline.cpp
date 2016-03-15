@@ -19,6 +19,10 @@ namespace Eegeo
             m_forwardSpline.AddPoint(dv3(forward.x, forward.y, forward.z));
         }
         
+        void VRCameraPositionSpline::setSlowDownFactor(float slowDownFactor){
+            m_slowDownFactor = slowDownFactor;
+        }
+        
         void VRCameraPositionSpline::Clear()
         {
             m_positionSpline.Clear();
@@ -65,9 +69,10 @@ namespace Eegeo
         
         void VRCameraPositionSpline::Update(float dt)
         {
+            m_currentPlaybackSpeed = m_playbackSpeed * m_slowDownFactor;
             if(m_playing)
             {
-                m_time += dt * m_playbackSpeed;
+                m_time += dt * m_currentPlaybackSpeed;
                 if(m_time >= 1.0)
                 {
                     Stop();

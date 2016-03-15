@@ -144,7 +144,9 @@ namespace Examples
     void RenderToTextureExample::UpdateEffect()
     {
         // Set the vignette effect data for this frame (the colour and a radial intensity change)...
+        
         m_pRenderable->SetVignetteColour(Eegeo::v3(1.0f, 1.0f, 1.0f));
+        
 //        const float radiusIntensityVariance = (2-(rand()%5))/10.f;
 //        m_pRenderable->SetVignetteRadiusModifier(3.6f + radiusIntensityVariance);
     }

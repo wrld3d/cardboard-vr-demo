@@ -172,13 +172,16 @@ void AppHost::Update(float dt)
     {
         mapModule.Start();
     }
-    float items[] = {0,0,0,0,0,0,0,0,0,0,0,0};
+    
+    // identity matrix, this should be coming from head tracking.
+    float items[] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
 	m_pApp->Update(dt, items);
 }
 
 void AppHost::Draw(float dt)
 {
-    float items[] = {0,0,0,0,0,0,0,0,0,0,0,0};
+    // identity matrix, this should be coming from head tracking.
+    float items[] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
 	m_pApp->Draw(dt,items);
 }
 

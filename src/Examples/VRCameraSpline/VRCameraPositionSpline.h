@@ -17,10 +17,13 @@ namespace Eegeo
             : m_playbackSpeed(0.03)
             , m_playing(false)
             , m_time(0.0)
+            , m_slowDownFactor(0.0f)
             , m_currentSpline(1)
             {
                 SetSpline(m_currentSpline);
             }
+            
+            void setSlowDownFactor(float slowDownFactor);
             
             void AddPoint(const dv3& ecefEyePosition, const m33& orientation);
             void Update(float dt);
@@ -51,6 +54,9 @@ namespace Eegeo
             double m_time;
             bool m_playing;
             int m_currentSpline;
+            
+            float m_slowDownFactor;
+            float m_currentPlaybackSpeed;
         };
     }
 }

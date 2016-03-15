@@ -50,6 +50,44 @@ namespace Eegeo
             v3 eyeOffsetModified = eyeOffset;
             v3 rotatedEyeOffset = v3::Mul(eyeOffsetModified, orientationMatrix);
             
+            v3 rA = m_orientation.GetRow(0);
+            v3 rB = orientationMatrix.GetRow(0);
+            
+            v3 uA = m_orientation.GetRow(1);
+            v3 uB = orientationMatrix.GetRow(1);
+            
+            v3 fA = m_orientation.GetRow(2) * -1;
+            v3 fB = orientationMatrix.GetRow(2) * -1;
+            
+            float rAngle = Math::Rad2Deg(Math::ACos(v3::Dot(rA, rB) / (rA.Length() * rB.Length())));
+            float uAngle = Math::Rad2Deg(Math::ACos(v3::Dot(uA, uB) / (uA.Length() * uB.Length())));
+            float fAngle = Math::Rad2Deg(Math::ACos(v3::Dot(fA, fB) / (fA.Length() * fB.Length())));
+            
+            float factor = 1.0f;
+            if(uAngle<100.f && fAngle<100.f){
+                factor = 1.f - (uAngle/90.f + fAngle/90.f)/2.f;
+            }else{
+                factor = rAngle / 90.f;
+                if(factor > 0.9f)
+                    factor = 0.9f;
+            }
+            
+            EXAMPLE_LOG("Angle: Factor: %.2f, (%.2f, %.2f) ",factor, uAngle, fAngle);
+            
+            m_VRCameraPositionSpline.setSlowDownFactor(1.f - factor);
+            
+            
+//            if(m_time>1.f)
+//            {
+//                EXAMPLE_LOG("Angle : (right, up, forward) %.2f, %.2f, %.2f\n",
+//                        Math::Rad2Deg(Math::ACos(v3::Dot(rA, rB) / (rA.Length() * rB.Length()))),
+//                        Math::Rad2Deg(Math::ACos(v3::Dot(uA, uB) / (uA.Length() * uB.Length()))),
+//                        Math::Rad2Deg(Math::ACos(v3::Dot(fA, fB) / (fA.Length() * fB.Length()))));
+//                m_time = 0.f;
+//            }
+            
+            
+            
             float near, far;
             GetNearFarPlaneDistances(near,far);
             m_renderCamera.SetProjection(0.75f, 0.3f, far);
@@ -82,6 +120,8 @@ namespace Eegeo
         
         void VREegeoCameraController::Update(float dt)
         {
+            
+            m_time += dt;
             
             float near = 0.1f;
             float far = 4000.0f;
