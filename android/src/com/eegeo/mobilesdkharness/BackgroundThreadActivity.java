@@ -63,8 +63,7 @@ public class BackgroundThreadActivity extends MainActivity
 		});
 		m_magnetSensor.start();
 
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		goFullScreen();
+		setScreenSettings();
 	    
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		final float dpi = dm.ydpi;
@@ -91,7 +90,8 @@ public class BackgroundThreadActivity extends MainActivity
 	}
 	
 	@SuppressLint("InlinedApi") 
-	private void goFullScreen(){
+	private void setScreenSettings(){
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		if(android.os.Build.VERSION.SDK_INT<16)
 			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 		else if(android.os.Build.VERSION.SDK_INT<19)
@@ -109,7 +109,7 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onResume()
 	{
 		super.onResume();
-		
+		setScreenSettings();
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
@@ -152,6 +152,7 @@ public class BackgroundThreadActivity extends MainActivity
 				m_threadedRunner.stop();
 				NativeJniCalls.destroyNativeCode();
 				m_threadedRunner.destroyed();
+				android.os.Process.killProcess(android.os.Process.myPid());
 			}
 		});
 
@@ -246,6 +247,8 @@ public class BackgroundThreadActivity extends MainActivity
 			m_destroyed = true;
 		}
 
+		
+		
 		public void run()
 		{
 			Looper.prepare();
