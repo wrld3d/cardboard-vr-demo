@@ -105,6 +105,14 @@ bool AppRunner::TryBindDisplay()
 {
 	if(m_displayService.TryBindDisplay(*(m_pNativeState->window)))
 	{
+        
+        JNIEnv* env = m_pNativeState->mainThreadEnv;
+        jobject activity = m_pNativeState->activity;
+        jclass fpl_class = env->GetObjectClass(activity);
+        jmethodID undistort = env->GetMethodID(fpl_class, "SetHeadMountedDisplayResolution", "(II)V");
+        env->CallVoidMethod(activity, undistort, (jint) (m_displayService.GetDisplayWidth()*2.f), (jint) m_displayService.GetDisplayHeight());
+        env->DeleteLocalRef(fpl_class);
+        
 		if(m_pAppHost != NULL)
 		{
 			m_pAppHost->SetSharedSurface(m_displayService.GetSharedSurface());
@@ -129,10 +137,23 @@ void AppRunner::Update(float deltaSeconds, float headTansform[])
 	{
 		m_pAppHost->Update(deltaSeconds, headTansform);
 
+        
 		Eegeo_GL(eglSwapBuffers(m_displayService.GetDisplay(), m_displayService.GetSurface()));
-		Eegeo::Helpers::GLHelpers::ClearBuffers();
-
+        
+        Eegeo::Helpers::GLHelpers::ClearBuffers();
+        
+        m_displayService.BeginUndistortFramebuffer();
+        
 		m_pAppHost->Draw(deltaSeconds, headTansform);
+        
+        GLuint textureId = m_displayService.FinishUndistortFramebuffer();
+        
+        JNIEnv* env = m_pNativeState->mainThreadEnv;
+        jobject activity = m_pNativeState->activity;
+        jclass fpl_class = env->GetObjectClass(activity);
+        jmethodID undistort = env->GetMethodID(fpl_class, "UndistortTexture", "(I)V");
+        env->CallVoidMethod(activity, undistort, (jint)textureId);
+        env->DeleteLocalRef(fpl_class);
 	}
 }
 

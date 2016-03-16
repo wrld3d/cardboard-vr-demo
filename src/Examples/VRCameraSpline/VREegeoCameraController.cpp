@@ -72,7 +72,7 @@ namespace Eegeo
                     factor = 0.9f;
             }
             
-            EXAMPLE_LOG("Angle: Factor: %.2f, (%.2f, %.2f) ",factor, uAngle, fAngle);
+//            EXAMPLE_LOG("Angle: Factor: %.2f, (%.2f, %.2f) ",factor, uAngle, fAngle);
             
             m_VRCameraPositionSpline.setSlowDownFactor(1.f - factor);
             

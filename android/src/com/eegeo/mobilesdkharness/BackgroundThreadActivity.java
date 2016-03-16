@@ -4,18 +4,26 @@ package com.eegeo.mobilesdkharness;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.nfc.NdefMessage;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
+import com.google.vrtoolkit.cardboard.CardboardView;
+import com.google.vrtoolkit.cardboard.ScreenParams;
+import com.google.vrtoolkit.cardboard.proto.nano.Phone;
 import com.google.vrtoolkit.cardboard.sensors.HeadTracker;
 import com.google.vrtoolkit.cardboard.sensors.MagnetSensor;
 import com.google.vrtoolkit.cardboard.sensors.MagnetSensor.OnCardboardTriggerListener;
+import com.google.vrtoolkit.cardboard.sensors.NfcSensor;
 
 
 public class BackgroundThreadActivity extends MainActivity
@@ -27,8 +35,10 @@ public class BackgroundThreadActivity extends MainActivity
 	private ThreadedUpdateRunner m_threadedRunner;
 	private Thread m_updater;
 
+	private CardboardView m_cardboardView;
 	private HeadTracker m_headTracker; 
 	private MagnetSensor m_magnetSensor;
+	
 	
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
@@ -41,6 +51,13 @@ public class BackgroundThreadActivity extends MainActivity
 
 		setContentView(R.layout.activity_main);
 
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		goFullScreen();
+		
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		final float dpi = dm.ydpi;
+		final Activity activity = this;
+		
 		m_surfaceView = (EegeoSurfaceView)findViewById(R.id.surface);
 		m_surfaceView.getHolder().addCallback(this);
 		m_surfaceView.setActivity(this);
@@ -63,13 +80,10 @@ public class BackgroundThreadActivity extends MainActivity
 		});
 		m_magnetSensor.start();
 
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		goFullScreen();
-	    
-		DisplayMetrics dm = getResources().getDisplayMetrics();
-		final float dpi = dm.ydpi;
-		final Activity activity = this;
-
+		m_cardboardView = new CardboardView(this);
+		m_cardboardView.setVignetteEnabled(true);
+		m_cardboardView.setDebugFlags(CardboardView.DEBUG_CHECK_GL_ERROR);
+		
 		m_threadedRunner = new ThreadedUpdateRunner(false);
 		m_updater = new Thread(m_threadedRunner);
 		m_updater.start();
@@ -88,6 +102,36 @@ public class BackgroundThreadActivity extends MainActivity
 				}
 			}
 		});
+	}
+
+	private static final float METERS_PER_INCH = 0.0254f;
+
+	public void SetHeadMountedDisplayResolution(int width, int height) {
+		try {
+			if (m_cardboardView == null)
+				return;
+			Display display = getWindowManager().getDefaultDisplay();
+			ScreenParams sp = new ScreenParams(display);
+			Phone.PhoneParams pp = new Phone.PhoneParams();
+			pp.setXPpi(width / sp.getWidthMeters() * METERS_PER_INCH);
+			pp.setYPpi(height / sp.getHeightMeters() * METERS_PER_INCH);
+			sp = ScreenParams.fromProto(display, pp);
+			sp.setWidth(width);
+			sp.setHeight(height);
+			m_cardboardView.updateScreenParams(sp);
+			
+		} catch (Exception e) {
+			Log.e("SDL", "exception", e);
+		}
+	}
+	
+	public void UndistortTexture(int textureId){
+		try {
+			
+				m_cardboardView.undistortTexture(textureId);
+		    } catch (Exception e) {
+		      Log.e("SDL", "exception", e);
+		    }
 	}
 	
 	@SuppressLint("InlinedApi") 
@@ -109,7 +153,11 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onResume()
 	{
 		super.onResume();
-		
+
+        if (m_cardboardView != null) {
+        	m_cardboardView.onResume();
+        }
+        
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
@@ -129,7 +177,11 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onPause()
 	{
 		super.onPause();
-		
+
+        if (m_cardboardView != null) {
+        	m_cardboardView.onPause();
+        }
+        
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
@@ -182,7 +234,7 @@ public class BackgroundThreadActivity extends MainActivity
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
 	{
 		final SurfaceHolder h = holder;
-		
+
 		runOnNativeThread(new Runnable()
 		{
 			public void run()

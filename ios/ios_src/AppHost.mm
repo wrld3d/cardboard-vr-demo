@@ -191,7 +191,7 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 
 	m_pApp = new ExampleApp(m_pWorld, *m_piOSExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
-//	RegisteriOSSpecificExamples();
+	RegisteriOSSpecificExamples();
 
 	m_piOSExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 

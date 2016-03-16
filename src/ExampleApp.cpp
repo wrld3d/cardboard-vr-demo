@@ -162,7 +162,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 //    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineDualCameraExampleFactory>(m_screenPropertiesProvider);
     
 //    m_pExampleController->RegisterCameraExample<Examples::VRCameraSplineExampleFactory>();
-//    m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<E xamples::CameraTransitionExampleFactory>();
     
 //    m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
 //    m_pExampleController->RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>();
@@ -287,6 +287,8 @@ void ExampleApp::DrawLeftEye (float dt, float headTansform[]){
 }
 
 void ExampleApp::DrawRightEye (float dt, float headTansform[]){
+    
+    m_pExampleController->PreWorldDraw();
     
     glViewport(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),0,m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     

@@ -1,6 +1,7 @@
 // Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
 #include "GlDisplayService.h"
+#include "Logger.h"
 
 GlDisplayService::GlDisplayService()
 	: m_display(EGL_NO_DISPLAY)
@@ -224,11 +225,15 @@ bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
 
 	m_sharedSurface = eglCreatePbufferSurface(m_display, sharedSurfaceConfig, pBufferAttribs);
 #endif
-
+    
+    
+    InitializeUndistortFramebuffer((int)w, (int)h);
+    
     w = w/2.0f;
 	m_displayWidth = w;
 	m_displayHeight = h;
-
+    
+    
 	glViewport(0, 0, m_displayWidth, m_displayHeight);
 
 	// Initialize GL state.
@@ -265,48 +270,87 @@ bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
 	return m_displayBound;
 }
 
-void GlDisplayService::ReleaseDisplay(bool destroyEGL)
-{
-	if (m_display != EGL_NO_DISPLAY)
-	{
-		Eegeo_GL(eglMakeCurrent(m_display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT));
 
-		if (m_surface != EGL_NO_SURFACE)
-		{
-			Eegeo_GL(eglDestroySurface(m_display, m_surface));
-		}
+void GlDisplayService::InitializeUndistortFramebuffer(int width, int height) {
 
-		if (m_sharedSurface != EGL_NO_SURFACE)
-		{
-			Eegeo_GL(eglDestroySurface(m_display, m_sharedSurface));
-		}
-
-		if(destroyEGL)
-		{
-			if (m_context != EGL_NO_CONTEXT)
-			{
-				Eegeo_GL(eglDestroyContext(m_display, m_context));
-			}
-
-			if(m_resourceBuildSharedContext != EGL_NO_CONTEXT)
-			{
-				Eegeo_GL(eglDestroyContext(m_display, m_resourceBuildSharedContext));
-			}
-
-			Eegeo_GL(eglTerminate(m_display));
-
-			m_display = EGL_NO_DISPLAY;
-			m_context = EGL_NO_CONTEXT;
-			m_resourceBuildSharedContext = EGL_NO_CONTEXT;
-		}
-	}
-
-	m_surface = EGL_NO_SURFACE;
-	m_sharedSurface = EGL_NO_SURFACE;
-
-	m_displayBound = false;
+    // Set up a framebuffer that matches the window, such that we can render to
+    // it, and then undistort the result properly for HMDs.
+    
+    glGenTextures   (1, &g_undistort_texture_id);
+    glBindTexture   (GL_TEXTURE_2D, g_undistort_texture_id);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D    (GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    
+    glGenRenderbuffers(1, &g_undistort_renderbuffer_id);
+    glBindRenderbuffer(GL_RENDERBUFFER, g_undistort_renderbuffer_id);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
+    
+    glGenFramebuffers(1, &g_undistort_framebuffer_id);
+    glBindFramebuffer(GL_FRAMEBUFFER, g_undistort_framebuffer_id);
+    
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, g_undistort_texture_id, 0);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, g_undistort_renderbuffer_id);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+    
+    
 }
 
+void GlDisplayService::BeginUndistortFramebuffer() {
+    glBindFramebuffer(GL_FRAMEBUFFER, g_undistort_framebuffer_id);
+}
+
+GLuint GlDisplayService::FinishUndistortFramebuffer() {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    return g_undistort_texture_id;
+}
+
+
+void GlDisplayService::ReleaseDisplay(bool destroyEGL)
+{
+    if (m_display != EGL_NO_DISPLAY)
+    {
+        Eegeo_GL(eglMakeCurrent(m_display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT));
+        
+        if (m_surface != EGL_NO_SURFACE)
+        {
+            Eegeo_GL(eglDestroySurface(m_display, m_surface));
+        }
+        
+        if (m_sharedSurface != EGL_NO_SURFACE)
+        {
+            Eegeo_GL(eglDestroySurface(m_display, m_sharedSurface));
+        }
+        
+        if(destroyEGL)
+        {
+            if (m_context != EGL_NO_CONTEXT)
+            {
+                Eegeo_GL(eglDestroyContext(m_display, m_context));
+            }
+            
+            if(m_resourceBuildSharedContext != EGL_NO_CONTEXT)
+            {
+                Eegeo_GL(eglDestroyContext(m_display, m_resourceBuildSharedContext));
+            }
+            
+            Eegeo_GL(eglTerminate(m_display));
+            
+            m_display = EGL_NO_DISPLAY;
+            m_context = EGL_NO_CONTEXT;
+            m_resourceBuildSharedContext = EGL_NO_CONTEXT;
+        }
+    }
+    
+    m_surface = EGL_NO_SURFACE;
+    m_sharedSurface = EGL_NO_SURFACE;
+    
+    m_displayBound = false;
+}
 
 
 
