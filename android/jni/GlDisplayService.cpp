@@ -272,6 +272,7 @@ bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
 
 
 void GlDisplayService::InitializeUndistortFramebuffer(int width, int height) {
+    
 
     // Set up a framebuffer that matches the window, such that we can render to
     // it, and then undistort the result properly for HMDs.
@@ -301,11 +302,10 @@ void GlDisplayService::InitializeUndistortFramebuffer(int width, int height) {
 }
 
 void GlDisplayService::BeginUndistortFramebuffer() {
-    glBindFramebuffer(GL_FRAMEBUFFER, g_undistort_framebuffer_id);
 }
 
 GLuint GlDisplayService::FinishUndistortFramebuffer() {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
     return g_undistort_texture_id;
 }
 

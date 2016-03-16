@@ -53,7 +53,7 @@ public:
     
 	void Update (float dt, float headTansform[]);
     
-    void Draw (float dt, float headTansform[]);
+    void Draw (float dt, float headTansform[], GLuint frameBuffID);
     void DrawLeftEye (float dt, float headTansform[]);
     void DrawRightEye (float dt, float headTansform[]);
     

@@ -142,11 +142,11 @@ void AppRunner::Update(float deltaSeconds, float headTansform[])
         
         Eegeo::Helpers::GLHelpers::ClearBuffers();
         
-        m_displayService.BeginUndistortFramebuffer();
-        
-		m_pAppHost->Draw(deltaSeconds, headTansform);
+//        m_displayService.BeginUndistortFramebuffer();
         
         GLuint textureId = m_displayService.FinishUndistortFramebuffer();
+		m_pAppHost->Draw(deltaSeconds, headTansform, textureId);
+        
         
         JNIEnv* env = m_pNativeState->mainThreadEnv;
         jobject activity = m_pNativeState->activity;

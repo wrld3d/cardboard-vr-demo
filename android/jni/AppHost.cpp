@@ -230,9 +230,9 @@ void AppHost::Update(float dt, float headTansform[])
 	m_pApp->Update(dt, headTansform);
 }
 
-void AppHost::Draw(float dt, float headTansform[])
+void AppHost::Draw(float dt, float headTansform[], GLuint frameBuffID)
 {
-	m_pApp->Draw(dt, headTansform);
+	m_pApp->Draw(dt, headTansform, frameBuffID);
 }
 
 void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties)

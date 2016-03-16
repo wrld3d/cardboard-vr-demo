@@ -52,7 +52,7 @@ public:
 	~AppHost();
 
 	void Update(float dt, float headTansform[]);
-	void Draw(float dt, float headTansform[]);
+	void Draw(float dt, float headTansform[], GLuint frameBuffID);
 
 	void OnPause();
 	void OnResume();

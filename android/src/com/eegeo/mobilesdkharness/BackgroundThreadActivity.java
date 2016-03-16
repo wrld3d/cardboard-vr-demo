@@ -51,9 +51,6 @@ public class BackgroundThreadActivity extends MainActivity
 
 		setContentView(R.layout.activity_main);
 
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		goFullScreen();
-		
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		final float dpi = dm.ydpi;
 		final Activity activity = this;
@@ -135,7 +132,8 @@ public class BackgroundThreadActivity extends MainActivity
 	}
 	
 	@SuppressLint("InlinedApi") 
-	private void goFullScreen(){
+	private void setScreenSettings(){
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		if(android.os.Build.VERSION.SDK_INT<16)
 			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 		else if(android.os.Build.VERSION.SDK_INT<19)
@@ -153,11 +151,11 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onResume()
 	{
 		super.onResume();
-
+		
         if (m_cardboardView != null) {
         	m_cardboardView.onResume();
         }
-        
+		setScreenSettings();
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
@@ -204,6 +202,7 @@ public class BackgroundThreadActivity extends MainActivity
 				m_threadedRunner.stop();
 				NativeJniCalls.destroyNativeCode();
 				m_threadedRunner.destroyed();
+				android.os.Process.killProcess(android.os.Process.myPid());
 			}
 		});
 
@@ -298,6 +297,8 @@ public class BackgroundThreadActivity extends MainActivity
 			m_destroyed = true;
 		}
 
+		
+		
 		public void run()
 		{
 			Looper.prepare();

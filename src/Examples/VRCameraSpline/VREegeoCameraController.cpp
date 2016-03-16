@@ -72,10 +72,22 @@ namespace Eegeo
                     factor = 0.9f;
             }
             
-//            EXAMPLE_LOG("Angle: Factor: %.2f, (%.2f, %.2f) ",factor, uAngle, fAngle);
+//            EXAMPLE_LOG("Angle: Factor: %.2f",factor);
             
-            m_VRCameraPositionSpline.setSlowDownFactor(1.f - factor);
-            
+            if(!std::isnan(factor)){
+//                EXAMPLE_LOG("Angle: Factor: Not NaN");
+                m_VRCameraPositionSpline.setSlowDownFactor(1.f - factor);
+                
+                float near, far;
+                GetNearFarPlaneDistances(near,far);
+                m_renderCamera.SetProjection(0.75f, 0.3f, far);
+                m_renderCamera.SetOrientationMatrix(orientationMatrix);
+                m_renderCamera.SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
+//                EXAMPLE_LOG("Angle: Factor: Ecef Location");
+            }
+            else{
+//                EXAMPLE_LOG("Angle: Factor: Yes NaN");
+            }
             
 //            if(m_time>1.f)
 //            {
@@ -88,12 +100,6 @@ namespace Eegeo
             
             
             
-            float near, far;
-            GetNearFarPlaneDistances(near,far);
-            m_renderCamera.SetProjection(0.75f, 0.3f, far);
-            
-            m_renderCamera.SetOrientationMatrix(orientationMatrix);
-            m_renderCamera.SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
 
         }
         

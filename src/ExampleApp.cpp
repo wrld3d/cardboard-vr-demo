@@ -162,7 +162,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 //    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineDualCameraExampleFactory>(m_screenPropertiesProvider);
     
 //    m_pExampleController->RegisterCameraExample<Examples::VRCameraSplineExampleFactory>();
-//    m_pExampleController->RegisterCameraExample<E xamples::CameraTransitionExampleFactory>();
+//    m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
     
 //    m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
 //    m_pExampleController->RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>();
@@ -256,10 +256,15 @@ void ExampleApp::Update (float dt, float headTansform[])
 }
 
 
-void ExampleApp::Draw (float dt, float headTansform[])
+void ExampleApp::Draw (float dt, float headTansform[], GLuint frameBuffID)
 {
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffID);
+    
     DrawLeftEye(dt, headTansform);
     DrawRightEye(dt, headTansform);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void ExampleApp::DrawLeftEye (float dt, float headTansform[]){
