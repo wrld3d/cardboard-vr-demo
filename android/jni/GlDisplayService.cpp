@@ -274,30 +274,34 @@ bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
 void GlDisplayService::InitializeUndistortFramebuffer(int width, int height) {
     
 
-    // Set up a framebuffer that matches the window, such that we can render to
-    // it, and then undistort the result properly for HMDs.
+    Eegeo_GL(glGenTextures(1, &g_undistort_texture_id));
+    Eegeo_GL(glBindTexture(GL_TEXTURE_2D, g_undistort_texture_id));
+    Eegeo_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+    Eegeo_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+    Eegeo_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+    Eegeo_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+    Eegeo_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr));
     
-    glGenTextures   (1, &g_undistort_texture_id);
-    glBindTexture   (GL_TEXTURE_2D, g_undistort_texture_id);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D    (GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    Eegeo_GL(glGenRenderbuffers(1, &g_undistort_renderbuffer_id));
+    Eegeo_GL(glBindRenderbuffer(GL_RENDERBUFFER, g_undistort_renderbuffer_id));
+    Eegeo_GL(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width,
+                                  height));
     
-    glGenRenderbuffers(1, &g_undistort_renderbuffer_id);
-    glBindRenderbuffer(GL_RENDERBUFFER, g_undistort_renderbuffer_id);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
+    Eegeo_GL(glGenFramebuffers(1, &g_undistort_framebuffer_id));
+    Eegeo_GL(glBindFramebuffer(GL_FRAMEBUFFER, g_undistort_framebuffer_id));
     
-    glGenFramebuffers(1, &g_undistort_framebuffer_id);
-    glBindFramebuffer(GL_FRAMEBUFFER, g_undistort_framebuffer_id);
+    Eegeo_GL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, g_undistort_texture_id, 0));
+    Eegeo_GL(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER,
+                                      g_undistort_renderbuffer_id));
     
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, g_undistort_texture_id, 0);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, g_undistort_renderbuffer_id);
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    Eegeo_GL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
     
     
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE){
+        EXAMPLE_LOG("GLDEBUG::: New Frame Buffer is Complete, frambufferid: %d, textureid: %d", g_undistort_framebuffer_id, g_undistort_texture_id);
+    }else{
+        EXAMPLE_LOG("GLDEBUG::: New Frame Buffer is NOT Complete");
+    }
     
 }
 
@@ -306,7 +310,7 @@ void GlDisplayService::BeginUndistortFramebuffer() {
 
 GLuint GlDisplayService::FinishUndistortFramebuffer() {
     
-    return g_undistort_texture_id;
+    return g_undistort_framebuffer_id;
 }
 
 

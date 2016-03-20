@@ -7,6 +7,7 @@
 #include "AppHost.h"
 #include "GlDisplayService.h"
 #include "Types.h"
+#include "RenderTexture.h"
 
 class AppRunner : Eegeo::NonCopyable
 {
@@ -25,6 +26,7 @@ public:
 	void HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& message);
 
     void MagnetTriggered();
+    void TryRenderFameBufferTexture();
     
 private:
 	const std::string& m_apiKey;
@@ -33,7 +35,9 @@ private:
 	GlDisplayService m_displayService;
 	void ReleaseDisplay();
 	bool TryBindDisplay();
-
+    
+    Eegeo::Rendering::RenderTexture* m_pRenderTexture;
+    
 	AppHost* m_pAppHost;
 	bool m_isPaused;
 	void CreateAppHost();

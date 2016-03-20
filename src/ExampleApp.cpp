@@ -245,26 +245,18 @@ void ExampleApp::Update (float dt, float headTansform[])
                                                   m_screenPropertiesProvider.GetScreenProperties());
     
 	eegeoWorld.Update(updateParameters);
-    
     m_pExampleController->Update(dt);
     
     UpdateNightTParam(dt);
     UpdateFogging();
-    
     UpdateLoadingScreen(dt);
     
 }
 
-
-void ExampleApp::Draw (float dt, float headTansform[], GLuint frameBuffID)
+void ExampleApp::Draw (float dt, float headTansform[])
 {
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffID);
-    
     DrawLeftEye(dt, headTansform);
     DrawRightEye(dt, headTansform);
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void ExampleApp::DrawLeftEye (float dt, float headTansform[]){

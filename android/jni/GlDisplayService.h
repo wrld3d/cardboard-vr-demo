@@ -27,12 +27,14 @@ public:
     void InitializeUndistortFramebuffer(int width, int height);
     void BeginUndistortFramebuffer();
     GLuint FinishUndistortFramebuffer();
-
+    GLuint GetTextureId(){return g_undistort_texture_id;}
+    GLuint GetFrameBufferId(){return g_undistort_framebuffer_id;}
 private:
     
     GLuint g_undistort_framebuffer_id = 0;
     GLuint g_undistort_texture_id = 0;
     GLuint g_undistort_renderbuffer_id = 0;
+    GLuint g_undistort_stencilbuffer_id = 0;
 	EGLDisplay m_display;
 	EGLSurface m_surface;
 	EGLSurface m_sharedSurface;

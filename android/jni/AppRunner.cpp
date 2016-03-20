@@ -3,6 +3,8 @@
 #include "AppRunner.h"
 #include "Graphics.h"
 #include "AndroidThreadHelper.h"
+#include "RenderTexture.h"
+#include "Logger.h"
 
 AppRunner::AppRunner
 (
@@ -112,6 +114,11 @@ bool AppRunner::TryBindDisplay()
         jmethodID undistort = env->GetMethodID(fpl_class, "SetHeadMountedDisplayResolution", "(II)V");
         env->CallVoidMethod(activity, undistort, (jint) (m_displayService.GetDisplayWidth()*2.f), (jint) m_displayService.GetDisplayHeight());
         env->DeleteLocalRef(fpl_class);
+
+        m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(static_cast<u32>(m_displayService.GetDisplayWidth()),
+                                                                      static_cast<u32>(m_displayService.GetDisplayHeight()),
+                                                                      false);
+
         
 		if(m_pAppHost != NULL)
 		{
@@ -136,25 +143,131 @@ void AppRunner::Update(float deltaSeconds, float headTansform[])
 	if(m_pAppHost != NULL && m_displayService.IsDisplayAvailable())
 	{
 		m_pAppHost->Update(deltaSeconds, headTansform);
-
         
+        // bind your render to texture frame buffer
+        glBindFramebuffer(GL_FRAMEBUFFER, m_displayService.GetFrameBufferId());
+        
+        // swap buffers
 		Eegeo_GL(eglSwapBuffers(m_displayService.GetDisplay(), m_displayService.GetSurface()));
-        
+
+        // clear buffers
         Eegeo::Helpers::GLHelpers::ClearBuffers();
         
-//        m_displayService.BeginUndistortFramebuffer();
+        // engine draw call
+        m_pAppHost->Draw(deltaSeconds, headTansform);
         
-        GLuint textureId = m_displayService.FinishUndistortFramebuffer();
-		m_pAppHost->Draw(deltaSeconds, headTansform, textureId);
+        // binding default framebuffer back to render distorted results to screen
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
         
+        // set viewport back to full screen from steroscopic viewport for VR
+        glViewport(0, 0, m_displayService.GetDisplayWidth()*2.f, m_displayService.GetDisplayHeight());
+
         
+//         jni call to "UndistortTexture()" function of MainActivity which contains CardboardView and calls cardboard view's undistortTexture()
         JNIEnv* env = m_pNativeState->mainThreadEnv;
         jobject activity = m_pNativeState->activity;
         jclass fpl_class = env->GetObjectClass(activity);
         jmethodID undistort = env->GetMethodID(fpl_class, "UndistortTexture", "(I)V");
-        env->CallVoidMethod(activity, undistort, (jint)textureId);
+        env->CallVoidMethod(activity, undistort, (jint)m_displayService.GetTextureId());
         env->DeleteLocalRef(fpl_class);
+//        TryRenderFameBufferTexture();
+        
 	}
+}
+
+void AppRunner::TryRenderFameBufferTexture(){
+    
+    static const GLfloat squareVertices[] = {
+        -1.0f, -1.0f,
+        1.0f, -1.0f,
+        -1.0f,  1.0f,
+        1.0f,  1.0f,
+    };
+    
+    static const GLfloat textureVertices[] = {
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        0.0f,  1.0f,
+        0.0f,  0.0f,
+    };
+    
+    std::string vertextShader("attribute vec4 position;\n"
+                              "attribute vec4 inputTextureCoordinate;\n"
+                              "varying vec2 textureCoordinate;\n"
+                              "void main()\n"
+                              "{\n"
+                              "gl_Position = position;\n"
+                              "textureCoordinate = inputTextureCoordinate.xy;\n"
+                              "}");
+    
+    std::string fragmentShader("varying highp vec2 textureCoordinate;\n"
+                               "uniform sampler2D videoFrame;\n"
+                               "void main()\n"
+                               "{\n"
+                               "gl_FragColor = texture2D(videoFrame, textureCoordinate);\n"
+                               "}");
+    
+    const char *vertShaderSrc = vertextShader.c_str();
+    const char *fragShaderSrc = fragmentShader.c_str();
+    
+    GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
+    GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+    
+    glShaderSource(vertShader, 1, &vertShaderSrc, NULL);
+    glCompileShader(vertShader);
+    
+    
+    GLint result = GL_FALSE;
+    int logLength;
+    // Check vertex shader
+    glGetShaderiv(vertShader, GL_COMPILE_STATUS, &result);
+    glGetShaderiv(vertShader, GL_INFO_LOG_LENGTH, &logLength);
+    std::vector<char> vertShaderError((logLength > 1) ? logLength : 1);
+    glGetShaderInfoLog(vertShader, logLength, NULL, &vertShaderError[0]);
+    
+    std::cout << &vertShaderError[0] << std::endl;
+    
+    glShaderSource(fragShader, 1, &fragShaderSrc, NULL);
+    glCompileShader(fragShader);
+    
+    // Check fragment shader
+    glGetShaderiv(fragShader, GL_COMPILE_STATUS, &result);
+    glGetShaderiv(fragShader, GL_INFO_LOG_LENGTH, &logLength);
+    std::vector<char> fragShaderError((logLength > 1) ? logLength : 1);
+    glGetShaderInfoLog(fragShader, logLength, NULL, &fragShaderError[0]);
+    std::cout << &fragShaderError[0] << std::endl;
+    
+    std::cout << "Linking program" << std::endl;
+    GLuint program = glCreateProgram();
+    glAttachShader(program, vertShader);
+    glAttachShader(program, fragShader);
+    glLinkProgram(program);
+    
+    glGetProgramiv(program, GL_LINK_STATUS, &result);
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
+    std::vector<char> programError( (logLength > 1) ? logLength : 1 );
+    glGetProgramInfoLog(program, logLength, NULL, &programError[0]);
+    std::cout << &programError[0] << std::endl;
+    
+    glDeleteShader(vertShader);
+    glDeleteShader(fragShader);
+    
+    glUseProgram(program);
+    
+    glActiveTexture(GL_TEXTURE0);
+    
+    glBindTexture(GL_TEXTURE_2D, m_displayService.GetTextureId());
+    
+    
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, 0, 0, squareVertices);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, 0, 0, textureVertices);
+    
+    
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    
+
 }
 
 

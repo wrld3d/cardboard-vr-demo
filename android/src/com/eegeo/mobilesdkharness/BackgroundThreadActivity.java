@@ -4,7 +4,6 @@ package com.eegeo.mobilesdkharness;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.nfc.NdefMessage;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,12 +17,12 @@ import android.view.WindowManager;
 
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
 import com.google.vrtoolkit.cardboard.CardboardView;
+import com.google.vrtoolkit.cardboard.DistortionRenderer;
 import com.google.vrtoolkit.cardboard.ScreenParams;
 import com.google.vrtoolkit.cardboard.proto.nano.Phone;
 import com.google.vrtoolkit.cardboard.sensors.HeadTracker;
 import com.google.vrtoolkit.cardboard.sensors.MagnetSensor;
 import com.google.vrtoolkit.cardboard.sensors.MagnetSensor.OnCardboardTriggerListener;
-import com.google.vrtoolkit.cardboard.sensors.NfcSensor;
 
 
 public class BackgroundThreadActivity extends MainActivity
@@ -35,6 +34,7 @@ public class BackgroundThreadActivity extends MainActivity
 	private ThreadedUpdateRunner m_threadedRunner;
 	private Thread m_updater;
 
+	private DistortionRenderer m_distortionRenderer;
 	private CardboardView m_cardboardView;
 	private HeadTracker m_headTracker; 
 	private MagnetSensor m_magnetSensor;
@@ -77,9 +77,17 @@ public class BackgroundThreadActivity extends MainActivity
 		});
 		m_magnetSensor.start();
 
+		m_distortionRenderer = new DistortionRenderer();
+		m_distortionRenderer.setVignetteEnabled(true);
+		m_distortionRenderer.setChromaticAberrationCorrectionEnabled(true);
+
+//		m_distortionRenderer.onFovChanged(hmd, leftFov, rightFov, virtualEyeToScreenDistance)
+		
 		m_cardboardView = new CardboardView(this);
 		m_cardboardView.setVignetteEnabled(true);
-		m_cardboardView.setDebugFlags(CardboardView.DEBUG_CHECK_GL_ERROR);
+		m_cardboardView.setVRModeEnabled(true);
+		m_cardboardView.updateCardboardDeviceParams(CardboardDeviceParams.cardboardV1DeviceParams());
+		
 		
 		m_threadedRunner = new ThreadedUpdateRunner(false);
 		m_updater = new Thread(m_threadedRunner);
@@ -104,30 +112,33 @@ public class BackgroundThreadActivity extends MainActivity
 	private static final float METERS_PER_INCH = 0.0254f;
 
 	public void SetHeadMountedDisplayResolution(int width, int height) {
+		
 		try {
 			if (m_cardboardView == null)
 				return;
+			
 			Display display = getWindowManager().getDefaultDisplay();
 			ScreenParams sp = new ScreenParams(display);
 			Phone.PhoneParams pp = new Phone.PhoneParams();
 			pp.setXPpi(width / sp.getWidthMeters() * METERS_PER_INCH);
 			pp.setYPpi(height / sp.getHeightMeters() * METERS_PER_INCH);
 			sp = ScreenParams.fromProto(display, pp);
+			
 			sp.setWidth(width);
 			sp.setHeight(height);
 			m_cardboardView.updateScreenParams(sp);
 			
 		} catch (Exception e) {
-			Log.e("SDL", "exception", e);
+			Log.e("backgroundThreadActivity", "exception", e);
 		}
 	}
 	
 	public void UndistortTexture(int textureId){
+		
 		try {
-			
 				m_cardboardView.undistortTexture(textureId);
 		    } catch (Exception e) {
-		      Log.e("SDL", "exception", e);
+		      Log.e("backgroundThreadActivity", "exception", e);
 		    }
 	}
 	
