@@ -9,6 +9,7 @@
 #include "Rendering.h"
 #include "RenderToTextureExampleIncludes.h"
 #include "RenderTexture.h"
+#include "../../FBRenderTexture/FBRenderTexture.h"
 
 namespace Examples
 {
@@ -18,7 +19,7 @@ namespace Examples
         PostProcessVignetteMaterial(const Eegeo::Rendering::TMaterialId materialId,
                                     const std::string& name,
                                     PostProcessVignetteShader& shader,
-                                    Eegeo::Rendering::RenderTexture& renderTexture);
+                                    Eegeo::Rendering::FBRenderTexture& renderTexture);
         
         const Eegeo::Rendering::TMaterialId GetId() const { return m_id; }
         const Eegeo::Rendering::Shader& GetShader() const;
@@ -33,7 +34,7 @@ namespace Examples
         const Eegeo::Rendering::TMaterialId m_id;
         const std::string m_name;
         PostProcessVignetteShader& m_shader;
-        Eegeo::Rendering::RenderTexture& m_renderTexture;
+        Eegeo::Rendering::FBRenderTexture& m_renderTexture;
     };
 }
 

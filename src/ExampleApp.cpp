@@ -147,6 +147,16 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                            *m_pCameraControllerFactory,
                                                            *m_pCameraTouchController);
 
+
+    Eegeo::Modules::Core::RenderingModule& renderingModule = m_pWorld->GetRenderingModule();
+    m_VRDistortion = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortion)(m_screenPropertiesProvider.GetScreenProperties(),
+                                                renderingModule.GetVertexLayoutPool(),
+                                                renderingModule.GetVertexBindingPool(),
+                                                renderingModule.GetShaderIdGenerator(),
+                                                renderingModule.GetMaterialIdGenerator(),
+                                                renderingModule.GetRenderableFilters(),
+                                             renderingModule.GetGlBufferPool());
+    m_VRDistortion->Initialize();
 	//register all generic examples
 
 //    m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();
@@ -156,6 +166,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 //                                                                                               collisionVisualizationModule,
 //                                                                                               buildingFootprintsModule));
     
+//    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
     m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider);
     
 //    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
@@ -198,7 +209,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 //	m_pExampleController->RegisterCameraExample<Examples::ToggleTrafficExampleFactory>();
 //	m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
 //	m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
-//    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
 
     
     
@@ -255,6 +265,7 @@ void ExampleApp::Update (float dt, float headTansform[])
 
 void ExampleApp::Draw (float dt, float headTansform[])
 {
+    m_VRDistortion->BeginRendering();
     DrawLeftEye(dt, headTansform);
     DrawRightEye(dt, headTansform);
 }

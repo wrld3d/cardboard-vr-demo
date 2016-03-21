@@ -8,6 +8,7 @@
 #include "Rendering.h"
 #include "RenderToTextureExampleIncludes.h"
 #include "ScreenProperties.h"
+#include "../../FBRenderTexture/FBRenderTexture.h"
 
 namespace Examples
 {
@@ -25,9 +26,10 @@ namespace Examples
         PostProcessVignetteMaterial* m_pVignetteMaterial;
         PostProcessVignetteRenderable* m_pRenderable;
         PostProcessVignetteRenderer* m_pVignetteRenderer;
-        Eegeo::Rendering::RenderTexture* m_pRenderTexture;
+        Eegeo::Rendering::FBRenderTexture* m_pFBRenderTexture;
         
-        
+        Eegeo::Rendering::VertexLayouts::VertexLayout* m_pPositionUvVertexLayout;
+
         
         static const float SecondsBetweenEffectUpdates;
         float m_secondsSinceLastEffectUpate;

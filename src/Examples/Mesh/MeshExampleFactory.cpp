@@ -11,10 +11,12 @@ namespace Examples
 {
     MeshExampleFactory::MeshExampleFactory(Eegeo::EegeoWorld& world,
                                            DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                                           Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController)
+                                           Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& globeCameraTouchController,
+                                           const IScreenPropertiesProvider& screenPropertiesProvider)
     : m_world(world)
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_globeCameraTouchController(globeCameraTouchController)
+    , m_screenPropertiesProvider(screenPropertiesProvider)
     {
         
     }
@@ -39,14 +41,14 @@ namespace Examples
         config.revsPerMinuteB = -17.f;
         config.environmentFlatteningCyclesPerMinute = 4.f;
         config.secondsDelayBeforeTextureWebRequest = 5.f;
-        
-        return new Examples::MeshExample(m_defaultCameraControllerFactory.Create(),
-                                         m_globeCameraTouchController,
-                                         renderingModule,
-                                         platformAbstractionModule.GetTextureFileLoader(),
-                                         mapModule.GetEnvironmentFlatteningService(),
-                                         platformAbstractionModule.GetWebLoadRequestFactory(),
-                                         config);
+        return NULL;
+//        return new Examples::MeshExample(m_defaultCameraControllerFactory.Create(),
+//                                         m_globeCameraTouchController,
+//                                         renderingModule,
+//                                         platformAbstractionModule.GetTextureFileLoader(),
+//                                         mapModule.GetEnvironmentFlatteningService(),
+//                                         platformAbstractionModule.GetWebLoadRequestFactory(),
+//                                         config, m_screenPropertiesProvider);
 
     }
     

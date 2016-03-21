@@ -17,9 +17,51 @@
 #include "Quad.h"
 #include "RenderToTextureExample.h"
 #include "ScreenProperties.h"
+#include "GeometryHelpers.h"
 
 namespace Examples
 {
+    struct PositionUvVertex
+    {
+        float x;
+        float y;
+        float z;
+        float u;
+        float v;
+    };
+    
+    inline PositionUvVertex MakePositionUvVertex(const Eegeo::v3& pos, const Eegeo::v2& uv)
+    {
+        PositionUvVertex v;
+        v.x = pos.x;
+        v.y = pos.y;
+        v.z = pos.z;
+        v.u = uv.x;
+        v.v = uv.y;
+        return v;
+    }
+    
+    inline PositionUvVertex GeometryHelpersVertexToPositionUvVertex(const GeometryHelpers::Vertex& v)
+    {
+        return MakePositionUvVertex(v.position, v.uv);
+    }
+    
+    Eegeo::Rendering::VertexLayouts::VertexLayout* CreatePositionUvVertexLayout()
+    {
+        using namespace Eegeo::Rendering::VertexLayouts;
+        VertexLayout* pLayout = new (VertexLayout)(sizeof(PositionUvVertex));
+        
+        int positionOffset = offsetof(PositionUvVertex, x);
+        pLayout->AddElement(VertexLayoutElement(Eegeo::Rendering::VertexSemanticId::Position, 3, GL_FLOAT,  positionOffset));
+        
+        int uvOffset = offsetof(PositionUvVertex, u);
+        pLayout->AddElement(VertexLayoutElement(Eegeo::Rendering::VertexSemanticId::UV, 2, GL_FLOAT, uvOffset));
+        
+        return pLayout;
+    }
+
+
+    
     //Give the effect a 10 frames per second intensity update to give it an old-timey movie vibe...
     const float RenderToTextureExample::SecondsBetweenEffectUpdates = 0.1f;
     
@@ -44,9 +86,67 @@ namespace Examples
     ,m_pVignetteMaterial(NULL)
     ,m_pRenderable(NULL)
     ,m_pVignetteRenderer(NULL)
-    ,m_pRenderTexture(NULL)
+    ,m_pFBRenderTexture(NULL)
     ,m_secondsSinceLastEffectUpate(0.f)
     {
+        m_pPositionUvVertexLayout = CreatePositionUvVertexLayout();
+        
+    }
+    
+    
+    
+    Eegeo::Rendering::Mesh* CreateUnlitBoxMesh(float width, float height, const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout, Eegeo::Rendering::GlBufferPool& glBufferPool)
+    {
+        Eegeo::v3 halfDimensions(width, height, width/2);
+        std::vector<GeometryHelpers::Vertex> boxVertices;
+        std::vector<u16> triangleIndices;
+        
+        BuildBox(halfDimensions, boxVertices, triangleIndices);
+        
+        std::vector<PositionUvVertex> unlitVertices;
+        
+        std::transform(boxVertices.begin(), boxVertices.end(), std::back_inserter(unlitVertices), GeometryHelpersVertexToPositionUvVertex);
+        
+        size_t vertexBufferSizeBytes = sizeof(PositionUvVertex) * unlitVertices.size();
+        size_t indexBufferSizeBytes = sizeof(u16) * triangleIndices.size();
+        
+        return new (Eegeo::Rendering::Mesh)(
+                                            vertexLayout,
+                                            glBufferPool,
+                                            unlitVertices.data(),
+                                            vertexBufferSizeBytes,
+                                            triangleIndices.data(),
+                                            indexBufferSizeBytes,
+                                            static_cast<u32>(triangleIndices.size()),
+                                            "UnlitBoxMesh"
+                                            );
+    }
+   
+    Eegeo::Rendering::Mesh* CreateUnlitDistortionMesh(float width, float height, const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout, Eegeo::Rendering::GlBufferPool& glBufferPool)
+    {
+//        Eegeo::v3 halfDimensions(width, height, width/2);
+        std::vector<GeometryHelpers::Vertex> boxVertices;
+        std::vector<u16> triangleIndices;
+        
+        BuildDistortionMesh(boxVertices, triangleIndices, width, height, 2500.0);
+        
+        std::vector<PositionUvVertex> unlitVertices;
+        
+        std::transform(boxVertices.begin(), boxVertices.end(), std::back_inserter(unlitVertices), GeometryHelpersVertexToPositionUvVertex);
+        
+        size_t vertexBufferSizeBytes = sizeof(PositionUvVertex) * unlitVertices.size();
+        size_t indexBufferSizeBytes = sizeof(u16) * triangleIndices.size();
+        
+        return new (Eegeo::Rendering::Mesh)(
+                                            vertexLayout,
+                                            glBufferPool,
+                                            unlitVertices.data(),
+                                            vertexBufferSizeBytes,
+                                            triangleIndices.data(),
+                                            indexBufferSizeBytes,
+                                            static_cast<u32>(triangleIndices.size()),
+                                            "UnlitBoxMesh"
+                                            );
     }
     
     void RenderToTextureExample::Start()
@@ -57,19 +157,28 @@ namespace Examples
         // depth and stencil attachment, which should always be the case for iOS.
         //
         
-        const bool needsDepthStencilBuffers = true;
-        m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(static_cast<u32>(m_screenProperties.GetScreenWidth()),
-                                                                      static_cast<u32>(m_screenProperties.GetScreenHeight()),
-                                                                      needsDepthStencilBuffers);
-
+        const bool needsDepthStencilBuffers = false;
+//        m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(static_cast<u32>(m_screenProperties.GetScreenWidth()),
+//                                                                      static_cast<u32>(m_screenProperties.GetScreenHeight()),
+//                                                                      needsDepthStencilBuffers);
+        
+        m_pFBRenderTexture = Eegeo_NEW(Eegeo::Rendering::FBRenderTexture)();
+        m_pFBRenderTexture->InitRenderer(m_screenProperties.GetScreenWidth()*2.f, m_screenProperties.GetScreenHeight());
+        
+        
         m_pVignetteShader = PostProcessVignetteShader::Create(m_shaderIdGenerator.GetNextId());
         
         m_pVignetteMaterial = Eegeo_NEW(PostProcessVignetteMaterial)(m_materialIdGenerator.GetNextId(),
                                                                      "PostProcessVignetteMaterial",
                                                                      *m_pVignetteShader,
-                                                                     *m_pRenderTexture);
+                                                                     *m_pFBRenderTexture);
         
         Eegeo::Rendering::Mesh* pRenderableMesh = Eegeo::Rendering::Geometry::CreatePositionUVViewportQuad(m_glBufferPool, m_vertexLayoutPool);
+        //Uncomment below to load box mesh
+//        pRenderableMesh = CreateUnlitBoxMesh(0.45f, 0.45f, *m_pPositionUvVertexLayout, m_glBufferPool);
+        //Uncomment below to load distortion mesh
+//        pRenderableMesh = CreateUnlitDistortionMesh(m_screenProperties.GetScreenWidth(), m_screenProperties.GetScreenHeight(), *m_pPositionUvVertexLayout, m_glBufferPool);
+                pRenderableMesh = CreateUnlitDistortionMesh(100, 100, *m_pPositionUvVertexLayout, m_glBufferPool);
         
         const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout = pRenderableMesh->GetVertexLayout();
         const Eegeo::Rendering::VertexLayouts::VertexAttribs& vertexAttributes = m_pVignetteShader->GetVertexAttributes();
@@ -85,6 +194,8 @@ namespace Examples
         m_renderableFilters.AddRenderableFilter(*m_pVignetteRenderer);
         
         UpdateEffect();
+        
+        //glDisable(GL_CULL_FACE);
     }
     
     void RenderToTextureExample::Suspend()
@@ -103,8 +214,8 @@ namespace Examples
         Eegeo_DELETE m_pVignetteShader;
         m_pVignetteShader = NULL;
         
-        Eegeo_DELETE m_pRenderTexture;
-        m_pRenderTexture = NULL;
+        Eegeo_DELETE m_pFBRenderTexture;
+        m_pFBRenderTexture = NULL;
     }
     
     void RenderToTextureExample::EarlyUpdate(float dt)
@@ -128,7 +239,10 @@ namespace Examples
     void RenderToTextureExample::PreWorldDraw()
     {
         // Before the world is rendered, we should switch to rendering into our texture...
-        m_pRenderTexture->BeginRendering();
+        m_pFBRenderTexture->BeginRendering();
+        
+        Eegeo::Helpers::GLHelpers::ClearBuffers();
+        
     }
     
     void RenderToTextureExample::Update(float dt)
@@ -139,16 +253,13 @@ namespace Examples
             UpdateEffect();
             m_secondsSinceLastEffectUpate = 0.f;
         }
+        
     }
     
     void RenderToTextureExample::UpdateEffect()
     {
         // Set the vignette effect data for this frame (the colour and a radial intensity change)...
-        
         m_pRenderable->SetVignetteColour(Eegeo::v3(1.0f, 1.0f, 1.0f));
-        
-//        const float radiusIntensityVariance = (2-(rand()%5))/10.f;
-//        m_pRenderable->SetVignetteRadiusModifier(3.6f + radiusIntensityVariance);
     }
 
 }

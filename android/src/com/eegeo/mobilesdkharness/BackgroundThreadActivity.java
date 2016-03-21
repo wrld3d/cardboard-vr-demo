@@ -205,7 +205,6 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onDestroy()
 	{
 		super.onDestroy();
-		
 		runOnNativeThread(new Runnable()
 		{
 			public void run()

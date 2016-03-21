@@ -145,31 +145,31 @@ void AppRunner::Update(float deltaSeconds, float headTansform[])
 		m_pAppHost->Update(deltaSeconds, headTansform);
         
         // bind your render to texture frame buffer
-        glBindFramebuffer(GL_FRAMEBUFFER, m_displayService.GetFrameBufferId());
+//        glBindFramebuffer(GL_FRAMEBUFFER, m_displayService.GetFrameBufferId());
         
         // swap buffers
 		Eegeo_GL(eglSwapBuffers(m_displayService.GetDisplay(), m_displayService.GetSurface()));
 
         // clear buffers
-        Eegeo::Helpers::GLHelpers::ClearBuffers();
+//        Eegeo::Helpers::GLHelpers::ClearBuffers();
         
         // engine draw call
         m_pAppHost->Draw(deltaSeconds, headTansform);
         
         // binding default framebuffer back to render distorted results to screen
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//        glBindFramebuffer(GL_FRAMEBUFFER, 0);
         
         // set viewport back to full screen from steroscopic viewport for VR
         glViewport(0, 0, m_displayService.GetDisplayWidth()*2.f, m_displayService.GetDisplayHeight());
 
         
 //         jni call to "UndistortTexture()" function of MainActivity which contains CardboardView and calls cardboard view's undistortTexture()
-        JNIEnv* env = m_pNativeState->mainThreadEnv;
-        jobject activity = m_pNativeState->activity;
-        jclass fpl_class = env->GetObjectClass(activity);
-        jmethodID undistort = env->GetMethodID(fpl_class, "UndistortTexture", "(I)V");
-        env->CallVoidMethod(activity, undistort, (jint)m_displayService.GetTextureId());
-        env->DeleteLocalRef(fpl_class);
+//        JNIEnv* env = m_pNativeState->mainThreadEnv;
+//        jobject activity = m_pNativeState->activity;
+//        jclass fpl_class = env->GetObjectClass(activity);
+//        jmethodID undistort = env->GetMethodID(fpl_class, "UndistortTexture", "(I)V");
+//        env->CallVoidMethod(activity, undistort, (jint)m_displayService.GetTextureId());
+//        env->DeleteLocalRef(fpl_class);
 //        TryRenderFameBufferTexture();
         
 	}

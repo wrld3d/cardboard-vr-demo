@@ -26,14 +26,10 @@ namespace Examples
         virtual void Render(Eegeo::Rendering::GLState& glState) const;
         
         void SetVignetteColour(const Eegeo::v3& colour);
-//        void SetVignetteRadiusModifier(float radiusModifier);
-        
         const Eegeo::v3& GetVignetteColour() const;
-//        float GetVignetteRadiusModifier() const;
         
     private:
         Eegeo::v3 m_colour;
-//        float m_radiusModifier;
     };
 }
 

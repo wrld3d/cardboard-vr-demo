@@ -12,6 +12,7 @@
 #include "Helpers.h"
 #include "Web.h"
 #include "WebLoadRequestCompletionCallback.h"
+#include "ScreenPropertiesProvider.h"
 
 
 #include <vector>
@@ -34,7 +35,8 @@ namespace Examples
                     Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
                     Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
                     Eegeo::Web::IWebLoadRequestFactory& webRequestFactory,
-                    const MeshExampleConfig& config);
+                    const MeshExampleConfig& config,
+                    const IScreenPropertiesProvider& screenPropertiesProvider);
         
         virtual ~MeshExample();
         
@@ -84,5 +86,9 @@ namespace Examples
         float m_environmentFlatteningPhase;
         float m_timer;
         bool m_madeTextureRequest;
+        
+        Eegeo::Rendering::RenderTexture* m_pRenderTexture;
+        const IScreenPropertiesProvider& m_screenPropertiesProvider;
+        
     };
 }

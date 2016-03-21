@@ -8,3 +8,5 @@ set(currsources
 set(sources ${sources} ${currsources})
 source_group(\\src\\ FILES ${currsources})
 include(../src/Examples/CMakeLists.txt)
+include(../src/FBRenderTexture/CMakeLists.txt)
+include(../src/VRDistortion/CMakeLists.txt)

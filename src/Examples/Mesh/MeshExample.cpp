@@ -79,6 +79,34 @@ namespace Examples
             return pLayout;
         }
         
+        Eegeo::Rendering::Mesh* CreateUnlitDistortionMesh(float width, float height, const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout, Eegeo::Rendering::GlBufferPool& glBufferPool)
+        {
+            //        Eegeo::v3 halfDimensions(width, height, width/2);
+            std::vector<GeometryHelpers::Vertex> boxVertices;
+            std::vector<u16> triangleIndices;
+            
+            BuildDistortionMesh(boxVertices, triangleIndices, width, height, 10000.0);
+            
+            std::vector<PositionUvVertex> unlitVertices;
+            
+            std::transform(boxVertices.begin(), boxVertices.end(), std::back_inserter(unlitVertices), GeometryHelpersVertexToPositionUvVertex);
+            
+            size_t vertexBufferSizeBytes = sizeof(PositionUvVertex) * unlitVertices.size();
+            size_t indexBufferSizeBytes = sizeof(u16) * triangleIndices.size();
+            
+            return new (Eegeo::Rendering::Mesh)(
+                                                vertexLayout,
+                                                glBufferPool,
+                                                unlitVertices.data(),
+                                                vertexBufferSizeBytes,
+                                                triangleIndices.data(),
+                                                indexBufferSizeBytes,
+                                                static_cast<u32>(triangleIndices.size()),
+                                                "UnlitBoxMesh"
+                                                );
+        }
+        
+        
         Eegeo::Rendering::Mesh* CreateUnlitBoxMesh(float width, float height, const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout, Eegeo::Rendering::GlBufferPool& glBufferPool)
         {
             Eegeo::v3 halfDimensions(width/2, height, width/2);
@@ -156,7 +184,9 @@ namespace Examples
         Eegeo::m33 MakeEcefOrientation(float rotationRadiansYAxis, const Eegeo::m33& basisToEcef)
         {
             Eegeo::m33 localOrientation;
-            localOrientation.RotateY(rotationRadiansYAxis);
+            localOrientation.RotateX(rotationRadiansYAxis);
+//            localOrientation.RotateY(rotationRadiansYAxis);
+//            localOrientation.RotateZ(rotationRadiansYAxis);
             
             Eegeo::m33 ecefOrientation;
             Eegeo::m33::Mul(ecefOrientation, basisToEcef, localOrientation);
@@ -183,7 +213,8 @@ namespace Examples
                                        Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
                                        Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
                                        Eegeo::Web::IWebLoadRequestFactory& webRequestFactory,
-                                       const MeshExampleConfig& config)
+                                       const MeshExampleConfig& config,
+                                       const IScreenPropertiesProvider& screenPropertiesProvider)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
     , m_renderingModule(renderingModule)
     , m_textureFileLoader(textureFileLoader)
@@ -202,6 +233,7 @@ namespace Examples
     , m_environmentFlatteningPhase(0.f)
     , m_timer(0.f)
     , m_madeTextureRequest(false)
+    , m_screenPropertiesProvider(screenPropertiesProvider)
     {
         const int minDimension = 3;
         const int maxDimension = 10;
@@ -251,13 +283,18 @@ namespace Examples
     
     void MeshExample::Start()
     {
+        
+        const bool needsDepthStencilBuffers = true;
+        m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(static_cast<u32>(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth()), static_cast<u32>(m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight()),
+                                                                      needsDepthStencilBuffers);
+        
         const bool generateMipmaps = true;
         bool success = m_textureFileLoader.LoadTexture(m_textureInfo, m_config.textureFilename, generateMipmaps);
         Eegeo_ASSERT(success, "failed to load texture");
         if (!success)
             return;
         
-        
+//        m_textureInfo = m_pRenderTexture->m_textureInfo
         m_pShader = Eegeo::Rendering::Shaders::TexturedUniformColoredShader::Create(m_renderingModule.GetShaderIdGenerator().GetNextId());
         
 
@@ -269,7 +306,8 @@ namespace Examples
                                                              );
         
         m_pUnlitBoxMesh = CreateUnlitBoxMesh(m_config.boxWidth, m_config.boxHeight, *m_pPositionUvVertexLayout, m_renderingModule.GetGlBufferPool());
-
+//Uncomment to load distortion mesh
+//        m_pUnlitBoxMesh = CreateUnlitDistortionMesh(m_config.boxWidth, m_config.boxHeight, *m_pPositionUvVertexLayout, m_renderingModule.GetGlBufferPool());
         
         const int westToEastRows = m_config.meshRows;
         const int southToNorthColumns = m_config.meshColumns;
@@ -289,7 +327,7 @@ namespace Examples
                 ExampleMeshRenderable* pRenderable = CreateExampleMeshRenderable(*m_pUnlitBoxMesh, *m_pMaterial, vertexBindingPool, positionEcef);
                 
                 pRenderable->SetOrientationEcef(m_basisToEcef);
-            
+                
                 m_renderables.push_back(pRenderable);
             }
         }
@@ -304,6 +342,8 @@ namespace Examples
         ExampleMeshRenderable& southEastRenderable = *m_renderables[southToNorthColumns - 1];
         southEastRenderable.SetColor(Eegeo::Rendering::Colors::MAGENTA);
         southEastRenderable.SetEnvironmentFlattenTranslate(false);
+        
+        
     }
     
     void MeshExample::Update(float dt)

@@ -9,7 +9,7 @@
 #include "ScreenProperties.h"
 #include "DefaultCameraControllerFactory.h"
 #include "Modules.h"
-
+#include "VRDistortion/VRDistortion.h"
 
 class ExampleApp : private Eegeo::NonCopyable
 {
@@ -21,6 +21,8 @@ private:
     Eegeo::Rendering::LoadingScreen* m_pLoadingScreen;
 	Examples::ExampleController* m_pExampleController;
     Examples::ScreenPropertiesProvider m_screenPropertiesProvider;
+    
+    Eegeo::VR::Distortion::VRDistortion* m_VRDistortion;
     
     bool m_night;
     float m_foggingFar;

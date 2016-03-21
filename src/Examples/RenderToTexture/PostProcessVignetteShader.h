@@ -28,8 +28,6 @@ namespace Examples
         PostProcessVignetteShader(const Eegeo::Rendering::TShaderId shaderId, const std::string& vertexCode, const std::string& fragmentCode);
         
         GLuint m_diffuseTextureSamplerUniformLocation;
-//        GLuint m_vignetteColourUniform;
-//        GLuint m_vignetteRadiusModifierUniform;
     };
 }
 

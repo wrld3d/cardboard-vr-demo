@@ -11,7 +11,7 @@ namespace Examples
     PostProcessVignetteMaterial::PostProcessVignetteMaterial(const Eegeo::Rendering::TMaterialId materialId,
                                                              const std::string& name,
                                                              PostProcessVignetteShader& shader,
-                                                             Eegeo::Rendering::RenderTexture& renderTexture)
+                                                             Eegeo::Rendering::FBRenderTexture& renderTexture)
     : m_id(materialId)
     , m_name(name)
     , m_shader(shader)
@@ -35,7 +35,7 @@ namespace Examples
         const bool repeat = false;
         Eegeo::Helpers::GLHelpers::BindTexture2D(glState,
                                                  m_shader.GetDiffuseSamplerId(),
-                                                 m_renderTexture.TextureId(),
+                                                 m_renderTexture.getTextureId(),
                                                  Eegeo::Rendering::TextureMinify_Nearest,
                                                  repeat);
     }
@@ -44,8 +44,7 @@ namespace Examples
                                                             Eegeo::Rendering::GLState& glState) const
     {
         const PostProcessVignetteRenderable* renderable = static_cast<const PostProcessVignetteRenderable*>(pRenderableBase);
-        
         m_shader.SetVignetteColour(renderable->GetVignetteColour());
-//        m_shader.SetVignetteRadiusModifier(renderable->GetVignetteRadiusModifier());
+        
     }
 }

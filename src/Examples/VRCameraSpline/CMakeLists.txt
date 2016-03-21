@@ -1,14 +1,8 @@
-set(headers ${headers} ../src/Examples/CameraSpline
+set(headers ${headers} ../src/Examples/UI
 )
 set(currsources
-  ../src/Examples/VRCameraSpline/VRCameraSplineExample.cpp
-  ../src/Examples/VRCameraSpline/VRCameraSplineExample.h
-  ../src/Examples/VRCameraSpline/VRCameraSplineExampleFactory.cpp
-  ../src/Examples/VRCameraSpline/VRCameraSplineExampleFactory.h
-  ../src/Examples/VRCameraSpline/VRCameraPositionSpline.cpp
-  ../src/Examples/VRCameraSpline/VRCameraPositionSpline.h
-  ../src/Examples/VRCameraSpline/VREegeoCameraController.cpp
-  ../src/Examples/VRCameraSpline/VREegeoCameraController.h
+  ../src/Examples/VRCameraSpline/VRCameraPositionSpline.h  ../src/Examples/VRCameraSpline/VRCameraSplineExample.cpp  ../src/Examples/VRCameraSpline/VRCameraSplineExample.h  ../src/Examples/VRCameraSpline/VRCameraSplineExampleFactory.cpp  ../src/Examples/VRCameraSpline/VRCameraSplineExampleFactory.h  ../src/Examples/VRCameraSpline/VREegeoCameraController.cpp  ../src/Examples/VRCameraSpline/VREegeoCameraController.h
 )
+
 set(sources ${sources} ${currsources})
-source_group(\\src\\Examples\\VRCameraSpline FILES ${currsources})
+source_group(\\src\\Examples\\ VRCameraSpline FILES ${currsources})

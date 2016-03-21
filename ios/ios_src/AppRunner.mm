@@ -94,7 +94,6 @@ void AppRunner::Update(float deltaSeconds)
 	{
 		m_pAppHost->Update(deltaSeconds);
 
-		Eegeo::Helpers::GLHelpers::ClearBuffers();
 
 		m_pAppHost->Draw(deltaSeconds);
 	}
