@@ -13,6 +13,8 @@
 #include "VectorMath.h"
 #include "VRDistortionShader.h"
 
+#include "Logger.h"
+
 namespace Eegeo
 {
     namespace VR
@@ -38,6 +40,11 @@ namespace Eegeo
             
             void VRDistortionMaterial::SetState(Eegeo::Rendering::GLState& glState) const
             {
+                
+                glViewport(0, 0, 1920, 1080);
+                
+                EXAMPLE_LOG("RenderTexture: End Rendering");
+                
                 m_shader.Use(glState);
                 m_renderTexture.EndRendering();
                 

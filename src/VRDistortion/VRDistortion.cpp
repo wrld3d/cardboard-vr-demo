@@ -24,6 +24,8 @@
 #include "VRDistortionRenderable.h"
 #include "VRDistortionRenderer.h"
 
+#include "Logger.h"
+
 namespace Eegeo
 {
     namespace VR
@@ -99,7 +101,7 @@ namespace Eegeo
                 std::vector<Examples::GeometryHelpers::Vertex> boxVertices;
                 std::vector<u16> triangleIndices;
                 
-                BuildDistortionMesh(boxVertices, triangleIndices, width, height, 2500.0);
+                BuildDistortionMesh(boxVertices, triangleIndices, width, height, 1000);
                 
                 std::vector<PositionUvVertex> unlitVertices;
                 
@@ -136,7 +138,7 @@ namespace Eegeo
                 
                 Eegeo::Rendering::Mesh* pRenderableMesh = Eegeo::Rendering::Geometry::CreatePositionUVViewportQuad(m_glBufferPool, m_vertexLayoutPool);
               
-                pRenderableMesh = CreateUnlitDistortionMesh(100, 100, *m_pPositionUvVertexLayout, m_glBufferPool);
+                pRenderableMesh = CreateUnlitDistortionMesh(m_screenProperties.GetScreenWidth()*2.f, m_screenProperties.GetScreenHeight(), *m_pPositionUvVertexLayout, m_glBufferPool);
                 
                 const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout = pRenderableMesh->GetVertexLayout();
                 const Eegeo::Rendering::VertexLayouts::VertexAttribs& vertexAttributes = m_pVRDistortionShader->GetVertexAttributes();
@@ -149,13 +151,10 @@ namespace Eegeo
                 
                 m_pVRDistortionRenderer = Eegeo_NEW(VRDistortionRenderer)(*m_pRenderable);
                 
-                
-                
             }
             
             void VRDistortion::Suspend()
             {
-                m_renderableFilters.RemoveRenderableFilter(*m_pVRDistortionRenderer);
                 
                 Eegeo_DELETE m_pVRDistortionRenderer;
                 m_pVRDistortionRenderer = NULL;
@@ -188,10 +187,22 @@ namespace Eegeo
             
             void VRDistortion::BeginRendering()
             {
+                
+                EXAMPLE_LOG("RenderTexture: Start Rendering");
                 m_pFBRenderTexture->BeginRendering();
                 Eegeo::Helpers::GLHelpers::ClearBuffers();
             }
             
+            void VRDistortion::RegisterRenderable()
+            {
+                m_renderableFilters.AddRenderableFilter(*m_pVRDistortionRenderer);
+                
+            }
+            
+            void VRDistortion::UnRegisterRenderable()
+            {
+                m_renderableFilters.RemoveRenderableFilter(*m_pVRDistortionRenderer);
+            }
             
             
         }

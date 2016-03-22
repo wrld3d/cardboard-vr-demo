@@ -15,6 +15,7 @@
 #include "VRDistortionIncludes.h"
 #include "../../FBRenderTexture/FBRenderTexture.h"
 
+
 namespace Eegeo
 {
     namespace VR
@@ -58,6 +59,8 @@ namespace Eegeo
                 void Suspend();
                 
                 void BeginRendering();
+                void RegisterRenderable();
+                void UnRegisterRenderable();
                 
                 void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
             };
