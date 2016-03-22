@@ -68,6 +68,7 @@ namespace Eegeo
         {
             if(m_initialized)
             {
+                
                 Eegeo_GL(glDeleteFramebuffers(1, &g_undistortFramebufferId));
                 Eegeo_GL(glDeleteRenderbuffers(1, &g_undistortRenderbufferId));
                 Eegeo_GL(glDeleteTextures(1, &g_undistortTextureId));

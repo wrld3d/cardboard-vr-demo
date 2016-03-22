@@ -24,19 +24,9 @@ namespace Examples
         m_colour = colour;
     }
     
-//    void PostProcessVignetteRenderable::SetVignetteRadiusModifier(float radiusModifier)
-//    {
-//        Eegeo_ASSERT(radiusModifier > 0.f);
-//        m_radiusModifier = radiusModifier;
-//    }
-    
     const Eegeo::v3& PostProcessVignetteRenderable::GetVignetteColour() const
     {
         return m_colour;
     }
     
-//    float PostProcessVignetteRenderable::GetVignetteRadiusModifier() const
-//    {
-//        return m_radiusModifier;
-//    }
 }

@@ -11,11 +11,13 @@ namespace Examples
     PostProcessVignetteMaterial::PostProcessVignetteMaterial(const Eegeo::Rendering::TMaterialId materialId,
                                                              const std::string& name,
                                                              PostProcessVignetteShader& shader,
-                                                             Eegeo::Rendering::FBRenderTexture& renderTexture)
+                                                             Eegeo::Rendering::RenderTexture& renderTexture,
+                                                             Eegeo::Rendering::FBRenderTexture& fbRenderTexture)
     : m_id(materialId)
     , m_name(name)
     , m_shader(shader)
     , m_renderTexture(renderTexture)
+    , m_fbRenderTexture(fbRenderTexture)
     {
         
     }
@@ -30,12 +32,12 @@ namespace Examples
         m_shader.Use(glState);
 
         // Assume rendering into this texture this has been started elsewhere prior to drawing...
-        m_renderTexture.EndRendering();
+        m_fbRenderTexture.EndRendering();
         
         const bool repeat = false;
         Eegeo::Helpers::GLHelpers::BindTexture2D(glState,
                                                  m_shader.GetDiffuseSamplerId(),
-                                                 m_renderTexture.getTextureId(),
+                                                 m_fbRenderTexture.getTextureId(),
                                                  Eegeo::Rendering::TextureMinify_Nearest,
                                                  repeat);
     }

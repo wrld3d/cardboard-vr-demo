@@ -158,9 +158,9 @@ namespace Examples
         //
         
         const bool needsDepthStencilBuffers = false;
-//        m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(static_cast<u32>(m_screenProperties.GetScreenWidth()),
-//                                                                      static_cast<u32>(m_screenProperties.GetScreenHeight()),
-//                                                                      needsDepthStencilBuffers);
+        m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(static_cast<u32>(m_screenProperties.GetScreenWidth()),
+                                                                      static_cast<u32>(m_screenProperties.GetScreenHeight()),
+                                                                      needsDepthStencilBuffers);
         
         m_pFBRenderTexture = Eegeo_NEW(Eegeo::Rendering::FBRenderTexture)();
         m_pFBRenderTexture->InitRenderer(m_screenProperties.GetScreenWidth()*2.f, m_screenProperties.GetScreenHeight());
@@ -171,6 +171,7 @@ namespace Examples
         m_pVignetteMaterial = Eegeo_NEW(PostProcessVignetteMaterial)(m_materialIdGenerator.GetNextId(),
                                                                      "PostProcessVignetteMaterial",
                                                                      *m_pVignetteShader,
+                                                                     *m_pRenderTexture,
                                                                      *m_pFBRenderTexture);
         
         Eegeo::Rendering::Mesh* pRenderableMesh = Eegeo::Rendering::Geometry::CreatePositionUVViewportQuad(m_glBufferPool, m_vertexLayoutPool);

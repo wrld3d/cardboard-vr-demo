@@ -19,7 +19,8 @@ namespace Examples
         PostProcessVignetteMaterial(const Eegeo::Rendering::TMaterialId materialId,
                                     const std::string& name,
                                     PostProcessVignetteShader& shader,
-                                    Eegeo::Rendering::FBRenderTexture& renderTexture);
+                                    Eegeo::Rendering::RenderTexture& renderTexture,
+                                    Eegeo::Rendering::FBRenderTexture& fbRenderTexture);
         
         const Eegeo::Rendering::TMaterialId GetId() const { return m_id; }
         const Eegeo::Rendering::Shader& GetShader() const;
@@ -34,7 +35,8 @@ namespace Examples
         const Eegeo::Rendering::TMaterialId m_id;
         const std::string m_name;
         PostProcessVignetteShader& m_shader;
-        Eegeo::Rendering::FBRenderTexture& m_renderTexture;
+        Eegeo::Rendering::RenderTexture& m_renderTexture;
+        Eegeo::Rendering::FBRenderTexture& m_fbRenderTexture;
     };
 }
 

@@ -151,7 +151,7 @@ void AppRunner::Update(float deltaSeconds, float headTansform[])
 		Eegeo_GL(eglSwapBuffers(m_displayService.GetDisplay(), m_displayService.GetSurface()));
 
         // clear buffers
-//        Eegeo::Helpers::GLHelpers::ClearBuffers();
+        Eegeo::Helpers::GLHelpers::ClearBuffers();
         
         // engine draw call
         m_pAppHost->Draw(deltaSeconds, headTansform);
