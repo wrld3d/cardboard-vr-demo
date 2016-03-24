@@ -7,6 +7,7 @@
 //
 
 #include "FBRenderTexture.h"
+#include "Logger.h"
 
 namespace Eegeo
 {
@@ -15,8 +16,9 @@ namespace Eegeo
         
         void FBRenderTexture::InitRenderer(int viewportWidth, int viewportHeight)
         {
-            if(m_initialized)
+            if(m_initialized){
                 return;
+            }
             
 //            Eegeo_ASSERT(m_initialized, "FrameBufferRenderTexture Already Initialized.");
             

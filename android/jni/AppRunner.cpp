@@ -150,6 +150,8 @@ void AppRunner::Update(float deltaSeconds, float headTansform[])
         // swap buffers
 		Eegeo_GL(eglSwapBuffers(m_displayService.GetDisplay(), m_displayService.GetSurface()));
 
+
+        
         // clear buffers
         Eegeo::Helpers::GLHelpers::ClearBuffers();
         
@@ -160,10 +162,10 @@ void AppRunner::Update(float deltaSeconds, float headTansform[])
 //        glBindFramebuffer(GL_FRAMEBUFFER, 0);
         
         // set viewport back to full screen from steroscopic viewport for VR
-        glViewport(0, 0, m_displayService.GetDisplayWidth()*2.f, m_displayService.GetDisplayHeight());
+//        glViewport(0, 0, m_displayService.GetDisplayWidth()*2.f, m_displayService.GetDisplayHeight());
 
         
-//         jni call to "UndistortTexture()" function of MainActivity which contains CardboardView and calls cardboard view's undistortTexture()
+//        jni call to "UndistortTexture()" function of MainActivity which contains CardboardView and calls cardboard view's undistortTexture()
 //        JNIEnv* env = m_pNativeState->mainThreadEnv;
 //        jobject activity = m_pNativeState->activity;
 //        jclass fpl_class = env->GetObjectClass(activity);

@@ -229,7 +229,9 @@ bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
     
     InitializeUndistortFramebuffer((int)w, (int)h);
     
+    // TODO: clean this up and handle division in when rendering 2 eyes
     w = w/2.0f;
+    
 	m_displayWidth = w;
 	m_displayHeight = h;
     

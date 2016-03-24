@@ -78,11 +78,11 @@ namespace Eegeo
 //                EXAMPLE_LOG("Angle: Factor: Not NaN");
                 m_VRCameraPositionSpline.setSlowDownFactor(1.f - factor);
                 
-                float near, far;
-                GetNearFarPlaneDistances(near,far);
-                m_renderCamera.SetProjection(0.75f, 0.3f, far);
                 m_renderCamera.SetOrientationMatrix(orientationMatrix);
                 m_renderCamera.SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
+                float near, far;
+                GetNearFarPlaneDistances(near,far);
+                m_renderCamera.SetProjection(0.7f, near, far);
 //                EXAMPLE_LOG("Angle: Factor: Ecef Location");
             }
             else{
@@ -253,11 +253,21 @@ namespace Eegeo
         void VREegeoCameraController::GetNearFarPlaneDistances(float& out_near, float& out_far)
         {
             double cameraAltitude = GetAltitudeAboveSeaLevel();
-            double approxTerrainAltitude = 100;
-            double approxTerrainAltitudeDelta = approxTerrainAltitude - 100;
+            double approxTerrainAltitude = 0;
+            double approxTerrainAltitudeDelta = 0;
             
             const double ClipPlaneThresholdAltitude = 15000.0;
             Camera::CameraHelpers::GetAltitudeInterpolatedNearFar(cameraAltitude, approxTerrainAltitude, approxTerrainAltitudeDelta, ClipPlaneThresholdAltitude, out_near, out_far);
+            
+//             * \param The altitude in meters of the camera
+//             * \param The approximate altitude of the highest terrain in the scene
+//             * \param The difference between the highest and lowest terrain in the scene
+//             * \param Altitude at which the method for scaling the near/far bounds changes (Default 15000m)
+//             * \param out_nearDistance [out] resultant recommended Near value based on the provided altitudes
+//             * \param out_farDistance [out] resultant reecommended Far value based on the provided altitudes
+//             */
+//            void GetAltitudeInterpolatedNearFar(float absoluteCameraAltitude, float approxTerrainAltitude, float approxTerrainAltitudeDelta, const double scalingFunctionAltitudeThreshold, float& out_nearDistance, float& out_farDistance);
+            
         }
         
         float VREegeoCameraController::MovementAltitudeMutlipler() const

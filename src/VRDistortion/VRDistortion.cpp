@@ -101,7 +101,7 @@ namespace Eegeo
                 std::vector<Examples::GeometryHelpers::Vertex> boxVertices;
                 std::vector<u16> triangleIndices;
                 
-                BuildDistortionMesh(boxVertices, triangleIndices, width, height, 1000);
+                BuildDistortionMesh(boxVertices, triangleIndices, width, height, 34000);
                 
                 std::vector<PositionUvVertex> unlitVertices;
                 
@@ -134,7 +134,8 @@ namespace Eegeo
                 m_pVRDistortionMaterial = Eegeo_NEW(VRDistortionMaterial)(m_materialIdGenerator.GetNextId(),
                                                                              "VRDistortionMaterial",
                                                                              *m_pVRDistortionShader,
-                                                                             *m_pFBRenderTexture);
+                                                                             *m_pFBRenderTexture,
+                                                                             m_screenProperties);
                 
                 Eegeo::Rendering::Mesh* pRenderableMesh = Eegeo::Rendering::Geometry::CreatePositionUVViewportQuad(m_glBufferPool, m_vertexLayoutPool);
               
@@ -187,8 +188,6 @@ namespace Eegeo
             
             void VRDistortion::BeginRendering()
             {
-                
-                EXAMPLE_LOG("RenderTexture: Start Rendering");
                 m_pFBRenderTexture->BeginRendering();
                 Eegeo::Helpers::GLHelpers::ClearBuffers();
             }
