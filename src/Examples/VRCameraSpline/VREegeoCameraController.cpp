@@ -72,33 +72,16 @@ namespace Eegeo
                     factor = 0.9f;
             }
             
-//            EXAMPLE_LOG("Angle: Factor: %.2f",factor);
             
+            float near, far;
+            GetNearFarPlaneDistances(near,far);
+            m_ecefPosition = m_ecefPosition + m_ecefPosition.Norm()*(1.75f);
             if(!std::isnan(factor)){
-//                EXAMPLE_LOG("Angle: Factor: Not NaN");
                 m_VRCameraPositionSpline.setSlowDownFactor(1.f - factor);
-                
                 m_renderCamera.SetOrientationMatrix(orientationMatrix);
                 m_renderCamera.SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
-                float near, far;
-                GetNearFarPlaneDistances(near,far);
-                m_renderCamera.SetProjection(0.7f, near, far);
-//                EXAMPLE_LOG("Angle: Factor: Ecef Location");
+                m_renderCamera.SetProjection(0.7f, 5.0f, far);
             }
-            else{
-//                EXAMPLE_LOG("Angle: Factor: Yes NaN");
-            }
-            
-//            if(m_time>1.f)
-//            {
-//                EXAMPLE_LOG("Angle : (right, up, forward) %.2f, %.2f, %.2f\n",
-//                        Math::Rad2Deg(Math::ACos(v3::Dot(rA, rB) / (rA.Length() * rB.Length()))),
-//                        Math::Rad2Deg(Math::ACos(v3::Dot(uA, uB) / (uA.Length() * uB.Length()))),
-//                        Math::Rad2Deg(Math::ACos(v3::Dot(fA, fB) / (fA.Length() * fB.Length()))));
-//                m_time = 0.f;
-//            }
-            
-            
             
 
         }
@@ -129,10 +112,10 @@ namespace Eegeo
             
             m_time += dt;
             
-            float near = 0.1f;
-            float far = 4000.0f;
-            GetNearFarPlaneDistances(near, far);
-            m_renderCamera.SetProjection(m_renderCamera.GetFOV(), near, far);
+//            float near = 0.1f;
+//            float far = 4000.0f;
+//            GetNearFarPlaneDistances(near, far);
+//            m_renderCamera.SetProjection(m_renderCamera.GetFOV(), near, far);
             
             if(IsFalling())
             {
@@ -257,16 +240,14 @@ namespace Eegeo
             double approxTerrainAltitudeDelta = 0;
             
             const double ClipPlaneThresholdAltitude = 15000.0;
+            //             * \param The altitude in meters of the camera
+            //             * \param The approximate altitude of the highest terrain in the scene
+            //             * \param The difference between the highest and lowest terrain in the scene
+            //             * \param Altitude at which the method for scaling the near/far bounds changes (Default 15000m)
+            //             * \param out_nearDistance [out] resultant recommended Near value based on the provided altitudes
+            //             * \param out_farDistance [out] resultant reecommended Far value based on the provided altitudes
             Camera::CameraHelpers::GetAltitudeInterpolatedNearFar(cameraAltitude, approxTerrainAltitude, approxTerrainAltitudeDelta, ClipPlaneThresholdAltitude, out_near, out_far);
-            
-//             * \param The altitude in meters of the camera
-//             * \param The approximate altitude of the highest terrain in the scene
-//             * \param The difference between the highest and lowest terrain in the scene
-//             * \param Altitude at which the method for scaling the near/far bounds changes (Default 15000m)
-//             * \param out_nearDistance [out] resultant recommended Near value based on the provided altitudes
-//             * \param out_farDistance [out] resultant reecommended Far value based on the provided altitudes
-//             */
-//            void GetAltitudeInterpolatedNearFar(float absoluteCameraAltitude, float approxTerrainAltitude, float approxTerrainAltitudeDelta, const double scalingFunctionAltitudeThreshold, float& out_nearDistance, float& out_farDistance);
+  
             
         }
         

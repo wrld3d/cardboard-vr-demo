@@ -21,6 +21,7 @@ private:
     Eegeo::Rendering::LoadingScreen* m_pLoadingScreen;
 	Examples::ExampleController* m_pExampleController;
     Examples::ScreenPropertiesProvider m_screenPropertiesProvider;
+    Eegeo::Streaming::CameraFrustumStreamingVolume* m_pStreamingVolume;
     
     Eegeo::VR::Distortion::VRDistortion* m_VRDistortion;
     
@@ -41,6 +42,7 @@ private:
 
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
+               Eegeo::Config::DeviceSpec deviceSpecs,
 	           Examples::IExampleControllerView& view,
                const Eegeo::Rendering::ScreenProperties& screenProperties,
                Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,

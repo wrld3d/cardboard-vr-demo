@@ -49,6 +49,10 @@ namespace Examples
     }
     
     
+    Eegeo::Camera::RenderCamera VRCameraSplineExample::GetRenderCamera(){
+        return m_pSplineCameraController->GetCamera();
+    }
+    
     Eegeo::Camera::CameraState VRCameraSplineExample::GetCurrentLeftCameraState(float headTansform[]) const
     {
         Eegeo::m33 orientation;

@@ -16,7 +16,10 @@
 #include "GlobalFogging.h"
 #include "CityThemesModule.h"
 #include "CityThemesService.h"
-
+#include "CameraFrustumStreamingVolume.h"
+#include "LodRefinementConfig.h"
+#include "QuadTreeCube.h"
+#include "StreamingVolumeController.h"
 
 //example factories
 #include "BuildingHighlightExampleFactory.h"
@@ -59,6 +62,8 @@
 #include "BuildingSelectionExampleFactory.h"
 #include "RemoveMapLayerExampleFactory.h"
 
+#include "Logger.h"
+
 namespace
 {
     Eegeo::Rendering::LoadingScreen* CreateLoadingScreen(const Eegeo::Rendering::ScreenProperties& screenProperties,
@@ -91,6 +96,7 @@ namespace
 
 
 ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
+                       Eegeo::Config::DeviceSpec deviceSpecs,
                        Examples::IExampleControllerView& view,
                        const Eegeo::Rendering::ScreenProperties& screenProperties,
                        Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
@@ -126,6 +132,14 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     const float interestPointAltitudeMeters = 2.7f;
     const float cameraControllerOrientationDegrees = 0.0f;
     const float cameraControllerDistanceFromInterestPointMeters = 1781.0f;
+    
+    
+    m_pStreamingVolume = Eegeo_NEW(Eegeo::Streaming::CameraFrustumStreamingVolume)(mapModule.GetResourceCeilingProvider(),
+                                                                                   Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
+                                                                                   Eegeo::Streaming::QuadTreeCube::MAX_DEPTH_TO_VISIT,
+                                                                                   mapModule.GetEnvironmentFlatteningService());
+    
+    m_pStreamingVolume->setDeepestLevelForAltitudeLodRefinement(11);
     
     m_pCameraControllerFactory = new Examples::DefaultCameraControllerFactory(
                                                                     terrainModelModule,
@@ -245,15 +259,25 @@ void ExampleApp::Update (float dt, float headTansform[])
     
 	m_pExampleController->EarlyUpdate(dt);
     
+    
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
-    Eegeo::Streaming::IStreamingVolume& streamingVolume(m_pExampleController->GetCurrentStreamingVolume());
+    Eegeo::Camera::RenderCamera renderCamera = m_pExampleController->GetRenderCamera();
+    
+    std::vector<Eegeo::Geometry::Plane> frustumPlanes(Eegeo::Geometry::Frustum::PLANES_COUNT);
+    BuildFrustumPlanesFromViewProjection(frustumPlanes, renderCamera.GetViewProjectionMatrix());
+    const double d = renderCamera.GetAltitude() * Eegeo::Streaming::StreamingVolumeController::CAMERA_ALTITUDE_TO_FAR_PLANE_DISTANCE_MULTIPLIER;
+    const double cameraFarPlaneD = fmin(fmax(d, Eegeo::Streaming::StreamingVolumeController::MIN_STREAMING_FAR_PLANE_DISTANCE), frustumPlanes[Eegeo::Geometry::Frustum::PLANE_FAR].d);
+    frustumPlanes[Eegeo::Geometry::Frustum::PLANE_FAR].d = static_cast<float>(cameraFarPlaneD);
+    
+    m_pStreamingVolume->updateStreamingVolume(renderCamera.GetEcefLocation(), frustumPlanes, renderCamera.GetFOV());
+    m_pStreamingVolume->ResetVolume(cameraState.InterestPointEcef());
     
     Eegeo::EegeoUpdateParameters updateParameters(dt,
                                                   cameraState.LocationEcef(),
                                                   cameraState.InterestPointEcef(),
                                                   cameraState.ViewMatrix(),
                                                   cameraState.ProjectionMatrix(),
-                                                  streamingVolume,
+                                                  *m_pStreamingVolume,
                                                   m_screenPropertiesProvider.GetScreenProperties());
     
 	eegeoWorld.Update(updateParameters);
@@ -267,12 +291,22 @@ void ExampleApp::Update (float dt, float headTansform[])
 
 void ExampleApp::Draw (float dt, float headTansform[]){
     
-//    glClearColor(m_currentClearColor.GetX(), m_currentClearColor.GetY(), m_currentClearColor.GetZ(), 1.0f);
-    m_VRDistortion->BeginRendering();
+    bool isDismissed = m_pLoadingScreen == NULL;
+    if(!isDismissed)
+       isDismissed = m_pLoadingScreen->IsDismissed();
+    
+    if (isDismissed)
+        m_VRDistortion->BeginRendering();
+    
     DrawLeftEye(dt, headTansform);
-    m_VRDistortion->RegisterRenderable();
+    
+    if (isDismissed)
+        m_VRDistortion->RegisterRenderable();
+    
     DrawRightEye(dt, headTansform);
-    m_VRDistortion->UnRegisterRenderable();
+    
+    if (isDismissed)
+        m_VRDistortion->UnRegisterRenderable();
 }
 
 void ExampleApp::DrawLeftEye (float dt, float headTansform[]){
@@ -288,6 +322,9 @@ void ExampleApp::DrawLeftEye (float dt, float headTansform[]){
                                               cameraState.ViewMatrix(),
                                               cameraState.ProjectionMatrix(),
                                               m_screenPropertiesProvider.GetScreenProperties());
+    
+    
+
     
     eegeoWorld.Draw(drawParameters);
     

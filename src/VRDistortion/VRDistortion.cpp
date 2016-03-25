@@ -101,7 +101,7 @@ namespace Eegeo
                 std::vector<Examples::GeometryHelpers::Vertex> boxVertices;
                 std::vector<u16> triangleIndices;
                 
-                BuildDistortionMesh(boxVertices, triangleIndices, width, height, 34000);
+                BuildDistortionMesh(boxVertices, triangleIndices, width, height, 45000);
                 
                 std::vector<PositionUvVertex> unlitVertices;
                 

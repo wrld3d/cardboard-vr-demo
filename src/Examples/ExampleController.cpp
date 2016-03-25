@@ -169,7 +169,10 @@ void ExampleController::DestroyCurrentExample()
 		m_pCurrentExample = NULL;
 	}
 }
-
+    
+    Eegeo::Camera::RenderCamera ExampleController::GetRenderCamera(){
+        return m_pCurrentExample->GetRenderCamera();
+    }
     
     Eegeo::Camera::CameraState ExampleController::GetCurrentLeftCameraState(float headTansform[]) const
     {

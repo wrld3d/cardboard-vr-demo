@@ -105,7 +105,7 @@ AppHost::AppHost(
     m_pCollisionVisualizationModule = CreateCollisionVisualizationModule(*m_pWorld);
     m_pBuildingFootprintsModule = CreateBuildingFootprintsModule(*m_pWorld, *m_pCollisionVisualizationModule);
     
-	ConfigureExamples(screenProperties);
+	ConfigureExamples(screenProperties, config.PerformanceConfig.DeviceSpecification);
     
     m_pAppInputDelegate = new AppInputDelegate(*m_pApp, m_viewController, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight(), screenProperties.GetPixelScale());
     m_pAppLocationDelegate = new AppLocationDelegate(*m_piOSLocationService, m_viewController);
@@ -185,11 +185,11 @@ void AppHost::Draw(float dt)
 	m_pApp->Draw(dt,items);
 }
 
-void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties)
+void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs)
 {
 	m_piOSExampleControllerView = new Examples::iOSExampleControllerView([&m_viewController view]);
 
-	m_pApp = new ExampleApp(m_pWorld, *m_piOSExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
+	m_pApp = new ExampleApp(m_pWorld, deviceSpecs, *m_piOSExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
 //	RegisteriOSSpecificExamples();
 

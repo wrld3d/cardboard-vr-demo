@@ -29,6 +29,9 @@ namespace Examples
         
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties) = 0;
         
+        // TODO: All examples should be returing a RenderCamera used by example, temporaray hack to make it work with VR example.
+        virtual Eegeo::Camera::RenderCamera GetRenderCamera(){return Eegeo::Camera::RenderCamera();}
+        
         virtual Eegeo::Camera::CameraState GetCurrentCameraState() const = 0;
         virtual Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const {return GetCurrentCameraState();}
         virtual Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const{return GetCurrentCameraState();}

@@ -126,8 +126,8 @@ AppHost::AppHost(
 	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::Latin;
 	std::string deviceModel = std::string(nativeState.deviceModel, strlen(nativeState.deviceModel));
 	Eegeo::Config::PlatformConfig config = Eegeo::Android::AndroidPlatformConfigBuilder(deviceModel).Build();
-
-	config.OptionsConfig.GenerateCollisionForAllResources = true;
+	
+    config.OptionsConfig.GenerateCollisionForAllResources = true;
 	config.CityThemesConfig.EmbeddedThemeManifestFile = "embedded_manifest.txt";
 	config.CityThemesConfig.EmbeddedThemeTexturePath = "Textures";
 	config.CityThemesConfig.EmbeddedThemeNameContains = "Summer";
@@ -149,7 +149,7 @@ AppHost::AppHost(
 
 	m_pInputProcessor = new Eegeo::Android::Input::AndroidInputProcessor(&m_inputHandler, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
 
-	ConfigureExamples(screenProperties);
+	ConfigureExamples(screenProperties, config.PerformanceConfig.DeviceSpecification);
 
 	m_pAppInputDelegate = new AppInputDelegate(*m_pApp);
 	m_inputHandler.AddDelegateInputHandler(m_pAppInputDelegate);
@@ -235,11 +235,11 @@ void AppHost::Draw(float dt, float headTansform[])
 	m_pApp->Draw(dt, headTansform);
 }
 
-void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties)
+void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs)
 {
 	m_pAndroidExampleControllerView = new Examples::AndroidExampleControllerView(m_nativeState);
 
-	m_pApp = new ExampleApp(m_pWorld, *m_pAndroidExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
+	m_pApp = new ExampleApp(m_pWorld, deviceSpecs, *m_pAndroidExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
 //	RegisterAndroidSpecificExamples();
 

@@ -95,7 +95,7 @@ private:
 
 	Eegeo::Android::AndroidPlatformAbstractionModule* m_pAndroidPlatformAbstractionModule;
 
-	void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties);
+	void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs);
 	void DestroyExamples();
 	void RegisterAndroidSpecificExamples();
 };

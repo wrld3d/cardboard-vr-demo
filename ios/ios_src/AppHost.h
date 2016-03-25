@@ -69,7 +69,7 @@ private:
 	Examples::iOSRouteMatchingExampleViewFactory* m_piOSRouteMatchingExampleViewFactory;
 	Examples::iOSRouteSimulationExampleViewFactory* m_piOSRouteSimulationExampleViewFactory;
     
-    void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties);
+    void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs);
 	void DestroyExamples();
 	void RegisteriOSSpecificExamples();
 };

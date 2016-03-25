@@ -2,20 +2,10 @@ LOCAL_PATH := $(call my-dir)
 
 
 $(info TARGET_ARCH_ABI is $(TARGET_ARCH_ABI))
-
+                                                                                                                                                                                                                                                                                                                                  
 $(info LOCAL_PATH is $(LOCAL_PATH))
 
 PREBUILT_LIBS := ./libs/prebuilt/android-$(TARGET_ARCH_ABI)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := vrtoolkit
-LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libvrtoolkit.so
-include $(PREBUILT_SHARED_LIBRARY)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := vraudio_engine
-LOCAL_SRC_FILES := ../$(PREBUILT_LIBS)/libvraudio_engine.so
-include $(PREBUILT_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := eegeo-sdk-lib
