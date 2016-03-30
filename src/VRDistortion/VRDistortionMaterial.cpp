@@ -25,7 +25,7 @@ namespace Eegeo
             VRDistortionMaterial::VRDistortionMaterial(const Eegeo::Rendering::TMaterialId materialId,
                                                        const std::string& name,
                                                        VRDistortionShader& shader,
-                                                       Eegeo::Rendering::FBRenderTexture& renderTexture,
+                                                       Eegeo::Rendering::RenderTexture& renderTexture,
                                                        Eegeo::Rendering::ScreenProperties& screenProperties)
             : m_id(materialId)
             , m_name(name)
@@ -51,7 +51,7 @@ namespace Eegeo
                 const bool repeat = false;
                 Eegeo::Helpers::GLHelpers::BindTexture2D(glState,
                                                          m_shader.GetDiffuseSamplerId(),
-                                                         m_renderTexture.getTextureId(),
+                                                         m_renderTexture.TextureId(),
                                                          Eegeo::Rendering::TextureMinify_Nearest,
                                                          repeat);
             }

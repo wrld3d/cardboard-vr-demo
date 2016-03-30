@@ -55,6 +55,7 @@ namespace Examples
     
     Eegeo::Camera::CameraState VRCameraSplineExample::GetCurrentLeftCameraState(float headTansform[]) const
     {
+        
         Eegeo::m33 orientation;
         Eegeo::v3 right = Eegeo::v3(headTansform[0],headTansform[4],headTansform[8]);
         Eegeo::v3 up = Eegeo::v3(headTansform[1],headTansform[5],headTansform[9]);

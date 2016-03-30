@@ -14,6 +14,7 @@
 #include "Types.h"
 #include "IMaterial.h"
 #include "Rendering.h"
+#include "RenderTexture.h"
 #include "ScreenProperties.h"
 #include "VRDistortionIncludes.h"
 #include "../../FBRenderTexture/FBRenderTexture.h"
@@ -30,7 +31,7 @@ namespace Eegeo
                 VRDistortionMaterial(const Eegeo::Rendering::TMaterialId materialId,
                                      const std::string& name,
                                      VRDistortionShader& shader,
-                                     Eegeo::Rendering::FBRenderTexture& renderTexture,
+                                     Eegeo::Rendering::RenderTexture& renderTexture,
                                      Eegeo::Rendering::ScreenProperties& screenProperties);
                 
                 const std::string& GetName() const { return m_name; }
@@ -45,7 +46,7 @@ namespace Eegeo
                 const Eegeo::Rendering::TMaterialId m_id;
                 const std::string m_name;
                 VRDistortionShader& m_shader;
-                Eegeo::Rendering::FBRenderTexture& m_renderTexture;
+                Eegeo::Rendering::RenderTexture& m_renderTexture;
                 Eegeo::Rendering::ScreenProperties m_screenProperties;
             };
             

@@ -38,7 +38,7 @@ namespace Eegeo
                 VRDistortionRenderable* m_pRenderable;
                 VRDistortionRenderer* m_pVRDistortionRenderer;
                 
-                Eegeo::Rendering::FBRenderTexture* m_pFBRenderTexture;
+                Eegeo::Rendering::RenderTexture* m_pFBRenderTexture;
                 Eegeo::Rendering::VertexLayouts::VertexLayout* m_pPositionUvVertexLayout;
                 
                 Eegeo::Rendering::ScreenProperties m_screenProperties;

@@ -9,21 +9,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
-import com.google.vrtoolkit.cardboard.CardboardView;
 import com.google.vrtoolkit.cardboard.DistortionRenderer;
-import com.google.vrtoolkit.cardboard.ScreenParams;
-import com.google.vrtoolkit.cardboard.proto.nano.Phone;
 import com.google.vrtoolkit.cardboard.sensors.HeadTracker;
 import com.google.vrtoolkit.cardboard.sensors.MagnetSensor;
 import com.google.vrtoolkit.cardboard.sensors.MagnetSensor.OnCardboardTriggerListener;
-
+import com.google.vrtoolkit.cardboard.sensors.NfcSensor;
+import com.google.vrtoolkit.cardboard.sensors.NfcSensor.OnCardboardNfcListener;
 
 public class BackgroundThreadActivity extends MainActivity
 {
@@ -39,6 +35,7 @@ public class BackgroundThreadActivity extends MainActivity
 	private HeadTracker m_headTracker; 
 	private MagnetSensor m_magnetSensor;
 	
+	private NfcSensor mNfcSensor;
 	
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
@@ -77,6 +74,20 @@ public class BackgroundThreadActivity extends MainActivity
 		});
 		m_magnetSensor.start();
 
+		mNfcSensor = NfcSensor.getInstance(this);
+		mNfcSensor.addOnCardboardNfcListener(new OnCardboardNfcListener() {
+			@Override
+			public void onRemovedFromCardboard() {
+				System.out.println("On Removed From Cardboard.");
+			}
+			
+			@Override
+			public void onInsertedIntoCardboard(CardboardDeviceParams params) {
+				System.out.println("params: "+params.getDistortion().getCoefficients()[0]);
+			}
+		});
+		
+		
 		m_distortionRenderer = new DistortionRenderer();
 		m_distortionRenderer.setVignetteEnabled(true);
 		m_distortionRenderer.setChromaticAberrationCorrectionEnabled(true);
@@ -307,8 +318,6 @@ public class BackgroundThreadActivity extends MainActivity
 			m_destroyed = true;
 		}
 
-		
-		
 		public void run()
 		{
 			Looper.prepare();

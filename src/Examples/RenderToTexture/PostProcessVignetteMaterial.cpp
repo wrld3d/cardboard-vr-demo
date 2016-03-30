@@ -32,12 +32,12 @@ namespace Examples
         m_shader.Use(glState);
 
         // Assume rendering into this texture this has been started elsewhere prior to drawing...
-        m_fbRenderTexture.EndRendering();
+        m_renderTexture.EndRendering();
         
         const bool repeat = false;
         Eegeo::Helpers::GLHelpers::BindTexture2D(glState,
                                                  m_shader.GetDiffuseSamplerId(),
-                                                 m_fbRenderTexture.getTextureId(),
+                                                 m_renderTexture.TextureId(),
                                                  Eegeo::Rendering::TextureMinify_Nearest,
                                                  repeat);
     }

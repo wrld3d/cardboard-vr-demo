@@ -150,7 +150,8 @@ void AppRunner::Update(float deltaSeconds, float headTansform[])
         // swap buffers
 		Eegeo_GL(eglSwapBuffers(m_displayService.GetDisplay(), m_displayService.GetSurface()));
 
-
+        
+        Eegeo_GL(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
         
         // clear buffers
         Eegeo::Helpers::GLHelpers::ClearBuffers();
@@ -258,7 +259,7 @@ void AppRunner::TryRenderFameBufferTexture(){
     
     glActiveTexture(GL_TEXTURE0);
     
-    glBindTexture(GL_TEXTURE_2D, m_displayService.GetTextureId());
+//    glBindTexture(GL_TEXTURE_2D, m_displayService.GetTextureId());
     
     
     glEnableVertexAttribArray(0);
