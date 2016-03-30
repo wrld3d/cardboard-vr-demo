@@ -157,7 +157,7 @@ namespace Examples
         // depth and stencil attachment, which should always be the case for iOS.
         //
         
-        const bool needsDepthStencilBuffers = false;
+        const bool needsDepthStencilBuffers = true;
         m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(static_cast<u32>(m_screenProperties.GetScreenWidth()),
                                                                       static_cast<u32>(m_screenProperties.GetScreenHeight()),
                                                                       needsDepthStencilBuffers);
@@ -240,9 +240,9 @@ namespace Examples
     void RenderToTextureExample::PreWorldDraw()
     {
         // Before the world is rendered, we should switch to rendering into our texture...
-        m_pFBRenderTexture->BeginRendering();
+        m_pRenderTexture->BeginRendering();
         
-        Eegeo::Helpers::GLHelpers::ClearBuffers();
+//        Eegeo::Helpers::GLHelpers::ClearBuffers();
         
     }
     

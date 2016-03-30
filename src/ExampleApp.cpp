@@ -180,7 +180,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 //                                                                                               collisionVisualizationModule,
 //                                                                                               buildingFootprintsModule));
     
-    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
+//    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
     m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider);
     
 //    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
@@ -247,16 +247,16 @@ void ExampleApp::OnResume()
 	eegeoWorld.OnResume();
 }
 
+
 void ExampleApp::Update (float dt, float headTansform[])
 {
     
+    Eegeo::EegeoWorld& eegeoWorld(World());
     
-	Eegeo::EegeoWorld& eegeoWorld = World();
+    eegeoWorld.EarlyUpdate(dt);
     
-    m_pCameraTouchController->Update(dt);
+//    m_pCameraTouchController->Update(dt);
 
-	eegeoWorld.EarlyUpdate(dt);
-    
 	m_pExampleController->EarlyUpdate(dt);
     
     
@@ -281,6 +281,7 @@ void ExampleApp::Update (float dt, float headTansform[])
                                                   m_screenPropertiesProvider.GetScreenProperties());
     
 	eegeoWorld.Update(updateParameters);
+    
     m_pExampleController->Update(dt);
     
     UpdateNightTParam(dt);
@@ -291,12 +292,15 @@ void ExampleApp::Update (float dt, float headTansform[])
 
 void ExampleApp::Draw (float dt, float headTansform[]){
     
+    Eegeo_GL(glClearColor(m_currentClearColor.GetX(), m_currentClearColor.GetY(), m_currentClearColor.GetZ(), 1.0f));
+    
     bool isDismissed = m_pLoadingScreen == NULL;
     if(!isDismissed)
        isDismissed = m_pLoadingScreen->IsDismissed();
     
-    if (isDismissed)
+    if (isDismissed){
         m_VRDistortion->BeginRendering();
+    }
     
     DrawLeftEye(dt, headTansform);
     
@@ -380,17 +384,13 @@ void ExampleApp::ToggleNight()
     themeNameBuidler << "Default";
     m_pWorld->GetMapModule().GetCityThemesModule().GetCityThemesService().RequestTransitionToState(themeNameBuidler.str(), 1.f);
 
-    if (m_night)
-    {
+    if (m_night) {
         m_startClearColor = Eegeo::v3(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f);
         m_destClearColor = Eegeo::v3(0.0f/255.f,24.0f/255.f,72.0f/255.f) ;
-    }
-    else
-    {
+    } else {
         m_startClearColor = Eegeo::v3(0.0f/255.f,24.0f/255.f,72.0f/255.f);
         m_destClearColor = Eegeo::v3(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f);
     }
-    
     m_nightTParam = 0.f;
 }
 

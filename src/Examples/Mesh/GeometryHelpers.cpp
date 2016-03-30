@@ -8,6 +8,7 @@ namespace Examples
     namespace GeometryHelpers
     {
         
+        
         void BuildBox(const Eegeo::v3& halfDimensions, std::vector<Vertex>& out_vertices, std::vector<u16>& out_triangleIndices)
         {
             out_vertices.clear();
@@ -149,9 +150,13 @@ namespace Examples
         }
         
         void ComputeMeshPoints(int width, int height, bool distortVertices,std::vector<Vertex>& vertices,  int screenWidth, int screenHeight, float k1, float k2, float scale) {
+           
             //TODO get lens frustum from cardboard sdk
             float lensFrustum[4] = {-0.6987169f,1.140147f,1.212875f,-1.140147f};
             float noLensFrustum[4] = {-0.5897436f,0.7948717f,0.8205128f,-0.7948718f};
+            
+            
+            
             float viewport[4];
             GetLeftEyeVisibleScreenRect(noLensFrustum, screenWidth, screenHeight, viewport);
             vertices.reserve(2 * width * height);
