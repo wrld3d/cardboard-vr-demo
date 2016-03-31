@@ -128,7 +128,7 @@ namespace Examples
         std::vector<GeometryHelpers::Vertex> boxVertices;
         std::vector<u16> triangleIndices;
         
-        BuildDistortionMesh(boxVertices, triangleIndices, width, height, 2500.0);
+        BuildDistortionMesh(boxVertices, triangleIndices, width, height);
         
         std::vector<PositionUvVertex> unlitVertices;
         

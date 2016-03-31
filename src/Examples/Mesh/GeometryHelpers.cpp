@@ -149,8 +149,15 @@ namespace Examples
             rect[3] = top - bottom;
         }
         
-        void ComputeMeshPoints(int width, int height, bool distortVertices,std::vector<Vertex>& vertices,  int screenWidth, int screenHeight, float k1, float k2, float scale) {
-           
+
+        void ComputeMeshPoints(int width, int height, bool distortVertices,std::vector<Vertex>& vertices,  int screenWidth, int screenHeight, float k1, float k2) {
+
+            const float scaleRef = 34500.0f;
+            const int screenWidthRef = 1920, screenHeightRef = 1080;
+            
+            const float xScale = scaleRef * screenWidth / screenWidthRef;
+            const float yScale = scaleRef * screenHeight / screenHeightRef;
+            
             //TODO get lens frustum from cardboard sdk
             float lensFrustum[4] = {-0.6987169f,1.140147f,1.212875f,-1.140147f};
             float noLensFrustum[4] = {-0.5897436f,0.7948717f,0.8205128f,-0.7948718f};
@@ -194,8 +201,8 @@ namespace Examples
                         }
                         // Convert u,v to mesh screen coordinates.
                         float aspect = screenWidth / screenHeight;
-                        u = (viewport[0] + u * viewport[2] - 0.5f) * aspect * scale;
-                        v = (viewport[1] + v * viewport[3] - 0.5f ) * scale;
+                        u = (viewport[0] + u * viewport[2] - 0.5f) * aspect * xScale;
+                        v = (viewport[1] + v * viewport[3] - 0.5f ) * yScale;
                         s = (s + e) / 2;
                         vertices.push_back(Vertex(Eegeo::v3(u, v, 1), Eegeo::v3::Zero(), Eegeo::v2(s,t)));
                     }
@@ -246,8 +253,7 @@ namespace Examples
             }
         }
         
-        void BuildDistortionMesh(std::vector<Vertex>& out_vertices, std::vector<u16>& out_triangleIndices, int screenWidth, int screenHeight, float scaleFactor) {
-            //TODO scale factor should be a vector so each axis is seperate
+        void BuildDistortionMesh(std::vector<Vertex>& out_vertices, std::vector<u16>& out_triangleIndices, int screenWidth, int screenHeight) {
             out_vertices.clear();
             out_triangleIndices.clear();
             
@@ -255,7 +261,7 @@ namespace Examples
             //TODO get k1 and k2 values from cardboard sdk
             float k1 = 0.34f, k2 = 0.55f;
             bool kDistortVertices = true;
-            ComputeMeshPoints(kMeshWidth, kMeshHeight, kDistortVertices, out_vertices, screenWidth, screenHeight, k1, k2, scaleFactor);
+            ComputeMeshPoints(kMeshWidth, kMeshHeight, kDistortVertices, out_vertices, screenWidth, screenHeight, k1, k2);
             ComputeMeshIndices(kMeshWidth, kMeshHeight, kDistortVertices, out_triangleIndices);
             
         }
