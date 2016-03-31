@@ -20,6 +20,7 @@ namespace Eegeo
             class VRDistortionRenderer;
             class VRDistortionShader;
             class VRDistortionRenderable;
+            class VRCardboardDeviceProfile;
         }
     }
 }
