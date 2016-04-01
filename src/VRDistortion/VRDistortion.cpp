@@ -104,13 +104,16 @@ namespace Eegeo
                 std::vector<Eegeo::VR::Distortion::Vertex> boxVertices;
                 std::vector<u16> triangleIndices;
                 
+//                04-01 09:49:15.531: I/System.out(28707): params:::,,
+
+                
                 float profileData[] = {
                     50, //Outer
                     50, //Upper
                     50, //Inner
                     50, //Lower
-                    0.11022238f, //Width
-                    0.06187506f, //Height
+                    0.12622245f, //Width
+                    0.07031249f, //Height
                     0.003f, //Border
                     0.064f, //Separation
                     0.035f, //Offset

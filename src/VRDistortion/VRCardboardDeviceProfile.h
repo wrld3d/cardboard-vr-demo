@@ -63,7 +63,7 @@ namespace Eegeo
                 void SetupProfile(float profileData[]);
                 float Distort(float r, float k1, float k2);
                 float DistortInv(float radius, float k1, float k2);
-                double* SolveLeastSquares(double **matA, double *vecY, int numSamples, int numCoefficients);
+                void SolveLeastSquares(double **matA, double vecY[], int numSamples, const int numCoefficients, double vecX[]);
                 void GetLeftEyeVisibleScreenRect(float undistortedFrustum[], float *rect);
                 void GetLeftEyeVisibleTanAngles(float* result);
                 void GetLeftEyeNoLensTanAngles(float* result);

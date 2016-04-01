@@ -57,7 +57,7 @@ namespace Eegeo
                 device.inverse = ApproximateInverse(device.distortion);
             }
             
-            VRDistortionCoeff VRCardboardDeviceProfile::ApproximateInverse(VRDistortionCoeff distort, float maxRadius, int numSamples) {
+            VRDistortionCoeff VRCardboardDeviceProfile::ApproximateInverse(VRDistortionCoeff distort, float maxRadius, const int numSamples) {
                 const int numCoefficients = 2;
 
                 // R + k1*R^3 + k2*R^5 = r, with R = rp = distort(r)
@@ -71,7 +71,7 @@ namespace Eegeo
                 // Solve:
                 //   [K1, K2] = inverse(transpose(matA) * matA) * transpose(matA) * y
                 double **matA = new double*[numSamples];
-                double *vecY = new double[numSamples];
+                double vecY[numSamples];
                 for (int i = 0; i < numSamples; ++i) {
                     matA[i] = new double[numCoefficients];
                     float r = maxRadius * (i + 1) / (float) numSamples;
@@ -83,53 +83,50 @@ namespace Eegeo
                     }
                     vecY[i] = r - rp;
                 }
-                double *vecK = SolveLeastSquares(matA, vecY, numSamples, numCoefficients);
+                double vecK[numCoefficients];
+                SolveLeastSquares(matA, vecY, numSamples, numCoefficients, vecK);
                 VRDistortionCoeff coeef = {(float)vecK[0],(float)vecK[1]};
-                EXAMPLE_LOG("aaaaaaaaaaaaaaaaaaaaa25");
+                for (int i = 0; i < numSamples; ++i) {
+                    delete [] matA[i];
+                }
+                
+                delete [] matA;
                 return coeef;
             }
             
-            double* VRCardboardDeviceProfile::SolveLeastSquares(double **matA, double *vecY, int numSamples, int numCoefficients) {
+            void VRCardboardDeviceProfile::SolveLeastSquares(double **matA, double vecY[], const int numSamples, const int numCoefficients, double vecX[]) {
                 if (numCoefficients != 2) {
                     EXAMPLE_LOG("Only 2 coefficients supported.");
-                    return NULL;
+                    return;
                 }
                 // Calculate transpose(A) * A
-                double **matATA = new double*[numCoefficients];
-                
-                for (int t = 0; t<numCoefficients; t++) {
-                    matATA[t] = new double[numCoefficients];
-                }
+                double matATA[numCoefficients][numCoefficients];
+
                 
                 for (int k = 0; k < numCoefficients; ++k) {
                     for (int j = 0; j < numCoefficients; ++j) {
                         double sum = 0.0f;
-                                                            EXAMPLE_LOG("aaaaaaaaaaaaaaaaaaaaa223");
                         for (int i = 0; i < numSamples; ++i) {
                             sum += matA[i][j] * matA[i][k];
                         }
-                                                            EXAMPLE_LOG("aaaaaaaaaaaaaaaaaaaaa222");
                         matATA[j][k] = sum;
                     }
                 }
-                EXAMPLE_LOG("aaaaaaaaaaaaaaaaaaaaa23");
+
                 // Calculate the inverse of transpose(A) * A.  Inverting isn't recommended for numerical
                 // stability, but should be ok for small and well-behaved data sets.  Using manual matrix
                 // inversion here (hence the restriction of numCoefficients to 2 in this function).
-                double** matInvATA = new double*[numCoefficients];//, numCoefficients];
-                
-                for (int i = 0; i<numCoefficients; i++) {
-                    matInvATA[i] = new double[numCoefficients];
-                }
+
+                double matInvATA[numCoefficients][numCoefficients];
                 
                 double det = matATA[0][0] * matATA[1][1] - matATA[0][1] * matATA[1][0];
                 matInvATA[0][0] = matATA[1][1] / det;
                 matInvATA[1][1] = matATA[0][0] / det;
                 matInvATA[0][1] = -matATA[1][0] / det;
                 matInvATA[1][0] = -matATA[0][1] / det;
-                EXAMPLE_LOG("aaaaaaaaaaaaaaaaaaaaa24");
+
                 // Calculate transpose(A) * y
-                double* vecATY = new double[numCoefficients];
+                double vecATY[numCoefficients];
                 for (int j = 0; j < numCoefficients; ++j) {
                     double sum = 0.0;
                     for (int i = 0; i < numSamples; ++i) {
@@ -137,9 +134,8 @@ namespace Eegeo
                     }
                     vecATY[j] = sum;
                 }
-                EXAMPLE_LOG("aaaaaaaaaaaaaaaaaaaaa244");
+
                 // Now matrix multiply the previous values to get the result.
-                double* vecX = new double[numCoefficients];
                 for (int j = 0; j < numCoefficients; ++j) {
                     double sum = 0.0;
                     for (int i = 0; i < numCoefficients; ++i) {
@@ -147,8 +143,6 @@ namespace Eegeo
                     }
                     vecX[j] = sum;
                 }
-                EXAMPLE_LOG("aaaaaaaaaaaaaaaaaaaaa2444");
-                return vecX;
             }
             
             /// The vertical offset of the lens centers from the screen center.

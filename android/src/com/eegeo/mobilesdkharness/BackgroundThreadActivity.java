@@ -15,6 +15,8 @@ import android.view.WindowManager;
 
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
 import com.google.vrtoolkit.cardboard.DistortionRenderer;
+import com.google.vrtoolkit.cardboard.ScreenParams;
+import com.google.vrtoolkit.cardboard.proto.nano.CardboardDevice.DeviceParams;
 import com.google.vrtoolkit.cardboard.sensors.HeadTracker;
 import com.google.vrtoolkit.cardboard.sensors.MagnetSensor;
 import com.google.vrtoolkit.cardboard.sensors.MagnetSensor.OnCardboardTriggerListener;
@@ -36,6 +38,7 @@ public class BackgroundThreadActivity extends MainActivity
 	private MagnetSensor m_magnetSensor;
 	
 	private NfcSensor mNfcSensor;
+	private ScreenParams mParams;
 	
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
@@ -48,6 +51,9 @@ public class BackgroundThreadActivity extends MainActivity
 
 		setContentView(R.layout.activity_main);
 
+		ScreenParams params = new ScreenParams(getWindowManager().getDefaultDisplay());
+		System.out.println("params:::"+params.getWidthMeters()+","+params.getHeightMeters()+","+params.getBorderSizeMeters());
+		
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		final float dpi = dm.ydpi;
 		final Activity activity = this;

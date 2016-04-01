@@ -32,11 +32,14 @@ namespace Eegeo
             
             void ComputeMeshPoints(int width, int height, bool distortVertices,std::vector<Vertex>& vertices, int screenWidth, int screenHeight, VRCardboardDeviceProfile profile) {
                 
-                const float scaleRef = 2.0f;
-                const int screenWidthRef = 1920, screenHeightRef = 1080;
-                //
-                const float xScale = scaleRef * screenWidth / screenWidthRef;
-                const float yScale = scaleRef * screenHeight / screenHeightRef;
+//                const float scaleRef = 2.0f;
+//                const int screenWidthRef = 1920, screenHeightRef = 1080;
+//                //
+//                const float xScale = scaleRef * screenWidth / screenWidthRef;
+//                const float yScale = scaleRef * screenHeight / screenHeightRef;
+
+                const float xScale = 2.0f;
+                const float yScale = 2.0f;
                 
                 float lensFrustum[4];// = {-0.6987169f,1.140147f,1.212875f,-1.140147f};
                 float noLensFrustum[4];// = {-0.5897436f,0.7948717f,0.8205128f,-0.7948718f};
