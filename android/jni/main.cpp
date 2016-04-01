@@ -123,6 +123,13 @@ JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_setNativeS
 	}
 }
 
+JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateCardboardProfile(JNIEnv* jenv, jobject obj, jfloatArray cardboardProfile)
+{
+    jfloat* cbProfile = jenv->GetFloatArrayElements(cardboardProfile, 0);
+    g_pAppRunner->UpdateCardboardProfile(cbProfile);
+    jenv->ReleaseFloatArrayElements(cardboardProfile, cbProfile, 0);
+}
+
 JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_magnetTriggered(JNIEnv* jenv, jobject obj)
 {
     g_pAppRunner->MagnetTriggered();

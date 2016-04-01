@@ -64,6 +64,9 @@ public:
     void UpdateNightTParam(float dt);
     void ToggleNight();
     void UpdateFogging();
+    
+    
+    void UpdateCardboardProfile(float cardboardProfile[]);
     void MagnetTriggered();
     
     void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);

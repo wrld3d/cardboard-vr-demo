@@ -40,8 +40,9 @@ namespace Eegeo
                 
                 Eegeo::Rendering::RenderTexture* m_pFBRenderTexture;
                 Eegeo::Rendering::VertexLayouts::VertexLayout* m_pPositionUvVertexLayout;
-                
                 Eegeo::Rendering::ScreenProperties m_screenProperties;
+                
+                VRCardboardDeviceProfile* m_cardboardProfile;
                 
                 void HandleScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
                 
@@ -57,6 +58,8 @@ namespace Eegeo
                                 
                 void Initialize();
                 void Suspend();
+                
+                void UpdateCardboardProfile(float cardboardProfile[]);
                 
                 void BeginRendering();
                 void RegisterRenderable();

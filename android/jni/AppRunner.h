@@ -23,8 +23,9 @@ public:
 	void ActivateSurface();
 	void Update(float deltaSeconds, float headTansform[]);
 
-	void HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& message);
-
+    void HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& message);
+    
+    void UpdateCardboardProfile(float cardboardProfile[]);
     void MagnetTriggered();
     void TryRenderFameBufferTexture();
     

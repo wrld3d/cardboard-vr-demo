@@ -394,6 +394,11 @@ void ExampleApp::ToggleNight()
     m_nightTParam = 0.f;
 }
 
+void ExampleApp::UpdateCardboardProfile(float cardboardProfile[])
+{
+    m_VRDistortion->UpdateCardboardProfile(cardboardProfile);
+}
+
 
 void ExampleApp::MagnetTriggered(){
     ToggleNight();

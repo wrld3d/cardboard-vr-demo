@@ -25,7 +25,9 @@ import com.google.vrtoolkit.cardboard.sensors.NfcSensor.OnCardboardNfcListener;
 
 public class BackgroundThreadActivity extends MainActivity
 {
-	
+
+	private static final float METERS_PER_INCH = 0.0254f;
+
 	private EegeoSurfaceView m_surfaceView;
 	private SurfaceHolder m_surfaceHolder;
 	private long m_nativeAppWindowPtr;
@@ -51,12 +53,11 @@ public class BackgroundThreadActivity extends MainActivity
 
 		setContentView(R.layout.activity_main);
 
-		ScreenParams params = new ScreenParams(getWindowManager().getDefaultDisplay());
-		System.out.println("params:::"+params.getWidthMeters()+","+params.getHeightMeters()+","+params.getBorderSizeMeters());
-		
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		final float dpi = dm.ydpi;
 		final Activity activity = this;
+		
+		mParams = new ScreenParams(getWindowManager().getDefaultDisplay());
 		
 		m_surfaceView = (EegeoSurfaceView)findViewById(R.id.surface);
 		m_surfaceView.getHolder().addCallback(this);
@@ -117,17 +118,37 @@ public class BackgroundThreadActivity extends MainActivity
 			public void run()
 			{
 				m_nativeAppWindowPtr = NativeJniCalls.createNativeCode(activity, getAssets(), dpi);
-
 				if(m_nativeAppWindowPtr == 0)
 				{
 					throw new RuntimeException("Failed to start native code.");
 				}
+//				NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
 			}
 		});
 	}
 
-	private static final float METERS_PER_INCH = 0.0254f;
+	private float[] getUpdatedCardboardProfile(){
 
+		float cardboardProperties[] = {
+                50, //Outer
+                50, //Upper
+                50, //Inner
+                50, //Lower
+    	        mParams.getWidthMeters(), //Width
+    	        mParams.getHeightMeters(), //Height
+    	        mParams.getBorderSizeMeters(), //Border
+                0.062f, //Separation
+                0.035f, //Offset
+                0.037f, //Screen Distance
+                1, //Alignment
+                0.26f, //K1
+                0.27f  //K2
+            };
+		
+		return cardboardProperties;
+
+	}
+	
 	public void SetHeadMountedDisplayResolution(int width, int height) {
 		
 //		try {
@@ -179,10 +200,7 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onResume()
 	{
 		super.onResume();
-		
-//        if (m_cardboardView != null) {
-//        	m_cardboardView.onResume();
-//        }
+
 		setScreenSettings();
 		runOnNativeThread(new Runnable()
 		{
@@ -197,6 +215,19 @@ public class BackgroundThreadActivity extends MainActivity
 				}
 			}
 		});
+		
+//		getWindow().getDecorView().postDelayed(new Runnable(	) {
+//			
+//			@Override
+//			public void run() {
+//				runOnUiThread( new Runnable() {
+//					public void run() {
+//					
+//				NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());	
+//					}
+//				});
+//			}
+//		}, 500);
 	}
 
 	@Override

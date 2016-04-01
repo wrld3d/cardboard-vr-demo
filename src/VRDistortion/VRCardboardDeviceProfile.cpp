@@ -16,6 +16,28 @@ namespace Eegeo
         namespace Distortion
         {
             
+            
+            VRCardboardDeviceProfile::VRCardboardDeviceProfile(){
+                
+                float profileData[] = {
+                    50, //Outer
+                    50, //Upper
+                    50, //Inner
+                    50, //Lower
+                    0.12622245f, //Width
+                    0.07031249f, //Height
+                    0.003f, //Border
+                    0.064f, //Separation
+                    0.035f, //Offset
+                    0.061f, //Screen Distance
+                    VRLenses::AlignBottom, //Alignment
+                    0.28f, //K1
+                    0.49f  //K2
+                };
+                
+                SetupProfile(profileData);
+            }
+            
             VRDevice VRCardboardDeviceProfile::GetDevice() {
                 return device;
             }

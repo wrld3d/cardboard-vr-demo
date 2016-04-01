@@ -75,15 +75,14 @@ namespace Eegeo
             
             float near, far;
             GetNearFarPlaneDistances(near,far);
-            m_ecefPosition = m_ecefPosition + m_ecefPosition.Norm()*(1.75f);
+            m_ecefPosition = m_ecefPosition + m_ecefPosition.Norm()*(3.75f);
             if(!std::isnan(factor)){
                 m_VRCameraPositionSpline.setSlowDownFactor(1.f - factor);
                 m_renderCamera.SetOrientationMatrix(orientationMatrix);
                 m_renderCamera.SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
-                m_renderCamera.SetProjection(0.7f, 5.0f, far);
+                m_renderCamera.SetProjection(0.7f, near*0.01f, far);
             }
             
-
         }
         
         void VREegeoCameraController::SetEcefPosition(const Eegeo::dv3& ecef)

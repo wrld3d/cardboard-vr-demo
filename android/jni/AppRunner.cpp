@@ -86,6 +86,14 @@ void AppRunner::HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& e
     }
 }
 
+void AppRunner::UpdateCardboardProfile(float cardboardProfile[])
+{
+    if(m_pAppHost != NULL)
+    {
+        m_pAppHost->UpdateCardboardProfile(cardboardProfile);
+    }
+}
+
 void AppRunner::MagnetTriggered()
 {
     if(m_pAppHost != NULL)

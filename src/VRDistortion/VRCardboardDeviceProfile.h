@@ -59,6 +59,9 @@ namespace Eegeo
             class VRCardboardDeviceProfile
             {
             public:
+                
+                VRCardboardDeviceProfile();
+                
                 VRDistortionCoeff ApproximateInverse(VRDistortionCoeff distort, float maxRadius = 1, int numSamples = 10);
                 void SetupProfile(float profileData[]);
                 float Distort(float r, float k1, float k2);

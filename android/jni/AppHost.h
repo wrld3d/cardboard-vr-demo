@@ -61,6 +61,7 @@ public:
 
 	void HandleTouchInputEvent(const Eegeo::Android::Input::TouchInputEvent& event);
     
+    void UpdateCardboardProfile(float cardboardProfile[]);
     void MagnetTriggered();
     
 	void SetEnvironmentFlatten(bool flattenState);

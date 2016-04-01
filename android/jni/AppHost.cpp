@@ -220,6 +220,11 @@ void AppHost::HandleTouchInputEvent(const Eegeo::Android::Input::TouchInputEvent
 	m_pInputProcessor->HandleInput(event);
 }
 
+void AppHost::UpdateCardboardProfile(float cardboardProfile[])
+{
+    m_pApp->UpdateCardboardProfile(cardboardProfile);
+}
+
 void AppHost::MagnetTriggered(){
     m_pApp->MagnetTriggered();
 }

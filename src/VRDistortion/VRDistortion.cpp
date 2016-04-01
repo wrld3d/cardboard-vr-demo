@@ -95,38 +95,19 @@ namespace Eegeo
             ,m_pVRDistortionRenderer(NULL)
             ,m_pFBRenderTexture(NULL)
             {
+                
+                m_cardboardProfile = new VRCardboardDeviceProfile();
                 m_pPositionUvVertexLayout = CreatePositionUvVertexLayout();
             }
             
-            Eegeo::Rendering::Mesh* CreateUnlitDistortionMesh(float width, float height, const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout, Eegeo::Rendering::GlBufferPool& glBufferPool)
+            Eegeo::Rendering::Mesh* CreateUnlitDistortionMesh(float width, float height, const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout, Eegeo::Rendering::GlBufferPool& glBufferPool, VRCardboardDeviceProfile& cardboardProfile)
             {
 //                std::vector<Examples::GeometryHelpers::Vertex> boxVertices;
                 std::vector<Eegeo::VR::Distortion::Vertex> boxVertices;
                 std::vector<u16> triangleIndices;
                 
-//                04-01 09:49:15.531: I/System.out(28707): params:::,,
 
-                
-                float profileData[] = {
-                    50, //Outer
-                    50, //Upper
-                    50, //Inner
-                    50, //Lower
-                    0.12622245f, //Width
-                    0.07031249f, //Height
-                    0.003f, //Border
-                    0.064f, //Separation
-                    0.035f, //Offset
-                    0.061f, //Screen Distance
-                    VRLenses::AlignBottom, //Alignment
-                    0.28f, //K1
-                    0.49f  //K2
-                };
-
-                VRCardboardDeviceProfile profile;
-                profile.SetupProfile(profileData);
-//                BuildDistortionMesh(boxVertices, triangleIndices, width, height);
-                BuildDistortionMesh(boxVertices, triangleIndices, width, height, profile);
+                BuildDistortionMesh(boxVertices, triangleIndices, width, height, cardboardProfile);
                 
                 std::vector<PositionUvVertex> unlitVertices;
                 
@@ -164,8 +145,8 @@ namespace Eegeo
                                                                              m_screenProperties);
                 
                 Eegeo::Rendering::Mesh* pRenderableMesh = Eegeo::Rendering::Geometry::CreatePositionUVViewportQuad(m_glBufferPool, m_vertexLayoutPool);
-              
-                pRenderableMesh = CreateUnlitDistortionMesh(m_screenProperties.GetScreenWidth()*2.f, m_screenProperties.GetScreenHeight(), *m_pPositionUvVertexLayout, m_glBufferPool);
+                
+                pRenderableMesh = CreateUnlitDistortionMesh(m_screenProperties.GetScreenWidth()*2.f, m_screenProperties.GetScreenHeight(), *m_pPositionUvVertexLayout, m_glBufferPool, *m_cardboardProfile);
                 
                 const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout = pRenderableMesh->GetVertexLayout();
                 const Eegeo::Rendering::VertexLayouts::VertexAttribs& vertexAttributes = m_pVRDistortionShader->GetVertexAttributes();
@@ -210,6 +191,11 @@ namespace Eegeo
                     Suspend();
                     Initialize();
                 }
+            }
+            
+            void VRDistortion::UpdateCardboardProfile(float cardboardProfile[])
+            {
+                m_cardboardProfile->SetupProfile(cardboardProfile);
             }
             
             void VRDistortion::BeginRendering()
