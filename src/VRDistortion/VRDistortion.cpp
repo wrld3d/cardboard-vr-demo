@@ -17,12 +17,14 @@
 #include "RenderableFilters.h"
 #include "VertexBindingPool.h"
 #include "ScreenProperties.h"
-#include "GeometryHelpers.h"
+//#include "GeometryHelpers.h"
 #include "LayerIds.h"
+#include "VRDistortionMeshHelper.h"
 #include "VRDistortionShader.h"
 #include "VRDistortionMaterial.h"
 #include "VRDistortionRenderable.h"
 #include "VRDistortionRenderer.h"
+#include "VRCardboardDeviceProfile.h"
 
 #include "Logger.h"
 
@@ -51,8 +53,8 @@ namespace Eegeo
                 v.v = uv.y;
                 return v;
             }
-            
-            inline PositionUvVertex GeometryHelpersVertexToPositionUvVertex(const Examples::GeometryHelpers::Vertex& v)
+//            inline PositionUvVertex GeometryHelpersVertexToPositionUvVertex(const Examples::GeometryHelpers::Vertex& v)
+            inline PositionUvVertex GeometryHelpersVertexToPositionUvVertex(const Eegeo::VR::Distortion::Vertex& v)
             {
                 return MakePositionUvVertex(v.position, v.uv);
             }
@@ -98,10 +100,33 @@ namespace Eegeo
             
             Eegeo::Rendering::Mesh* CreateUnlitDistortionMesh(float width, float height, const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout, Eegeo::Rendering::GlBufferPool& glBufferPool)
             {
-                std::vector<Examples::GeometryHelpers::Vertex> boxVertices;
+//                std::vector<Examples::GeometryHelpers::Vertex> boxVertices;
+                std::vector<Eegeo::VR::Distortion::Vertex> boxVertices;
                 std::vector<u16> triangleIndices;
-       
-                BuildDistortionMesh(boxVertices, triangleIndices, width, height);
+                
+//                04-01 09:49:15.531: I/System.out(28707): params:::,,
+
+                
+                float profileData[] = {
+                    50, //Outer
+                    50, //Upper
+                    50, //Inner
+                    50, //Lower
+                    0.12622245f, //Width
+                    0.07031249f, //Height
+                    0.003f, //Border
+                    0.064f, //Separation
+                    0.035f, //Offset
+                    0.061f, //Screen Distance
+                    VRLenses::AlignBottom, //Alignment
+                    0.28f, //K1
+                    0.49f  //K2
+                };
+
+                VRCardboardDeviceProfile profile;
+                profile.SetupProfile(profileData);
+//                BuildDistortionMesh(boxVertices, triangleIndices, width, height);
+                BuildDistortionMesh(boxVertices, triangleIndices, width, height, profile);
                 
                 std::vector<PositionUvVertex> unlitVertices;
                 
