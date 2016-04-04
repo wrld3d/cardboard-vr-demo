@@ -9,19 +9,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams.VerticalAlignmentType;
-import com.google.vrtoolkit.cardboard.Distortion;
 import com.google.vrtoolkit.cardboard.DistortionRenderer;
 import com.google.vrtoolkit.cardboard.FieldOfView;
 import com.google.vrtoolkit.cardboard.HeadMountedDisplayManager;
 import com.google.vrtoolkit.cardboard.ScreenParams;
-import com.google.vrtoolkit.cardboard.proto.nano.CardboardDevice.DeviceParams;
 import com.google.vrtoolkit.cardboard.sensors.HeadTracker;
 import com.google.vrtoolkit.cardboard.sensors.MagnetSensor;
 import com.google.vrtoolkit.cardboard.sensors.MagnetSensor.OnCardboardTriggerListener;
@@ -39,14 +36,10 @@ public class BackgroundThreadActivity extends MainActivity
 	private ThreadedUpdateRunner m_threadedRunner;
 	private Thread m_updater;
 
-	private DistortionRenderer m_distortionRenderer;
-//	private CardboardView m_cardboardView;
 	private HeadTracker m_headTracker; 
 	private MagnetSensor m_magnetSensor;
 	
 	private NfcSensor mNfcSensor;
-	//private ScreenParams mParams;
-//	private HeadMountedDisplayManager mHMDManager;
 	
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
@@ -62,9 +55,6 @@ public class BackgroundThreadActivity extends MainActivity
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		final float dpi = dm.ydpi;
 		final Activity activity = this;
-		
-		//mParams = new ScreenParams(getWindowManager().getDefaultDisplay());
-//		mHMDManager = new HeadMountedDisplayManager(this);
 		
 		m_surfaceView = (EegeoSurfaceView)findViewById(R.id.surface);
 		m_surfaceView.getHolder().addCallback(this);
@@ -101,19 +91,6 @@ public class BackgroundThreadActivity extends MainActivity
 			}
 		});
 		
-		
-		m_distortionRenderer = new DistortionRenderer();
-		m_distortionRenderer.setVignetteEnabled(true);
-		m_distortionRenderer.setChromaticAberrationCorrectionEnabled(true);
-
-//		m_distortionRenderer.onFovChanged(hmd, leftFov, rightFov, virtualEyeToScreenDistance)
-		
-//		m_cardboardView = new CardboardView(this);
-//		m_cardboardView.setVignetteEnabled(true);
-//		m_cardboardView.setVRModeEnabled(true);
-//		m_cardboardView.updateCardboardDeviceParams(CardboardDeviceParams.cardboardV1DeviceParams());
-		
-		
 		m_threadedRunner = new ThreadedUpdateRunner(false);
 		m_updater = new Thread(m_threadedRunner);
 		m_updater.start();
@@ -129,15 +106,16 @@ public class BackgroundThreadActivity extends MainActivity
 				{
 					throw new RuntimeException("Failed to start native code.");
 				}
-//				NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
 			}
 		});
+
+		
 	}
 
 	private float[] getUpdatedCardboardProfile(){
-		HeadMountedDisplayManager mHMDManager = new HeadMountedDisplayManager(this);
-		ScreenParams screenParams = mHMDManager.getHeadMountedDisplay().getScreenParams();
-		CardboardDeviceParams cardboardDeviceParams = mHMDManager.getHeadMountedDisplay().getCardboardDeviceParams();
+		HeadMountedDisplayManager hMDManager = new HeadMountedDisplayManager(this);
+		ScreenParams screenParams = hMDManager.getHeadMountedDisplay().getScreenParams();
+		CardboardDeviceParams cardboardDeviceParams = hMDManager.getHeadMountedDisplay().getCardboardDeviceParams();
 		FieldOfView fov = cardboardDeviceParams.getLeftEyeMaxFov();
 		float[] distCoef = cardboardDeviceParams.getDistortion().getCoefficients();
 		
@@ -164,13 +142,13 @@ public class BackgroundThreadActivity extends MainActivity
                 distCoef[1]  //K2
             };
 		
-		String logStr = "";
-		
-		for (int i = 0; i < cardboardProperties.length; i++)
-			logStr += cardboardProperties[i] + ",\n";
-		
-		Log.i("CardboardVRTest", "Parameters for " + cardboardDeviceParams.getModel() + " by " + cardboardDeviceParams.getVendor());
-		Log.i("CardboardVRTest", logStr);
+//		String logStr = "";
+//		
+//		for (int i = 0; i < cardboardProperties.length; i++)
+//			logStr += cardboardProperties[i] + ",\n";
+//		
+//		Log.i("CardboardVRTest", "Parameters for " + cardboardDeviceParams.getModel() + " by " + cardboardDeviceParams.getVendor());
+//		Log.i("CardboardVRTest", logStr);
 		
 		return cardboardProperties;
 
@@ -245,19 +223,17 @@ public class BackgroundThreadActivity extends MainActivity
 				}
 			}
 		});
-		
-//		getWindow().getDecorView().postDelayed(new Runnable(	) {
-//			
-//			@Override
-//			public void run() {
-//				runOnUiThread( new Runnable() {
-//					public void run() {
-//					
-//				NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());	
-//					}
-//				});
-//			}
-//		}, 500);
+
+		getWindow().getDecorView().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				runOnNativeThread( new Runnable() {
+					public void run() {
+						NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());	
+					}
+				});
+			}
+		}, 500);
 	}
 
 	@Override

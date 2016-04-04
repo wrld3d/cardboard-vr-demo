@@ -196,6 +196,9 @@ namespace Eegeo
             void VRDistortion::UpdateCardboardProfile(float cardboardProfile[])
             {
                 m_cardboardProfile->SetupProfile(cardboardProfile);
+                Suspend();
+                Initialize();
+                
             }
             
             void VRDistortion::BeginRendering()
