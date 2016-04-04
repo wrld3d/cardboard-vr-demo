@@ -41,7 +41,6 @@ namespace Eegeo
                 }
             };
             
-            void BuildBox(const Eegeo::v3& halfDimensions, std::vector<Vertex>& out_vertices, std::vector<u16>& out_triangleIndices);
             void BuildDistortionMesh(std::vector<Vertex>& out_vertices, std::vector<u16>& out_triangleIndices, int screenWidth, int screenHeight, VRCardboardDeviceProfile profile);
         }
     }

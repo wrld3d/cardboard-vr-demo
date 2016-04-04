@@ -14,21 +14,6 @@ namespace Eegeo
     {
         namespace Distortion
         {
-            void GetLeftEyeVisibleScreenRectTest(float undistortedFrustum[], int screenWidth, int screenHeight, float *rect) {
-                //TODO get values from cardboard
-                float dist = 0.039f;
-                float eyeX = (screenWidth - 0.064f) / 2;
-                float eyeY = screenHeight / 2;
-                float left = (undistortedFrustum[0] * dist + eyeX) / screenWidth;
-                float top = (undistortedFrustum[1] * dist + eyeY) / screenHeight;
-                float right = (undistortedFrustum[2] * dist + eyeX) / screenWidth;
-                float bottom = (undistortedFrustum[3] * dist + eyeY) / screenHeight;
-                
-                rect[0] = left;
-                rect[1] = bottom;
-                rect[2] = right - left;
-                rect[3] = top - bottom;
-            }
             
             void ComputeMeshPoints(int width, int height, bool distortVertices,std::vector<Vertex>& vertices, int screenWidth, int screenHeight, VRCardboardDeviceProfile profile) {
                 

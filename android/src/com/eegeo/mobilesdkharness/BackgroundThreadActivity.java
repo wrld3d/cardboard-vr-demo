@@ -9,12 +9,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
+import com.google.vrtoolkit.cardboard.CardboardDeviceParams.VerticalAlignmentType;
+import com.google.vrtoolkit.cardboard.Distortion;
 import com.google.vrtoolkit.cardboard.DistortionRenderer;
+import com.google.vrtoolkit.cardboard.FieldOfView;
+import com.google.vrtoolkit.cardboard.HeadMountedDisplayManager;
 import com.google.vrtoolkit.cardboard.ScreenParams;
 import com.google.vrtoolkit.cardboard.proto.nano.CardboardDevice.DeviceParams;
 import com.google.vrtoolkit.cardboard.sensors.HeadTracker;
@@ -40,7 +45,8 @@ public class BackgroundThreadActivity extends MainActivity
 	private MagnetSensor m_magnetSensor;
 	
 	private NfcSensor mNfcSensor;
-	private ScreenParams mParams;
+	//private ScreenParams mParams;
+//	private HeadMountedDisplayManager mHMDManager;
 	
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
@@ -57,7 +63,8 @@ public class BackgroundThreadActivity extends MainActivity
 		final float dpi = dm.ydpi;
 		final Activity activity = this;
 		
-		mParams = new ScreenParams(getWindowManager().getDefaultDisplay());
+		//mParams = new ScreenParams(getWindowManager().getDefaultDisplay());
+//		mHMDManager = new HeadMountedDisplayManager(this);
 		
 		m_surfaceView = (EegeoSurfaceView)findViewById(R.id.surface);
 		m_surfaceView.getHolder().addCallback(this);
@@ -128,22 +135,42 @@ public class BackgroundThreadActivity extends MainActivity
 	}
 
 	private float[] getUpdatedCardboardProfile(){
-
+		HeadMountedDisplayManager mHMDManager = new HeadMountedDisplayManager(this);
+		ScreenParams screenParams = mHMDManager.getHeadMountedDisplay().getScreenParams();
+		CardboardDeviceParams cardboardDeviceParams = mHMDManager.getHeadMountedDisplay().getCardboardDeviceParams();
+		FieldOfView fov = cardboardDeviceParams.getLeftEyeMaxFov();
+		float[] distCoef = cardboardDeviceParams.getDistortion().getCoefficients();
+		
+		int verticalAlign = 0; //Default bottom
+		
+		if (cardboardDeviceParams.getVerticalAlignment() == VerticalAlignmentType.TOP)
+			verticalAlign = -1;
+		else if (cardboardDeviceParams.getVerticalAlignment() == VerticalAlignmentType.BOTTOM)
+			verticalAlign = 1;
+		
 		float cardboardProperties[] = {
-                50, //Outer
-                50, //Upper
-                50, //Inner
-                50, //Lower
-    	        mParams.getWidthMeters(), //Width
-    	        mParams.getHeightMeters(), //Height
-    	        mParams.getBorderSizeMeters(), //Border
-                0.062f, //Separation
-                0.035f, //Offset
-                0.037f, //Screen Distance
-                1, //Alignment
-                0.26f, //K1
-                0.27f  //K2
+                fov.getLeft(), //Outer
+                fov.getTop(), //Upper
+                fov.getRight(), //Inner
+                fov.getBottom(), //Lower
+                screenParams.getWidthMeters(), //Width
+                screenParams.getHeightMeters(), //Height
+                screenParams.getBorderSizeMeters(), //Border
+                cardboardDeviceParams.getInterLensDistance(), //Separation
+                cardboardDeviceParams.getVerticalDistanceToLensCenter(), //Offset
+                cardboardDeviceParams.getScreenToLensDistance(), //Screen Distance
+                verticalAlign, //Alignment
+                distCoef[0], //K1
+                distCoef[1]  //K2
             };
+		
+		String logStr = "";
+		
+		for (int i = 0; i < cardboardProperties.length; i++)
+			logStr += cardboardProperties[i] + ",\n";
+		
+		Log.i("CardboardVRTest", "Parameters for " + cardboardDeviceParams.getModel() + " by " + cardboardDeviceParams.getVendor());
+		Log.i("CardboardVRTest", logStr);
 		
 		return cardboardProperties;
 
@@ -202,6 +229,9 @@ public class BackgroundThreadActivity extends MainActivity
 		super.onResume();
 
 		setScreenSettings();
+		
+		getUpdatedCardboardProfile();
+		
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
