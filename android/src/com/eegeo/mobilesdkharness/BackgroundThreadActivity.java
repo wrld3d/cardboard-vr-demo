@@ -9,13 +9,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams.VerticalAlignmentType;
-import com.google.vrtoolkit.cardboard.DistortionRenderer;
 import com.google.vrtoolkit.cardboard.FieldOfView;
 import com.google.vrtoolkit.cardboard.HeadMountedDisplayManager;
 import com.google.vrtoolkit.cardboard.ScreenParams;
@@ -82,12 +82,12 @@ public class BackgroundThreadActivity extends MainActivity
 		mNfcSensor.addOnCardboardNfcListener(new OnCardboardNfcListener() {
 			@Override
 			public void onRemovedFromCardboard() {
-				System.out.println("On Removed From Cardboard.");
+//				System.out.println("On Removed From Cardboard.");
 			}
 			
 			@Override
 			public void onInsertedIntoCardboard(CardboardDeviceParams params) {
-				System.out.println("params: "+params.getDistortion().getCoefficients()[0]);
+//				System.out.println("params: "+params.getDistortion().getCoefficients()[0]);
 			}
 		});
 		
@@ -108,7 +108,6 @@ public class BackgroundThreadActivity extends MainActivity
 				}
 			}
 		});
-
 		
 	}
 
@@ -142,7 +141,7 @@ public class BackgroundThreadActivity extends MainActivity
                 distCoef[1]  //K2
             };
 		
-//		String logStr = "";
+//		String logStr = "Parameters";
 //		
 //		for (int i = 0; i < cardboardProperties.length; i++)
 //			logStr += cardboardProperties[i] + ",\n";
@@ -187,6 +186,7 @@ public class BackgroundThreadActivity extends MainActivity
 	
 	@SuppressLint("InlinedApi") 
 	private void setScreenSettings(){
+		
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		if(android.os.Build.VERSION.SDK_INT<16)
 			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
@@ -194,6 +194,7 @@ public class BackgroundThreadActivity extends MainActivity
 			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN);
 		else
 			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN);
+		
 	}
 	
 	public void runOnNativeThread(Runnable runnable)
@@ -208,8 +209,6 @@ public class BackgroundThreadActivity extends MainActivity
 
 		setScreenSettings();
 		
-		getUpdatedCardboardProfile();
-		
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
@@ -221,19 +220,9 @@ public class BackgroundThreadActivity extends MainActivity
 				{
 					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
 				}
+				NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());	
 			}
 		});
-
-		getWindow().getDecorView().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				runOnNativeThread( new Runnable() {
-					public void run() {
-						NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());	
-					}
-				});
-			}
-		}, 500);
 	}
 
 	@Override
@@ -308,6 +297,7 @@ public class BackgroundThreadActivity extends MainActivity
 					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
 					m_threadedRunner.start();
 				}
+				NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
 			}
 		});
 	}

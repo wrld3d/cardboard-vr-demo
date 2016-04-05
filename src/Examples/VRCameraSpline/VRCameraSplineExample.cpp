@@ -64,9 +64,9 @@ namespace Examples
         orientation.SetRow(1, up);
         orientation.SetRow(2, forward);
         
-        Eegeo::dv3 eyeDistanceD = m_pSplineCameraController->GetCameraPosition().Norm()*0.03f;
+        Eegeo::dv3 eyeDistanceD = m_pSplineCameraController->GetCameraPosition().Norm()*-0.03f;
         Eegeo::v3 eD(eyeDistanceD.GetX(), eyeDistanceD.GetY(), eyeDistanceD.GetZ());
-        m_pSplineCameraController->UpdateFromPose(orientation, eD);
+        m_pSplineCameraController->UpdateFromPose(orientation, eD, -0.03f);
         
         return m_pSplineCameraController->GetCameraState();
     }
@@ -81,9 +81,9 @@ namespace Examples
         orientation.SetRow(1, up);
         orientation.SetRow(2, forward);
 
-        Eegeo::dv3 eyeDistanceD = m_pSplineCameraController->GetCameraPosition().Norm()*-0.03f;
+        Eegeo::dv3 eyeDistanceD = m_pSplineCameraController->GetCameraPosition().Norm()*0.03f;
         Eegeo::v3 eD(eyeDistanceD.GetX(), eyeDistanceD.GetY(), eyeDistanceD.GetZ());
-        m_pSplineCameraController->UpdateFromPose(orientation, eD);
+        m_pSplineCameraController->UpdateFromPose(orientation, eD, 0.03f);
         
         return m_pSplineCameraController->GetCameraState();
     }

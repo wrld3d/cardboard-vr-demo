@@ -34,8 +34,9 @@ namespace Eegeo
                     0.28f, //K1
                     0.49f  //K2
                 };
-                
                 SetupProfile(profileData);
+                
+                EXAMPLE_LOG("Creating native profile for %.2f, %.2f, %.2f",device.maxFOV.outer, device.distortion.k1, device.distortion.k2);
             }
             
             VRDevice VRCardboardDeviceProfile::GetDevice() {

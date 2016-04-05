@@ -42,12 +42,12 @@ namespace Eegeo
                                        m_renderCamera.GetProjectionMatrix());
         }
         
-        void VREegeoCameraController::UpdateFromPose(const Eegeo::m33& orientation, const Eegeo::v3& eyeOffset)
+        void VREegeoCameraController::UpdateFromPose(const Eegeo::m33& orientation, const Eegeo::v3& eyeOffset, float eyeDistance)
         {
             m33 orientationMatrix;
             m33::Mul(orientationMatrix, m_orientation, orientation);
             
-            v3 eyeOffsetModified = eyeOffset;
+            v3 eyeOffsetModified = dv3::ToSingle(m_ecefPosition.Norm()*eyeDistance);
             v3 rotatedEyeOffset = v3::Mul(eyeOffsetModified, orientationMatrix);
             
             v3 rA = m_orientation.GetRow(0);
@@ -72,10 +72,8 @@ namespace Eegeo
                     factor = 0.9f;
             }
             
-            
             float near, far;
             GetNearFarPlaneDistances(near,far);
-            m_ecefPosition = m_ecefPosition + m_ecefPosition.Norm()*(3.75f);
             if(!std::isnan(factor)){
                 m_VRCameraPositionSpline.setSlowDownFactor(1.f - factor);
                 m_renderCamera.SetOrientationMatrix(orientationMatrix);
@@ -235,7 +233,7 @@ namespace Eegeo
         void VREegeoCameraController::GetNearFarPlaneDistances(float& out_near, float& out_far)
         {
             double cameraAltitude = GetAltitudeAboveSeaLevel();
-            double approxTerrainAltitude = 0;
+            double approxTerrainAltitude = 100;
             double approxTerrainAltitudeDelta = 0;
             
             const double ClipPlaneThresholdAltitude = 15000.0;
