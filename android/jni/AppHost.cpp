@@ -237,7 +237,7 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 
 	m_pApp = new ExampleApp(m_pWorld, *m_pAndroidExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
-	RegisterAndroidSpecificExamples();
+//	RegisterAndroidSpecificExamples();
 
 	m_pAndroidExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 
