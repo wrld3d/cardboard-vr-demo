@@ -219,8 +219,9 @@ public class BackgroundThreadActivity extends MainActivity
 				if(m_surfaceHolder != null && m_surfaceHolder.getSurface() != null)
 				{
 					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
+					NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
 				}
-				NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());	
+					
 			}
 		});
 	}
@@ -296,8 +297,8 @@ public class BackgroundThreadActivity extends MainActivity
 				{
 					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
 					m_threadedRunner.start();
+					NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
 				}
-				NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
 			}
 		});
 	}
