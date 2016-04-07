@@ -305,11 +305,14 @@ public class BackgroundThreadActivity extends MainActivity
 
 	private class ThreadedUpdateRunner implements Runnable
 	{
+		private final float HEAD_TRANSFORM_SMOOTHING_SPEED = 10f;
+		
 		private long m_endOfLastFrameNano;
 		private boolean m_running;
 		private Handler m_nativeThreadHandler;
 		private float m_frameThrottleDelaySeconds;
 		private boolean m_destroyed;
+		float[] smoothHeadTransform = null;
 
 		public ThreadedUpdateRunner(boolean running)
 		{
@@ -340,6 +343,7 @@ public class BackgroundThreadActivity extends MainActivity
 		public void start()
 		{
 			m_running = true;
+			smoothHeadTransform = null; //Resert the head transform cache
 		}
 
 		public void stop()
@@ -370,10 +374,14 @@ public class BackgroundThreadActivity extends MainActivity
 						if(deltaSeconds > m_frameThrottleDelaySeconds)
 						{
 							float[] headTransform = new float[16];
+							
 							m_headTracker.getLastHeadView(headTransform, 0);
+							
+							smoothHeadTransform = exponentialSmoothing(headTransform, smoothHeadTransform, deltaSeconds * HEAD_TRANSFORM_SMOOTHING_SPEED);
+							
 							if(m_running)
 							{
-								NativeJniCalls.updateNativeCode(deltaSeconds, headTransform);
+								NativeJniCalls.updateNativeCode(deltaSeconds, smoothHeadTransform);
 							}
 							else
 							{
@@ -390,5 +398,14 @@ public class BackgroundThreadActivity extends MainActivity
 				Looper.loop();
 			}
 		}
+		
+		float[] exponentialSmoothing( float[] input, float[] output, float alpha ) {
+	        if ( output == null ) 
+	            return input;
+	        for ( int i=0; i<input.length; i++ ) {
+	             output[i] = output[i] + alpha * (input[i] - output[i]);
+	        }
+	        return output;
+	}
 	}
 }
