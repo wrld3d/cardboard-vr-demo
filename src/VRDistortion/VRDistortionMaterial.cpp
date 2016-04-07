@@ -32,6 +32,7 @@ namespace Eegeo
             , m_shader(shader)
             , m_renderTexture(renderTexture)
             , m_screenProperties(screenProperties)
+            , m_isRenderingEnded(false)
             {  
             }
             
@@ -42,6 +43,7 @@ namespace Eegeo
             
             void VRDistortionMaterial::SetState(Eegeo::Rendering::GLState& glState) const
             {
+                m_isRenderingEnded = true;
                 
                 glViewport(0, 0, m_screenProperties.GetScreenWidth()*2.f, m_screenProperties.GetScreenHeight());
                 

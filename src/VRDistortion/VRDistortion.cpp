@@ -129,7 +129,6 @@ namespace Eegeo
             
             void VRDistortion::Initialize()
             {
-                EXAMPLE_LOG("Intializing native mesh");
                 
                 m_pFBRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(static_cast<u32>(m_screenProperties.GetScreenWidth()) * 2.f,
                                                                               static_cast<u32>(m_screenProperties.GetScreenHeight()),
@@ -200,6 +199,7 @@ namespace Eegeo
             
             void VRDistortion::BeginRendering()
             {
+                m_pVRDistortionMaterial->setIsRenderingEnded(false);
                 m_pFBRenderTexture->BeginRendering();
                 Eegeo::Helpers::GLHelpers::ClearBuffers();
             }
@@ -213,6 +213,10 @@ namespace Eegeo
             void VRDistortion::UnRegisterRenderable()
             {
                 m_renderableFilters.RemoveRenderableFilter(*m_pVRDistortionRenderer);
+                if(!m_pVRDistortionMaterial->isRenderingEnded()){
+                    EXAMPLE_LOG("SKIPPED RENDERING FRAME!!!");
+                    m_pFBRenderTexture->EndRendering();
+                }
             }
             
             

@@ -42,12 +42,16 @@ namespace Eegeo
                 void SetState(Eegeo::Rendering::GLState& glState) const;
                 void SetStatePerRenderable(const Rendering::RenderableBase* renderableBase, Rendering::GLState& glState)  const;
                 
+                bool isRenderingEnded(){ return m_isRenderingEnded; }
+                void setIsRenderingEnded(bool isRenderingEnded){ m_isRenderingEnded = isRenderingEnded; }
+                
             private:
                 const Eegeo::Rendering::TMaterialId m_id;
                 const std::string m_name;
                 VRDistortionShader& m_shader;
                 Eegeo::Rendering::RenderTexture& m_renderTexture;
                 Eegeo::Rendering::ScreenProperties m_screenProperties;
+                mutable bool m_isRenderingEnded;
             };
             
         }

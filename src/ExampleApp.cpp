@@ -172,7 +172,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                              renderingModule.GetGlBufferPool());
     m_VRDistortion->Initialize();
     
-//	register all generic examples
+	//register all generic examples
 //    m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();
 //    m_pExampleController->RegisterExample(Eegeo_NEW(Examples::BuildingSelectionExampleFactory)(World(),
 //                                                                                               *m_pCameraControllerFactory,
