@@ -172,7 +172,16 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                              renderingModule.GetGlBufferPool());
     m_VRDistortion->Initialize();
     
-	//register all generic examples
+    m_VRSkybox = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortionSkybox)(renderingModule,
+                                                                      renderingModule.GetGlBufferPool(),
+                                                                      renderingModule.GetVertexBindingPool(),
+                                                                      renderingModule.GetVertexLayoutPool(),
+                                                                      renderingModule.GetRenderableFilters()
+                                                                      );
+    m_VRSkybox->Start();
+    
+//	register all generic examples
+
 //    m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();
 //    m_pExampleController->RegisterExample(Eegeo_NEW(Examples::BuildingSelectionExampleFactory)(World(),
 //                                                                                               *m_pCameraControllerFactory,
@@ -373,7 +382,7 @@ void ExampleApp::UpdateNightTParam(float dt)
     m_nightTParam = Eegeo::Math::Clamp01(m_nightTParam);
     m_currentClearColor = Eegeo::v3::Lerp(m_startClearColor, m_destClearColor, m_nightTParam);
     
-    
+    m_VRSkybox->UpdateSkyColor(m_currentClearColor);
 }
 
 void ExampleApp::ToggleNight()

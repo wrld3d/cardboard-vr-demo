@@ -148,7 +148,7 @@ namespace Eegeo
                 const Eegeo::Rendering::VertexLayouts::VertexAttribs& vertexAttributes = m_pVRDistortionShader->GetVertexAttributes();
                 const Eegeo::Rendering::VertexLayouts::VertexBinding& vertexBinding = m_vertexBindingPool.GetVertexBinding(vertexLayout, vertexAttributes);
                 
-                m_pRenderable = Eegeo_NEW(VRDistortionRenderable)(Eegeo::Rendering::LayerIds::AfterWorld,
+                m_pRenderable = Eegeo_NEW(VRDistortionRenderable)(Eegeo::Rendering::LayerIds::AfterAll,
                                                                          m_pVRDistortionMaterial,
                                                                          vertexBinding,
                                                                          pRenderableMesh);

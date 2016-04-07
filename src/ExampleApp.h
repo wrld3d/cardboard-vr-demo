@@ -10,6 +10,7 @@
 #include "DefaultCameraControllerFactory.h"
 #include "Modules.h"
 #include "VRDistortion/VRDistortion.h"
+#include "VRDistortion/VRDistortionSkybox.h"
 
 class ExampleApp : private Eegeo::NonCopyable
 {
@@ -24,6 +25,7 @@ private:
     Eegeo::Streaming::CameraFrustumStreamingVolume* m_pStreamingVolume;
     
     Eegeo::VR::Distortion::VRDistortion* m_VRDistortion;
+    Eegeo::VR::Distortion::VRDistortionSkybox *m_VRSkybox;
     
     bool m_night;
     float m_foggingFar;
