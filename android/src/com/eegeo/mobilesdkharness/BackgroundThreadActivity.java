@@ -376,7 +376,6 @@ public class BackgroundThreadActivity extends MainActivity
 							float[] headTransform = new float[16];
 							
 							m_headTracker.getLastHeadView(headTransform, 0);
-							
 							smoothHeadTransform = exponentialSmoothing(headTransform, smoothHeadTransform, deltaSeconds * HEAD_TRANSFORM_SMOOTHING_SPEED);
 							
 							if(m_running)

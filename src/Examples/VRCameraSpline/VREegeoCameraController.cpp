@@ -63,6 +63,11 @@ namespace Eegeo
             float uAngle = Math::Rad2Deg(Math::ACos(v3::Dot(uA, uB) / (uA.Length() * uB.Length())));
             float fAngle = Math::Rad2Deg(Math::ACos(v3::Dot(fA, fB) / (fA.Length() * fB.Length())));
             
+            float lookDownFactor = 1.0f;
+            
+//            if(fAngle>85.f)
+//                lookDownFactor = fAngle/175.f;
+            
             float factor = 1.0f;
             if(uAngle<100.f && fAngle<100.f){
                 factor = 1.f - (uAngle/90.f + fAngle/90.f)/2.f;
@@ -78,7 +83,10 @@ namespace Eegeo
                 m_VRCameraPositionSpline.setSlowDownFactor(1.f - factor);
                 m_renderCamera.SetOrientationMatrix(orientationMatrix);
                 m_renderCamera.SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
-                m_renderCamera.SetProjection(0.7f, near*0.01f, far);
+                
+//                EXAMPLE_LOG("Example: (%.2f, %.2f), %.2f", uAngle, fAngle, far);
+                
+                m_renderCamera.SetProjection(0.7f, near*0.1f, far);
             }
             
         }
@@ -116,7 +124,6 @@ namespace Eegeo
             
             if(IsFalling())
             {
-                Eegeo_TTY("Update Fall : %.2f",dt);
                 Fall(dt);
             }
             else if (IsFollowingSpline())
@@ -234,7 +241,7 @@ namespace Eegeo
         {
             double cameraAltitude = GetAltitudeAboveSeaLevel();
             double approxTerrainAltitude = 100;
-            double approxTerrainAltitudeDelta = 0;
+            double approxTerrainAltitudeDelta = approxTerrainAltitude -100;
             
             const double ClipPlaneThresholdAltitude = 15000.0;
             //             * \param The altitude in meters of the camera
