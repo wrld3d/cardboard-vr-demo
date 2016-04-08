@@ -34,6 +34,7 @@ namespace Eegeo
                 Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
                 Eegeo::Rendering::Renderables::MeshRenderable* m_pRenderable;
                 Eegeo::Rendering::RenderableFilters& m_renderableFilters;
+                Eegeo::v4 backgroundColor;
                 
             public:
                 VRDistortionSkybox(Eegeo::Modules::Core::RenderingModule& p_RenderingModule,
@@ -56,4 +57,4 @@ namespace Eegeo
     }
 }
 
-#endif /* VRDistortionSkybox_hpp */
+#endif /* VRDistortionSkybox_h */

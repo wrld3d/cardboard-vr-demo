@@ -40,7 +40,7 @@ namespace Eegeo
             m_renderableFilters(p_RenderableFilters),
             m_pRenderable(NULL)
             {
-                
+                backgroundColor = Eegeo::v4(0.0f/255.f,24.0f/255.f,72.0f/255.f,1.0f);
             }
             
             VRDistortionSkybox::~VRDistortionSkybox()
@@ -48,8 +48,8 @@ namespace Eegeo
                 Eegeo::Rendering::RenderableFilters& platformRenderableFilters = m_renderingModule.GetRenderableFilters();
                 platformRenderableFilters.RemoveRenderableFilter(*this);
                 
-                delete m_Material;
-                delete m_Shader;
+                Eegeo_DELETE m_Material;
+                Eegeo_DELETE m_Shader;
             }
             
             void VRDistortionSkybox::Start()
@@ -59,7 +59,7 @@ namespace Eegeo
                                                                                m_renderingModule.GetMaterialIdGenerator().GetNextId(),
                                                                                "SkyboxMat",
                                                                                *m_Shader,
-                                                                               Eegeo::v4(0.0f/255.f,24.0f/255.f,72.0f/255.f,1.0f)
+                                                                               backgroundColor
                                                                                );
                 
                 Eegeo::Rendering::Mesh* pRenderableMesh = Eegeo::Rendering::Geometry::CreatePositionQuad(1.0f, m_glBufferPool, m_vertexLayoutPool);
@@ -78,8 +78,8 @@ namespace Eegeo
             
             void VRDistortionSkybox::UpdateSkyColor(Eegeo::v3 color)
             {
-                Eegeo::v4 newClr = Eegeo::v4(color, 1.0f); //Full aplha
-                m_Material->SetColor(newClr);
+                backgroundColor.Set(color.GetX(), color.GetY(), color.GetZ(), 1.0f);
+                m_Material->SetColor(backgroundColor);
             }
             
             void VRDistortionSkybox::Update(float dt)

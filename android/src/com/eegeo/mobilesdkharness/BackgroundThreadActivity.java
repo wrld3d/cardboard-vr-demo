@@ -343,7 +343,7 @@ public class BackgroundThreadActivity extends MainActivity
 		public void start()
 		{
 			m_running = true;
-			smoothHeadTransform = null; //Resert the head transform cache
+			smoothHeadTransform = null; //Reset the head transform
 		}
 
 		public void stop()
@@ -406,6 +406,6 @@ public class BackgroundThreadActivity extends MainActivity
 	             output[i] = output[i] + alpha * (input[i] - output[i]);
 	        }
 	        return output;
-	}
+		}
 	}
 }
