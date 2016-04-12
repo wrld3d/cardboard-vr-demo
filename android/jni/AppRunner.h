@@ -7,7 +7,6 @@
 #include "AppHost.h"
 #include "GlDisplayService.h"
 #include "Types.h"
-#include "RenderTexture.h"
 
 class AppRunner : Eegeo::NonCopyable
 {
@@ -36,10 +35,7 @@ private:
 	GlDisplayService m_displayService;
 	void ReleaseDisplay();
 	bool TryBindDisplay();
-    
-    Eegeo::Rendering::RenderTexture* m_pRenderTexture;
-    
-	AppHost* m_pAppHost;
+    	AppHost* m_pAppHost;
 	bool m_isPaused;
 	void CreateAppHost();
 };

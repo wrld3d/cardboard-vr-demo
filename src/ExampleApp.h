@@ -63,6 +63,8 @@ public:
     void DrawLeftEye (float dt, float headTansform[]);
     void DrawRightEye (float dt, float headTansform[]);
     
+    void DrawLoadingScreen ();
+    
     void UpdateNightTParam(float dt);
     void ToggleNight();
     void UpdateFogging();

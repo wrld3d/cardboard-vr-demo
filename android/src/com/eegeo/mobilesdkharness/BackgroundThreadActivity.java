@@ -230,11 +230,6 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onPause()
 	{
 		super.onPause();
-
-//        if (m_cardboardView != null) {
-//        	m_cardboardView.onPause();
-//        }
-        
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
@@ -312,7 +307,7 @@ public class BackgroundThreadActivity extends MainActivity
 		private float m_frameThrottleDelaySeconds;
 		private boolean m_destroyed;
 		float[] smoothHeadTransform = null;
-
+		
 		public ThreadedUpdateRunner(boolean running)
 		{
 			m_endOfLastFrameNano = System.nanoTime();
@@ -320,7 +315,7 @@ public class BackgroundThreadActivity extends MainActivity
 			m_destroyed = false;
 
 			// We need higher FPS of 60 for better VR
-			float targetFramesPerSecond = 30.f; //30.f;
+			float targetFramesPerSecond = 60.f; //30.f;
 			m_frameThrottleDelaySeconds = 1.f/targetFramesPerSecond;
 		}
 
@@ -372,13 +367,12 @@ public class BackgroundThreadActivity extends MainActivity
 						
 						if(deltaSeconds > m_frameThrottleDelaySeconds)
 						{
-							float[] headTransform = new float[16];
-							
-							m_headTracker.getLastHeadView(headTransform, 0);
-							smoothHeadTransform = exponentialSmoothing(headTransform, smoothHeadTransform, deltaSeconds * HEAD_TRANSFORM_SMOOTHING_SPEED);
 							
 							if(m_running)
 							{
+								float[] tempHeadTransform = new float[16];
+								m_headTracker.getLastHeadView(tempHeadTransform, 0);
+								smoothHeadTransform = exponentialSmoothing(tempHeadTransform, smoothHeadTransform, deltaSeconds * HEAD_TRANSFORM_SMOOTHING_SPEED);
 								NativeJniCalls.updateNativeCode(deltaSeconds, smoothHeadTransform);
 							}
 							else

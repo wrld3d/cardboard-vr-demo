@@ -206,7 +206,6 @@ namespace Eegeo
                 
                 m_pVRDistortionMaterial->setIsRenderingEnded(false);
                 m_pFBRenderTexture->BeginRendering();
-                Eegeo::Helpers::GLHelpers::ClearBuffers();
             }
             
             void VRDistortion::RegisterRenderable()

@@ -239,6 +239,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 ExampleApp::~ExampleApp()
 {
+    delete m_VRDistortion;
     delete m_VRSkybox;
 	delete m_pCameraTouchController;
     delete m_pLoadingScreen;
@@ -302,25 +303,13 @@ void ExampleApp::Update (float dt, float headTansform[])
 
 void ExampleApp::Draw (float dt, float headTansform[]){
     
-    Eegeo_GL(glClearColor(m_currentClearColor.GetX(), m_currentClearColor.GetY(), m_currentClearColor.GetZ(), 1.0f));
-    
-    bool isDismissed = m_pLoadingScreen == NULL;
-    if(!isDismissed)
-       isDismissed = m_pLoadingScreen->IsDismissed();
-    
-    if (isDismissed){
-        m_VRDistortion->BeginRendering();
-    }
-    
+    m_VRDistortion->BeginRendering();
     DrawLeftEye(dt, headTansform);
-    
-    if (isDismissed)
-        m_VRDistortion->RegisterRenderable();
-    
+    m_VRDistortion->RegisterRenderable();
     DrawRightEye(dt, headTansform);
+    m_VRDistortion->UnRegisterRenderable();
     
-    if (isDismissed)
-        m_VRDistortion->UnRegisterRenderable();
+    DrawLoadingScreen();
 }
 
 void ExampleApp::DrawLeftEye (float dt, float headTansform[]){
@@ -343,10 +332,7 @@ void ExampleApp::DrawLeftEye (float dt, float headTansform[]){
     eegeoWorld.Draw(drawParameters);
     
     m_pExampleController->Draw();
-    if (m_pLoadingScreen != NULL)
-    {
-        m_pLoadingScreen->Draw();
-    }
+    
     
 }
 
@@ -368,12 +354,23 @@ void ExampleApp::DrawRightEye (float dt, float headTansform[]){
     eegeoWorld.Draw(drawParameters);
     
     m_pExampleController->Draw();
-    if (m_pLoadingScreen != NULL)
-    {
-        m_pLoadingScreen->Draw();
-    }
     
 }
+
+
+void ExampleApp::DrawLoadingScreen ()
+{
+    
+    if (m_pLoadingScreen != NULL)
+    {
+        glViewport(0, 0, m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(), m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
+        m_pLoadingScreen->Draw();
+        glViewport(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(), 0, m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
+        m_pLoadingScreen->Draw();
+    }
+}
+
+
 void ExampleApp::UpdateNightTParam(float dt)
 {
     m_nightTParam += dt;

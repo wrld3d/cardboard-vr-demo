@@ -3,7 +3,6 @@
 #include "AppRunner.h"
 #include "Graphics.h"
 #include "AndroidThreadHelper.h"
-#include "RenderTexture.h"
 #include "Logger.h"
 
 AppRunner::AppRunner
@@ -116,17 +115,17 @@ bool AppRunner::TryBindDisplay()
 	if(m_displayService.TryBindDisplay(*(m_pNativeState->window)))
 	{
         
-        JNIEnv* env = m_pNativeState->mainThreadEnv;
-        jobject activity = m_pNativeState->activity;
-        jclass fpl_class = env->GetObjectClass(activity);
-        jmethodID undistort = env->GetMethodID(fpl_class, "SetHeadMountedDisplayResolution", "(II)V");
-        env->CallVoidMethod(activity, undistort, (jint) (m_displayService.GetDisplayWidth()*2.f), (jint) m_displayService.GetDisplayHeight());
-        env->DeleteLocalRef(fpl_class);
-
-        m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(static_cast<u32>(m_displayService.GetDisplayWidth()),
-                                                                      static_cast<u32>(m_displayService.GetDisplayHeight()),
-                                                                      false);
-
+//        JNIEnv* env = m_pNativeState->mainThreadEnv;
+//        jobject activity = m_pNativeState->activity;
+//        jclass fpl_class = env->GetObjectClass(activity);
+//        jmethodID undistort = env->GetMethodID(fpl_class, "SetHeadMountedDisplayResolution", "(II)V");
+//        env->CallVoidMethod(activity, undistort, (jint) (m_displayService.GetDisplayWidth()*2.f), (jint) m_displayService.GetDisplayHeight());
+//        env->DeleteLocalRef(fpl_class);
+//
+//        m_pRenderTexture = Eegeo_NEW(Eegeo::Rendering::RenderTexture)(static_cast<u32>(m_displayService.GetDisplayWidth()),
+//                                                                      static_cast<u32>(m_displayService.GetDisplayHeight()),
+//                                                                      false);
+//
         
 		if(m_pAppHost != NULL)
 		{
