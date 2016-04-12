@@ -93,9 +93,9 @@ namespace Eegeo
             ,m_pVRDistortionMaterial(NULL)
             ,m_pRenderable(NULL)
             ,m_pVRDistortionRenderer(NULL)
-            ,m_pFBRenderTexture(NULL)
+            ,m_pFBRenderTexture(NULL),
+            m_MeshUpdateRequried(false)
             {
-                
                 m_cardboardProfile = new VRCardboardDeviceProfile();
                 m_pPositionUvVertexLayout = CreatePositionUvVertexLayout();
             }
@@ -192,13 +192,18 @@ namespace Eegeo
             void VRDistortion::UpdateCardboardProfile(float cardboardProfile[])
             {
                 m_cardboardProfile->SetupProfile(cardboardProfile);
-                Suspend();
-                Initialize();
-                
+                m_MeshUpdateRequried = true;
             }
             
             void VRDistortion::BeginRendering()
             {
+                if(m_MeshUpdateRequried)
+                {
+                    Suspend();
+                    Initialize();
+                    m_MeshUpdateRequried = false;
+                }
+                
                 m_pVRDistortionMaterial->setIsRenderingEnded(false);
                 m_pFBRenderTexture->BeginRendering();
                 Eegeo::Helpers::GLHelpers::ClearBuffers();

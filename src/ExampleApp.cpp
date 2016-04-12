@@ -239,6 +239,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 ExampleApp::~ExampleApp()
 {
+    delete m_VRSkybox;
 	delete m_pCameraTouchController;
     delete m_pLoadingScreen;
     delete m_pExampleController;

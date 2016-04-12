@@ -43,6 +43,7 @@ namespace Eegeo
                 Eegeo::Rendering::ScreenProperties m_screenProperties;
                 
                 VRCardboardDeviceProfile* m_cardboardProfile;
+                bool m_MeshUpdateRequried;
                 
                 void HandleScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
                 
