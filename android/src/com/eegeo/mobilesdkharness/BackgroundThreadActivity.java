@@ -292,6 +292,7 @@ public class BackgroundThreadActivity extends MainActivity
 				{
 					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
 					m_threadedRunner.start();
+					NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
 				}
 			}
 		});

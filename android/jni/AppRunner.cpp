@@ -21,12 +21,13 @@ AppRunner::AppRunner
 AppRunner::~AppRunner()
 {
 	bool destroyEGL = true;
-	m_displayService.ReleaseDisplay(destroyEGL);
 
 	if(m_pAppHost != NULL)
 	{
 		Eegeo_DELETE(m_pAppHost);
 	}
+
+	m_displayService.ReleaseDisplay(destroyEGL);
 }
 
 void AppRunner::CreateAppHost()
