@@ -40,6 +40,7 @@ public class BackgroundThreadActivity extends MainActivity
 	private MagnetSensor m_magnetSensor;
 	
 	private NfcSensor mNfcSensor;
+	private boolean m_CardboardProfileInitialized = false;
 	
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
@@ -109,6 +110,7 @@ public class BackgroundThreadActivity extends MainActivity
 			}
 		});
 		
+		m_CardboardProfileInitialized = false;
 	}
 
 	private float[] getUpdatedCardboardProfile(){
@@ -292,7 +294,11 @@ public class BackgroundThreadActivity extends MainActivity
 				{
 					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
 					m_threadedRunner.start();
-					NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
+					if(!m_CardboardProfileInitialized) 
+					{
+						NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
+						m_CardboardProfileInitialized = true;
+					}
 				}
 			}
 		});
