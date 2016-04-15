@@ -34,6 +34,8 @@ public:
                            Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
                            const Eegeo::Rendering::ScreenProperties& initialScreenProperties);
     
+    virtual ~VRCameraSplineExample();
+    
 	static std::string GetName()
 	{
 		return "VRCameraSplineExample";

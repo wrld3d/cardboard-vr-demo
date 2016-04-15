@@ -218,11 +218,27 @@ namespace Eegeo
             {
                 m_renderableFilters.RemoveRenderableFilter(*m_pVRDistortionRenderer);
                 if(!m_pVRDistortionMaterial->isRenderingEnded()){
-                    EXAMPLE_LOG("SKIPPED RENDERING FRAME!!!");
+//                    EXAMPLE_LOG("SKIPPED RENDERING FRAME!!!");
                     m_pFBRenderTexture->EndRendering();
                 }
             }
             
+            VRDistortion::~VRDistortion(){
+                
+//                if(!m_pVRDistortionMaterial->isRenderingEnded()){
+//                    m_renderableFilters.RemoveRenderableFilter(*m_pVRDistortionRenderer);
+//                }
+//                
+//                Eegeo_DELETE m_pVRDistortionMaterial;
+//                m_pVRDistortionMaterial = NULL;
+//                
+//                Eegeo_DELETE m_pVRDistortionShader;
+//                m_pVRDistortionShader = NULL;
+//                
+////                Suspend();
+//                Eegeo_DELETE m_cardboardProfile;
+//                m_cardboardProfile = NULL;
+            }
             
         }
     }

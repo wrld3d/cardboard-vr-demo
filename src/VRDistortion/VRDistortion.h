@@ -56,7 +56,7 @@ namespace Eegeo
                                        Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
                                        Eegeo::Rendering::RenderableFilters& renderableFilters,
                                        Eegeo::Rendering::GlBufferPool& m_glBufferPool);
-                                
+                virtual ~VRDistortion();
                 void Initialize();
                 void Suspend();
                 

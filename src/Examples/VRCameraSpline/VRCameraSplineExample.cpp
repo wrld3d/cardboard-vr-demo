@@ -26,6 +26,10 @@ namespace Examples
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
     }
     
+    VRCameraSplineExample::~VRCameraSplineExample(){
+//        delete m_pSplineCameraController;
+    }
+    
     void VRCameraSplineExample::Start()
     {
         

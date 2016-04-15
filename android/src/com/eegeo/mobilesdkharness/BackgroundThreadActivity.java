@@ -148,7 +148,7 @@ public class BackgroundThreadActivity extends MainActivity
 //		for (int i = 0; i < cardboardProperties.length; i++)
 //			logStr += cardboardProperties[i] + ",\n";
 //		
-//		Log.i("CardboardVRTest", "Parameters for " + cardboardDeviceParams.getModel() + " by " + cardboardDeviceParams.getVendor());
+		Log.i("Eegeo VR", "Cardboard profile for " + cardboardDeviceParams.getModel() + " by " + cardboardDeviceParams.getVendor() + "has been loaded.");
 //		Log.i("CardboardVRTest", logStr);
 		
 		return cardboardProperties;

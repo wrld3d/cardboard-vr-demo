@@ -26,7 +26,6 @@ public:
     
     void UpdateCardboardProfile(float cardboardProfile[]);
     void MagnetTriggered();
-    void TryRenderFameBufferTexture();
     
 private:
 	const std::string& m_apiKey;

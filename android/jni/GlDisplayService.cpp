@@ -226,22 +226,16 @@ bool GlDisplayService::TryBindDisplay(ANativeWindow& window)
 	m_sharedSurface = eglCreatePbufferSurface(m_display, sharedSurfaceConfig, pBufferAttribs);
 #endif
     
-    
-    
-    // TODO: clean this up and handle division in when rendering 2 eyes
     w = w/2.0f;
     
 	m_displayWidth = w;
 	m_displayHeight = h;
     
-    
 	glViewport(0, 0, m_displayWidth, m_displayHeight);
 
 	// Initialize GL state.
 	Eegeo_GL(glClearDepthf(1.0f));
-    
-//    Eegeo_GL(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
-    Eegeo_GL(glClearColor(1.0f, 1.0f, 1.0f, 1.0f));
+    Eegeo_GL(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 
 	// Set up default Depth test.
 	Eegeo_GL(glEnable(GL_DEPTH_TEST));
