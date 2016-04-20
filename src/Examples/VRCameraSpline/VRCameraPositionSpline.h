@@ -14,13 +14,17 @@ namespace Eegeo
         {
         public:
             VRCameraPositionSpline()
-            : m_playbackSpeed(0.03)
+            : m_playbackSpeed(0.09)
             , m_playing(false)
             , m_time(0.0)
             , m_slowDownFactor(0.0f)
             , m_currentSpline(1)
             {
                 SetSpline(m_currentSpline);
+                m_positionSpline.SetTimeParameterizationMethod(Eegeo::Geometry::TimeParameterizationMethod::Values::Centripetal);
+                m_forwardSpline.SetTimeParameterizationMethod(Eegeo::Geometry::TimeParameterizationMethod::Values::Centripetal);
+                m_upSpline.SetTimeParameterizationMethod(Eegeo::Geometry::TimeParameterizationMethod::Values::Centripetal);
+                m_rightSpline.SetTimeParameterizationMethod(Eegeo::Geometry::TimeParameterizationMethod::Values::Centripetal);
             }
             
             void setSlowDownFactor(float slowDownFactor);

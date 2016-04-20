@@ -266,10 +266,7 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     eegeoWorld.EarlyUpdate(dt);
     
-//    m_pCameraTouchController->Update(dt);
-
 	m_pExampleController->EarlyUpdate(dt);
-    
     
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
     Eegeo::Camera::RenderCamera renderCamera = m_pExampleController->GetRenderCamera();
@@ -310,6 +307,7 @@ void ExampleApp::Draw (float dt, float headTansform[]){
     m_VRDistortion->UnRegisterRenderable();
     
     DrawLoadingScreen();
+    
 }
 
 void ExampleApp::DrawLeftEye (float dt, float headTansform[]){
