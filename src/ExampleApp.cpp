@@ -62,6 +62,15 @@
 #include "BuildingSelectionExampleFactory.h"
 #include "RemoveMapLayerExampleFactory.h"
 
+#include "InteriorsPresentationModule.h"
+#include "InteriorsModelModule.h"
+#include "InteriorsExplorer/SdkModel/InteriorsExplorerModel.h"
+//#include "InteriorsEntitiesPinsModule.h"
+//#include "InteriorsEntitiesPinsController.h"
+#include "InteriorsCameraControllerFactory.h"
+#include "GlobeCameraControllerFactory.h"
+
+
 #include "Logger.h"
 
 namespace
@@ -155,6 +164,33 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                     cameraControllerDistanceFromInterestPointMeters);
     
     m_pLoadingScreen = CreateLoadingScreen(screenProperties, eegeoWorld.GetRenderingModule(), eegeoWorld.GetPlatformAbstractionModule());
+    
+    
+    Eegeo::Modules::Map::Layers::InteriorsPresentationModule& interiorsPresentationModule = mapModule.GetInteriorsPresentationModule();
+    Eegeo::Modules::Map::Layers::InteriorsModelModule& interiorsModelModule = mapModule.GetInteriorsModelModule();
+    Eegeo::Camera::GlobeCamera::GlobeCameraControllerFactory cameraControllerFactory(m_pWorld->GetTerrainModelModule().GetTerrainHeightProvider(),
+                                                                                     mapModule.GetEnvironmentFlatteningService(),
+                                                                                     mapModule.GetResourceCeilingProvider());
+
+    Eegeo::Resources::Interiors::InteriorsCameraControllerFactory interiorsCameraControllerFactory(cameraControllerFactory,
+                                                                                                   interiorsPresentationModule.GetInteriorSelectionModel(),
+                                                                                                   interiorsPresentationModule.GetInteriorFloorAnimator(),
+                                                                                                   interiorsPresentationModule.GetInteriorInteractionModel(),
+                                                                                                   mapModule.GetEnvironmentFlatteningService());
+    
+    
+    m_interiorExplorerModule = new InteriorsExplorer::SdkModel::InteriorsExplorerModule(interiorsPresentationModule.GetInteriorFloorAnimator(),
+                            interiorsPresentationModule.GetInteriorInteractionModel(),
+                            interiorsPresentationModule.GetInteriorSelectionModel(),
+                            interiorsPresentationModule.GetInteriorTransitionModel(),
+                            interiorsModelModule.GetInteriorMarkerModelRepository(),
+                            mapModule.GetEnvironmentFlatteningService(),
+                            interiorsCameraControllerFactory,
+                            screenProperties,
+                            m_identityProvider,
+                            false);
+    
+    
     
     m_pExampleController = new Examples::ExampleController(*m_pWorld,
                                                            view,
@@ -266,7 +302,12 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     eegeoWorld.EarlyUpdate(dt);
     
+    
+    if(m_interiorExplorerModule->GetInteriorsExplorerModel()->)
+    
+    m_interiorExplorerModule ->Update(dt);
 	m_pExampleController->EarlyUpdate(dt);
+    
     
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
     Eegeo::Camera::RenderCamera renderCamera = m_pExampleController->GetRenderCamera();
