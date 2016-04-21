@@ -303,7 +303,7 @@ void ExampleApp::Update (float dt, float headTansform[])
     eegeoWorld.EarlyUpdate(dt);
     
     
-    if(m_interiorExplorerModule->GetInteriorsExplorerModel()->)
+//    if(m_interiorExplorerModule->GetInteriorsExplorerModel()->)
     
     m_interiorExplorerModule ->Update(dt);
 	m_pExampleController->EarlyUpdate(dt);
