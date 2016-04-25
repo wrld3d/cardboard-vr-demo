@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include "InteriorsExplorer.h"
 #include "Interiors.h"
 #include "Types.h"
-#include "IInteriorsExplorerModule.h"
 #include "GlobeCamera.h"
 #include "Rendering.h"
 #include "IIdentity.h"
+#include "InteriorsExplorer.h"
+#include "IInteriorsExplorerModule.h"
 
 namespace InteriorsExplorer
 {
@@ -17,20 +17,22 @@ namespace InteriorsExplorer
         class InteriorsExplorerModule : public IInteriorsExplorerModule, private Eegeo::NonCopyable
         {
         public:
-            InteriorsExplorerModule(Eegeo::Resources::Interiors::IInteriorFloorAnimator& interiorFloorAnimator,
+            
+            
+            InteriorsExplorerModule(
                                     Eegeo::Resources::Interiors::InteriorInteractionModel& interiorInteractionModel,
                                     Eegeo::Resources::Interiors::InteriorSelectionModel& interiorSelectionModel,
                                     Eegeo::Resources::Interiors::InteriorTransitionModel& interiorTransitionModel,
                                     Eegeo::Resources::Interiors::Markers::InteriorMarkerModelRepository& markerRepository,
-                                    //                                        WorldPins::SdkModel::IWorldPinsService& worldPinsService,
-                                    const Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
-                                    //                                        VisualMap::SdkModel::IVisualMapService& visualMapService,
-                                    Eegeo::Resources::Interiors::InteriorsCameraControllerFactory& interiorCameraControllerFactory,
+                                    //                                                             WorldPins::SdkModel::IWorldPinsService& worldPinsService,
+                                    Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
+                                    //                                                             VisualMap::SdkModel::IVisualMapService& visualMapService,
+                                    const Eegeo::Resources::Interiors::InteriorsCameraControllerFactory& interiorCameraControllerFactory,
                                     const Eegeo::Rendering::ScreenProperties& screenProperties,
                                     Eegeo::Helpers::IIdentityProvider& identityProvider,
-                                    //                                        ExampleAppMessaging::TMessageBus& messageBus,
-                                    //                                        Metrics::IMetricsService& metricsService,
-                                    //                                        const InitialExperience::SdkModel::IInitialExperienceModel& initialExperienceModel,
+                                    //                                                             ExampleAppMessaging::TMessageBus& messageBus,
+                                    //                                                             Metrics::IMetricsService& metricsService,
+                                    //                                                             const InitialExperience::SdkModel::IInitialExperienceModel& initialExperienceModel,
                                     const bool interiorsAffectedByFlattening);
             
             ~InteriorsExplorerModule();
@@ -62,6 +64,7 @@ namespace InteriorsExplorer
             Eegeo::Resources::Interiors::InteriorsCameraController* m_pInteriorsCameraController;
             Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pGlobeCameraTouchController;
             Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pGlobeCameraController;
+            Eegeo::Resources::Interiors::InteriorSelectionModel& m_InteriorSelectionModel;
         };
     }
 }

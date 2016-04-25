@@ -11,7 +11,8 @@
 #include "Modules.h"
 #include "VRDistortion/VRDistortion.h"
 #include "VRDistortion/VRDistortionSkybox.h"
-#include "InteriorsExplorer/SdkModel/InteriorsExplorerModule.h"
+#include "IIdentity.h"
+#include "InteriorsExplorerModule.h"
 
 class ExampleApp : private Eegeo::NonCopyable
 {
@@ -28,8 +29,8 @@ private:
     Eegeo::VR::Distortion::VRDistortion* m_VRDistortion;
     Eegeo::VR::Distortion::VRDistortionSkybox *m_VRSkybox;
     
-    InteriorsExplorer::SdkModel::InteriorsExplorerModule* m_interiorExplorerModule;
     Eegeo::Helpers::IdentityProvider m_identityProvider;
+    InteriorsExplorer::SdkModel::InteriorsExplorerModule* m_interiorExplorerModule;
     
     bool m_night;
     float m_foggingFar;

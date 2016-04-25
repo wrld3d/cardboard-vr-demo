@@ -15,7 +15,6 @@
             public:
                 virtual ~IInteriorsExplorerModule() { }
 
-                
                 virtual InteriorVisibilityUpdater& GetInteriorVisibilityUpdater() const = 0;
                 
                 virtual Eegeo::Resources::Interiors::InteriorsCameraController& GetInteriorsCameraController() const = 0;

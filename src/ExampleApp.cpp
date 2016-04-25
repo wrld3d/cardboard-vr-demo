@@ -62,11 +62,10 @@
 #include "BuildingSelectionExampleFactory.h"
 #include "RemoveMapLayerExampleFactory.h"
 
+#include "InteriorsCameraController.h"
+#include "InteriorsCameraControllerFactory.h"
 #include "InteriorsPresentationModule.h"
 #include "InteriorsModelModule.h"
-#include "InteriorsExplorer/SdkModel/InteriorsExplorerModel.h"
-//#include "InteriorsEntitiesPinsModule.h"
-//#include "InteriorsEntitiesPinsController.h"
 #include "InteriorsCameraControllerFactory.h"
 #include "GlobeCameraControllerFactory.h"
 
@@ -165,21 +164,30 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_pLoadingScreen = CreateLoadingScreen(screenProperties, eegeoWorld.GetRenderingModule(), eegeoWorld.GetPlatformAbstractionModule());
     
-    
     Eegeo::Modules::Map::Layers::InteriorsPresentationModule& interiorsPresentationModule = mapModule.GetInteriorsPresentationModule();
     Eegeo::Modules::Map::Layers::InteriorsModelModule& interiorsModelModule = mapModule.GetInteriorsModelModule();
     Eegeo::Camera::GlobeCamera::GlobeCameraControllerFactory cameraControllerFactory(m_pWorld->GetTerrainModelModule().GetTerrainHeightProvider(),
                                                                                      mapModule.GetEnvironmentFlatteningService(),
                                                                                      mapModule.GetResourceCeilingProvider());
+    
+    const Eegeo::Resources::Interiors::InteriorsCameraConfiguration& interiorsCameraConfig(Eegeo::Resources::Interiors::InteriorsCameraController::CreateDefaultConfig());
+    const Eegeo::Camera::GlobeCamera::GlobeCameraControllerConfiguration& globeCameraConfig = Eegeo::Resources::Interiors::InteriorsCameraControllerFactory::DefaultGlobeCameraControllerConfiguration();
+    const Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration& globeCameraTouchConfig = Eegeo::Resources::Interiors::InteriorsCameraControllerFactory::DefaultGlobeCameraTouchControllerConfiguration();
+    
+    
+    const Eegeo::Resources::Interiors::InteriorsCameraControllerFactory interiorsCameraControllerFactory(
+                                                                                                         interiorsCameraConfig,
+                                                                                                         globeCameraConfig,
+                                                                                                         globeCameraTouchConfig,
+                                                                                                         cameraControllerFactory,
+                                                                                                         screenProperties,
+                                                                                                         interiorsPresentationModule.GetInteriorInteractionModel(),
+                                                                                                         interiorsPresentationModule.GetInteriorViewModel(),
+                                                                                                         mapModule.GetEnvironmentFlatteningService(),
+                                                                                                         false );
+    const bool interiorsAffectedByFlattening = false;
 
-    Eegeo::Resources::Interiors::InteriorsCameraControllerFactory interiorsCameraControllerFactory(cameraControllerFactory,
-                                                                                                   interiorsPresentationModule.GetInteriorSelectionModel(),
-                                                                                                   interiorsPresentationModule.GetInteriorFloorAnimator(),
-                                                                                                   interiorsPresentationModule.GetInteriorInteractionModel(),
-                                                                                                   mapModule.GetEnvironmentFlatteningService());
-    
-    
-    m_interiorExplorerModule = new InteriorsExplorer::SdkModel::InteriorsExplorerModule(interiorsPresentationModule.GetInteriorFloorAnimator(),
+    m_interiorExplorerModule = Eegeo_NEW(InteriorsExplorer::SdkModel::InteriorsExplorerModule)(
                             interiorsPresentationModule.GetInteriorInteractionModel(),
                             interiorsPresentationModule.GetInteriorSelectionModel(),
                             interiorsPresentationModule.GetInteriorTransitionModel(),
@@ -188,9 +196,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                             interiorsCameraControllerFactory,
                             screenProperties,
                             m_identityProvider,
-                            false);
-    
-    
+                            interiorsAffectedByFlattening);
     
     m_pExampleController = new Examples::ExampleController(*m_pWorld,
                                                            view,

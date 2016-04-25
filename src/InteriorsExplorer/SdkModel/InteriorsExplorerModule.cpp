@@ -7,20 +7,24 @@
 #include "InteriorsCameraController.h"
 #include "GlobeCameraTouchController.h"
 #include "InteriorVisibilityUpdater.h"
+#include "InteriorSelectionModel.h"
+
+#include "Logger.h"
 
     namespace InteriorsExplorer
     {
         namespace SdkModel
         {
-            InteriorsExplorerModule::InteriorsExplorerModule(Eegeo::Resources::Interiors::IInteriorFloorAnimator& interiorFloorAnimator,
+            
+            InteriorsExplorerModule::InteriorsExplorerModule(
                                                              Eegeo::Resources::Interiors::InteriorInteractionModel& interiorInteractionModel,
                                                              Eegeo::Resources::Interiors::InteriorSelectionModel& interiorSelectionModel,
                                                              Eegeo::Resources::Interiors::InteriorTransitionModel& interiorTransitionModel,
                                                              Eegeo::Resources::Interiors::Markers::InteriorMarkerModelRepository& markerRepository,
 //                                                             WorldPins::SdkModel::IWorldPinsService& worldPinsService,
-                                                             const Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
+                                                             Eegeo::Rendering::EnvironmentFlatteningService& environmentFlatteningService,
 //                                                             VisualMap::SdkModel::IVisualMapService& visualMapService,
-                                                             Eegeo::Resources::Interiors::InteriorsCameraControllerFactory& interiorCameraControllerFactory,
+                                                             const Eegeo::Resources::Interiors::InteriorsCameraControllerFactory& interiorCameraControllerFactory,
                                                              const Eegeo::Rendering::ScreenProperties& screenProperties,
                                                              Eegeo::Helpers::IIdentityProvider& identityProvider,
 //                                                             ExampleAppMessaging::TMessageBus& messageBus,
@@ -33,19 +37,19 @@
                 const float transitionTime = 0.5f;
                 m_pVisibilityUpdater = Eegeo_NEW(InteriorVisibilityUpdater)(interiorTransitionModel, interiorSelectionModel, interiorInteractionModel, transitionTime);
                 
-                m_pGlobeCameraTouchController = interiorCameraControllerFactory.CreateTouchController(screenProperties);
-                
-                m_pGlobeCameraController = interiorCameraControllerFactory.CreateInteriorGlobeCameraController(false,
-                                                                                                               *m_pGlobeCameraTouchController,
-                                                                                                               screenProperties);
-
+//                m_pGlobeCameraTouchController = interiorCameraControllerFactory.CreateTouchController(screenProperties);
+//                
+//                m_pGlobeCameraController = interiorCameraControllerFactory.CreateInteriorGlobeCameraController(false,
+//                                                                                                               *m_pGlobeCameraTouchController,
+//                                                                                                               screenProperties);
+//
                 
                 Eegeo::Resources::Interiors::InteriorsCameraConfiguration cameraConfig = Eegeo::Resources::Interiors::InteriorsCameraController::CreateDefaultConfig();
                 
-                m_pInteriorsCameraController = interiorCameraControllerFactory.CreateInteriorsCameraController(cameraConfig,
-                                                                                                               *m_pGlobeCameraTouchController,
-                                                                                                               *m_pGlobeCameraController,
-                                                                                                               interiorsAffectedByFlattening);
+//                m_pInteriorsCameraController = interiorCameraControllerFactory.CreateInteriorsCameraController(cameraConfig,
+//                                                                                                               *m_pGlobeCameraTouchController,
+//                                                                                                               *m_pGlobeCameraController,
+//                                                                                                               interiorsAffectedByFlattening);
                 
 //                
 //                m_pWorldPinController = Eegeo_NEW(InteriorWorldPinController)(interiorSelectionModel,
@@ -54,11 +58,13 @@
 //                                                                              *m_pInteriorsCameraController,
 //                                                                              messageBus,
 //                                                                              initialExperienceModel);
-                
+                Eegeo::Resources::Interiors::InteriorId id("westport_house");
+                interiorSelectionModel.SelectInteriorId(id);
                 m_pModel = Eegeo_NEW(InteriorsExplorerModel)(interiorInteractionModel,
                                                              interiorSelectionModel);
                 
 //                m_pViewModel = Eegeo_NEW(View::InteriorsExplorerViewModel)(false, identityProvider.GetNextIdentity(), messageBus);
+//                m_pModel->ShowInteriorExplorer();
             }
             
             InteriorsExplorerModule::~InteriorsExplorerModule()
@@ -97,6 +103,13 @@
             {
                 m_pVisibilityUpdater->Update(dt);
 //                m_pWorldPinController->Update(dt);
+                
+                if (m_interiorInteractionModel.HasInteriorModel()) {
+                    EXAMPLE_LOG("HAS MODEL");
+                }
+                else {
+                    EXAMPLE_LOG("HAS NO MODEL");
+                }
             }
             
             InteriorsExplorerModel& InteriorsExplorerModule::GetInteriorsExplorerModel() const
