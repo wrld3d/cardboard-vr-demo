@@ -104,12 +104,12 @@
                 m_pVisibilityUpdater->Update(dt);
 //                m_pWorldPinController->Update(dt);
                 
-                if (m_interiorInteractionModel.HasInteriorModel()) {
-                    EXAMPLE_LOG("HAS MODEL");
-                }
-                else {
-                    EXAMPLE_LOG("HAS NO MODEL");
-                }
+//                if (m_interiorInteractionModel.HasInteriorModel()) {
+//                    EXAMPLE_LOG("HAS MODEL");
+//                }
+//                else {
+//                    EXAMPLE_LOG("HAS NO MODEL");
+//                }
             }
             
             InteriorsExplorerModel& InteriorsExplorerModule::GetInteriorsExplorerModel() const

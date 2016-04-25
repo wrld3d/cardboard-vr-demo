@@ -64,7 +64,7 @@ namespace InteriorsExplorer
             Eegeo::Resources::Interiors::InteriorsCameraController* m_pInteriorsCameraController;
             Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pGlobeCameraTouchController;
             Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pGlobeCameraController;
-            Eegeo::Resources::Interiors::InteriorSelectionModel& m_InteriorSelectionModel;
+//            Eegeo::Resources::Interiors::InteriorSelectionModel& m_InteriorSelectionModel;
         };
     }
 }
