@@ -597,7 +597,12 @@ void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
 	{
 		return;
 	}
-    
+    if (m_interiorExplorerModule->InteriorLoaded()) {
+        m_interiorExplorerModule->SwitchToInterior();
+        EXAMPLE_LOG("Interior is loaded");
+    }
+    else
+        EXAMPLE_LOG("Interior is not loaded");
 	m_pExampleController->Event_TouchTap(data);
 }
 

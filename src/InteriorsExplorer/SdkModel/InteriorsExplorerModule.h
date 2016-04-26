@@ -52,7 +52,8 @@ namespace InteriorsExplorer
             Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& GetTouchController() const;
             
             //                InteriorExplorerUserInteractionModel& GetInteriorsExplorerUserInteractionModel() const;
-            
+            void SwitchToInterior();
+            bool InteriorLoaded();
         private:
             
             InteriorsExplorerModel* m_pModel;
@@ -64,7 +65,7 @@ namespace InteriorsExplorer
             Eegeo::Resources::Interiors::InteriorsCameraController* m_pInteriorsCameraController;
             Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pGlobeCameraTouchController;
             Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pGlobeCameraController;
-//            Eegeo::Resources::Interiors::InteriorSelectionModel& m_InteriorSelectionModel;
+            Eegeo::Resources::Interiors::InteriorInteractionModel& m_InteriorInteractionModel;
         };
     }
 }

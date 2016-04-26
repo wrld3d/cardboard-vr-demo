@@ -8,7 +8,7 @@
 #include "GlobeCameraTouchController.h"
 #include "InteriorVisibilityUpdater.h"
 #include "InteriorSelectionModel.h"
-
+#include "InteriorInteractionModel.h"
 #include "Logger.h"
 
     namespace InteriorsExplorer
@@ -30,7 +30,8 @@
 //                                                             ExampleAppMessaging::TMessageBus& messageBus,
 //                                                             Metrics::IMetricsService& metricsService,
 //                                                             const InitialExperience::SdkModel::IInitialExperienceModel& initialExperienceModel,
-                                                             const bool interiorsAffectedByFlattening)
+                                                             const bool interiorsAffectedByFlattening) :
+            m_InteriorInteractionModel(interiorInteractionModel)
             {
 //                m_pUserInteractionModel = Eegeo_NEW(InteriorExplorerUserInteractionModel)();
                 
@@ -99,17 +100,20 @@
                 return *m_pInteriorsCameraController;
             }
             
+            bool InteriorsExplorerModule::InteriorLoaded(){
+                return m_InteriorInteractionModel.HasInteriorModel();
+            }
+            
             void InteriorsExplorerModule::Update(float dt) const
             {
                 m_pVisibilityUpdater->Update(dt);
 //                m_pWorldPinController->Update(dt);
                 
-//                if (m_interiorInteractionModel.HasInteriorModel()) {
-//                    EXAMPLE_LOG("HAS MODEL");
-//                }
-//                else {
-//                    EXAMPLE_LOG("HAS NO MODEL");
-//                }
+                
+            }
+            
+            void InteriorsExplorerModule::SwitchToInterior(){
+               m_pVisibilityUpdater->SetInteriorShouldDisplay(true);
             }
             
             InteriorsExplorerModel& InteriorsExplorerModule::GetInteriorsExplorerModel() const
