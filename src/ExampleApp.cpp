@@ -598,7 +598,8 @@ void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
 		return;
 	}
     if (m_interiorExplorerModule->InteriorLoaded()) {
-        m_interiorExplorerModule->SwitchToInterior();
+        m_pStreamingVolume->SetForceMaximumRefinement(true);
+        m_interiorExplorerModule->ToggleInteriorDisplay();
         EXAMPLE_LOG("Interior is loaded");
     }
     else

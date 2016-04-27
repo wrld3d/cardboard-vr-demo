@@ -20,7 +20,7 @@
                 ~InteriorVisibilityUpdater();
                 
                 void SetInteriorShouldDisplay(bool shouldDisplay);
-                
+                bool GetInteriorShouldDisplay() { return m_interiorShouldDisplay; }
                 void Update(float dt);
                 
             private:

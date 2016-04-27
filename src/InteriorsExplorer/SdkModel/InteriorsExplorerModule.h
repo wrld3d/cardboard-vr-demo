@@ -52,7 +52,7 @@ namespace InteriorsExplorer
             Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& GetTouchController() const;
             
             //                InteriorExplorerUserInteractionModel& GetInteriorsExplorerUserInteractionModel() const;
-            void SwitchToInterior();
+            void ToggleInteriorDisplay();
             bool InteriorLoaded();
         private:
             

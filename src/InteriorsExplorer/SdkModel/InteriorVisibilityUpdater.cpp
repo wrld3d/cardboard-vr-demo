@@ -36,7 +36,7 @@
             
             void InteriorVisibilityUpdater::Update(float dt)
             {
-                const bool shouldDisplay = m_interiorShouldDisplay && m_interiorSelectionModel.IsInteriorSelected() && m_interiorInteractionModel.HasInteriorModel();
+                const bool shouldDisplay = m_interiorShouldDisplay && m_interiorSelectionModel.IsInteriorSelected();
                 const float transitionTarget = shouldDisplay ? 1.f : 0.f;
                 
                 float delta = 0.f;

@@ -112,8 +112,10 @@
                 
             }
             
-            void InteriorsExplorerModule::SwitchToInterior(){
-               m_pVisibilityUpdater->SetInteriorShouldDisplay(true);
+            void InteriorsExplorerModule::ToggleInteriorDisplay(){
+//                m_InteriorInteractionModel.SetSelectedFloorIndex(2);
+                
+               m_pVisibilityUpdater->SetInteriorShouldDisplay(!m_pVisibilityUpdater->GetInteriorShouldDisplay());
             }
             
             InteriorsExplorerModel& InteriorsExplorerModule::GetInteriorsExplorerModel() const
