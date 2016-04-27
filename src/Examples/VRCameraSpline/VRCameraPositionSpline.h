@@ -18,13 +18,9 @@ namespace Eegeo
             , m_playing(false)
             , m_time(0.0)
             , m_slowDownFactor(0.0f)
-            , m_currentSpline(1)
+            , m_currentSpline(2)
             {
                 SetSpline(m_currentSpline);
-//                m_positionSpline.SetTimeParameterizationMethod(Eegeo::Geometry::TimeParameterizationMethod::Values::Centripetal);
-//                m_forwardSpline.SetTimeParameterizationMethod(Eegeo::Geometry::TimeParameterizationMethod::Values::Centripetal);
-//                m_upSpline.SetTimeParameterizationMethod(Eegeo::Geometry::TimeParameterizationMethod::Values::Centripetal);
-//                m_rightSpline.SetTimeParameterizationMethod(Eegeo::Geometry::TimeParameterizationMethod::Values::Centripetal);
             }
             
             void setSlowDownFactor(float slowDownFactor);
@@ -42,7 +38,7 @@ namespace Eegeo
             
             void Spew();
             void Clear();
-
+            
             void NextSpline();
             
             void GetCurrentCameraPosition(dv3& interpolatedPositionEcef, m33& interpolatedOrientation) const;

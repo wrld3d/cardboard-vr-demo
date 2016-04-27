@@ -9,7 +9,6 @@
 #include "RenderToTextureExampleIncludes.h"
 #include "ScreenProperties.h"
 #include "RenderTexture.h"
-#include "../../FBRenderTexture/FBRenderTexture.h"
 
 namespace Examples
 {
@@ -28,7 +27,6 @@ namespace Examples
         PostProcessVignetteRenderable* m_pRenderable;
         PostProcessVignetteRenderer* m_pVignetteRenderer;
         Eegeo::Rendering::RenderTexture* m_pRenderTexture;
-        Eegeo::Rendering::FBRenderTexture* m_pFBRenderTexture;
         
         Eegeo::Rendering::VertexLayouts::VertexLayout* m_pPositionUvVertexLayout;
 

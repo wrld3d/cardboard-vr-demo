@@ -1,6 +1,6 @@
 //  Copyright (c) 2014 eeGeo Ltd. All rights reserved.
 
-#include "VREegeoCameraController.h"
+#include "VRCameraController.h"
 #include "LatLongAltitude.h"
 #include "CameraHelpers.h"
 #include "SpaceHelpers.h"
@@ -17,24 +17,24 @@ namespace Eegeo
         const float GravityAcceleration = 15.0f;
         const float TerminalVelocity = 500.f;
         
-        Eegeo::dv3 VREegeoCameraController::GetEcefInterestPoint() const
+        Eegeo::dv3 VRCameraController::GetEcefInterestPoint() const
         {
             
             dv3 ecefPosition = m_ecefPosition;
             return ecefPosition.Normalise() * Eegeo::Space::EarthConstants::Radius;
         }
         
-        double VREegeoCameraController::GetAltitudeAboveSeaLevel() const
+        double VRCameraController::GetAltitudeAboveSeaLevel() const
         {
             return Space::SpaceHelpers::GetAltitude(m_renderCamera.GetEcefLocation());
         }
         
-        void VREegeoCameraController::SetProjectionMatrix(Eegeo::m44& projection)
+        void VRCameraController::SetProjectionMatrix(Eegeo::m44& projection)
         {
             m_renderCamera.SetProjectionMatrix(projection);
         }
         
-        Camera::CameraState VREegeoCameraController::GetCameraState() const
+        Camera::CameraState VRCameraController::GetCameraState() const
         {
             return Camera::CameraState(m_renderCamera.GetEcefLocation(),
                                        GetEcefInterestPoint(),
@@ -42,7 +42,7 @@ namespace Eegeo
                                        m_renderCamera.GetProjectionMatrix());
         }
         
-        void VREegeoCameraController::UpdateFromPose(const Eegeo::m33& orientation, const Eegeo::v3& eyeOffset, float eyeDistance)
+        void VRCameraController::UpdateFromPose(const Eegeo::m33& orientation, const Eegeo::v3& eyeOffset, float eyeDistance)
         {
             m33 orientationMatrix;
             m33::Mul(orientationMatrix, m_orientation, orientation);
@@ -84,20 +84,18 @@ namespace Eegeo
                 m_renderCamera.SetOrientationMatrix(orientationMatrix);
                 m_renderCamera.SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
                 
-//                EXAMPLE_LOG("Example: (%.2f, %.2f), %.2f", uAngle, fAngle, far);
-                
                 m_renderCamera.SetProjection(0.7f, near*0.1f, far);
             }
             
         }
         
-        void VREegeoCameraController::SetEcefPosition(const Eegeo::dv3& ecef)
+        void VRCameraController::SetEcefPosition(const Eegeo::dv3& ecef)
         {
             m_ecefPosition = ecef;
             m_renderCamera.SetEcefLocation(m_ecefPosition);
         }
         
-        void VREegeoCameraController::SetStartLatLongAltitude(const Eegeo::Space::LatLongAltitude& eyePos)
+        void VRCameraController::SetStartLatLongAltitude(const Eegeo::Space::LatLongAltitude& eyePos)
         {
             m_ecefPosition = eyePos.ToECEF();
             
@@ -112,15 +110,10 @@ namespace Eegeo
             m_renderCamera.SetEcefLocation(m_ecefPosition);
         }
         
-        void VREegeoCameraController::Update(float dt)
+        void VRCameraController::Update(float dt)
         {
             
             m_time += dt;
-            
-//            float near = 0.1f;
-//            float far = 4000.0f;
-//            GetNearFarPlaneDistances(near, far);
-//            m_renderCamera.SetProjection(m_renderCamera.GetFOV(), near, far);
             
             if(IsFalling())
             {
@@ -130,8 +123,6 @@ namespace Eegeo
             {
                 m_VRCameraPositionSpline.Update(dt);
                 m_VRCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
-                
-//                m_orientation.Identity();
                 
                 if (!IsFollowingSpline())
                 {
@@ -145,12 +136,12 @@ namespace Eegeo
             }
         }
         
-        bool VREegeoCameraController::CanAcceptUserInput() const
+        bool VRCameraController::CanAcceptUserInput() const
         {
             return (!(IsFalling() || IsFollowingSpline()));
         }
         
-        void VREegeoCameraController::MoveStart(MoveDirection::Values direction)
+        void VRCameraController::MoveStart(MoveDirection::Values direction)
         {
             if(!CanAcceptUserInput())
             {
@@ -201,7 +192,7 @@ namespace Eegeo
             }
         }
         
-        void VREegeoCameraController::MoveEnd()
+        void VRCameraController::MoveEnd()
         {
             if(m_moving)
             {
@@ -209,7 +200,7 @@ namespace Eegeo
             }
         }
         
-        void VREegeoCameraController::Move(float dt)
+        void VRCameraController::Move(float dt)
         {
             if (m_moving)
             {
@@ -220,7 +211,7 @@ namespace Eegeo
             }
         }
         
-        void VREegeoCameraController::RotateHorizontal(float angle)
+        void VRCameraController::RotateHorizontal(float angle)
         {
             if(!CanAcceptUserInput())
             {
@@ -237,7 +228,7 @@ namespace Eegeo
             }
         }
 
-        void VREegeoCameraController::GetNearFarPlaneDistances(float& out_near, float& out_far)
+        void VRCameraController::GetNearFarPlaneDistances(float& out_near, float& out_far)
         {
             double cameraAltitude = GetAltitudeAboveSeaLevel();
             double approxTerrainAltitude = 100;
@@ -255,7 +246,7 @@ namespace Eegeo
             
         }
         
-        float VREegeoCameraController::MovementAltitudeMutlipler() const
+        float VRCameraController::MovementAltitudeMutlipler() const
         {
             const double minAltitude = 300.0;
             const double maxAltitude = 8000.0;
@@ -270,7 +261,7 @@ namespace Eegeo
             return m_shiftDown ? multiplier * 0.2f : multiplier;
         }
         
-        void VREegeoCameraController::StartFall()
+        void VRCameraController::StartFall()
         {
             if(!m_falling)
             {
@@ -279,7 +270,7 @@ namespace Eegeo
             }
         }
         
-        void VREegeoCameraController::StopFall()
+        void VRCameraController::StopFall()
         {
             if(m_falling)
             {
@@ -287,7 +278,7 @@ namespace Eegeo
             }
         }
         
-        void VREegeoCameraController::Fall(float dt)
+        void VRCameraController::Fall(float dt)
         {
             m_currentFallSpeed = Eegeo::Min(TerminalVelocity, m_currentFallSpeed + GravityAcceleration * dt);
             

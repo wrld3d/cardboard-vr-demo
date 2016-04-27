@@ -9,10 +9,10 @@
 #include "ScreenProperties.h"
 #include "DefaultCameraControllerFactory.h"
 #include "Modules.h"
-#include "VRDistortion/VRDistortion.h"
-#include "VRDistortion/VRDistortionSkybox.h"
 #include "IIdentity.h"
-#include "InteriorsExplorerModule.h"
+#include "Modules/VRDistortionModule/VRDistortionModule.h"
+#include "Modules/SkyboxModule/SkyboxModule.h"
+#include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
 
 class ExampleApp : private Eegeo::NonCopyable
 {
@@ -26,11 +26,11 @@ private:
     Examples::ScreenPropertiesProvider m_screenPropertiesProvider;
     Eegeo::Streaming::CameraFrustumStreamingVolume* m_pStreamingVolume;
     
-    Eegeo::VR::Distortion::VRDistortion* m_VRDistortion;
-    Eegeo::VR::Distortion::VRDistortionSkybox *m_VRSkybox;
+    Eegeo::VR::Distortion::VRDistortionModule* m_VRDistortion;
+    Eegeo::Skybox::SkyboxModule *m_VRSkybox;
     
     Eegeo::Helpers::IdentityProvider m_identityProvider;
-    InteriorsExplorer::SdkModel::InteriorsExplorerModule* m_interiorExplorerModule;
+    InteriorsExplorer::InteriorsExplorerModule* m_interiorExplorerModule;
     
     bool m_night;
     float m_foggingFar;

@@ -28,11 +28,11 @@ namespace Eegeo
             };
         }
         
-        class VREegeoCameraController : public Eegeo::Location::IInterestPointProvider, protected Eegeo::NonCopyable
+        class VRCameraController : public Eegeo::Location::IInterestPointProvider, protected Eegeo::NonCopyable
         {
             
         public:
-            VREegeoCameraController(float screenWidth, float screenHeight)
+            VRCameraController(float screenWidth, float screenHeight)
             : m_moving(false)
             , m_screenHeight(screenHeight)
             , m_screenWidth(screenWidth)
@@ -53,7 +53,7 @@ namespace Eegeo
 
             }
             
-            ~VREegeoCameraController() { };
+            ~VRCameraController() { };
             
             Eegeo::dv3 GetEcefInterestPoint() const;
             double GetAltitudeAboveSeaLevel() const;

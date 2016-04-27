@@ -86,14 +86,11 @@ namespace Examples
     ,m_pVignetteMaterial(NULL)
     ,m_pRenderable(NULL)
     ,m_pVignetteRenderer(NULL)
-    ,m_pFBRenderTexture(NULL)
     ,m_secondsSinceLastEffectUpate(0.f)
     {
         m_pPositionUvVertexLayout = CreatePositionUvVertexLayout();
         
     }
-    
-    
     
     Eegeo::Rendering::Mesh* CreateUnlitBoxMesh(float width, float height, const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout, Eegeo::Rendering::GlBufferPool& glBufferPool)
     {
@@ -162,17 +159,13 @@ namespace Examples
                                                                       static_cast<u32>(m_screenProperties.GetScreenHeight()),
                                                                       needsDepthStencilBuffers);
         
-        m_pFBRenderTexture = Eegeo_NEW(Eegeo::Rendering::FBRenderTexture)();
-        m_pFBRenderTexture->InitRenderer(m_screenProperties.GetScreenWidth()*2.f, m_screenProperties.GetScreenHeight());
-        
         
         m_pVignetteShader = PostProcessVignetteShader::Create(m_shaderIdGenerator.GetNextId());
         
         m_pVignetteMaterial = Eegeo_NEW(PostProcessVignetteMaterial)(m_materialIdGenerator.GetNextId(),
                                                                      "PostProcessVignetteMaterial",
                                                                      *m_pVignetteShader,
-                                                                     *m_pRenderTexture,
-                                                                     *m_pFBRenderTexture);
+                                                                     *m_pRenderTexture);
         
         Eegeo::Rendering::Mesh* pRenderableMesh = Eegeo::Rendering::Geometry::CreatePositionUVViewportQuad(m_glBufferPool, m_vertexLayoutPool);
         //Uncomment below to load box mesh
@@ -215,8 +208,8 @@ namespace Examples
         Eegeo_DELETE m_pVignetteShader;
         m_pVignetteShader = NULL;
         
-        Eegeo_DELETE m_pFBRenderTexture;
-        m_pFBRenderTexture = NULL;
+        Eegeo_DELETE m_pRenderTexture;
+        m_pRenderTexture = NULL;
     }
     
     void RenderToTextureExample::EarlyUpdate(float dt)

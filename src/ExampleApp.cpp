@@ -165,38 +165,11 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pLoadingScreen = CreateLoadingScreen(screenProperties, eegeoWorld.GetRenderingModule(), eegeoWorld.GetPlatformAbstractionModule());
     
     Eegeo::Modules::Map::Layers::InteriorsPresentationModule& interiorsPresentationModule = mapModule.GetInteriorsPresentationModule();
-    Eegeo::Modules::Map::Layers::InteriorsModelModule& interiorsModelModule = mapModule.GetInteriorsModelModule();
-    Eegeo::Camera::GlobeCamera::GlobeCameraControllerFactory cameraControllerFactory(m_pWorld->GetTerrainModelModule().GetTerrainHeightProvider(),
-                                                                                     mapModule.GetEnvironmentFlatteningService(),
-                                                                                     mapModule.GetResourceCeilingProvider());
     
-    const Eegeo::Resources::Interiors::InteriorsCameraConfiguration& interiorsCameraConfig(Eegeo::Resources::Interiors::InteriorsCameraController::CreateDefaultConfig());
-    const Eegeo::Camera::GlobeCamera::GlobeCameraControllerConfiguration& globeCameraConfig = Eegeo::Resources::Interiors::InteriorsCameraControllerFactory::DefaultGlobeCameraControllerConfiguration();
-    const Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration& globeCameraTouchConfig = Eegeo::Resources::Interiors::InteriorsCameraControllerFactory::DefaultGlobeCameraTouchControllerConfiguration();
-    
-    
-    const Eegeo::Resources::Interiors::InteriorsCameraControllerFactory interiorsCameraControllerFactory(
-                                                                                                         interiorsCameraConfig,
-                                                                                                         globeCameraConfig,
-                                                                                                         globeCameraTouchConfig,
-                                                                                                         cameraControllerFactory,
-                                                                                                         screenProperties,
-                                                                                                         interiorsPresentationModule.GetInteriorInteractionModel(),
-                                                                                                         interiorsPresentationModule.GetInteriorViewModel(),
-                                                                                                         mapModule.GetEnvironmentFlatteningService(),
-                                                                                                         false );
-    const bool interiorsAffectedByFlattening = false;
-
-    m_interiorExplorerModule = Eegeo_NEW(InteriorsExplorer::SdkModel::InteriorsExplorerModule)(
+    m_interiorExplorerModule = Eegeo_NEW(InteriorsExplorer::InteriorsExplorerModule)(
                             interiorsPresentationModule.GetInteriorInteractionModel(),
                             interiorsPresentationModule.GetInteriorSelectionModel(),
-                            interiorsPresentationModule.GetInteriorTransitionModel(),
-                            interiorsModelModule.GetInteriorMarkerModelRepository(),
-                            mapModule.GetEnvironmentFlatteningService(),
-                            interiorsCameraControllerFactory,
-                            screenProperties,
-                            m_identityProvider,
-                            interiorsAffectedByFlattening);
+                            interiorsPresentationModule.GetInteriorTransitionModel());
     
     m_pExampleController = new Examples::ExampleController(*m_pWorld,
                                                            view,
@@ -205,7 +178,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 
     Eegeo::Modules::Core::RenderingModule& renderingModule = m_pWorld->GetRenderingModule();
-    m_VRDistortion = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortion)(m_screenPropertiesProvider.GetScreenProperties(),
+    m_VRDistortion = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortionModule)(m_screenPropertiesProvider.GetScreenProperties(),
                                                 renderingModule.GetVertexLayoutPool(),
                                                 renderingModule.GetVertexBindingPool(),
                                                 renderingModule.GetShaderIdGenerator(),
@@ -214,7 +187,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                              renderingModule.GetGlBufferPool());
     m_VRDistortion->Initialize();
     
-    m_VRSkybox = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortionSkybox)(renderingModule,
+    m_VRSkybox = Eegeo_NEW(Eegeo::Skybox::SkyboxModule)(renderingModule,
                                                                       renderingModule.GetGlBufferPool(),
                                                                       renderingModule.GetVertexBindingPool(),
                                                                       renderingModule.GetVertexLayoutPool(),
@@ -308,8 +281,6 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     eegeoWorld.EarlyUpdate(dt);
     
-    
-//    if(m_interiorExplorerModule->GetInteriorsExplorerModel()->)
     
     m_interiorExplorerModule ->Update(dt);
 	m_pExampleController->EarlyUpdate(dt);

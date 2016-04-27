@@ -102,91 +102,21 @@ namespace Eegeo
         
         void VRCameraPositionSpline::NextSpline()
         {
-            const int MaxSpline = 1;
-            ++m_currentSpline;
-            if (m_currentSpline > MaxSpline)
-            {
-                m_currentSpline = 0;
-            }
-            SetSpline(m_currentSpline);
+//            const int MaxSpline = 1;
+//            ++m_currentSpline;
+//            if (m_currentSpline > MaxSpline)
+//            {
+//                m_currentSpline = 0;
+//            }
+            SetSpline(2);
         }
         
         void VRCameraPositionSpline::SetSpline(int splineId)
         {
             Clear();
             
-            float p = 0.0f;
+            float p = 10.0f;
             m33 orientation;
-            
-            std::vector<Eegeo::dv3> points;
-            
-            
-            // NY
-            //            points.push_back(Eegeo::v3(4645944.411084, 4162311.163091, 1332741.260517));
-            //            points.push_back(Eegeo::v3(4645465.299021, 4162797.875165, 1332893.588509));
-            //            points.push_back(Eegeo::v3(4644833.347104, 4163439.851552, 1333094.510118));
-            //            points.push_back(Eegeo::v3(4644239.922460, 4164042.689519, 1333283.182439));
-            //            points.push_back(Eegeo::v3(4643677.358429, 4164614.177336, 1333462.042993));
-            //            points.push_back(Eegeo::v3(4643274.312695, 4164792.927187, 1333528.844561));
-            //            points.push_back(Eegeo::v3(4643042.347450, 4164609.062235, 1333691.663462));
-//            ?WP - from side
-//            points.push_back(Eegeo::v3(183543.283280, 5316371.035212, 3519330.979947));
-//            points.push_back(Eegeo::v3(183493.410918, 5316374.627359, 3519322.571096));
-//            points.push_back(Eegeo::v3(183450.367729, 5316366.042020, 3519334.856519));
-//            points.push_back(Eegeo::v3(183420.656934, 5316360.454548, 3519343.711105));
-//            points.push_back(Eegeo::v3(183379.552884, 5316351.316537, 3519356.972774));
-//            points.push_back(Eegeo::v3(183300.942325, 5316337.637954, 3519378.580929));
-//            points.push_back(Eegeo::v3(183250.522952, 5316344.502730, 3519368.579147));
-//            points.push_back(Eegeo::v3(182878.208615, 5316281.864086, 3519549.609474));
-//            points.push_back(Eegeo::v3(182882.287473, 5316283.367645, 3519547.064144));
-           
-
-
-            const double alt = 25.0;
-            
-            //Outside path
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, alt + 250).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.456981, -2.969471, alt + 150).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.457455, -2.971733, alt + 100).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.458310, -2.973798, alt + 50).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.458972, -2.976199, alt + 25).ToECEF());
-             
-            //Close to interior
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, alt + 5).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459852, -2.977966, alt).ToECEF());
-            
-            //Interior
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459901, -2.978062, alt).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459921, -2.978145, alt).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459948, -2.978199, alt).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459970, -2.978234, alt).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459993, -2.978257, alt).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460026, -2.978270, alt).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460051, -2.978253, alt).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460067, -2.978212, alt).ToECEF());
-            points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460083, -2.978168, alt).ToECEF());
-            
-            
-            std::vector<Eegeo::dv3>::iterator it;
-            
-//            int index = 1;
-//            for(it = points.begin(); it < points.end()-1; it++){
-//                Eegeo::dv3 point = *it;
-//                point =  point + (point.Norm() * (index * 45.f));
-//                (*it).SetX(point.GetX());
-//                (*it).SetY(point.GetY());
-//                (*it).SetZ(point.GetZ());
-//                index -= 1;
-//            }
-            
-            for(it = points.begin(); it < points.end()-1; it++){
-                Eegeo::dv3 point = *(it+1) - *it;
-                Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(*it, Eegeo::v3(point.GetX(), point.GetY(), point.GetZ()));
-                orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
-                AddPoint(*it, orientation);
-            }
-            
-            return;
             
             
             switch(splineId)
@@ -303,6 +233,44 @@ namespace Eegeo
                     pt += pt.Norm() * p;
                     AddPoint(pt, orientation);
                     
+                    break;
+                }
+                case 2: // Westport House
+                {
+                    
+                    std::vector<Eegeo::dv3> points;
+                    const double alt = 25.0;
+                    
+                    //Outside path
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, alt + 250).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.456981, -2.969471, alt + 150).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.457455, -2.971733, alt + 100).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.458310, -2.973798, alt + 50).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.458972, -2.976199, alt + 25).ToECEF());
+                    
+                    //Close to interior
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, alt + 5).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459852, -2.977966, alt).ToECEF());
+                    
+                    //Interior
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459901, -2.978062, alt).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459921, -2.978145, alt).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459948, -2.978199, alt).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459970, -2.978234, alt).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459993, -2.978257, alt).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460026, -2.978270, alt).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460051, -2.978253, alt).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460067, -2.978212, alt).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460083, -2.978168, alt).ToECEF());
+            
+                    std::vector<Eegeo::dv3>::iterator it;
+                    for(it = points.begin(); it < points.end()-1; it++){
+                        Eegeo::dv3 point = *(it+1) - *it;
+                        Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(*it, Eegeo::v3(point.GetX(), point.GetY(), point.GetZ()));
+                        orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
+                        AddPoint(*it, orientation);
+                    }
+            
                     break;
                 }
             }

@@ -1,19 +1,18 @@
 //
-//  VRDistortionMaterial
+//  VRDistortionModule
 //  SDKSamplesApp
 //
 //  Created by Aqif Hamid on 3/21/16.
 //
 //
 
-#ifndef __ExampleApp__VRDistortion__
-#define __ExampleApp__VRDistortion__
+#ifndef __ExampleApp__VRDistortionModule__
+#define __ExampleApp__VRDistortionModule__
 
 #include "Rendering.h"
 #include "RenderTexture.h"
 #include "ScreenProperties.h"
 #include "VRDistortionIncludes.h"
-#include "../../FBRenderTexture/FBRenderTexture.h"
 
 
 namespace Eegeo
@@ -22,7 +21,7 @@ namespace Eegeo
     {
         namespace Distortion
         {
-            class VRDistortion : public Eegeo::NonCopyable
+            class VRDistortionModule : public Eegeo::NonCopyable
             {
                 
             private:
@@ -38,7 +37,7 @@ namespace Eegeo
                 VRDistortionRenderable* m_pRenderable;
                 VRDistortionRenderer* m_pVRDistortionRenderer;
                 
-                Eegeo::Rendering::RenderTexture* m_pFBRenderTexture;
+                Eegeo::Rendering::RenderTexture* m_pRenderTexture;
                 Eegeo::Rendering::VertexLayouts::VertexLayout* m_pPositionUvVertexLayout;
                 Eegeo::Rendering::ScreenProperties m_screenProperties;
                 
@@ -49,14 +48,14 @@ namespace Eegeo
                 
             public:
                 
-                VRDistortion(const Eegeo::Rendering::ScreenProperties& screenProperties,
+                VRDistortionModule(const Eegeo::Rendering::ScreenProperties& screenProperties,
                                        Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
                                        Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
                                        Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
                                        Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
                                        Eegeo::Rendering::RenderableFilters& renderableFilters,
                                        Eegeo::Rendering::GlBufferPool& m_glBufferPool);
-                virtual ~VRDistortion();
+                virtual ~VRDistortionModule();
                 void Initialize();
                 void Suspend();
                 
@@ -73,4 +72,4 @@ namespace Eegeo
 }
 
 
-#endif /* defined(__ExampleApp__VRDistortion__) */
+#endif /* defined(__ExampleApp__VRDistortionModule__) */

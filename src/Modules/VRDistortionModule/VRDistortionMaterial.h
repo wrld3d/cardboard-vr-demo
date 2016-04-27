@@ -17,7 +17,6 @@
 #include "RenderTexture.h"
 #include "ScreenProperties.h"
 #include "VRDistortionIncludes.h"
-#include "../../FBRenderTexture/FBRenderTexture.h"
 
 namespace Eegeo
 {

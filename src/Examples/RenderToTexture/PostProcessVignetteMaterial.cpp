@@ -11,13 +11,11 @@ namespace Examples
     PostProcessVignetteMaterial::PostProcessVignetteMaterial(const Eegeo::Rendering::TMaterialId materialId,
                                                              const std::string& name,
                                                              PostProcessVignetteShader& shader,
-                                                             Eegeo::Rendering::RenderTexture& renderTexture,
-                                                             Eegeo::Rendering::FBRenderTexture& fbRenderTexture)
+                                                             Eegeo::Rendering::RenderTexture& renderTexture)
     : m_id(materialId)
     , m_name(name)
     , m_shader(shader)
     , m_renderTexture(renderTexture)
-    , m_fbRenderTexture(fbRenderTexture)
     {
         
     }

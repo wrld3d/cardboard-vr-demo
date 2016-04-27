@@ -3,7 +3,7 @@
 #ifndef __ExampleApp__VRCameraSplineExample__
 #define __ExampleApp__VRCameraSplineExample__
 
-#include "VREegeoCameraController.h"
+#include "VRCameraController.h"
 #include "IExample.h"
 #include "Camera.h"
 #include "Geometry.h"
@@ -25,7 +25,7 @@ private:
     
     Eegeo::Geometry::CatmullRomSpline* m_pPositionSpline;
 	Eegeo::Geometry::CatmullRomSpline* m_pTargetSpline;
-    Eegeo::VR::VREegeoCameraController* m_pSplineCameraController;
+    Eegeo::VR::VRCameraController* m_pSplineCameraController;
     
 public:
     
