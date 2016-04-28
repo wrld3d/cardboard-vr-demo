@@ -34,6 +34,7 @@ namespace InteriorsExplorer
         Eegeo_DELETE m_pVisibilityUpdater;
     }
     void InteriorsExplorerModule::ToggleInteriorDisplay(){
+        m_InteriorInteractionModel.SetSelectedFloorIndex(2);
         m_pVisibilityUpdater->SetInteriorShouldDisplay(!m_pVisibilityUpdater->GetInteriorShouldDisplay());
     }
     

@@ -419,6 +419,7 @@ void ExampleApp::ToggleNight()
 
 void ExampleApp::UpdateCardboardProfile(float cardboardProfile[])
 {
+    m_pExampleController->UpdateCardboardProfile(cardboardProfile);
     m_VRDistortion->UpdateCardboardProfile(cardboardProfile);
 }
 

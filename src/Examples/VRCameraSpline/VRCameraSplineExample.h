@@ -19,6 +19,7 @@ class VRCameraSplineExample : public IExample, Eegeo::NonCopyable
 {
 private:
 	
+    float m_eyeDistance;
 //    bool firstCall;
 //    Eegeo::m33 reverseMatrix;
     Eegeo::EegeoWorld& m_world;
@@ -52,6 +53,8 @@ public:
     void PreWorldDraw() { }
 	void Draw() {}
 	void Suspend();
+    
+    void UpdateCardboardProfile(float cardboardProfile[]);
     
     virtual Eegeo::Camera::RenderCamera GetRenderCamera();
     virtual Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const;

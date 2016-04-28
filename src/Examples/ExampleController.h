@@ -61,6 +61,8 @@ namespace Examples
         
         void Draw();
         
+        void UpdateCardboardProfile(float cardboardProfile[]);
+        
         void RegisterExample(IExampleFactory* pFactory);
         
         Eegeo::Camera::RenderCamera GetRenderCamera();

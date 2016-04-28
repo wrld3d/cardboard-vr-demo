@@ -27,6 +27,9 @@ namespace Examples
         virtual void Suspend()= 0;
         virtual void AfterCameraUpdate() { }
         
+        
+        virtual void UpdateCardboardProfile(float cardboardProfile[]){}
+        
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties) = 0;
         
         // TODO: All examples should be returing a RenderCamera used by example, temporaray hack to make it work with VR example.

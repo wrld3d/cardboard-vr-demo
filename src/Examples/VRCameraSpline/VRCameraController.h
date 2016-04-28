@@ -72,7 +72,7 @@ namespace Eegeo
             VRCameraPositionSpline& GetVRCameraPositionSpline() { return m_VRCameraPositionSpline; }
             
             void SetProjectionMatrix(Eegeo::m44& projection);
-            void UpdateFromPose(const Eegeo::m33& orientation, const Eegeo::v3& eyeOffset, float eyeDistance);
+            void UpdateFromPose(const Eegeo::m33& orientation, float eyeDistance);
             void SetEcefPosition(const Eegeo::dv3& ecef);
             void SetStartLatLongAltitude(const Eegeo::Space::LatLongAltitude& eyePos);
             

@@ -42,7 +42,7 @@ namespace Eegeo
                                        m_renderCamera.GetProjectionMatrix());
         }
         
-        void VRCameraController::UpdateFromPose(const Eegeo::m33& orientation, const Eegeo::v3& eyeOffset, float eyeDistance)
+        void VRCameraController::UpdateFromPose(const Eegeo::m33& orientation, float eyeDistance)
         {
             m33 orientationMatrix;
             m33::Mul(orientationMatrix, m_orientation, orientation);

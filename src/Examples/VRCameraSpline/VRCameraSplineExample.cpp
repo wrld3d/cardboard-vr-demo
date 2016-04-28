@@ -24,6 +24,7 @@ namespace Examples
         Eegeo::m44 projectionMatrix = Eegeo::m44(cameraController->GetRenderCamera().GetProjectionMatrix());
         m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
+        m_eyeDistance = 0.03f;
     }
     
     VRCameraSplineExample::~VRCameraSplineExample(){
@@ -37,8 +38,12 @@ namespace Examples
         m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla);
     }
     
-    void VRCameraSplineExample::Suspend()
+    void VRCameraSplineExample::Suspend(){}
+    
+    void VRCameraSplineExample::UpdateCardboardProfile(float cardboardProfile[])
     {
+        //9th parameter is eye distance in meters.
+        m_eyeDistance = cardboardProfile[9]/2.0f;
     }
     
     void VRCameraSplineExample::EarlyUpdate(float dt)
@@ -68,9 +73,7 @@ namespace Examples
         orientation.SetRow(1, up);
         orientation.SetRow(2, forward);
         
-        Eegeo::dv3 eyeDistanceD = m_pSplineCameraController->GetCameraPosition().Norm()*-0.03f;
-        Eegeo::v3 eD(eyeDistanceD.GetX(), eyeDistanceD.GetY(), eyeDistanceD.GetZ());
-        m_pSplineCameraController->UpdateFromPose(orientation, eD, -0.03f);
+        m_pSplineCameraController->UpdateFromPose(orientation, -m_eyeDistance);
         
         return m_pSplineCameraController->GetCameraState();
     }
@@ -85,9 +88,7 @@ namespace Examples
         orientation.SetRow(1, up);
         orientation.SetRow(2, forward);
 
-        Eegeo::dv3 eyeDistanceD = m_pSplineCameraController->GetCameraPosition().Norm()*0.03f;
-        Eegeo::v3 eD(eyeDistanceD.GetX(), eyeDistanceD.GetY(), eyeDistanceD.GetZ());
-        m_pSplineCameraController->UpdateFromPose(orientation, eD, 0.03f);
+        m_pSplineCameraController->UpdateFromPose(orientation, m_eyeDistance);
         
         return m_pSplineCameraController->GetCameraState();
     }

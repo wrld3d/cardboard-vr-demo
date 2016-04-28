@@ -153,6 +153,10 @@ void ExampleController::Draw()
 		m_pCurrentExample->Draw();
 	}
 }
+    
+void ExampleController::UpdateCardboardProfile(float cardboardProfile[]){
+    m_pCurrentExample->UpdateCardboardProfile(cardboardProfile);
+}
 
 void ExampleController::RegisterExample(IExampleFactory* pFactory)
 {

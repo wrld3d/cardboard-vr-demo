@@ -16,7 +16,6 @@ namespace Eegeo
         namespace Distortion
         {
             
-            
             VRCardboardDeviceProfile::VRCardboardDeviceProfile(){
                 
                 float profileData[] = {

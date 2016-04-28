@@ -239,7 +239,7 @@ namespace Eegeo
                 {
                     
                     std::vector<Eegeo::dv3> points;
-                    const double alt = 25.0;
+                    const double alt = 35.0;
                     
                     //Outside path
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, alt + 250).ToECEF());
@@ -249,8 +249,8 @@ namespace Eegeo
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.458972, -2.976199, alt + 25).ToECEF());
                     
                     //Close to interior
-                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, alt + 5).ToECEF());
-                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459852, -2.977966, alt).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, alt + 15).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459852, -2.977966, alt+10).ToECEF());
                     
                     //Interior
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459901, -2.978062, alt).ToECEF());
