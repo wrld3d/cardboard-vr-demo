@@ -10,14 +10,18 @@
 #include "EegeoWorld.h"
 #include "EarthConstants.h"
 #include "ScreenProperties.h"
+#include "InteriorVisibilityUpdater.h"
+#include "InteriorsExplorerModel.h"
 
 namespace Examples
 {
     VRCameraSplineExample::VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
                                                    Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
                                                    Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
-                                             const Eegeo::Rendering::ScreenProperties& initialScreenProperties)
-    : m_world(eegeoWorld)
+                                             const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
+                                             const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule)
+    : m_world(eegeoWorld),
+      m_InteriorsExplorerModule(interiorsExplorerModule)
     {
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
@@ -50,6 +54,29 @@ namespace Examples
     {
         m_pSplineCameraController->Update(dt);
         
+        Eegeo::VR::VRCameraPositionSpline& spline = m_pSplineCameraController->GetVRCameraPositionSpline();
+        
+        if (spline.GetCurrentSplineID() == 2) {
+            //We are on westport spline
+            
+            if (spline.GetCurrentSplineTime() > 0.3f) {
+                InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_InteriorsExplorerModule.GetInteriorVisibilityUpdater();
+                
+                if (!visiblityUpdater.GetInteriorShouldDisplay()) {
+                    
+                    m_InteriorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
+                    visiblityUpdater.SetInteriorShouldDisplay(true);
+                }
+            }
+            else {
+                InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_InteriorsExplorerModule.GetInteriorVisibilityUpdater();
+                
+                if (visiblityUpdater.GetInteriorShouldDisplay()) {
+                    visiblityUpdater.SetInteriorShouldDisplay(false);
+                    visiblityUpdater.UpdateVisiblityImmediately();
+                }
+            }
+        }
     }
     
     void VRCameraSplineExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)

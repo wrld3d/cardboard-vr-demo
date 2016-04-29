@@ -6,6 +6,7 @@
 #include "IExampleFactory.h"
 #include "EegeoRootDeclarations.h"
 #include "ScreenPropertiesProvider.h"
+#include "IInteriorsExplorerModule.h"
 
 namespace Examples
 {
@@ -14,11 +15,13 @@ namespace Examples
         Eegeo::EegeoWorld& m_world;
         const IScreenPropertiesProvider& m_screenPropertiesProvider;
         DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
+        const InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
         
     public:
         VRCameraSplineExampleFactory(Eegeo::EegeoWorld& world,
                                       DefaultCameraControllerFactory& defaultCameraControllerFactory,
-                                      const IScreenPropertiesProvider& screenPropertiesProvider);
+                                      const IScreenPropertiesProvider& screenPropertiesProvider,
+                                      const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);
         
         std::string ExampleName() const;
         

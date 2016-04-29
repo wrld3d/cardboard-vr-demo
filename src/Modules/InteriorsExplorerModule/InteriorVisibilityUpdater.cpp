@@ -30,6 +30,13 @@
         m_interiorShouldDisplay = shouldDisplay;
     }
     
+    void InteriorVisibilityUpdater::UpdateVisiblityImmediately()
+    {
+        const bool shouldDisplay = m_interiorShouldDisplay && m_interiorSelectionModel.IsInteriorSelected();
+        m_interiorTransitionParameter = shouldDisplay ? 1.f : 0.f;
+        m_interiorTransitionModel.SetVisibilityParam(m_interiorTransitionParameter);
+    }
+    
     void InteriorVisibilityUpdater::Update(float dt)
     {
         const bool shouldDisplay = m_interiorShouldDisplay && m_interiorSelectionModel.IsInteriorSelected();

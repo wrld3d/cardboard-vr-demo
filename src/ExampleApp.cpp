@@ -148,6 +148,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                                    mapModule.GetEnvironmentFlatteningService());
     
     m_pStreamingVolume->setDeepestLevelForAltitudeLodRefinement(11);
+    m_pStreamingVolume->SetForceMaximumRefinement(true);
     
     m_pCameraControllerFactory = new Examples::DefaultCameraControllerFactory(
                                                                     terrainModelModule,
@@ -205,7 +206,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 //                                                                                               buildingFootprintsModule));
     
 //    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
-    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider);
+    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule);
     
 //    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
 //    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineDualCameraExampleFactory>(m_screenPropertiesProvider);
@@ -577,13 +578,13 @@ void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
 	{
 		return;
 	}
-    if (m_interiorExplorerModule->InteriorLoaded()) {
-        m_pStreamingVolume->SetForceMaximumRefinement(true);
-        m_interiorExplorerModule->ToggleInteriorDisplay();
-        EXAMPLE_LOG("Interior is loaded");
-    }
-    else
-        EXAMPLE_LOG("Interior is not loaded");
+//    if (m_interiorExplorerModule->InteriorLoaded()) {
+//        m_pStreamingVolume->SetForceMaximumRefinement(true);
+//        m_interiorExplorerModule->ToggleInteriorDisplay();
+//        EXAMPLE_LOG("Interior is loaded");
+//    }
+//    else
+//        EXAMPLE_LOG("Interior is not loaded");
 	m_pExampleController->Event_TouchTap(data);
 }
 

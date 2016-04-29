@@ -9,6 +9,7 @@
 #include "Geometry.h"
 #include "Streaming.h"
 #include "GlobeCamera.h"
+#include "IInteriorsExplorerModule.h"
 
 namespace Examples
 {
@@ -27,13 +28,15 @@ private:
     Eegeo::Geometry::CatmullRomSpline* m_pPositionSpline;
 	Eegeo::Geometry::CatmullRomSpline* m_pTargetSpline;
     Eegeo::VR::VRCameraController* m_pSplineCameraController;
+    const InteriorsExplorer::IInteriorsExplorerModule& m_InteriorsExplorerModule;
     
 public:
     
     VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
                            Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
                            Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
-                           const Eegeo::Rendering::ScreenProperties& initialScreenProperties);
+                           const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
+                           const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);
     
     virtual ~VRCameraSplineExample();
     

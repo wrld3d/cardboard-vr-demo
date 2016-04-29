@@ -9,6 +9,7 @@
 #include "EegeoWorld.h"
 #include "UIActionHandler.h"
 #include "IExampleControllerView.h"
+#include "IInteriorsExplorerModule.h"
 #include "Camera.h"
 #include "ScreenPropertiesProvider.h"
 #include "DefaultCameraControllerFactory.h"
@@ -100,9 +101,9 @@ namespace Examples
         }
         
         template <typename TExampleFactory>
-        void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider)
+        void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider, const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule)
         {
-            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider)));
+            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, interiorsExplorerModule)));
         }
         
         void Event_TouchRotate(const AppInterface::RotateData& data);

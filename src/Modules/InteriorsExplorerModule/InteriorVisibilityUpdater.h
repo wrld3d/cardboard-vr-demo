@@ -21,7 +21,7 @@
         bool GetInteriorShouldDisplay() { return m_interiorShouldDisplay; }
         
         void Update(float dt);
-        
+        void UpdateVisiblityImmediately();
     private:
         
         Eegeo::Resources::Interiors::InteriorTransitionModel& m_interiorTransitionModel;

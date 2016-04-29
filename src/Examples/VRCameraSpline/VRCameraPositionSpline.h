@@ -34,6 +34,9 @@ namespace Eegeo
             double GetPlaybackSpeed() const { return m_playbackSpeed; }
             void SetPlaybackSpeed(double speed) { m_playbackSpeed = speed; }
             
+            double GetCurrentSplineTime() const { return m_time; }
+            int GetCurrentSplineID() const { return m_currentSpline; }
+            
             const bool IsPlaying() const { return m_playing; }
             
             void Spew();
