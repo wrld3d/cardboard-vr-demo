@@ -126,7 +126,8 @@ AppHost::AppHost(
 	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::Latin;
 	std::string deviceModel = std::string(nativeState.deviceModel, strlen(nativeState.deviceModel));
 	Eegeo::Config::PlatformConfig config = Eegeo::Android::AndroidPlatformConfigBuilder(deviceModel).Build();
-	
+
+	config.GraphicsConfig.AlwaysUseHighFidelityWaterShader = true;
     config.OptionsConfig.GenerateCollisionForAllResources = true;
 	config.CityThemesConfig.EmbeddedThemeManifestFile = "embedded_manifest.txt";
 	config.CityThemesConfig.EmbeddedThemeTexturePath = "Textures";

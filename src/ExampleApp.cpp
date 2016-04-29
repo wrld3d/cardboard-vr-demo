@@ -401,20 +401,28 @@ void ExampleApp::UpdateNightTParam(float dt)
 
 void ExampleApp::ToggleNight()
 {
-    m_night = !m_night;
+    bool toggled_night = !m_night;
+    
     std::stringstream themeNameBuidler;
-    themeNameBuidler << (m_night ? "Night" : "Day");
+    themeNameBuidler << (toggled_night ? "Night" : "Day");
     themeNameBuidler << "Default";
-    m_pWorld->GetMapModule().GetCityThemesModule().GetCityThemesService().RequestTransitionToState(themeNameBuidler.str(), 1.f);
-
-    if (m_night) {
-        m_startClearColor = Eegeo::v3(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f);
-        m_destClearColor = Eegeo::v3(0.0f/255.f,24.0f/255.f,72.0f/255.f) ;
-    } else {
-        m_startClearColor = Eegeo::v3(0.0f/255.f,24.0f/255.f,72.0f/255.f);
-        m_destClearColor = Eegeo::v3(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f);
+    Eegeo::Resources::CityThemes::ICityThemesService& cityThemeService = m_pWorld->GetMapModule().GetCityThemesModule().GetCityThemesService();
+    const std::string& stateName = themeNameBuidler.str();
+    cityThemeService.RequestTransitionToState(themeNameBuidler.str(), 1.f);
+    
+    if (cityThemeService.GetCurrentTheme().IsCityThemeStateSupported(stateName))
+    {
+        m_night = toggled_night;
+        
+        if (m_night) {
+            m_startClearColor = Eegeo::v3(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f);
+            m_destClearColor = Eegeo::v3(0.0f/255.f,24.0f/255.f,72.0f/255.f) ;
+        } else {
+            m_startClearColor = Eegeo::v3(0.0f/255.f,24.0f/255.f,72.0f/255.f);
+            m_destClearColor = Eegeo::v3(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f);
+        }
+        m_nightTParam = 0.f;
     }
-    m_nightTParam = 0.f;
 }
 
 void ExampleApp::UpdateCardboardProfile(float cardboardProfile[])

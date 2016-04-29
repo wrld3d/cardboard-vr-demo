@@ -91,6 +91,7 @@ AppHost::AppHost(
     
     config.OptionsConfig.StartMapModuleAutomatically = false;
     config.OptionsConfig.GenerateCollisionForAllResources = true;
+    config.GraphicsConfig.AlwaysUseHighFidelityWaterShader = true;
     
 	m_pWorld = new Eegeo::EegeoWorld(apiKey,
                                      *m_piOSPlatformAbstractionModule,
