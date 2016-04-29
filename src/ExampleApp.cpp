@@ -302,23 +302,25 @@ void ExampleApp::Update (float dt, float headTansform[])
 }
 
 void ExampleApp::Draw (float dt, float headTansform[]){
-    
-    m_VRDistortion->BeginRendering();
-    DrawLeftEye(dt, headTansform);
-    m_VRDistortion->RegisterRenderable();
-    DrawRightEye(dt, headTansform);
-    m_VRDistortion->UnRegisterRenderable();
+    Eegeo::EegeoWorld& eegeoWorld = World();
+    if(eegeoWorld.Validated())
+    {
+        m_VRDistortion->BeginRendering();
+        DrawLeftEye(dt, headTansform, eegeoWorld);
+        m_VRDistortion->RegisterRenderable();
+        DrawRightEye(dt, headTansform, eegeoWorld);
+        m_VRDistortion->UnRegisterRenderable();
+    }
     
     DrawLoadingScreen();
 }
 
-void ExampleApp::DrawLeftEye (float dt, float headTansform[]){
+void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld){
     
     m_pExampleController->PreWorldDraw();
     
     glViewport(0, 0, m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(), m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     
-    Eegeo::EegeoWorld& eegeoWorld = World();
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentLeftCameraState(headTansform));
     Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
                                               cameraState.InterestPointEcef(),
@@ -336,13 +338,11 @@ void ExampleApp::DrawLeftEye (float dt, float headTansform[]){
     
 }
 
-void ExampleApp::DrawRightEye (float dt, float headTansform[]){
+void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld){
     
     m_pExampleController->PreWorldDraw();
     
     glViewport(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(), 0, m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
-    
-    Eegeo::EegeoWorld& eegeoWorld = World();
     
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentRightCameraState(headTansform));
     Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
