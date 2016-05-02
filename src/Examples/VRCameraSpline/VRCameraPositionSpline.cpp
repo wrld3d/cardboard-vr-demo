@@ -102,13 +102,13 @@ namespace Eegeo
         
         void VRCameraPositionSpline::NextSpline()
         {
-//            const int MaxSpline = 1;
-//            ++m_currentSpline;
-//            if (m_currentSpline > MaxSpline)
-//            {
-//                m_currentSpline = 0;
-//            }
-            SetSpline(2);
+            const int MaxSpline = 2;
+            ++m_currentSpline;
+            if (m_currentSpline > MaxSpline)
+            {
+                m_currentSpline = 0;
+            }
+            SetSpline(m_currentSpline);
         }
         
         void VRCameraPositionSpline::SetSpline(int splineId)
@@ -244,7 +244,7 @@ namespace Eegeo
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, alt + 250).ToECEF());
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.456981, -2.969471, alt + 150).ToECEF());
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.457455, -2.971733, alt + 100).ToECEF());
-                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.458310, -2.973798, alt + 50).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.458167, -2.974670, alt + 50).ToECEF());
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.458972, -2.976199, alt + 25).ToECEF());
                     
                     //Close to interior

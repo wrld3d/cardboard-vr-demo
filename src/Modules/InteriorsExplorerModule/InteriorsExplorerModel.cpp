@@ -27,16 +27,17 @@ namespace InteriorsExplorer
         {
             return;
         }
-        
-        const bool shouldExitExpandedMode = m_interiorInteractionModel.IsFullyExpanded() || m_interiorInteractionModel.IsEnteringExpanded();
-        if (shouldExitExpandedMode)
-        {
-            m_interiorInteractionModel.ToggleExpanded();
-        }
+            // Workaround: to completely load model.
+//        const bool shouldExitExpandedMode = m_interiorInteractionModel.IsFullyExpanded() || m_interiorInteractionModel.IsEnteringExpanded();
+//        if (shouldExitExpandedMode)
+//        {
+//            m_interiorInteractionModel.ToggleExpanded();
+//        }
         
         if (m_interiorInteractionModel.GetSelectedFloorIndex() == floor)
         {
-            return;
+            // Workaround: to completely load model.
+//            return;
         }
         
         m_interiorInteractionModel.SetSelectedFloorIndex(floor);

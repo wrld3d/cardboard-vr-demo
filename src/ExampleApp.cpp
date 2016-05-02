@@ -284,7 +284,10 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     
     m_interiorExplorerModule ->Update(dt);
-	m_pExampleController->EarlyUpdate(dt);
+    
+    
+    if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
+        m_pExampleController->EarlyUpdate(dt);
     
     
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
@@ -296,7 +299,9 @@ void ExampleApp::Update (float dt, float headTansform[])
     const double cameraFarPlaneD = fmin(fmax(d, Eegeo::Streaming::StreamingVolumeController::MIN_STREAMING_FAR_PLANE_DISTANCE), frustumPlanes[Eegeo::Geometry::Frustum::PLANE_FAR].d);
     frustumPlanes[Eegeo::Geometry::Frustum::PLANE_FAR].d = static_cast<float>(cameraFarPlaneD);
     
-    m_pStreamingVolume->updateStreamingVolume(renderCamera.GetEcefLocation(), frustumPlanes, renderCamera.GetFOV());
+    
+    // Workaround: added 100.0f to FOV to load textures for surroundings even when camera is not looking at it to fix interior loading crash.
+    m_pStreamingVolume->updateStreamingVolume(renderCamera.GetEcefLocation(), frustumPlanes, renderCamera.GetFOV()+100.0f);
     m_pStreamingVolume->ResetVolume(cameraState.InterestPointEcef());
     
     Eegeo::EegeoUpdateParameters updateParameters(dt,
@@ -309,7 +314,8 @@ void ExampleApp::Update (float dt, float headTansform[])
     
 	eegeoWorld.Update(updateParameters);
     
-    m_pExampleController->Update(dt);
+    if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
+        m_pExampleController->Update(dt);
     
     UpdateNightTParam(dt);
     UpdateFogging();

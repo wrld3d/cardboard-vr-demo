@@ -56,13 +56,13 @@ namespace Examples
         
         Eegeo::VR::VRCameraPositionSpline& spline = m_pSplineCameraController->GetVRCameraPositionSpline();
         
-        if (spline.GetCurrentSplineID() == 2) {
             //We are on westport spline
             
-            if (spline.GetCurrentSplineTime() > 0.3f) {
+            if (spline.GetCurrentSplineTime() > 0.3f && spline.GetCurrentSplineID() == 2) {
                 InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_InteriorsExplorerModule.GetInteriorVisibilityUpdater();
                 
-                if (!visiblityUpdater.GetInteriorShouldDisplay()) {
+//                if (!visiblityUpdater.GetInteriorShouldDisplay())
+                {
                     
                     m_InteriorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
                     visiblityUpdater.SetInteriorShouldDisplay(true);
@@ -76,7 +76,7 @@ namespace Examples
                     visiblityUpdater.UpdateVisiblityImmediately();
                 }
             }
-        }
+        
     }
     
     void VRCameraSplineExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
