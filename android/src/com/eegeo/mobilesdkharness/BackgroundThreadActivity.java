@@ -4,6 +4,7 @@ package com.eegeo.mobilesdkharness;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,6 +15,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.github.lzyzsd.arcprogress.ArcProgress;
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams.VerticalAlignmentType;
 import com.google.vrtoolkit.cardboard.FieldOfView;
@@ -56,6 +58,19 @@ public class BackgroundThreadActivity extends MainActivity
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		final float dpi = dm.ydpi;
 		final Activity activity = this;
+
+		final ArcProgress progress1 = (ArcProgress) findViewById(R.id.gaze_progress_1);
+		final ArcProgress progress2 = (ArcProgress) findViewById(R.id.gaze_progress_2);
+
+		progress1.invalidate();
+		progress2.invalidate();
+		progress1.post(new Runnable() {
+		    @Override public void run() {
+		    	progress1.setProgress(progress1.getProgress()+1);
+		    	progress2.setProgress(progress1.getProgress()+1);
+		    	progress1.postDelayed(this, 100);
+		    }
+		});
 		
 		m_surfaceView = (EegeoSurfaceView)findViewById(R.id.surface);
 		m_surfaceView.getHolder().addCallback(this);

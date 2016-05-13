@@ -122,7 +122,7 @@ namespace Eegeo
             else if (IsFollowingSpline())
             {
                 m_VRCameraPositionSpline.Update(dt);
-                m_VRCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
+//                m_VRCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
                 
                 if (!IsFollowingSpline())
                 {
