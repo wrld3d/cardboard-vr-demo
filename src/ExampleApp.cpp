@@ -196,6 +196,19 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                       );
     m_VRSkybox->Start();
     
+    Eegeo::dv3 quadPosition = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 50).ToECEF();
+    Eegeo::v2 dim = Eegeo::v2(50,50);
+    m_UIQuad = Eegeo_NEW(Eegeo::UI::UIQuad)(renderingModule,
+                                            renderingModule.GetGlBufferPool(),
+                                            renderingModule.GetVertexBindingPool(),
+                                            renderingModule.GetVertexLayoutPool(),
+                                            pWorld->GetPlatformAbstractionModule().GetTextureFileLoader(),
+                                            renderingModule.GetRenderableFilters(),
+                                            quadPosition,
+                                            dim
+                                            );
+    
+    m_UIQuad->Start();
 //	register all generic examples
 
 //    m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();
@@ -257,6 +270,7 @@ ExampleApp::~ExampleApp()
 {
     delete m_VRDistortion;
     delete m_VRSkybox;
+    delete m_UIQuad;
 	delete m_pCameraTouchController;
     delete m_pLoadingScreen;
     delete m_pExampleController;
@@ -320,7 +334,7 @@ void ExampleApp::Update (float dt, float headTansform[])
     UpdateNightTParam(dt);
     UpdateFogging();
     UpdateLoadingScreen(dt);
-    
+    m_UIQuad->Update(dt);
 }
 
 void ExampleApp::Draw (float dt, float headTansform[]){

@@ -38,7 +38,7 @@ namespace Examples
     void VRCameraSplineExample::Start()
     {
         
-        Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(37.7858,-122.401, 100);
+        Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250);
         m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla);
     }
     

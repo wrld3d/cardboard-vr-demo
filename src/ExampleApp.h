@@ -13,6 +13,7 @@
 #include "Modules/VRDistortionModule/VRDistortionModule.h"
 #include "Modules/SkyboxModule/SkyboxModule.h"
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
+#include "Modules/UI/UIQuad.h"
 
 class ExampleApp : private Eegeo::NonCopyable
 {
@@ -28,6 +29,7 @@ private:
     
     Eegeo::VR::Distortion::VRDistortionModule* m_VRDistortion;
     Eegeo::Skybox::SkyboxModule *m_VRSkybox;
+    Eegeo::UI::UIQuad *m_UIQuad;
     
     Eegeo::Helpers::IdentityProvider m_identityProvider;
     InteriorsExplorer::InteriorsExplorerModule* m_interiorExplorerModule;
