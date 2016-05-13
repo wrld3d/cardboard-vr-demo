@@ -35,12 +35,7 @@ namespace Eegeo
             Eegeo::Rendering::RenderableFilters& m_renderableFilters;
             Helpers::GLHelpers::TextureInfo m_textureInfo;
             Eegeo::Helpers::ITextureFileLoader& m_textureFileLoader;
-            float test;
-            Eegeo::dv3 m_ecefPosition;
             Eegeo::m33 m_basisToEcef;
-            Eegeo::v2 m_Dimension;
-            Eegeo::v2 m_uvMin;
-            Eegeo::v2 m_uvMax;
             
         public:
             UIQuad(Eegeo::Modules::Core::RenderingModule& p_RenderingModule,
@@ -49,24 +44,15 @@ namespace Eegeo
                    Eegeo::Rendering::VertexLayouts::VertexLayoutPool& p_VertexLayoutPool,
                    Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
                    Eegeo::Rendering::RenderableFilters& p_RenderableFilters,
-                   Eegeo::dv3& p_ecefPosition,
-                   Eegeo::v2& p_Dimension
-                   );
-            UIQuad(Eegeo::Modules::Core::RenderingModule& p_RenderingModule,
-                   Eegeo::Rendering::GlBufferPool& p_glBufferPool,
-                   Eegeo::Rendering::VertexLayouts::VertexBindingPool& p_VertexBindingPool,
-                   Eegeo::Rendering::VertexLayouts::VertexLayoutPool& p_VertexLayoutPool,
-                   Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
-                   Eegeo::Rendering::RenderableFilters& p_RenderableFilters,
-                   Eegeo::dv3& p_ecefPosition,
-                   Eegeo::v2& p_Dimension,
-                   Eegeo::v2& p_uvMin,
-                   Eegeo::v2& p_uvMax
+                   const std::string& fileName,
+                   const Eegeo::dv3& p_ecefPosition,
+                   const Eegeo::v2& p_Dimension,
+                   const Eegeo::v2& p_uvMin = Eegeo::v2::Zero(),
+                   const Eegeo::v2& p_uvMax = Eegeo::v2::One(),
+                   const Eegeo::v4& p_initialColor = Eegeo::v4::One()
                    );
             virtual ~UIQuad();
-            void Start();
             void Update(float dt);
-            void Draw();
             void Suspend();
             
             // IRenderableFilter interface

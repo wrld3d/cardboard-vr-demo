@@ -204,11 +204,11 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                             renderingModule.GetVertexLayoutPool(),
                                             pWorld->GetPlatformAbstractionModule().GetTextureFileLoader(),
                                             renderingModule.GetRenderableFilters(),
+                                            "mesh_example/quadrants.png",
                                             quadPosition,
                                             dim
                                             );
     
-    m_UIQuad->Start();
 //	register all generic examples
 
 //    m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();

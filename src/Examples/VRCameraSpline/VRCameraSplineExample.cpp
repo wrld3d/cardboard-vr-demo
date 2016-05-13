@@ -54,28 +54,28 @@ namespace Examples
     {
         m_pSplineCameraController->Update(dt);
         
-        Eegeo::VR::VRCameraPositionSpline& spline = m_pSplineCameraController->GetVRCameraPositionSpline();
+//        Eegeo::VR::VRCameraPositionSpline& spline = m_pSplineCameraController->GetVRCameraPositionSpline();
         
             //We are on westport spline
             
-            if (spline.GetCurrentSplineTime() > 0.3f && spline.GetCurrentSplineID() == 2) {
-                InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_InteriorsExplorerModule.GetInteriorVisibilityUpdater();
-                
-//                if (!visiblityUpdater.GetInteriorShouldDisplay())
-                {
-                    
-                    m_InteriorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
-                    visiblityUpdater.SetInteriorShouldDisplay(true);
-                }
-            }
-            else {
-                InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_InteriorsExplorerModule.GetInteriorVisibilityUpdater();
-                
-                if (visiblityUpdater.GetInteriorShouldDisplay()) {
-                    visiblityUpdater.SetInteriorShouldDisplay(false);
-                    visiblityUpdater.UpdateVisiblityImmediately();
-                }
-            }
+//            if (spline.GetCurrentSplineTime() > 0.3f && spline.GetCurrentSplineID() == 2) {
+//                InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_InteriorsExplorerModule.GetInteriorVisibilityUpdater();
+//                
+////                if (!visiblityUpdater.GetInteriorShouldDisplay())
+//                {
+//                    
+//                    m_InteriorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
+//                    visiblityUpdater.SetInteriorShouldDisplay(true);
+//                }
+//            }
+//            else {
+//                InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_InteriorsExplorerModule.GetInteriorVisibilityUpdater();
+//                
+//                if (visiblityUpdater.GetInteriorShouldDisplay()) {
+//                    visiblityUpdater.SetInteriorShouldDisplay(false);
+//                    visiblityUpdater.UpdateVisiblityImmediately();
+//                }
+//            }
         
     }
     

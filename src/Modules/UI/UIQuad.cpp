@@ -106,41 +106,17 @@ namespace Eegeo
         }
         
         UIQuad::UIQuad(Eegeo::Modules::Core::RenderingModule& p_RenderingModule,
-                       Eegeo::Rendering::GlBufferPool& p_glBufferPool,
-                       Eegeo::Rendering::VertexLayouts::VertexBindingPool& p_VertexBindingPool,
-                       Eegeo::Rendering::VertexLayouts::VertexLayoutPool& p_VertexLayoutPool,
-                       Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
-                       Eegeo::Rendering::RenderableFilters& p_RenderableFilters,
-                       Eegeo::dv3& p_ecefPosition,
-                       Eegeo::v2& p_Dimension
-                       ):
-        m_renderingModule(p_RenderingModule),
-        m_glBufferPool(p_glBufferPool),
-        m_vertexLayoutPool(p_VertexLayoutPool),
-        m_vertexBindingPool(p_VertexBindingPool),
-        m_renderableFilters(p_RenderableFilters),
-        m_textureFileLoader(textureFileLoader),
-        m_pRenderable(NULL),
-        m_ecefPosition(p_ecefPosition),
-        m_Dimension(p_Dimension),
-        m_uvMin(Eegeo::v2::Zero()),
-        m_uvMax(Eegeo::v2::One())
-        {
-            m_textureInfo.textureId = 0;
-            m_textureInfo.width = 0;
-            m_textureInfo.height = 0;
-        }
-        
-        UIQuad::UIQuad(Eegeo::Modules::Core::RenderingModule& p_RenderingModule,
                Eegeo::Rendering::GlBufferPool& p_glBufferPool,
                Eegeo::Rendering::VertexLayouts::VertexBindingPool& p_VertexBindingPool,
                Eegeo::Rendering::VertexLayouts::VertexLayoutPool& p_VertexLayoutPool,
                Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
                Eegeo::Rendering::RenderableFilters& p_RenderableFilters,
-               Eegeo::dv3& p_ecefPosition,
-               Eegeo::v2& p_Dimension,
-               Eegeo::v2& p_uvMin,
-               Eegeo::v2& p_uvMax
+               const std::string& fileName,
+               const Eegeo::dv3& p_ecefPosition,
+               const Eegeo::v2& p_Dimension,
+               const Eegeo::v2& p_uvMin,
+               const Eegeo::v2& p_uvMax,
+                       const Eegeo::v4& p_initialColor
                ):
         m_renderingModule(p_RenderingModule),
         m_glBufferPool(p_glBufferPool),
@@ -148,31 +124,14 @@ namespace Eegeo
         m_vertexBindingPool(p_VertexBindingPool),
         m_renderableFilters(p_RenderableFilters),
         m_textureFileLoader(textureFileLoader),
-        m_pRenderable(NULL),
-        m_ecefPosition(p_ecefPosition),
-        m_Dimension(p_Dimension),
-        m_uvMin(p_uvMin),
-        m_uvMax(p_uvMax)
+        m_pRenderable(NULL)
         {
             m_textureInfo.textureId = 0;
             m_textureInfo.width = 0;
             m_textureInfo.height = 0;
-        }
-        
-        UIQuad::~UIQuad()
-        {
-            Eegeo::Rendering::RenderableFilters& platformRenderableFilters = m_renderingModule.GetRenderableFilters();
-            platformRenderableFilters.RemoveRenderableFilter(*this);
-            
-            Eegeo_DELETE m_Material;
-            Eegeo_DELETE m_Shader;
-        }
-        
-        void UIQuad::Start()
-        {
             
             const bool generateMipmaps = true;
-            bool success = m_textureFileLoader.LoadTexture(m_textureInfo, "mesh_example/quadrants.png", generateMipmaps);
+            bool success = m_textureFileLoader.LoadTexture(m_textureInfo, fileName, generateMipmaps);
             Eegeo_ASSERT(success, "failed to load texture");
             if (!success)
                 return;
@@ -183,21 +142,28 @@ namespace Eegeo
                                                                                             "UIRectMaterial",
                                                                                             *m_Shader,
                                                                                             m_textureInfo.textureId,
-                                                                                            v4::One());
+                                                                                            p_initialColor);
             
-            Eegeo::Rendering::Mesh* pRenderableMesh = CreateUnlitQuadMesh(m_Dimension, m_uvMin, m_uvMax, *CreatePositionUvVertexLayout(), m_renderingModule.GetGlBufferPool());
+            Eegeo::Rendering::Mesh* pRenderableMesh = CreateUnlitQuadMesh(p_Dimension, p_uvMin, p_uvMax, *CreatePositionUvVertexLayout(), m_renderingModule.GetGlBufferPool());
             
-            m_pRenderable = CreateUIMeshRenderable(*pRenderableMesh, *m_Material, m_vertexBindingPool, m_ecefPosition);
+            m_pRenderable = CreateUIMeshRenderable(*pRenderableMesh, *m_Material, m_vertexBindingPool, p_ecefPosition);
             
-            m_pRenderable->SetOrientationEcef(BuildBasisToEcef(m_ecefPosition));
+            m_pRenderable->SetOrientationEcef(BuildBasisToEcef(p_ecefPosition));
             
             m_renderableFilters.AddRenderableFilter(*this);
         }
         
-        void UIQuad::Update(float dt)
-        {}
+        UIQuad::~UIQuad()
+        {
+            Eegeo::Rendering::RenderableFilters& platformRenderableFilters = m_renderingModule.GetRenderableFilters();
+            platformRenderableFilters.RemoveRenderableFilter(*this);
+         
+            Eegeo_DELETE m_pRenderable;
+            Eegeo_DELETE m_Material;
+            Eegeo_DELETE m_Shader;
+        }
         
-        void UIQuad::Draw()
+        void UIQuad::Update(float dt)
         {}
         
         void UIQuad::Suspend()
