@@ -92,19 +92,6 @@ namespace Eegeo
             return pUnlitBoxRenderable;
         }
         
-        Eegeo::m33 BuildBasisToEcef(const dv3& originPointEcef)
-        {
-            Eegeo::Space::EcefTangentBasis basisFrame;
-            Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(
-                                                                              originPointEcef,
-                                                                              0.0f,
-                                                                              basisFrame);
-            Eegeo::m33 basisToEcef;
-            basisFrame.GetBasisOrientationAsMatrix(basisToEcef);
-            
-            return basisToEcef;
-        }
-        
         UIQuad::UIQuad(Eegeo::Modules::Core::RenderingModule& p_RenderingModule,
                Eegeo::Rendering::GlBufferPool& p_glBufferPool,
                Eegeo::Rendering::VertexLayouts::VertexBindingPool& p_VertexBindingPool,
@@ -148,8 +135,6 @@ namespace Eegeo
             
             m_pRenderable = CreateUIMeshRenderable(*pRenderableMesh, *m_Material, m_vertexBindingPool, p_ecefPosition);
             
-            m_pRenderable->SetOrientationEcef(BuildBasisToEcef(p_ecefPosition));
-            
             m_renderableFilters.AddRenderableFilter(*this);
         }
         
@@ -174,9 +159,8 @@ namespace Eegeo
         {
             const Eegeo::Camera::RenderCamera& renderCamera = renderContext.GetRenderCamera();
             
-            m33 orientation;
             Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(m_pRenderable->GetEcefPosition(), renderCamera.GetEcefLocation().ToSingle());
-            basis.GetBasisOrientationAsMatrix(orientation);
+            m33 orientation = GetLookAtOrientationMatrix(renderCamera.GetEcefLocation().ToSingle(), m_pRenderable->GetEcefPosition().ToSingle(), basis.GetUp());
             m_pRenderable->SetOrientationEcef(orientation);
             
             const Eegeo::m44& viewProjection = renderCamera.GetViewProjectionMatrix();

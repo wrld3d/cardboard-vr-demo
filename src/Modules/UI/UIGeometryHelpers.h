@@ -11,6 +11,7 @@
 #include "Types.h"
 #include "VectorMath.h"
 #include <vector>
+#include "EcefTangentBasis.h"
 
 namespace Eegeo
 {
@@ -63,5 +64,6 @@ namespace Eegeo
         }
         
         void BuildQuad(const Eegeo::v2& halfDimensions, const Eegeo::v2& uv_min, const Eegeo::v2& uv_max, std::vector<Vertex>& out_vertices, std::vector<u16>& out_triangleIndices);
+        Eegeo::m33 GetLookAtOrientationMatrix(const Eegeo::v3& targetPosition, const Eegeo::v3& objectPosition, Eegeo::v3 up);
     }
 }

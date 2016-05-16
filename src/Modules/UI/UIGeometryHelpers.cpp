@@ -43,5 +43,15 @@ namespace Eegeo
             out_triangleIndices.push_back(0);
             
         }
+        
+        Eegeo::m33 GetLookAtOrientationMatrix(const Eegeo::v3& targetPosition, const Eegeo::v3& objectPosition, Eegeo::v3 up){
+            Eegeo::v3 delta = targetPosition-objectPosition;
+            Eegeo::v3 direction(delta.Norm());
+            Eegeo::v3 right = (Eegeo::v3::Cross(up,direction)).Norm();
+            up = (Eegeo::v3::Cross(direction, right)).Norm();
+            Eegeo::m33 orientation;
+            orientation.SetFromBasis(right, up, direction);
+            return orientation;
+        }
     }
 }

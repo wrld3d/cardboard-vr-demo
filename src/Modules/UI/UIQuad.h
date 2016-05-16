@@ -54,6 +54,8 @@ namespace Eegeo
             virtual ~UIQuad();
             void Update(float dt);
             void Suspend();
+            inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){ m_pRenderable->SetEcefPosition(ecefPosition); }
+            inline const dv3& GetEcefPosition() const { return m_pRenderable->GetEcefPosition(); }
             
             // IRenderableFilter interface
             void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
