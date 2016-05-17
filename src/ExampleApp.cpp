@@ -68,6 +68,10 @@
 #include "InteriorsModelModule.h"
 #include "InteriorsCameraControllerFactory.h"
 #include "GlobeCameraControllerFactory.h"
+#include "Modules/GazeUI/GazeUIModule.h"
+
+#include "Logger.h"
+
 
 namespace
 {
@@ -103,6 +107,7 @@ namespace
 ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                        Eegeo::Config::DeviceSpec deviceSpecs,
                        Examples::IExampleControllerView& view,
+                       Eegeo::GazeUI::IGazeUIView& gazeUIView,
                        const Eegeo::Rendering::ScreenProperties& screenProperties,
                        Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
                        Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule)
@@ -138,6 +143,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     const float cameraControllerOrientationDegrees = 0.0f;
     const float cameraControllerDistanceFromInterestPointMeters = 1781.0f;
     
+    m_GazeUIModule = new Eegeo::GazeUI::GazeUIModule(gazeUIView);
     
     m_pStreamingVolume = Eegeo_NEW(Eegeo::Streaming::CameraFrustumStreamingVolume)(mapModule.GetResourceCeilingProvider(),
                                                                                    Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
@@ -337,6 +343,7 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     Eegeo::v2 center = Eegeo::v2(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth()/2.0f,m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight()/2.0f);
     m_UIInteractionModule->Event_ScreenInteractionMoved(center);
+    m_GazeUIModule->Update(dt);
 }
 
 void ExampleApp::Draw (float dt, float headTansform[]){
@@ -498,6 +505,7 @@ void ExampleApp::UpdateLoadingScreen(float dt)
     
     if (!m_pLoadingScreen->IsVisible())
     {
+        m_GazeUIModule->getGazeUIView().ShowView();
         Eegeo_DELETE m_pLoadingScreen;
         m_pLoadingScreen = NULL;
     }

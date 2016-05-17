@@ -37,14 +37,17 @@ public class ArcProgress extends View {
 
     public ArcProgress(Context context) {
         this(context, null);
+        init();
     }
 
     public ArcProgress(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        init();
     }
 
     public ArcProgress(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
     protected void init() {

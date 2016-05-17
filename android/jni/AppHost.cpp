@@ -154,6 +154,8 @@ AppHost::AppHost(
 
 	m_pAppInputDelegate = new AppInputDelegate(*m_pApp);
 	m_inputHandler.AddDelegateInputHandler(m_pAppInputDelegate);
+    
+    
 }
 
 AppHost::~AppHost()
@@ -244,8 +246,11 @@ void AppHost::Draw(float dt, float headTansform[])
 void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs)
 {
 	m_pAndroidExampleControllerView = new Examples::AndroidExampleControllerView(m_nativeState);
-
-	m_pApp = new ExampleApp(m_pWorld, deviceSpecs, *m_pAndroidExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
+    
+    m_pGazeUIViewAndroid = new Eegeo::GazeUI::GazeUIViewAndroid(m_nativeState);
+    m_pGazeUIViewAndroid->CreateNativeUI();
+    
+	m_pApp = new ExampleApp(m_pWorld, deviceSpecs, *m_pAndroidExampleControllerView, *m_pGazeUIViewAndroid, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
 //	RegisterAndroidSpecificExamples();
 
@@ -304,9 +309,9 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 
 void AppHost::DestroyExamples()
 {
+    delete m_pGazeUIViewAndroid;
 //	delete m_pAndroidRouteMatchingExampleViewFactory;
 //	delete m_pAndroidRouteSimulationExampleViewFactory;
-
 	delete m_pAndroidExampleControllerView;
 }
 

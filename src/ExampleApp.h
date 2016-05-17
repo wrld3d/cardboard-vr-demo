@@ -16,6 +16,7 @@
 #include "Modules/UI/UIImageButton.h"
 #include "Modules/UI/UIInteractionModule.h"
 #include "Logger.h"
+#include "Modules/GazeUI/GazeUI.h"
 
 class ExampleApp : private Eegeo::NonCopyable
 {
@@ -42,6 +43,7 @@ private:
     Eegeo::Skybox::SkyboxModule *m_VRSkybox;
     Eegeo::UI::UIImageButton *m_UIButton;
     Eegeo::UI::UIInteractionModule *m_UIInteractionModule;
+    Eegeo::GazeUI::GazeUIModule* m_GazeUIModule;
     
     Eegeo::Helpers::IdentityProvider m_identityProvider;
     InteriorsExplorer::InteriorsExplorerModule* m_interiorExplorerModule;
@@ -66,7 +68,8 @@ private:
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
                Eegeo::Config::DeviceSpec deviceSpecs,
-	           Examples::IExampleControllerView& view,
+               Examples::IExampleControllerView& view,
+               Eegeo::GazeUI::IGazeUIView& gazeUIView,
                const Eegeo::Rendering::ScreenProperties& screenProperties,
                Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
                Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule);
