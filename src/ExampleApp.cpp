@@ -69,9 +69,6 @@
 #include "InteriorsCameraControllerFactory.h"
 #include "GlobeCameraControllerFactory.h"
 
-
-#include "Logger.h"
-
 namespace
 {
     Eegeo::Rendering::LoadingScreen* CreateLoadingScreen(const Eegeo::Rendering::ScreenProperties& screenProperties,
@@ -198,16 +195,16 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     Eegeo::dv3 quadPosition = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 50).ToECEF();
     Eegeo::v2 dim = Eegeo::v2(50,50);
-    m_UIQuad = Eegeo_NEW(Eegeo::UI::UIQuad)(renderingModule,
-                                            renderingModule.GetGlBufferPool(),
-                                            renderingModule.GetVertexBindingPool(),
-                                            renderingModule.GetVertexLayoutPool(),
-                                            pWorld->GetPlatformAbstractionModule().GetTextureFileLoader(),
-                                            renderingModule.GetRenderableFilters(),
+    m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(renderingModule,
+                                            pWorld->GetPlatformAbstractionModule(),
                                             "mesh_example/quadrants.png",
                                             quadPosition,
-                                            dim
+                                            dim,
+                                            buttonClickedCallback
                                             );
+    
+    m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(m_pExampleController);
+    m_UIInteractionModule->RegisterInteractableItem(m_UIButton);
     
 //	register all generic examples
 
@@ -270,7 +267,8 @@ ExampleApp::~ExampleApp()
 {
     delete m_VRDistortion;
     delete m_VRSkybox;
-    delete m_UIQuad;
+    delete m_UIInteractionModule;
+    delete m_UIButton;
 	delete m_pCameraTouchController;
     delete m_pLoadingScreen;
     delete m_pExampleController;
@@ -334,7 +332,11 @@ void ExampleApp::Update (float dt, float headTansform[])
     UpdateNightTParam(dt);
     UpdateFogging();
     UpdateLoadingScreen(dt);
-    m_UIQuad->Update(dt);
+    
+    m_UIInteractionModule->Update(dt);
+    
+    Eegeo::v2 center = Eegeo::v2(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth()/2.0f,m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight()/2.0f);
+    m_UIInteractionModule->Event_ScreenInteractionMoved(center);
 }
 
 void ExampleApp::Draw (float dt, float headTansform[]){
@@ -606,6 +608,9 @@ void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
 //    else
 //        EXAMPLE_LOG("Interior is not loaded");
 	m_pExampleController->Event_TouchTap(data);
+    
+    Eegeo::v2 center = Eegeo::v2(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth()/2.0f,m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight()/2.0f);
+    m_UIInteractionModule->Event_ScreenInteractionClick(center);
 }
 
 void ExampleApp::Event_TouchDoubleTap(const AppInterface::TapData& data)

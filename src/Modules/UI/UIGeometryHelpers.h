@@ -1,5 +1,5 @@
 //
-//  UIGeometryHelpers.hpp
+//  UIGeometryHelpers.h
 //  SDKSamplesApp
 //
 //  Created by Ali on 5/13/16.

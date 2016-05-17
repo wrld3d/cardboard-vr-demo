@@ -52,10 +52,11 @@ namespace Eegeo
                    const Eegeo::v4& p_initialColor = Eegeo::v4::One()
                    );
             virtual ~UIQuad();
-            void Update(float dt);
-            void Suspend();
             inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){ m_pRenderable->SetEcefPosition(ecefPosition); }
             inline const dv3& GetEcefPosition() const { return m_pRenderable->GetEcefPosition(); }
+            inline Eegeo::v3 GetScale() { return m_pRenderable->GetScale(); }
+            inline void SetScale(Eegeo::v3 p_scale) { m_pRenderable->SetScale(p_scale); }
+            inline void SetColor(const Eegeo::v4& color) { m_pRenderable->SetColor(color); }
             
             // IRenderableFilter interface
             void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);

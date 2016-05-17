@@ -93,18 +93,18 @@ namespace Eegeo
         }
         
         UIQuad::UIQuad(Eegeo::Modules::Core::RenderingModule& p_RenderingModule,
-               Eegeo::Rendering::GlBufferPool& p_glBufferPool,
-               Eegeo::Rendering::VertexLayouts::VertexBindingPool& p_VertexBindingPool,
-               Eegeo::Rendering::VertexLayouts::VertexLayoutPool& p_VertexLayoutPool,
-               Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
-               Eegeo::Rendering::RenderableFilters& p_RenderableFilters,
-               const std::string& fileName,
-               const Eegeo::dv3& p_ecefPosition,
-               const Eegeo::v2& p_Dimension,
-               const Eegeo::v2& p_uvMin,
-               const Eegeo::v2& p_uvMax,
+                       Eegeo::Rendering::GlBufferPool& p_glBufferPool,
+                       Eegeo::Rendering::VertexLayouts::VertexBindingPool& p_VertexBindingPool,
+                       Eegeo::Rendering::VertexLayouts::VertexLayoutPool& p_VertexLayoutPool,
+                       Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
+                       Eegeo::Rendering::RenderableFilters& p_RenderableFilters,
+                       const std::string& fileName,
+                       const Eegeo::dv3& p_ecefPosition,
+                       const Eegeo::v2& p_Dimension,
+                       const Eegeo::v2& p_uvMin,
+                       const Eegeo::v2& p_uvMax,
                        const Eegeo::v4& p_initialColor
-               ):
+                       ):
         m_renderingModule(p_RenderingModule),
         m_glBufferPool(p_glBufferPool),
         m_vertexLayoutPool(p_VertexLayoutPool),
@@ -147,12 +147,6 @@ namespace Eegeo
             Eegeo_DELETE m_Material;
             Eegeo_DELETE m_Shader;
         }
-        
-        void UIQuad::Update(float dt)
-        {}
-        
-        void UIQuad::Suspend()
-        {}
         
         // IRenderableFilter interface
         void UIQuad::EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue)

@@ -13,11 +13,22 @@
 #include "Modules/VRDistortionModule/VRDistortionModule.h"
 #include "Modules/SkyboxModule/SkyboxModule.h"
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
-#include "Modules/UI/UIQuad.h"
+#include "Modules/UI/UIImageButton.h"
+#include "Modules/UI/UIInteractionModule.h"
+#include "Logger.h"
 
 class ExampleApp : private Eegeo::NonCopyable
 {
 private:
+    
+    class ButtonClicked : public Eegeo::Helpers::ICallback1<Eegeo::UI::UIImageButton>
+    {
+    public:
+        virtual void operator()(Eegeo::UI::UIImageButton& item) const
+        {
+            EXAMPLE_LOG("UIImageButton clicked");
+        }
+    };
     
     Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
@@ -29,7 +40,8 @@ private:
     
     Eegeo::VR::Distortion::VRDistortionModule* m_VRDistortion;
     Eegeo::Skybox::SkyboxModule *m_VRSkybox;
-    Eegeo::UI::UIQuad *m_UIQuad;
+    Eegeo::UI::UIImageButton *m_UIButton;
+    Eegeo::UI::UIInteractionModule *m_UIInteractionModule;
     
     Eegeo::Helpers::IdentityProvider m_identityProvider;
     InteriorsExplorer::InteriorsExplorerModule* m_interiorExplorerModule;
@@ -48,6 +60,8 @@ private:
 	}
     
     void UpdateLoadingScreen(float dt);
+    
+    ButtonClicked buttonClickedCallback;
 
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
