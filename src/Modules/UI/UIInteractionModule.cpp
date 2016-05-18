@@ -9,6 +9,10 @@
 #include <algorithm>
 
 #include "UIInteractionModule.h"
+#include "../../Examples/VRCameraSpline/VRCameraController.h"
+#include "VectorMath.h"
+
+#define PICKED_COLOUR Eegeo::v4(1.0f, 1.0f, 0.0f, 0.5f)
 
 namespace Eegeo
 {
@@ -23,8 +27,8 @@ namespace Eegeo
             float ny = - 2.0f * screenPoint.GetY() / renderCamera.GetViewportHeight() + 1.f;
             
             //prepare near and far points
-            Eegeo::v4 near(nx, ny, 0.0f, 1.0f);
-            Eegeo::v4 far(nx, ny, 1.0f, 1.0f);
+            Eegeo::v4 near(nx, ny, renderCamera.GetNearClip(), 1.0f);
+            Eegeo::v4 far(nx, ny, renderCamera.GetFarClip(), 1.0f);
             
             Eegeo::m44 invVP;
             Eegeo::m44::Inverse(invVP, renderCamera.GetViewProjectionMatrix());
@@ -46,6 +50,7 @@ namespace Eegeo
         {
             Ray ray;
             CreateWorldSpaceRayFromScreen(screenPoint, ray);
+//            m_debugRenderer.DrawTextScreenSpace(screenPoint, "E", 100);
             ray.origin -= uiItem->GetItemEcefPosition();
             
             //the following is a standard ray sphere intersection - for other shapes, an appropriate intersection method
@@ -88,9 +93,10 @@ namespace Eegeo
             return true;
         }
         
-        UIInteractionModule::UIInteractionModule(Examples::ExampleController* p_ExampleController):
+        UIInteractionModule::UIInteractionModule(Eegeo::EegeoWorld& world, Examples::ExampleController* p_ExampleController):
         m_pExampleController(p_ExampleController),
-         m_InteractableItems()
+         m_InteractableItems(),
+        m_debugRenderer(world.GetDebugRenderingModule().GetDebugRenderer())
         {
         }
         

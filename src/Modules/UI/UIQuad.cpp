@@ -48,7 +48,7 @@ namespace Eegeo
             std::vector<Vertex> boxVertices;
             std::vector<u16> triangleIndices;
             
-            BuildQuad(dimensions, uv_min, uv_max, boxVertices, triangleIndices);
+            BuildQuad(dimensions/2.0f, uv_min, uv_max, boxVertices, triangleIndices);
             
             std::vector<PositionUvVertex> unlitVertices;
             

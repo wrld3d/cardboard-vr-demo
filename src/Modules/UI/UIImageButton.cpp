@@ -45,7 +45,7 @@ namespace Eegeo
                                                          p_initialColor
                                                          );
             
-            m_Radius = p_Dimension.x > p_Dimension.y ? p_Dimension.x : p_Dimension.y;
+            m_Radius = (p_Dimension.x > p_Dimension.y ? p_Dimension.x : p_Dimension.y)/2.0f;
         }
         
         void UIImageButton::Update(float dt)

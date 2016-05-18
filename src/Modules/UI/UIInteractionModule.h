@@ -29,10 +29,12 @@ namespace Eegeo
             std::vector<IUIInteractableItem*> m_InteractableItems;
             Examples::ExampleController* m_pExampleController;
             
+            Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
+            
             bool IsScreenPointInsideModel(const Eegeo::v2& screenPoint, IUIInteractableItem* uiItem);
             void CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenPoint, Ray& ray);
         public:
-            UIInteractionModule(Examples::ExampleController* p_ExampleController);
+            UIInteractionModule(Eegeo::EegeoWorld& world, Examples::ExampleController* p_ExampleController);
             ~UIInteractionModule();
             void Update(float dt);
             void Event_ScreenInteractionStart(const Eegeo::v2& point);

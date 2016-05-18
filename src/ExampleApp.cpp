@@ -73,6 +73,8 @@
 #include "Logger.h"
 
 
+#include "Modules/VRDistortionModule/VRCardboardDeviceProfile.h"
+
 namespace
 {
     Eegeo::Rendering::LoadingScreen* CreateLoadingScreen(const Eegeo::Rendering::ScreenProperties& screenProperties,
@@ -199,17 +201,20 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                       );
     m_VRSkybox->Start();
     
-    Eegeo::dv3 quadPosition = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 50).ToECEF();
+    Eegeo::dv3 quadPosition = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 250).ToECEF();
     Eegeo::v2 dim = Eegeo::v2(50,50);
     m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(renderingModule,
                                             pWorld->GetPlatformAbstractionModule(),
                                             "mesh_example/quadrants.png",
                                             quadPosition,
                                             dim,
-                                            buttonClickedCallback
+                                            buttonClickedCallback,
+                                            Eegeo::v2::Zero(),
+                                            Eegeo::v2::One()/2.0f,
+                                            Eegeo::v4(1.0f, 1.0f, 1.0f, 0.75f)
                                             );
     
-    m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(m_pExampleController);
+    m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(*pWorld, m_pExampleController);
     m_UIInteractionModule->RegisterInteractableItem(m_UIButton);
     
 //	register all generic examples
@@ -341,7 +346,10 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     m_UIInteractionModule->Update(dt);
     
-    Eegeo::v2 center = Eegeo::v2(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth()/2.0f,m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight()/2.0f);
+    const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
+    Eegeo::v2 dim = Eegeo::v2(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+    
+    Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(dim.x,dim.y);
     m_UIInteractionModule->Event_ScreenInteractionMoved(center);
     m_GazeUIModule->Update(dt);
 }
@@ -381,7 +389,11 @@ void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld&
     
     m_pExampleController->Draw();
     
-    
+//    const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
+//    Eegeo::v2 dim = Eegeo::v2(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+//    eegeoWorld.GetDebugRenderingModule().GetDebugRenderer().DrawLineScreenSpace(Eegeo::v2::Zero(), dim, Eegeo::v4::One());
+//    eegeoWorld.GetDebugRenderingModule().GetDebugRenderer().DrawLineScreenSpace(Eegeo::v2(dim.x,0.0f), Eegeo::v2(0.0f, dim.y), Eegeo::v4::One());
+//    eegeoWorld.GetDebugRenderingModule().GetDebugRenderer().DrawLineScreenSpace(Eegeo::v2(dim.x/2.0f,0.0f), dim/2.0f, Eegeo::v4(1.0f, 0.0f, 0.0f, 1.0f));
 }
 
 void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld){
@@ -401,6 +413,12 @@ void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld
     
     m_pExampleController->Draw();
     
+//    const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
+//    Eegeo::v2 dim = Eegeo::v2(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+//    eegeoWorld.GetDebugRenderingModule().GetDebugRenderer().DrawLineScreenSpace(Eegeo::v2::Zero(), dim, Eegeo::v4::One());
+//    eegeoWorld.GetDebugRenderingModule().GetDebugRenderer().DrawLineScreenSpace(Eegeo::v2(dim.x,0.0f), Eegeo::v2(0.0f, dim.y), Eegeo::v4::One());
+//    eegeoWorld.GetDebugRenderingModule().GetDebugRenderer().DrawLineScreenSpace(Eegeo::v2(dim.x/2.0f,0.0f), dim/2.0f, Eegeo::v4(1.0f, 0.0f, 0.0f, 1.0f));
+
 }
 
 
@@ -608,16 +626,12 @@ void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
 	{
 		return;
 	}
-//    if (m_interiorExplorerModule->InteriorLoaded()) {
-//        m_pStreamingVolume->SetForceMaximumRefinement(true);
-//        m_interiorExplorerModule->ToggleInteriorDisplay();
-//        EXAMPLE_LOG("Interior is loaded");
-//    }
-//    else
-//        EXAMPLE_LOG("Interior is not loaded");
+
 	m_pExampleController->Event_TouchTap(data);
     
-    Eegeo::v2 center = Eegeo::v2(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth()/2.0f,m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight()/2.0f);
+    const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
+    Eegeo::v2 dim = Eegeo::v2(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+    Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(dim.x,dim.y);
     m_UIInteractionModule->Event_ScreenInteractionClick(center);
 }
 
