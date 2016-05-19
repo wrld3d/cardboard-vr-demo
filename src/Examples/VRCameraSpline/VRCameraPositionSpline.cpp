@@ -20,6 +20,7 @@ namespace Eegeo
             m_rightSpline.AddPoint(dv3(right.x, right.y, right.z));
             m_upSpline.AddPoint(dv3(up.x, up.y, up.z));
             m_forwardSpline.AddPoint(dv3(forward.x, forward.y, forward.z));
+            
         }
         
         void VRCameraPositionSpline::setSlowDownFactor(float slowDownFactor){
@@ -72,17 +73,21 @@ namespace Eegeo
         
         void VRCameraPositionSpline::Update(float dt)
         {
-            m_currentPlaybackSpeed = m_playbackSpeed * m_slowDownFactor;
-            if(m_playing)
+            m_currentPlaybackSpeed = m_playbackSpeed ;//* m_slowDownFactor;
+            if(m_playing && !IsStopPoint())
             {
                 m_time += dt * m_currentPlaybackSpeed;
-                if(m_time >= 1.0)
+                if(m_time >= 1.0f)
                 {
+                    m_time = 0.0f;
                     Stop();
                 }
                 
                 m_time = Math::Clamp01(m_time);
             }
+            
+            if(IsStopPoint())
+                m_time = 0.0f;
         }
         
         void VRCameraPositionSpline::GetCurrentCameraPosition(dv3& interpolatedPositionEcef, m33& interpolatedOrientation) const
@@ -102,7 +107,8 @@ namespace Eegeo
         
         void VRCameraPositionSpline::NextSpline()
         {
-            const int MaxSpline = 2;
+            const int MaxSpline = 9;
+            m_time = 0.0f;
             ++m_currentSpline;
             if (m_currentSpline > MaxSpline)
             {
@@ -119,47 +125,42 @@ namespace Eegeo
             m33 orientation;
             switch(splineId)
             {
-                case 0: // NY
+                case 0: // 1 STOP POINT
                 {
                     
-                    orientation.SetFromBasis(Eegeo::v3(-0.003297,-0.301644,0.953413),Eegeo::v3(0.728825,0.652078,0.208825),Eegeo::v3(0.684698,-0.695559,-0.217691));
-                    Eegeo::dv3 pt = Eegeo::dv3(4645944.411084, 4162311.163091, 1332741.260517);
-                    pt += pt.Norm() * p;
-                    AddPoint(pt, orientation);
+                    std::vector<Eegeo::dv3> points;
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.795185, -122.402780, 305).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.793005, -122.405079, 305).ToECEF());
                     
-                    orientation.SetFromBasis(Eegeo::v3(-0.003297,-0.301644,0.953413),Eegeo::v3(0.728825,0.652078,0.208825),Eegeo::v3(0.684698,-0.695559,-0.217691));
-                    pt = Eegeo::dv3(4645465.299021, 4162797.875165, 1332893.588509);
-                    pt += pt.Norm() * p;
-                    AddPoint(pt, orientation);
-                    
-                    orientation.SetFromBasis(Eegeo::v3(-0.003297,-0.301644,0.953413),Eegeo::v3(0.728825,0.652078,0.208825),Eegeo::v3(0.684698,-0.695559,-0.217691));
-                    pt = Eegeo::dv3(4644799.886354, 4163548.884426, 1333128.899514);
-                    pt += pt.Norm() * p;
-                    AddPoint(pt, orientation);
-                    
-                    orientation.SetFromBasis(Eegeo::v3(-0.003297,-0.301644,0.953413),Eegeo::v3(0.728825,0.652078,0.208825),Eegeo::v3(0.684698,-0.695559,-0.217691));
-                    pt = Eegeo::dv3(4644239.922460, 4164042.689519, 1333283.182439);
-                    pt += pt.Norm() * p;
-                    AddPoint(pt, orientation);
-                    
-                    orientation.SetFromBasis(Eegeo::v3(-0.003297,-0.301644,0.953413),Eegeo::v3(0.728825,0.652078,0.208825),Eegeo::v3(0.684698,-0.695559,-0.217691));
-                    pt = Eegeo::dv3(4643677.358429, 4164614.177336, 1333462.042993);
-                    pt += pt.Norm() * p;
-                    AddPoint(pt, orientation);
-                    
-                    orientation.SetFromBasis(Eegeo::v3(0.622116,-0.501066,-0.601582),Eegeo::v3(0.727658,0.653615,0.208093),Eegeo::v3(-0.288928,0.567207,-0.771233));
-                    pt = Eegeo::dv3(4643254.487698, 4164814.040426, 1333531.934260);
-                    pt += pt.Norm() * p;
-                    AddPoint(pt, orientation);
-                    
-                    orientation.SetFromBasis(Eegeo::v3(0.068765,0.233774,-0.969854),Eegeo::v3(0.727139,0.653852,0.209162),Eegeo::v3(-0.683033,0.719609,0.125021));
-                    pt = Eegeo::dv3(4643042.347450, 4164609.062235, 1333691.663462);
-                    pt += pt.Norm() * p;
-                    AddPoint(pt, orientation);
-                    
+                    std::vector<Eegeo::dv3>::iterator it;
+                    for(it = points.begin(); it < points.end()-1; it++){
+                        Eegeo::dv3 point = *(it+1) - *it;
+                        Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(*it, Eegeo::v3(point.GetX(), point.GetY(), point.GetZ()));
+                        orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
+                        AddPoint(*it, orientation);
+                    }
                     break;
                 }
-                case 1: // SF
+                    
+                case 1: // 2 STOP POINT
+                {
+                    
+                    
+                    std::vector<Eegeo::dv3> points;
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.7955670, -122.3806140, 640).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.7934285, -122.4045563, 640).ToECEF());
+                    
+                    std::vector<Eegeo::dv3>::iterator it;
+                    for(it = points.begin(); it < points.end()-1; it++){
+                        Eegeo::dv3 point = *(it+1) - *it;
+                        Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(*it, Eegeo::v3(point.GetX(), point.GetY(), point.GetZ()));
+                        orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
+                        AddPoint(*it, orientation);
+                    }
+                    break;
+                }
+                    
+                case 2: // SF
                 {
                     
                     orientation.SetFromBasis(Eegeo::v3(0.449058,0.122659,0.885043),Eegeo::v3(0.667273,0.612706,-0.423481),Eegeo::v3(0.594215,-0.780735,-0.193294));
@@ -234,7 +235,24 @@ namespace Eegeo
                     
                     break;
                 }
-                case 2: // Westport House
+                case 3: // 3 STOP POINT
+                {
+                    
+                    std::vector<Eegeo::dv3> points;
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.456870, -2.957510, 334).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.458548, -2.961596, 334).ToECEF());
+                    
+                    std::vector<Eegeo::dv3>::iterator it;
+                    for(it = points.begin(); it < points.end()-1; it++){
+                        Eegeo::dv3 point = *(it+1) - *it;
+                        Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(*it, Eegeo::v3(point.GetX(), point.GetY(), point.GetZ()));
+                        orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
+                        AddPoint(*it, orientation);
+                    }
+                    break;
+                }
+                    
+                case 4: // Westport House
                 {
                     
                     std::vector<Eegeo::dv3> points;
@@ -261,7 +279,7 @@ namespace Eegeo
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460051, -2.978253, alt).ToECEF());
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460067, -2.978212, alt).ToECEF());
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460083, -2.978168, alt).ToECEF());
-            
+                    
                     std::vector<Eegeo::dv3>::iterator it;
                     for(it = points.begin(); it < points.end()-1; it++){
                         Eegeo::dv3 point = *(it+1) - *it;
@@ -269,7 +287,122 @@ namespace Eegeo
                         orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
                         AddPoint(*it, orientation);
                     }
-            
+                    
+                    break;
+                }
+                    
+                case 5: // 4 STOP POINT
+                {
+                    
+                    std::vector<Eegeo::dv3> points;
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459901, -2.978062, 33).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459921, -2.978145, 33).ToECEF());
+                    
+                    std::vector<Eegeo::dv3>::iterator it;
+                    for(it = points.begin(); it < points.end()-1; it++){
+                        Eegeo::dv3 point = *(it+1) - *it;
+                        Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(*it, Eegeo::v3(point.GetX(), point.GetY(), point.GetZ()));
+                        orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
+                        AddPoint(*it, orientation);
+                    }
+                    break;
+                }
+                    
+                    
+                case 6: // 5 STOP POINT
+                {
+                    
+                    std::vector<Eegeo::dv3> points;
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459993, -2.978257, 32).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460026, -2.978270, 32).ToECEF());
+                    
+                    std::vector<Eegeo::dv3>::iterator it;
+                    for(it = points.begin(); it < points.end()-1; it++){
+                        Eegeo::dv3 point = *(it+1) - *it;
+                        Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(*it, Eegeo::v3(point.GetX(), point.GetY(), point.GetZ()));
+                        orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
+                        AddPoint(*it, orientation);
+                    }
+                    break;
+                }
+                    
+                case 7: // 6 STOP POINT
+                {
+                    
+                    
+                    std::vector<Eegeo::dv3> points;
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.703463, -74.016762, 334).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.7470872,-73.9868875, 334).ToECEF());
+                    
+                    std::vector<Eegeo::dv3>::iterator it;
+                    for(it = points.begin(); it < points.end()-1; it++){
+                        Eegeo::dv3 point = *(it+1) - *it;
+                        Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(*it, Eegeo::v3(point.GetX(), point.GetY(), point.GetZ()));
+                        orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
+                        AddPoint(*it, orientation);
+                    }
+                    break;
+                }
+                    
+                    
+                    
+                case 8: // 7 STOP POINT
+                {
+                    
+                    
+                    std::vector<Eegeo::dv3> points;
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.763648, -73.973461, 25).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.762869, -73.974012, 25).ToECEF());
+                    
+                    std::vector<Eegeo::dv3>::iterator it;
+                    for(it = points.begin(); it < points.end()-1; it++){
+                        Eegeo::dv3 point = *(it+1) - *it;
+                        Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(*it, Eegeo::v3(point.GetX(), point.GetY(), point.GetZ()));
+                        orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
+                        AddPoint(*it, orientation);
+                    }
+                    break;
+                }
+                    
+                    
+                case 9: // NY
+                {
+                    
+                    orientation.SetFromBasis(Eegeo::v3(-0.003297,-0.301644,0.953413),Eegeo::v3(0.728825,0.652078,0.208825),Eegeo::v3(0.684698,-0.695559,-0.217691));
+                    Eegeo::dv3 pt = Eegeo::dv3(4645944.411084, 4162311.163091, 1332741.260517);
+                    pt += pt.Norm() * p;
+                    AddPoint(pt, orientation);
+                    
+                    orientation.SetFromBasis(Eegeo::v3(-0.003297,-0.301644,0.953413),Eegeo::v3(0.728825,0.652078,0.208825),Eegeo::v3(0.684698,-0.695559,-0.217691));
+                    pt = Eegeo::dv3(4645465.299021, 4162797.875165, 1332893.588509);
+                    pt += pt.Norm() * p;
+                    AddPoint(pt, orientation);
+                    
+                    orientation.SetFromBasis(Eegeo::v3(-0.003297,-0.301644,0.953413),Eegeo::v3(0.728825,0.652078,0.208825),Eegeo::v3(0.684698,-0.695559,-0.217691));
+                    pt = Eegeo::dv3(4644799.886354, 4163548.884426, 1333128.899514);
+                    pt += pt.Norm() * p;
+                    AddPoint(pt, orientation);
+                    
+                    orientation.SetFromBasis(Eegeo::v3(-0.003297,-0.301644,0.953413),Eegeo::v3(0.728825,0.652078,0.208825),Eegeo::v3(0.684698,-0.695559,-0.217691));
+                    pt = Eegeo::dv3(4644239.922460, 4164042.689519, 1333283.182439);
+                    pt += pt.Norm() * p;
+                    AddPoint(pt, orientation);
+                    
+                    orientation.SetFromBasis(Eegeo::v3(-0.003297,-0.301644,0.953413),Eegeo::v3(0.728825,0.652078,0.208825),Eegeo::v3(0.684698,-0.695559,-0.217691));
+                    pt = Eegeo::dv3(4643677.358429, 4164614.177336, 1333462.042993);
+                    pt += pt.Norm() * p;
+                    AddPoint(pt, orientation);
+                    
+                    orientation.SetFromBasis(Eegeo::v3(0.622116,-0.501066,-0.601582),Eegeo::v3(0.727658,0.653615,0.208093),Eegeo::v3(-0.288928,0.567207,-0.771233));
+                    pt = Eegeo::dv3(4643254.487698, 4164814.040426, 1333531.934260);
+                    pt += pt.Norm() * p;
+                    AddPoint(pt, orientation);
+                    
+                    orientation.SetFromBasis(Eegeo::v3(0.068765,0.233774,-0.969854),Eegeo::v3(0.727139,0.653852,0.209162),Eegeo::v3(-0.683033,0.719609,0.125021));
+                    pt = Eegeo::dv3(4643042.347450, 4164609.062235, 1333691.663462);
+                    pt += pt.Norm() * p;
+                    AddPoint(pt, orientation);
+                    
                     break;
                 }
             }

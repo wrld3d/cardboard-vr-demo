@@ -54,11 +54,7 @@ namespace Examples
     {
         m_pSplineCameraController->Update(dt);
         
-        Eegeo::VR::VRCameraPositionSpline& spline = m_pSplineCameraController->GetVRCameraPositionSpline();
-        
-            //We are on westport spline
-            
-            if (spline.GetCurrentSplineTime() > 0.3f && spline.GetCurrentSplineID() == 2) {
+            if (m_pSplineCameraController->GetVRCameraPositionSpline().IsInteriorSpline()) {
                 InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_InteriorsExplorerModule.GetInteriorVisibilityUpdater();
                 
 //                if (!visiblityUpdater.GetInteriorShouldDisplay())

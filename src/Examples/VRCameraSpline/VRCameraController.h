@@ -28,6 +28,8 @@ namespace Eegeo
             };
         }
         
+        
+        
         class VRCameraController : public Eegeo::Location::IInterestPointProvider, protected Eegeo::NonCopyable
         {
             
@@ -40,6 +42,8 @@ namespace Eegeo
             , m_ecefPosition(0.0, 0.0, 0.0)
             , m_falling(false)
             , m_time(0.0f)
+            , m_stopTime(20.0f)
+            , m_stopTimeElapsed(0.0f)
             , m_pTerrainHeightProvider(NULL)
             , m_shiftDown(false)
             {
@@ -113,6 +117,8 @@ namespace Eegeo
             bool m_falling;
             
             float m_time;
+            float m_stopTime;
+            float m_stopTimeElapsed;
             
             Eegeo::Camera::RenderCamera m_renderCamera;
             Eegeo::Resources::Terrain::Heights::TerrainHeightProvider * m_pTerrainHeightProvider;

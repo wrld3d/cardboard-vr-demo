@@ -18,7 +18,7 @@ namespace Eegeo
             , m_playing(false)
             , m_time(0.0)
             , m_slowDownFactor(0.0f)
-            , m_currentSpline(2)
+            , m_currentSpline(0)
             {
                 SetSpline(m_currentSpline);
             }
@@ -38,6 +38,10 @@ namespace Eegeo
             int GetCurrentSplineID() const { return m_currentSpline; }
             
             const bool IsPlaying() const { return m_playing; }
+            const bool IsStopPoint() const { return m_positionSpline.GetPoints().size()<=2; }
+            const bool IsInteriorSpline() const {
+                return (GetCurrentSplineTime()>0.3f && m_currentSpline==4) || m_currentSpline==5 || m_currentSpline==6;
+            }
             
             void Spew();
             void Clear();

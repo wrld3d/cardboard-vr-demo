@@ -115,7 +115,19 @@ namespace Eegeo
             
             m_time += dt;
             
-            if(IsFalling())
+            if(m_VRCameraPositionSpline.IsStopPoint())
+            {
+                m_VRCameraPositionSpline.Update(dt);
+                m_VRCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
+                m_stopTimeElapsed += dt;
+                if(m_stopTimeElapsed>=m_stopTime)
+                {
+                    m_stopTimeElapsed = 0.0f;
+                    m_VRCameraPositionSpline.NextSpline();
+                    m_VRCameraPositionSpline.Start();
+                }
+            }
+            else if(IsFalling())
             {
                 Fall(dt);
             }

@@ -2,8 +2,8 @@
 <!-- BEGIN_INCLUDE(manifest) -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         package="com.eegeo.mobilesdkharness"
-        android:versionCode="7"
-        android:versionName="1.06">
+        android:versionCode="9"
+        android:versionName="1.08">
 
     <uses-sdk android:minSdkVersion="14"
         android:targetSdkVersion="15"/>
@@ -30,7 +30,7 @@
                   android:label="EegeoCardboard"
                   android:configChanges="orientation|keyboardHidden|screenSize"
               	  android:launchMode="singleInstance"
-              	  android:screenOrientation="sensorLandscape"
+              	  android:screenOrientation="landscape"
               	  android:hardwareAccelerated="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
