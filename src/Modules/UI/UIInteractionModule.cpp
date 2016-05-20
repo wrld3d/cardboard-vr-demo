@@ -20,7 +20,7 @@ namespace Eegeo
     {
         void UIInteractionModule::CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenPoint, Ray& ray)
         {
-            Eegeo::Camera::RenderCamera renderCamera = m_pExampleController->GetRenderCamera();
+            Eegeo::Camera::RenderCamera renderCamera = m_pCameraProvider.GetRenderCameraForUI();
             
             //normalize the point
             float nx = 2.0f * screenPoint.GetX() / renderCamera.GetViewportWidth() - 1.f;
@@ -50,7 +50,7 @@ namespace Eegeo
         {
             Ray ray;
             CreateWorldSpaceRayFromScreen(screenPoint, ray);
-//            m_debugRenderer.DrawTextScreenSpace(screenPoint, "E", 100);
+            //            m_debugRenderer.DrawTextScreenSpace(screenPoint, "E", 100);
             ray.origin -= uiItem->GetItemEcefPosition();
             
             //the following is a standard ray sphere intersection - for other shapes, an appropriate intersection method
@@ -93,9 +93,9 @@ namespace Eegeo
             return true;
         }
         
-        UIInteractionModule::UIInteractionModule(Eegeo::EegeoWorld& world, Examples::ExampleController* p_ExampleController):
-        m_pExampleController(p_ExampleController),
-         m_InteractableItems(),
+        UIInteractionModule::UIInteractionModule(Eegeo::EegeoWorld& world, IUICameraProvider& p_CameraProvider):
+        m_pCameraProvider(p_CameraProvider),
+        m_InteractableItems(),
         m_debugRenderer(world.GetDebugRenderingModule().GetDebugRenderer())
         {
         }

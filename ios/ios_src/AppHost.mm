@@ -21,6 +21,7 @@
 #include "ScreenProperties.h"
 #include "BuildingFootprintsModule.h"
 #include "CollisionVisualizationModule.h"
+#include "GazeUIViewiOS.h"
 
 namespace
 {
@@ -190,7 +191,9 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 {
 	m_piOSExampleControllerView = new Examples::iOSExampleControllerView([&m_viewController view]);
 
-	m_pApp = new ExampleApp(m_pWorld, deviceSpecs, *m_piOSExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
+    Eegeo::GazeUI::GazeUIViewiOS* gaze = new Eegeo::GazeUI::GazeUIViewiOS();
+    
+	m_pApp = new ExampleApp(m_pWorld, deviceSpecs, *m_piOSExampleControllerView,*gaze, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
 //	RegisteriOSSpecificExamples();
 

@@ -10,7 +10,7 @@
 
 #include <vector>
 #include "ExampleController.h"
-
+#include "IUICameraProvider.h"
 #include "IUIInteractableItem.h"
 
 namespace Eegeo
@@ -27,14 +27,14 @@ namespace Eegeo
             };
             
             std::vector<IUIInteractableItem*> m_InteractableItems;
-            Examples::ExampleController* m_pExampleController;
+            IUICameraProvider& m_pCameraProvider;
             
             Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
             
             bool IsScreenPointInsideModel(const Eegeo::v2& screenPoint, IUIInteractableItem* uiItem);
             void CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenPoint, Ray& ray);
         public:
-            UIInteractionModule(Eegeo::EegeoWorld& world, Examples::ExampleController* p_ExampleController);
+            UIInteractionModule(Eegeo::EegeoWorld& world, IUICameraProvider& p_CameraProvider);
             ~UIInteractionModule();
             void Update(float dt);
             void Event_ScreenInteractionStart(const Eegeo::v2& point);
@@ -48,5 +48,3 @@ namespace Eegeo
         
     }
 }
-
-

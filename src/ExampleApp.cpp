@@ -72,7 +72,7 @@
 
 #include "Logger.h"
 
-
+#include "LatLongAltitude.h"
 #include "Modules/VRDistortionModule/VRCardboardDeviceProfile.h"
 
 namespace
@@ -125,6 +125,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_startClearColor(0.f/255.f,24.f/255.f,72.f/255.f)
     , m_destClearColor(135.f/255.0f, 206.f/255.0f, 235.f/255.0f)
     , m_screenPropertiesProvider(screenProperties)
+, m_ClickCallback(this, &ExampleApp::MagnetTriggered)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -208,14 +209,16 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                             "mesh_example/quadrants.png",
                                             quadPosition,
                                             dim,
-                                            buttonClickedCallback,
+                                            m_ClickCallback,
                                             Eegeo::v2::Zero(),
                                             Eegeo::v2::One()/2.0f,
                                             Eegeo::v4(1.0f, 1.0f, 1.0f, 0.75f)
                                             );
     
-    m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(*pWorld, m_pExampleController);
+    m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(*pWorld, *this);
     m_UIInteractionModule->RegisterInteractableItem(m_UIButton);
+    
+    jump = new Eegeo::UI::JumpPoints::JumpPoint(1, Eegeo::Space::LatLongAltitude(0,0,0));
     
 //	register all generic examples
 
@@ -479,6 +482,10 @@ void ExampleApp::UpdateCardboardProfile(float cardboardProfile[])
     m_VRDistortion->UpdateCardboardProfile(cardboardProfile);
 }
 
+Eegeo::Camera::RenderCamera ExampleApp::GetRenderCameraForUI()
+{
+    return m_pExampleController->GetRenderCamera();
+}
 
 void ExampleApp::MagnetTriggered(){
     ToggleNight();

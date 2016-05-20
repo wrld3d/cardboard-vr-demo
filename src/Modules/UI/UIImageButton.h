@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "ICallback.h"
+#include "UIImageButtonClickedCallback.h"
 
 #include "UIQuad.h"
 #include "IUIInteractableItem.h"
@@ -21,7 +21,7 @@ namespace Eegeo
         {
         private:
             UIQuad* m_ButtonImage;
-            Eegeo::Helpers::ICallback1<UIImageButton>& m_OnClickedEvent;
+            IUIImageButtonClickedCallback& m_OnClickedEvent;
             float m_Radius;
             
         public:
@@ -30,7 +30,7 @@ namespace Eegeo
                           , const std::string& fileName
                           , const Eegeo::dv3& p_ecefPosition
                           , const Eegeo::v2& p_Dimension
-                          , Eegeo::Helpers::ICallback1<UIImageButton>& p_OnClickedEvent
+                          , IUIImageButtonClickedCallback& p_OnClickedEvent
                           , const Eegeo::v2& p_uvMin = Eegeo::v2::Zero()
                           , const Eegeo::v2& p_uvMax = Eegeo::v2::One()
                           , const Eegeo::v4& p_initialColor = Eegeo::v4::One()

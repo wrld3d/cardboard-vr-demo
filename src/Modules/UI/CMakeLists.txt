@@ -1,4 +1,4 @@
-set(headers ${headers} ../src/Modules/SkyboxModule/
+set(headers ${headers} ../src/Modules/UI/
 )
 set(currsources
   ../src/Modules/UI/UIQuad.cpp
@@ -12,6 +12,8 @@ set(currsources
   ../src/Modules/UI/UIImageButton.cpp
   ../src/Modules/UI/UIImageButton.h
   ../src/Modules/UI/IUIInteractableItem.h
+  ../src/Modules/UI/UIImageButtonClickedCallback.h
+  ../src/Modules/UI/IUCameraProvider.h
 )
 
 set(sources ${sources} ${currsources})

@@ -20,7 +20,7 @@ namespace Eegeo
                                      , const std::string& fileName
                                      , const Eegeo::dv3& p_ecefPosition
                                      , const Eegeo::v2& p_Dimension
-                                     , Eegeo::Helpers::ICallback1<UIImageButton>& p_OnClickedEvent
+                                     , IUIImageButtonClickedCallback& p_OnClickedEvent
                                      , const Eegeo::v2& p_uvMin
                                      , const Eegeo::v2& p_uvMax
                                      , const Eegeo::v4& p_initialColor
@@ -55,7 +55,7 @@ namespace Eegeo
         
         void UIImageButton::OnItemClicked()
         {
-            m_OnClickedEvent(*this);
+            m_OnClickedEvent();
         }
         
         void UIImageButton::OnFocusGained()

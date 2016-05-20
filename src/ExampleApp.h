@@ -15,22 +15,16 @@
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
 #include "Modules/UI/UIImageButton.h"
 #include "Modules/UI/UIInteractionModule.h"
+#include "Modules/UI/IUICameraProvider.h"
 #include "Logger.h"
 #include "Modules/GazeUI/GazeUI.h"
+#include "Modules/JumpPoints/JumpPoint.h"
 
-class ExampleApp : private Eegeo::NonCopyable
+class ExampleApp : private Eegeo::NonCopyable, Eegeo::UI::IUICameraProvider
 {
 private:
     
-    class ButtonClicked : public Eegeo::Helpers::ICallback1<Eegeo::UI::UIImageButton>
-    {
-    public:
-        virtual void operator()(Eegeo::UI::UIImageButton& item) const
-        {
-            EXAMPLE_LOG("UIImageButton clicked");
-        }
-    };
-    
+    Eegeo::UI::JumpPoints::JumpPoint *jump;
     Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
 	Eegeo::EegeoWorld* m_pWorld;
@@ -63,7 +57,7 @@ private:
     
     void UpdateLoadingScreen(float dt);
     
-    ButtonClicked buttonClickedCallback;
+    Eegeo::UI::TUIImageButtonClickedCallback<ExampleApp> m_ClickCallback;
 
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
@@ -128,6 +122,8 @@ public:
 	void Event_TouchDown 			(const AppInterface::TouchData& data);
 	void Event_TouchMove 			(const AppInterface::TouchData& data);
 	void Event_TouchUp 				(const AppInterface::TouchData& data);
+    
+    Eegeo::Camera::RenderCamera GetRenderCameraForUI();
 };
 
 #endif /* defined(__ExampleApp__ExampleApp__) */
