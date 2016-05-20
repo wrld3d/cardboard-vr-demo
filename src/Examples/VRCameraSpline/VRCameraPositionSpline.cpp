@@ -285,7 +285,7 @@ namespace Eegeo
                 {
                     
                     std::vector<Eegeo::dv3> points;
-                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459910, -2.978017, 28.5).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459928, -2.978063, 28.5).ToECEF());
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459921, -2.978145, 28.5).ToECEF());
                     
                     std::vector<Eegeo::dv3>::iterator it;
