@@ -46,6 +46,7 @@ namespace Eegeo
             , m_stopTimeElapsed(0.0f)
             , m_pTerrainHeightProvider(NULL)
             , m_shiftDown(false)
+            , m_nearMultiplier(0.1f)
             {
                 
                 m_orientation.Identity();
@@ -68,6 +69,8 @@ namespace Eegeo
             const bool IsFollowingSpline() const { return m_VRCameraPositionSpline.IsPlaying(); }
             const dv3& GetCameraPosition() const { return m_ecefPosition; }
             const m33& GetCameraOrientation() const { return m_orientation; }
+            
+            void SetNearMultiplier(float p_nearMultiplier) { m_nearMultiplier = p_nearMultiplier; }
             
             const v3 GetRight() const { return m_orientation.GetRow(0); }
             const v3 GetUp() const { return m_orientation.GetRow(1); }
@@ -130,6 +133,8 @@ namespace Eegeo
             dv3 m_interestEcef;
             dv3 m_ecefPosition;
             m33 m_orientation;
+            
+            float m_nearMultiplier;
         };
     }
 }

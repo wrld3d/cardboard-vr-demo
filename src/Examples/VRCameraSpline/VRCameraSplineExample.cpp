@@ -13,6 +13,9 @@
 #include "InteriorVisibilityUpdater.h"
 #include "InteriorsExplorerModel.h"
 
+#define INTERIOR_NEAR_MULTIPLIER 0.05f
+#define EXTERIOR_NEAR_MULTIPLIER 0.1f
+
 namespace Examples
 {
     VRCameraSplineExample::VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
@@ -55,6 +58,8 @@ namespace Examples
         m_pSplineCameraController->Update(dt);
         
             if (m_pSplineCameraController->GetVRCameraPositionSpline().IsInteriorSpline()) {
+                m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
+                
                 InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_InteriorsExplorerModule.GetInteriorVisibilityUpdater();
                 
 //                if (!visiblityUpdater.GetInteriorShouldDisplay())
@@ -65,6 +70,8 @@ namespace Examples
                 }
             }
             else {
+                m_pSplineCameraController->SetNearMultiplier(EXTERIOR_NEAR_MULTIPLIER);
+                
                 InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_InteriorsExplorerModule.GetInteriorVisibilityUpdater();
                 
                 if (visiblityUpdater.GetInteriorShouldDisplay()) {

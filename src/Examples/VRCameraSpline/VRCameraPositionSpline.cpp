@@ -313,8 +313,8 @@ namespace Eegeo
                 {
                     
                     std::vector<Eegeo::dv3> points;
-                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459993, -2.978257, 32).ToECEF());
-                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460026, -2.978270, 32).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.459908, -2.978208, 28.5).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(56.460026, -2.978270, 28.5).ToECEF());
                     
                     std::vector<Eegeo::dv3>::iterator it;
                     for(it = points.begin(); it < points.end()-1; it++){

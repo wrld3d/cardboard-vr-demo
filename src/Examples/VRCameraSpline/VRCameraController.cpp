@@ -84,7 +84,7 @@ namespace Eegeo
                 m_renderCamera.SetOrientationMatrix(orientationMatrix);
                 m_renderCamera.SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
                 
-                m_renderCamera.SetProjection(0.7f, near*0.1f, far);
+                m_renderCamera.SetProjection(0.7f, near*m_nearMultiplier, far);
             }
             
         }
