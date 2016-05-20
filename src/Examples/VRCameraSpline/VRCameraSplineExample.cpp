@@ -13,7 +13,7 @@
 #include "InteriorVisibilityUpdater.h"
 #include "InteriorsExplorerModel.h"
 
-#define INTERIOR_NEAR_MULTIPLIER 0.05f
+#define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
 
 namespace Examples
