@@ -147,7 +147,6 @@ namespace Eegeo
                     
                 case 1: // 2 STOP POINT
                 {
-//                    246.88382
                     
                     Eegeo::dv3 p = Eegeo::Space::LatLongAltitude::FromDegrees(37.7955670, -122.3806140, 250).ToECEF();
                     Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(p, 246.88382, basis);
@@ -236,7 +235,7 @@ namespace Eegeo
                     
                 case 3: // 3 STOP POINT
                 {
-                    Eegeo::dv3 p = Eegeo::Space::LatLongAltitude::FromDegrees(56.456870, -2.957510, 334).ToECEF();
+                    Eegeo::dv3 p = Eegeo::Space::LatLongAltitude::FromDegrees(56.456870, -2.957510, 304).ToECEF();
                     Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(p, 294.33133, basis);
                     orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
                     AddPoint(p, orientation);
@@ -322,8 +321,8 @@ namespace Eegeo
                     
                     
                     std::vector<Eegeo::dv3> points;
-                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.702637, -74.019594, 320).ToECEF());
-                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.7470872,-73.9868875, 320).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.699799, -74.021058, 380).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.702531, -74.015483, 380).ToECEF());
                     
                     std::vector<Eegeo::dv3>::iterator it;
                     for(it = points.begin(); it < points.end()-1; it++){
@@ -341,8 +340,8 @@ namespace Eegeo
                     
                     
                     std::vector<Eegeo::dv3> points;
-                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.763648, -73.973461, 25).ToECEF());
-                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.762869, -73.974012, 25).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.763647, -73.973468, 25).ToECEF());
+                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.764722, -73.972690, 25).ToECEF());
                     
                     std::vector<Eegeo::dv3>::iterator it;
                     for(it = points.begin(); it < points.end()-1; it++){

@@ -299,10 +299,9 @@ void ExampleApp::Update (float dt, float headTansform[])
     const double cameraFarPlaneD = fmin(fmax(d, Eegeo::Streaming::StreamingVolumeController::MIN_STREAMING_FAR_PLANE_DISTANCE), frustumPlanes[Eegeo::Geometry::Frustum::PLANE_FAR].d);
     frustumPlanes[Eegeo::Geometry::Frustum::PLANE_FAR].d = static_cast<float>(cameraFarPlaneD);
     
-    
-    // Workaround: added 100.0f to FOV to load textures for surroundings even when camera is not looking at it to fix interior loading crash.
-    m_pStreamingVolume->updateStreamingVolume(renderCamera.GetEcefLocation(), frustumPlanes, renderCamera.GetFOV());
-//    m_pStreamingVolume->updateStreamingVolume(renderCamera.GetEcefLocation(), frustumPlanes, renderCamera.GetFOV()+100.0f);
+//    Workaround: added 100.0f to FOV to load textures for surroundings even when camera is not looking at it to fix interior loading crash.
+//    m_pStreamingVolume->updateStreamingVolume(renderCamera.GetEcefLocation(), frustumPlanes, renderCamera.GetFOV());
+    m_pStreamingVolume->updateStreamingVolume(renderCamera.GetEcefLocation(), frustumPlanes, renderCamera.GetFOV()+100.0f);
     m_pStreamingVolume->ResetVolume(cameraState.InterestPointEcef());
     
     Eegeo::EegeoUpdateParameters updateParameters(dt,
@@ -415,6 +414,7 @@ void ExampleApp::ToggleNight()
     themeNameBuidler << (toggled_night ? "Night" : "Day");
     themeNameBuidler << "Default";
     Eegeo::Resources::CityThemes::ICityThemesService& cityThemeService = m_pWorld->GetMapModule().GetCityThemesModule().GetCityThemesService();
+
     const std::string& stateName = themeNameBuidler.str();
     cityThemeService.RequestTransitionToState(themeNameBuidler.str(), 1.f);
     
@@ -445,9 +445,25 @@ void ExampleApp::MagnetTriggered(){
 }
 
 void ExampleApp::UpdateFogging(){
+    
+//    void SetFogColour(const Eegeo::v4& fogColour) { m_fogColour = fogColour; }
+//    void SetHeightFogAltitudes(float minAltitude, float maxAltitude) { m_heightFogMinAltitude = minAltitude; m_heightFogMaxAltitude = maxAltitude; }
+//    void SetDistanceFogDistances(float nearFog, float farFog) { m_distanceFogNear = nearFog; m_distanceFogFar = farFog; }
+//    void SetDistanceFogAltitudes(float low, float high) { m_distanceFogLow = low; m_distanceFogHigh = high; }
+//    void SetCameraPositionEcef(const Eegeo::dv3& cameraPositionEcef) { m_cameraPositionEcef = cameraPositionEcef; }
+//    void SetFogDensity(float fogDensity) { m_fogDensity = fogDensity; }
+//    void SetHeightFogIntensity(float heightFogIntensity) { m_heightFogIntensity = heightFogIntensity; }
+//    void SetDistanceFogIntensity(float distanceFogIntensity) { m_distanceFogInstensity = distanceFogIntensity; }
+//    void SetBaseAltitude(float baseAltitude) { m_baseAltitude = baseAltitude; }
+//    
+//    void GetUniformValues(GlobalFoggingUniformValues& values) const;
+//    
+//    bool IsEnabled() const { return m_fogDensity > 0.f;}
+
     Eegeo::Lighting::GlobalFogging& fogging = m_pWorld->GetCoreModule().GetLightingModule().GetGlobalFogging();
     fogging.SetHeightFogIntensity(0.0f);
     fogging.SetDistanceFogIntensity(1.0f);
+    fogging.SetBaseAltitude(10);
     fogging.SetDistanceFogDistances(m_foggingFar - 500.0f, m_foggingFar);
     fogging.SetFogColour(Eegeo::v4(m_currentClearColor,1.0f));
     fogging.SetFogDensity(1.0f);
