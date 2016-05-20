@@ -301,7 +301,8 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     
     // Workaround: added 100.0f to FOV to load textures for surroundings even when camera is not looking at it to fix interior loading crash.
-    m_pStreamingVolume->updateStreamingVolume(renderCamera.GetEcefLocation(), frustumPlanes, renderCamera.GetFOV()+100.0f);
+    m_pStreamingVolume->updateStreamingVolume(renderCamera.GetEcefLocation(), frustumPlanes, renderCamera.GetFOV());
+//    m_pStreamingVolume->updateStreamingVolume(renderCamera.GetEcefLocation(), frustumPlanes, renderCamera.GetFOV()+100.0f);
     m_pStreamingVolume->ResetVolume(cameraState.InterestPointEcef());
     
     Eegeo::EegeoUpdateParameters updateParameters(dt,

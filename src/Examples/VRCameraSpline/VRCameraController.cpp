@@ -136,15 +136,17 @@ namespace Eegeo
                 m_VRCameraPositionSpline.Update(dt);
                 m_VRCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
                 
-                if (!IsFollowingSpline())
-                {
-                    m_VRCameraPositionSpline.NextSpline();
-                    m_VRCameraPositionSpline.Start();
-                }
             }
             else
             {
-                Move(dt);
+                m_splineEndPauseTimeElapsed += dt;
+                if(m_splineEndPauseTimeElapsed > m_splineEndPauseTime || m_VRCameraPositionSpline.GetCurrentSplineID()!=2)
+                {
+                    m_splineEndPauseTimeElapsed = 0.0f;
+                    m_VRCameraPositionSpline.NextSpline();
+                    m_VRCameraPositionSpline.Start();
+                }
+//                Move(dt);
             }
         }
         
