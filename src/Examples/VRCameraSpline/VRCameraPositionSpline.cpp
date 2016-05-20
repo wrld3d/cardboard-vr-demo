@@ -160,94 +160,75 @@ namespace Eegeo
                 {
                     
                     orientation.SetFromBasis(Eegeo::v3(0.449058,0.122659,0.885043),Eegeo::v3(0.667273,0.612706,-0.423481),Eegeo::v3(0.594215,-0.780735,-0.193294));
-                    Eegeo::dv3 pt = Eegeo::dv3(4256102.665643, 3908033.687894, -2700980.817413);
-                    pt += pt.Norm() * p;
+                    Eegeo::dv3 pt;
+                    
+                    Eegeo::Space::LatLongAltitude  lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.785699, -122.399769, 188.339979);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(0.317570,0.280255,0.905873),Eegeo::v3(0.667276,0.612702,-0.423481),Eegeo::v3(0.673713,-0.738955,-0.007569));
-                    pt = Eegeo::dv3(4256121.872745, 3908040.075322, -2700843.217141);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.786060, -122.398331, 146.802562);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(0.091987,0.496432,0.863187),Eegeo::v3(0.667288,0.612690,-0.423479),Eegeo::v3(0.739096,-0.614952,0.274904));
-                    pt = Eegeo::dv3(4256137.972563, 3908074.451393, -2700700.106807);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.786652, -122.396860, 118.010565);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(-0.389510,0.771711,0.502735),Eegeo::v3(0.667321,0.612675,-0.423447),Eegeo::v3(0.634794,-0.170551,0.753626));
-                    pt = Eegeo::dv3(4256041.568475, 3908234.288441, -2700709.616101);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.788206, -122.397538, 155.645664);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(-0.396365,0.773514,0.494541),Eegeo::v3(0.667322,0.612675,-0.423446),Eegeo::v3(0.630536,-0.162181,0.759028));
-                    pt = Eegeo::dv3(4255987.064053, 3908263.446745, -2700775.918628);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.788471, -122.398507, 165.217627);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(-0.126863,0.653785,0.745968),Eegeo::v3(0.667305,0.612672,-0.423478),Eegeo::v3(0.733901,-0.444067,0.514000));
-                    pt = Eegeo::dv3(4255934.864160, 3908262.422243, -2700822.034474);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.788571, -122.399267, 149.286119);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(0.058661,0.523607,0.849937),Eegeo::v3(0.667290,0.612674,-0.423498),Eegeo::v3(0.742484,-0.592000,0.313458));
-                    pt = Eegeo::dv3(4255880.366696, 3908290.190068, -2700867.734507);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.788886, -122.400038, 149.288762);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(0.116586,0.475679,0.871858),Eegeo::v3(0.667287,0.612675,-0.423504),Eegeo::v3(0.735621,-0.631156,0.245983));
-                    pt = Eegeo::dv3(4255834.981675, 3908342.549457, -2700910.800525);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.789342, -122.400727, 169.325830);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(0.234662,0.366726,0.900247),Eegeo::v3(0.667274,0.612676,-0.423518),Eegeo::v3(0.706879,-0.700098,0.100933));
-                    pt = Eegeo::dv3(4255780.004911, 3908424.134481, -2700938.035865);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.790096, -122.401324, 194.168864);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(0.173796,0.424834,0.888432),Eegeo::v3(0.667280,0.612674,-0.423510),Eegeo::v3(0.724246,-0.666440,0.177001));
-                    pt = Eegeo::dv3(4255654.784223, 3908533.602955, -2700976.967388);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.791340, -122.402460, 264.185129);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(0.231126,0.370224,0.899731),Eegeo::v3(0.667273,0.612674,-0.423521),Eegeo::v3(0.708045,-0.698255,0.105433));
-                    pt = Eegeo::dv3(4255573.915531, 3908609.336656, -2701005.031158);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.792171, -122.403222, 310.522439);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(0.659192,-0.220850,0.718813),Eegeo::v3(0.667188,0.612709,-0.423605),Eegeo::v3(0.346873,-0.758822,-0.551246));
-                    pt = Eegeo::dv3(4255428.695225, 3908776.976528, -2700981.091835);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.794107, -122.403877, 330.227818);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(0.727191,-0.659140,0.191653),Eegeo::v3(0.667089,0.612795,-0.423632),Eegeo::v3(-0.161787,-0.435910,-0.885333));
-                    pt = Eegeo::dv3(4255482.044510, 3908930.061602, -2700927.013249);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.795105, -122.403033, 315.736584);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     orientation.SetFromBasis(Eegeo::v3(-0.411068,-0.171086,-0.895407),Eegeo::v3(0.667069,0.613004,-0.423361),Eegeo::v3(-0.621319,0.771339,0.137860));
-                    pt = Eegeo::dv3(4255490.309183, 3908942.927425, -2700907.697746);
-                    pt += pt.Norm() * p;
-                    orientation.SetFromBasis(Eegeo::v3(-0.411068,-0.171086,-0.895407),Eegeo::v3(0.667069,0.613004,-0.423361),Eegeo::v3(-0.621319,0.771339,0.137860));
-                    pt = Eegeo::dv3(4255490.309183, 3908942.927425, -2700907.697746);
-                    pt += pt.Norm() * p;
-                    orientation.SetFromBasis(Eegeo::v3(-0.411068,-0.171086,-0.895407),Eegeo::v3(0.667069,0.613004,-0.423361),Eegeo::v3(-0.621319,0.771339,0.137860));
-                    pt = Eegeo::dv3(4255490.309183, 3908942.927425, -2700907.697746);
-                    pt += pt.Norm() * p;
-                    orientation.SetFromBasis(Eegeo::v3(-0.411068,-0.171086,-0.895407),Eegeo::v3(0.667069,0.613004,-0.423361),Eegeo::v3(-0.621319,0.771339,0.137860));
-                    pt = Eegeo::dv3(4255490.309183, 3908942.927425, -2700907.697746);
-                    pt += pt.Norm() * p;
-                    orientation.SetFromBasis(Eegeo::v3(-0.411068,-0.171086,-0.895407),Eegeo::v3(0.667069,0.613004,-0.423361),Eegeo::v3(-0.621319,0.771339,0.137860));
-                    pt = Eegeo::dv3(4255490.309183, 3908942.927425, -2700907.697746);
-                    pt += pt.Norm() * p;
-                    orientation.SetFromBasis(Eegeo::v3(-0.411068,-0.171086,-0.895407),Eegeo::v3(0.667069,0.613004,-0.423361),Eegeo::v3(-0.621319,0.771339,0.137860));
-                    pt = Eegeo::dv3(4255490.309183, 3908942.927425, -2700907.697746);
-                    pt += pt.Norm() * p;
-                    orientation.SetFromBasis(Eegeo::v3(-0.411068,-0.171086,-0.895407),Eegeo::v3(0.667069,0.613004,-0.423361),Eegeo::v3(-0.621319,0.771339,0.137860));
-                    pt = Eegeo::dv3(4255490.309183, 3908942.927425, -2700907.697746);
-                    pt += pt.Norm() * p;
-                    orientation.SetFromBasis(Eegeo::v3(-0.411068,-0.171086,-0.895407),Eegeo::v3(0.667069,0.613004,-0.423361),Eegeo::v3(-0.621319,0.771339,0.137860));
-                    pt = Eegeo::dv3(4255490.309183, 3908942.927425, -2700907.697746);
-                    pt += pt.Norm() * p;
+                    lla = Eegeo::Space::LatLongAltitude::FromDegrees(37.795215, -122.402797, 305.956129);
+                    pt = lla.ToECEF();
                     AddPoint(pt, orientation);
                     
                     break;
