@@ -12,12 +12,13 @@
 #include "ExampleController.h"
 #include "IUICameraProvider.h"
 #include "IUIInteractableItem.h"
+#include "IUIInteractionObservable.h"
 
 namespace Eegeo
 {
     namespace UI
     {
-        class UIInteractionModule
+        class UIInteractionModule : public IUIInteractionObservable
         {
         private:
             struct Ray
@@ -35,15 +36,15 @@ namespace Eegeo
             void CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenPoint, Ray& ray);
         public:
             UIInteractionModule(Eegeo::EegeoWorld& world, IUICameraProvider& p_CameraProvider);
-            ~UIInteractionModule();
+            virtual ~UIInteractionModule();
             void Update(float dt);
             void Event_ScreenInteractionStart(const Eegeo::v2& point);
             void Event_ScreenInteractionMoved(const Eegeo::v2& point);
             void Event_ScreenInteractionEnd(const Eegeo::v2& point);
             void Event_ScreenInteractionClick(const Eegeo::v2& point);
             const IUIInteractableItem* GetItemAtScreenPoint(const Eegeo::v2& point);
-            void RegisterInteractableItem(IUIInteractableItem* interactableItem);
-            void UnRegisterInteractableItem(IUIInteractableItem* interactableItem);
+            virtual void RegisterInteractableItem(IUIInteractableItem* interactableItem);
+            virtual void UnRegisterInteractableItem(IUIInteractableItem* interactableItem);
         };
         
     }

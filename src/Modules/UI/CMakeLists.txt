@@ -13,7 +13,8 @@ set(currsources
   ../src/Modules/UI/UIImageButton.h
   ../src/Modules/UI/IUIInteractableItem.h
   ../src/Modules/UI/UIImageButtonClickedCallback.h
-  ../src/Modules/UI/IUCameraProvider.h
+  ../src/Modules/UI/IUICameraProvider.h
+  ../src/Modules/UI/IUIInteractionObservable.h
 )
 
 set(sources ${sources} ${currsources})
