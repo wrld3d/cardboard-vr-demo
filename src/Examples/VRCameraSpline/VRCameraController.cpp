@@ -8,6 +8,7 @@
 #include "Quaternion.h"
 #include "EarthConstants.h"
 #include "MathFunc.h"
+#include "IVRHeadTracker.h"
 #include "Logger.h"
 
 namespace Eegeo
@@ -122,6 +123,7 @@ namespace Eegeo
                 m_stopTimeElapsed += dt;
                 if(m_stopTimeElapsed>=m_stopTime)
                 {
+//                    m_pHeadTracker.ResetTracker();
                     m_stopTimeElapsed = 0.0f;
                     m_VRCameraPositionSpline.NextSpline();
                     m_VRCameraPositionSpline.Start();
@@ -142,6 +144,7 @@ namespace Eegeo
                 m_splineEndPauseTimeElapsed += dt;
                 if(m_splineEndPauseTimeElapsed > m_splineEndPauseTime || m_VRCameraPositionSpline.GetCurrentSplineID()!=2)
                 {
+//                    m_pHeadTracker.ResetTracker();
                     m_splineEndPauseTimeElapsed = 0.0f;
                     m_VRCameraPositionSpline.NextSpline();
                     m_VRCameraPositionSpline.Start();

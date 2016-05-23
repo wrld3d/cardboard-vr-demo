@@ -13,6 +13,7 @@
 #include "Camera.h"
 #include "ScreenPropertiesProvider.h"
 #include "DefaultCameraControllerFactory.h"
+#include "VRCameraSpline/IVRHeadTracker.h"
 #include "CameraState.h"
 #include <vector>
 #include <string>
@@ -101,9 +102,10 @@ namespace Examples
         }
         
         template <typename TExampleFactory>
-        void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider, const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule)
+        void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider, const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                                                       Examples::IVRHeadTracker& headTracker)
         {
-            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, interiorsExplorerModule)));
+            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, headTracker, screenPropertiesProvider, interiorsExplorerModule)));
         }
         
         void Event_TouchRotate(const AppInterface::RotateData& data);

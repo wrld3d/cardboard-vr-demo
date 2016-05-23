@@ -7,6 +7,7 @@
 #include "EegeoRootDeclarations.h"
 #include "ScreenPropertiesProvider.h"
 #include "IInteriorsExplorerModule.h"
+#include "IVRHeadTracker.h"
 
 namespace Examples
 {
@@ -17,9 +18,12 @@ namespace Examples
         DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
         const InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
         
+        IVRHeadTracker& m_headTracker;
+        
     public:
         VRCameraSplineExampleFactory(Eegeo::EegeoWorld& world,
                                       DefaultCameraControllerFactory& defaultCameraControllerFactory,
+                                      IVRHeadTracker& headTracker,
                                       const IScreenPropertiesProvider& screenPropertiesProvider,
                                       const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);
         

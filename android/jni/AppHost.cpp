@@ -25,6 +25,7 @@
 #include "ScreenProperties.h"
 #include "BuildingFootprintsModule.h"
 #include "CollisionVisualizationModule.h"
+#include "AndroidVRHeadTracker.h"
 
 namespace
 {
@@ -244,8 +245,9 @@ void AppHost::Draw(float dt, float headTansform[])
 void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs)
 {
 	m_pAndroidExampleControllerView = new Examples::AndroidExampleControllerView(m_nativeState);
+    m_pHeadTracker = new Examples::AndroidVRHeadTracker(m_nativeState);
 
-	m_pApp = new ExampleApp(m_pWorld, deviceSpecs, *m_pAndroidExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
+	m_pApp = new ExampleApp(m_pWorld, deviceSpecs, *m_pAndroidExampleControllerView, *m_pHeadTracker, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
 
 //	RegisterAndroidSpecificExamples();
 
@@ -307,6 +309,7 @@ void AppHost::DestroyExamples()
 //	delete m_pAndroidRouteMatchingExampleViewFactory;
 //	delete m_pAndroidRouteSimulationExampleViewFactory;
 
+    delete m_pHeadTracker;
 	delete m_pAndroidExampleControllerView;
 }
 

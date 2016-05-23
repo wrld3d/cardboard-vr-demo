@@ -10,6 +10,7 @@
 #include "Streaming.h"
 #include "GlobeCamera.h"
 #include "IInteriorsExplorerModule.h"
+#include "IVRHeadTracker.h"
 
 namespace Examples
 {
@@ -33,10 +34,11 @@ private:
 public:
     
     VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
-                           Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
-                           Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
-                           const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
-                           const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);
+                          Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
+                          Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
+                          IVRHeadTracker& headTracker,
+                          const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
+                          const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);
     
     virtual ~VRCameraSplineExample();
     

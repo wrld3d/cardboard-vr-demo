@@ -45,7 +45,7 @@ JNIEXPORT long JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_createNati
 	g_nativeState.javaMainThread = pthread_self();
 	g_nativeState.mainThreadEnv = jenv;
 	g_nativeState.activity = jenv->NewGlobalRef(activity);
-	g_nativeState.activityClass = (jclass)jenv->NewGlobalRef(jenv->FindClass("com/eegeo/mobilesdkharness/MainActivity"));
+	g_nativeState.activityClass = (jclass)jenv->NewGlobalRef(jenv->FindClass("com/eegeo/mobilesdkharness/BackgroundThreadActivity"));
 	g_nativeState.deviceDpi = dpi;
 
 	jmethodID getClassLoader = jenv->GetMethodID(g_nativeState.activityClass,"getClassLoader", "()Ljava/lang/ClassLoader;");

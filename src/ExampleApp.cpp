@@ -106,6 +106,7 @@ namespace
 ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                        Eegeo::Config::DeviceSpec deviceSpecs,
                        Examples::IExampleControllerView& view,
+                       Examples::IVRHeadTracker& headTracker,
                        const Eegeo::Rendering::ScreenProperties& screenProperties,
                        Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
                        Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule)
@@ -206,7 +207,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 //                                                                                               buildingFootprintsModule));
     
 //    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
-    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule);
+    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
     
 //    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
 //    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineDualCameraExampleFactory>(m_screenPropertiesProvider);

@@ -12,9 +12,11 @@ namespace Examples
 
     VRCameraSplineExampleFactory::VRCameraSplineExampleFactory(Eegeo::EegeoWorld& world,
                                                                DefaultCameraControllerFactory&defaultCameraControllerFactory,
+                                                               IVRHeadTracker& headTracker,
                                                                const IScreenPropertiesProvider& screenPropertiesProvider,
                                                                const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule)
     : m_world(world)
+    , m_headTracker(headTracker)
     , m_screenPropertiesProvider(screenPropertiesProvider)
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_interiorsExplorerModule(interiorsExplorerModule)
@@ -31,6 +33,7 @@ IExample* VRCameraSplineExampleFactory::CreateExample() const
     return new Examples::VRCameraSplineExample(m_world,
                                                 mapModule.GetResourceCeilingProvider(),
                                                 m_defaultCameraControllerFactory.Create(),
+                                                m_headTracker,
                                                 initialScreenProperties,
                                                 m_interiorsExplorerModule);
 }

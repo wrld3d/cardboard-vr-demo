@@ -12,6 +12,7 @@
 #include "ScreenProperties.h"
 #include "InteriorVisibilityUpdater.h"
 #include "InteriorsExplorerModel.h"
+#include "IVRHeadTracker.h"
 
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
@@ -21,6 +22,7 @@ namespace Examples
     VRCameraSplineExample::VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
                                                    Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
                                                    Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
+                                                IVRHeadTracker& headTracker,
                                              const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
                                              const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule)
     : m_world(eegeoWorld),
@@ -29,7 +31,7 @@ namespace Examples
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
         Eegeo::m44 projectionMatrix = Eegeo::m44(cameraController->GetRenderCamera().GetProjectionMatrix());
-        m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
+        m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight(), headTracker);
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
     }

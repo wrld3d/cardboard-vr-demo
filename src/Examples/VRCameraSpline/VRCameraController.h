@@ -9,6 +9,7 @@
 #include "TerrainHeightProvider.h"
 #include "VRCameraPositionSpline.h"
 #include "CameraState.h"
+#include "IVRHeadTracker.h"
 
 namespace Eegeo
 {
@@ -34,7 +35,8 @@ namespace Eegeo
         {
             
         public:
-            VRCameraController(float screenWidth, float screenHeight)
+            VRCameraController(float screenWidth, float screenHeight,
+                               Examples::IVRHeadTracker& headTracker)
             : m_moving(false)
             , m_screenHeight(screenHeight)
             , m_screenWidth(screenWidth)
@@ -42,15 +44,15 @@ namespace Eegeo
             , m_ecefPosition(0.0, 0.0, 0.0)
             , m_falling(false)
             , m_time(0.0f)
-            , m_stopTime(20.0f)
+            , m_stopTime(3.0f)
             , m_stopTimeElapsed(0.0f)
             , m_splineEndPauseTime(10.0f)
             , m_splineEndPauseTimeElapsed(0.0f)
             , m_pTerrainHeightProvider(NULL)
             , m_shiftDown(false)
             , m_nearMultiplier(0.1f)
+            , m_pHeadTracker(headTracker)
             {
-                
                 m_orientation.Identity();
                 
                 m_renderCamera.SetViewport(0,0,screenWidth, screenHeight);
@@ -111,7 +113,8 @@ namespace Eegeo
             void Move(float dt);
             void Fall(float dt);
             void UpdateFovAndClippingPlanes();
-
+            
+            Examples::IVRHeadTracker& m_pHeadTracker;
             bool m_moving;
             v3 m_moveDirection;
             

@@ -177,13 +177,12 @@ public class BackgroundThreadActivity extends MainActivity
 //		}
 	}
 	
-	public void UndistortTexture(int textureId){
+	public void ResetTracker(){
+
+		m_headTracker.stopTracking();
+		m_headTracker.resetTracker();
+		m_headTracker.startTracking();
 		
-//		try {
-//				m_cardboardView.undistortTexture(textureId);
-//		    } catch (Exception e) {
-//		      Log.e("backgroundThreadActivity", "exception", e);
-//		    }
 	}
 	
 	@SuppressLint("InlinedApi") 

@@ -36,6 +36,7 @@
 #include "AndroidRouteMatchingExampleViewFactory.h"
 #include "AndroidRouteSimulationExampleViewFactory.h"
 #include "ExampleCameraJumpController.h"
+#include "AndroidVRHeadTracker.h"
 
 class AppHost : protected Eegeo::NonCopyable
 {
@@ -89,6 +90,7 @@ private:
 
 	ExampleApp* m_pApp;
 	Examples::AndroidExampleControllerView* m_pAndroidExampleControllerView;
+    Examples::AndroidVRHeadTracker* m_pHeadTracker;
 //	Examples::AndroidRouteMatchingExampleViewFactory* m_pAndroidRouteMatchingExampleViewFactory;
 //	Examples::AndroidRouteSimulationExampleViewFactory* m_pAndroidRouteSimulationExampleViewFactory;
 

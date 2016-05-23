@@ -13,6 +13,7 @@
 #include "Modules/VRDistortionModule/VRDistortionModule.h"
 #include "Modules/SkyboxModule/SkyboxModule.h"
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
+#include "Examples/VRCameraSpline/IVRHeadTracker.h"
 
 class ExampleApp : private Eegeo::NonCopyable
 {
@@ -51,6 +52,7 @@ public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
                Eegeo::Config::DeviceSpec deviceSpecs,
 	           Examples::IExampleControllerView& view,
+               Examples::IVRHeadTracker& headTracker,
                const Eegeo::Rendering::ScreenProperties& screenProperties,
                Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
                Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule);
