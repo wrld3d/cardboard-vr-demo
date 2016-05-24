@@ -125,7 +125,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_startClearColor(0.f/255.f,24.f/255.f,72.f/255.f)
     , m_destClearColor(135.f/255.0f, 206.f/255.0f, 235.f/255.0f)
     , m_screenPropertiesProvider(screenProperties)
-, m_ClickCallback(this, &ExampleApp::MagnetTriggered)
+, m_ClickCallback(this, &ExampleApp::ToggleNight)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -218,7 +218,20 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(*pWorld, *this);
     m_UIInteractionModule->RegisterInteractableItem(m_UIButton);
     
-    jump = new Eegeo::UI::JumpPoints::JumpPoint(1, Eegeo::Space::LatLongAltitude(0,0,0));
+
+    m_JumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1, Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250));
+    m_JumpPoint2 = new Eegeo::UI::JumpPoints::JumpPoint(2, Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250));
+    m_JumpPoint3 = new Eegeo::UI::JumpPoints::JumpPoint(3, Eegeo::Space::LatLongAltitude::FromDegrees(56.451235, -2.976600, 250));
+    
+    m_JumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(renderingModule,
+                                                                                               pWorld->GetPlatformAbstractionModule(),
+                                                                                               *m_UIInteractionModule,
+                                                                                               *this,
+                                                                                               "mesh_example/quadrants.png",
+                                                                                               dim);
+    m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint1);
+    m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint2);
+    m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint3);
     
 //	register all generic examples
 
@@ -317,7 +330,7 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
-    Eegeo::Camera::RenderCamera renderCamera = m_pExampleController->GetRenderCamera();
+    Eegeo::Camera::RenderCamera renderCamera = *m_pExampleController->GetRenderCamera();
     
     std::vector<Eegeo::Geometry::Plane> frustumPlanes(Eegeo::Geometry::Frustum::PLANES_COUNT);
     BuildFrustumPlanesFromViewProjection(frustumPlanes, renderCamera.GetViewProjectionMatrix());
@@ -355,6 +368,8 @@ void ExampleApp::Update (float dt, float headTansform[])
     Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(dim.x,dim.y);
     m_UIInteractionModule->Event_ScreenInteractionMoved(center);
     m_GazeUIModule->Update(dt);
+    
+    m_JumpPointsModule->Update(dt);
 }
 
 void ExampleApp::Draw (float dt, float headTansform[]){
@@ -482,13 +497,16 @@ void ExampleApp::UpdateCardboardProfile(float cardboardProfile[])
     m_VRDistortion->UpdateCardboardProfile(cardboardProfile);
 }
 
-Eegeo::Camera::RenderCamera ExampleApp::GetRenderCameraForUI()
+Eegeo::Camera::RenderCamera* ExampleApp::GetRenderCameraForUI()
 {
     return m_pExampleController->GetRenderCamera();
 }
 
 void ExampleApp::MagnetTriggered(){
-    ToggleNight();
+    const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
+    Eegeo::v2 dim = Eegeo::v2(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+    Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(dim.x,dim.y);
+    m_UIInteractionModule->Event_ScreenInteractionClick(center);
 }
 
 void ExampleApp::UpdateFogging(){

@@ -14,7 +14,11 @@ namespace Eegeo
             class IJumpPointObserver;
             class IJumpPointViewFactory;
             class JumpPoint;
-            class JumpPointView;            
+            class JumpPointController;
+            class JumpPointRepository;
+            class JumpPointView;
+            class JumpPointViewFactory;
+            class JumpPointsModule;
         }
     }
 }

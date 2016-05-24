@@ -19,12 +19,15 @@
 #include "Logger.h"
 #include "Modules/GazeUI/GazeUI.h"
 #include "Modules/JumpPoints/JumpPoint.h"
+#include "Modules/JumpPoints/JumpPointsModule.h"
+#include "Modules/JumpPoints/JumpPointRepository.h"
 
 class ExampleApp : private Eegeo::NonCopyable, Eegeo::UI::IUICameraProvider
 {
 private:
     
-    Eegeo::UI::JumpPoints::JumpPoint *jump;
+    Eegeo::UI::JumpPoints::JumpPoint *m_JumpPoint1, *m_JumpPoint2, *m_JumpPoint3;
+    Eegeo::UI::JumpPoints::JumpPointsModule* m_JumpPointsModule;
     Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
 	Eegeo::EegeoWorld* m_pWorld;
@@ -123,7 +126,7 @@ public:
 	void Event_TouchMove 			(const AppInterface::TouchData& data);
 	void Event_TouchUp 				(const AppInterface::TouchData& data);
     
-    Eegeo::Camera::RenderCamera GetRenderCameraForUI();
+    Eegeo::Camera::RenderCamera* GetRenderCameraForUI();
 };
 
 #endif /* defined(__ExampleApp__ExampleApp__) */

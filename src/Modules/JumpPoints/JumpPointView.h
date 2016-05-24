@@ -8,6 +8,8 @@
 #include "JumpPoints.h"
 #include "../UI/UIImageButton.h"
 #include "../UI/UIImageButtonClickedCallback.h"
+#include "../UI/IUICameraProvider.h"
+
 namespace Eegeo
 {
     namespace UI
@@ -20,16 +22,13 @@ namespace Eegeo
              *  This class deals with the concerns of displaying a JumpPoint.
              *
              */
-            class JumpPointView : protected Eegeo::NonCopyable , UIImageButton
+            class JumpPointView : protected Eegeo::NonCopyable , public UIImageButton
             {
             public:
-                /*! Create a new JumpPointView with a given sprite.
-                 * \param jumpPoint The JumpPoint model that the view represents.
-                 * \param modelVertexBounds the bounds of the JumpPoint in model space (this should typically be a bounds with x, y size, but with the z component set to 0)
-                 */
                 JumpPointView(JumpPoint& jumpPoint
                               , Eegeo::Modules::Core::RenderingModule& p_RenderingModule
                               , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
+                              , IUICameraProvider& p_UICameraProvider
                               , const std::string& fileName
                               , const Eegeo::v2& p_Dimension
                               , const Eegeo::v2& p_uvMin = Eegeo::v2::Zero()
@@ -48,6 +47,7 @@ namespace Eegeo
                 
             private:
                 JumpPoint& m_JumpPoint;
+                IUICameraProvider& m_UICameraProvider;
                 TUIImageButtonClickedCallback<JumpPointView> m_JumpPointClickCallback;
             };
         }

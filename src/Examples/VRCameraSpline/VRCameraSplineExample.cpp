@@ -27,7 +27,7 @@ namespace Examples
         NotifyScreenPropertiesChanged(initialScreenProperties);
         Eegeo::m44 projectionMatrix = Eegeo::m44(cameraController->GetRenderCamera().GetProjectionMatrix());
         m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
-        m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
+        m_pSplineCameraController->GetCamera()->SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
     }
     
@@ -52,7 +52,7 @@ namespace Examples
     
     void VRCameraSplineExample::EarlyUpdate(float dt)
     {
-        m_pSplineCameraController->Update(dt);
+        //m_pSplineCameraController->Update(dt);
         
 //        Eegeo::VR::VRCameraPositionSpline& spline = m_pSplineCameraController->GetVRCameraPositionSpline();
         
@@ -85,7 +85,7 @@ namespace Examples
     }
     
     
-    Eegeo::Camera::RenderCamera VRCameraSplineExample::GetRenderCamera(){
+    Eegeo::Camera::RenderCamera* VRCameraSplineExample::GetRenderCamera(){
         return m_pSplineCameraController->GetCamera();
     }
     

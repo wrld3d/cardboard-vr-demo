@@ -19,7 +19,7 @@ namespace Eegeo
             , m_latLongAlt(latLongAlt)
             , m_pUserData(pUserData)
             {
-                UpdateEcefPosition();
+                m_color = Eegeo::v4::One();
             }
             
             TJumpPointId JumpPoint::GetId() const
@@ -32,19 +32,14 @@ namespace Eegeo
                 return m_pUserData;
             }
             
-            const dv3& JumpPoint::GetEcefPosition() const
+            const dv3 JumpPoint::GetEcefPosition() const
             {
-                return m_ecefLocation;
+                return m_latLongAlt.ToECEF();
             }
             
             const v4& JumpPoint::GetColor() const
             {
                 return m_color;
-            }
-            
-            void JumpPoint::UpdateEcefPosition()
-            {
-                m_ecefLocation = m_latLongAlt.ToECEF();
             }
         }
     }

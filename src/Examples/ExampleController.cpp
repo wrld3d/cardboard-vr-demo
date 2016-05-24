@@ -174,7 +174,7 @@ void ExampleController::DestroyCurrentExample()
 	}
 }
     
-    Eegeo::Camera::RenderCamera ExampleController::GetRenderCamera(){
+    Eegeo::Camera::RenderCamera* ExampleController::GetRenderCamera(){
         return m_pCurrentExample->GetRenderCamera();
     }
     

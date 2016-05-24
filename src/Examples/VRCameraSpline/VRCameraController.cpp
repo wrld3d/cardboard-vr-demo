@@ -26,24 +26,25 @@ namespace Eegeo
         
         double VRCameraController::GetAltitudeAboveSeaLevel() const
         {
-            return Space::SpaceHelpers::GetAltitude(m_renderCamera.GetEcefLocation());
+            return Space::SpaceHelpers::GetAltitude(m_renderCamera->GetEcefLocation());
         }
         
         void VRCameraController::SetProjectionMatrix(Eegeo::m44& projection)
         {
-            m_renderCamera.SetProjectionMatrix(projection);
+            m_renderCamera->SetProjectionMatrix(projection);
         }
         
         Camera::CameraState VRCameraController::GetCameraState() const
         {
-            return Camera::CameraState(m_renderCamera.GetEcefLocation(),
+            return Camera::CameraState(m_renderCamera->GetEcefLocation(),
                                        GetEcefInterestPoint(),
-                                       m_renderCamera.GetViewMatrix(),
-                                       m_renderCamera.GetProjectionMatrix());
+                                       m_renderCamera->GetViewMatrix(),
+                                       m_renderCamera->GetProjectionMatrix());
         }
         
         void VRCameraController::UpdateFromPose(const Eegeo::m33& orientation, float eyeDistance)
         {
+            m_ecefPosition = m_renderCamera->GetEcefLocation();
             m33 orientationMatrix;
             m33::Mul(orientationMatrix, m_orientation, orientation);
             
@@ -81,10 +82,10 @@ namespace Eegeo
             GetNearFarPlaneDistances(near,far);
             if(!std::isnan(factor)){
                 m_VRCameraPositionSpline.setSlowDownFactor(1.f - factor);
-                m_renderCamera.SetOrientationMatrix(orientationMatrix);
-                m_renderCamera.SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
+                m_renderCamera->SetOrientationMatrix(orientationMatrix);
+                m_renderCamera->SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
                 
-                m_renderCamera.SetProjection(0.7f, near*0.1f, far);
+                m_renderCamera->SetProjection(0.7f, near*0.1f, far);
             }
             
         }
@@ -92,7 +93,7 @@ namespace Eegeo
         void VRCameraController::SetEcefPosition(const Eegeo::dv3& ecef)
         {
             m_ecefPosition = ecef;
-            m_renderCamera.SetEcefLocation(m_ecefPosition);
+            m_renderCamera->SetEcefLocation(m_ecefPosition);
         }
         
         void VRCameraController::SetStartLatLongAltitude(const Eegeo::Space::LatLongAltitude& eyePos)
@@ -106,8 +107,8 @@ namespace Eegeo
             m_orientation.SetRow(1, tangentBasis.GetUp());
             m_orientation.SetRow(2, -tangentBasis.GetForward());
             
-            m_renderCamera.SetOrientationMatrix(m_orientation);
-            m_renderCamera.SetEcefLocation(m_ecefPosition);
+            m_renderCamera->SetOrientationMatrix(m_orientation);
+            m_renderCamera->SetEcefLocation(m_ecefPosition);
         }
         
         void VRCameraController::Update(float dt)
@@ -121,7 +122,7 @@ namespace Eegeo
             }
             else if (IsFollowingSpline())
             {
-                m_VRCameraPositionSpline.Update(dt);
+                //m_VRCameraPositionSpline.Update(dt);
 //                m_VRCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
                 
                 if (!IsFollowingSpline())
@@ -207,7 +208,7 @@ namespace Eegeo
                 const float mutliplier = MovementAltitudeMutlipler();
                 const float& mutliplierRef = mutliplier;
                 m_ecefPosition += m_moveDirection * mutliplierRef * dt;
-                m_renderCamera.SetEcefLocation(m_ecefPosition);
+                m_renderCamera->SetEcefLocation(m_ecefPosition);
             }
         }
         

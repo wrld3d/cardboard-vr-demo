@@ -20,18 +20,18 @@ namespace Eegeo
     {
         void UIInteractionModule::CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenPoint, Ray& ray)
         {
-            Eegeo::Camera::RenderCamera renderCamera = m_pCameraProvider.GetRenderCameraForUI();
+            Eegeo::Camera::RenderCamera* renderCamera = m_pCameraProvider.GetRenderCameraForUI();
             
             //normalize the point
-            float nx = 2.0f * screenPoint.GetX() / renderCamera.GetViewportWidth() - 1.f;
-            float ny = - 2.0f * screenPoint.GetY() / renderCamera.GetViewportHeight() + 1.f;
+            float nx = 2.0f * screenPoint.GetX() / renderCamera->GetViewportWidth() - 1.f;
+            float ny = - 2.0f * screenPoint.GetY() / renderCamera->GetViewportHeight() + 1.f;
             
             //prepare near and far points
-            Eegeo::v4 near(nx, ny, renderCamera.GetNearClip(), 1.0f);
-            Eegeo::v4 far(nx, ny, renderCamera.GetFarClip(), 1.0f);
+            Eegeo::v4 near(nx, ny, renderCamera->GetNearClip(), 1.0f);
+            Eegeo::v4 far(nx, ny, renderCamera->GetFarClip(), 1.0f);
             
             Eegeo::m44 invVP;
-            Eegeo::m44::Inverse(invVP, renderCamera.GetViewProjectionMatrix());
+            Eegeo::m44::Inverse(invVP, renderCamera->GetViewProjectionMatrix());
             
             //unproject the points
             Eegeo::v4 unprojectedNear = Eegeo::v4::Mul(near, invVP);
@@ -42,7 +42,7 @@ namespace Eegeo
             Eegeo::v3 unprojectedFarWorld = unprojectedFar / unprojectedFar.GetW();
             
             //check intersection with a ray cast from camera position
-            ray.origin = renderCamera.GetEcefLocation();
+            ray.origin = renderCamera->GetEcefLocation();
             ray.direction = (unprojectedNearWorld - unprojectedFarWorld).Norm();
         }
         

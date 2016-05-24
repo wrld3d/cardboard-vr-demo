@@ -153,6 +153,9 @@ namespace Eegeo
         {
             const Eegeo::Camera::RenderCamera& renderCamera = renderContext.GetRenderCamera();
             
+            if(m_pRenderable->GetEcefPosition().SquareDistanceTo(renderCamera.GetEcefLocation()) < 1)
+                return;
+            
             Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(m_pRenderable->GetEcefPosition(), renderCamera.GetEcefLocation().ToSingle());
             m33 orientation = GetLookAtOrientationMatrix(renderCamera.GetEcefLocation().ToSingle(), m_pRenderable->GetEcefPosition().ToSingle(), basis.GetUp());
             m_pRenderable->SetOrientationEcef(orientation);

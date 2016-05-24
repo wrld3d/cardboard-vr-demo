@@ -43,11 +43,11 @@ namespace Eegeo
             , m_pTerrainHeightProvider(NULL)
             , m_shiftDown(false)
             {
-                
+                m_renderCamera = new Camera::RenderCamera();
                 m_orientation.Identity();
                 
-                m_renderCamera.SetViewport(0,0,screenWidth, screenHeight);
-                m_renderCamera.SetProjection(0.7, 0.1, 4000);
+                m_renderCamera->SetViewport(0,0,screenWidth, screenHeight);
+                m_renderCamera->SetProjection(0.7, 0.1, 4000);
                 
                 m_VRCameraPositionSpline.Start();
 
@@ -58,7 +58,7 @@ namespace Eegeo
             Eegeo::dv3 GetEcefInterestPoint() const;
             double GetAltitudeAboveSeaLevel() const;
 
-            Eegeo::Camera::RenderCamera& GetCamera() { return m_renderCamera; }
+            Eegeo::Camera::RenderCamera* GetCamera() { return m_renderCamera; }
             const bool IsMoving() const { return m_moving; }
             const bool IsFalling() const { return m_falling; }
             const bool IsFollowingSpline() const { return m_VRCameraPositionSpline.IsPlaying(); }
@@ -114,7 +114,7 @@ namespace Eegeo
             
             float m_time;
             
-            Eegeo::Camera::RenderCamera m_renderCamera;
+            Eegeo::Camera::RenderCamera* m_renderCamera;
             Eegeo::Resources::Terrain::Heights::TerrainHeightProvider * m_pTerrainHeightProvider;
             
             VRCameraPositionSpline m_VRCameraPositionSpline;

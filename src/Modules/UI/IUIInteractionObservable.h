@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "IUIInteractableItem.h"
+
 namespace Eegeo
 {
     namespace UI

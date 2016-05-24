@@ -9,6 +9,14 @@ set(currsources
   ../src/Modules/JumpPoints/JumpPoints.h
   ../src/Modules/JumpPoints/JumpPointView.cpp
   ../src/Modules/JumpPoints/JumpPointView.h
+  ../src/Modules/JumpPoints/JumpPointsModule.cpp
+  ../src/Modules/JumpPoints/JumpPointsModule.h
+  ../src/Modules/JumpPoints/JumpPointController.cpp
+  ../src/Modules/JumpPoints/JumpPointController.h
+  ../src/Modules/JumpPoints/JumpPointRepository.cpp
+  ../src/Modules/JumpPoints/JumpPointRepository.h
+  ../src/Modules/JumpPoints/JumpPointViewFactory.cpp
+  ../src/Modules/JumpPoints/JumpPointViewFactory.h
 )
 
 set(sources ${sources} ${currsources})
