@@ -33,6 +33,7 @@ namespace Eegeo
                           , const Eegeo::v2& p_uvMin = Eegeo::v2::Zero()
                           , const Eegeo::v2& p_uvMax = Eegeo::v2::One()
                           , const Eegeo::v4& p_initialColor = Eegeo::v4::One()
+                          , const Eegeo::Rendering::LayerIds::Values p_RenderLayer = Eegeo::Rendering::LayerIds::Values::AfterWorld
                           );
             
             virtual ~UIImageButton();

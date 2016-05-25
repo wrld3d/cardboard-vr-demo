@@ -40,6 +40,7 @@ namespace Eegeo
             Eegeo::Rendering::Mesh* pRenderableMesh;
             Eegeo::v2 m_Dimension;
             Eegeo::dv3 m_ecefPosition;
+            const Eegeo::Rendering::LayerIds::Values m_RenderLayer;
             
         public:
             UIQuad(Eegeo::Modules::Core::RenderingModule& p_RenderingModule,
@@ -53,7 +54,8 @@ namespace Eegeo
                    const Eegeo::v2& p_Dimension,
                    const Eegeo::v2& p_uvMin = Eegeo::v2::Zero(),
                    const Eegeo::v2& p_uvMax = Eegeo::v2::One(),
-                   const Eegeo::v4& p_initialColor = Eegeo::v4::One()
+                   const Eegeo::v4& p_initialColor = Eegeo::v4::One(),
+                   const Eegeo::Rendering::LayerIds::Values p_RenderLayer = Eegeo::Rendering::LayerIds::Values::AfterWorld
                    );
             virtual ~UIQuad();
             inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){ m_pRenderable->SetEcefPosition(ecefPosition); }

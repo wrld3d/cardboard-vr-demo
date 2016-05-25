@@ -237,7 +237,11 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                      "mesh_example/gaze_point.png",
                                                      quadPosition,
                                                      dim,
-                                                     m_ClickCallback
+                                                    m_ClickCallback,
+                                                    Eegeo::v2::Zero(),
+                                                    Eegeo::v2::One(),
+                                                    Eegeo::v4::One(),
+                                                    Eegeo::Rendering::LayerIds::Values::AfterAll
                                                      );
     
     m_GazeUIView = new Eegeo::GazeUI::GazeUIView(*m_Loader, *m_Pointer);

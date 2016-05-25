@@ -24,6 +24,7 @@ namespace Eegeo
                                      , const Eegeo::v2& p_uvMin
                                      , const Eegeo::v2& p_uvMax
                                      , const Eegeo::v4& p_initialColor
+                                     , const Eegeo::Rendering::LayerIds::Values p_RenderLayer
 //                                     , const Eegeo::v3& p_ButtonFocusedScale
                                      ) :
           m_OnClickedEvent(p_OnClickedEvent)
@@ -42,7 +43,8 @@ namespace Eegeo
                                                          p_Dimension,
                                                          p_uvMin,
                                                          p_uvMax,
-                                                         p_initialColor
+                                                         p_initialColor,
+                                                         p_RenderLayer
                                                          );
             
             m_Radius = (p_Dimension.x > p_Dimension.y ? p_Dimension.x : p_Dimension.y)/2.0f;

@@ -43,7 +43,8 @@ namespace Eegeo
                                                             p_Dimension,
                                                             Eegeo::v2::Zero(),
                                                             Eegeo::v2(1.f/m_FramesGridSize.GetX(), 1.f/m_FramesGridSize.GetY()),
-                                                            Eegeo::v4::One()
+                                                            Eegeo::v4::One(),
+                                                            Eegeo::Rendering::LayerIds::Values::AfterAll
                                                          );
             
             m_Radius = (p_Dimension.x > p_Dimension.y ? p_Dimension.x : p_Dimension.y)/2.0f;

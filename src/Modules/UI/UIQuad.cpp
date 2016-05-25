@@ -69,12 +69,11 @@ namespace Eegeo
                                                 );
         }
         
-        UIMeshRenderable* CreateUIMeshRenderable(Eegeo::Rendering::Mesh& mesh, Eegeo::Rendering::Materials::IMaterial& material, Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool, const Eegeo::dv3 ecefPosition)
+        UIMeshRenderable* CreateUIMeshRenderable(Eegeo::Rendering::Mesh& mesh, Eegeo::Rendering::Materials::IMaterial& material, Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool, const Eegeo::dv3 ecefPosition, const Eegeo::Rendering::LayerIds::Values renderLayer)
         {
             const Eegeo::Rendering::VertexLayouts::VertexBinding& vertexBinding =
             vertexBindingPool.GetVertexBinding(mesh.GetVertexLayout(), material.GetShader().GetVertexAttributes());
             
-            const Eegeo::Rendering::LayerIds::Values renderLayer = Eegeo::Rendering::LayerIds::AfterWorld;
             const bool depthTest = true;
             const bool alphaBlend = true;
             
@@ -103,7 +102,8 @@ namespace Eegeo
                        const Eegeo::v2& p_Dimension,
                        const Eegeo::v2& p_uvMin,
                        const Eegeo::v2& p_uvMax,
-                       const Eegeo::v4& p_initialColor
+                       const Eegeo::v4& p_initialColor,
+                       const Eegeo::Rendering::LayerIds::Values p_RenderLayer
                        ):
         m_renderingModule(p_RenderingModule),
         m_glBufferPool(p_glBufferPool),
@@ -111,6 +111,7 @@ namespace Eegeo
         m_vertexBindingPool(p_VertexBindingPool),
         m_renderableFilters(p_RenderableFilters),
         m_textureFileLoader(textureFileLoader),
+        m_RenderLayer(p_RenderLayer),
         m_pRenderable(NULL)
         {
             
@@ -137,7 +138,7 @@ namespace Eegeo
             
              pRenderableMesh = CreateUnlitQuadMesh(p_Dimension, p_uvMin, p_uvMax, *CreatePositionUvVertexLayout(), m_renderingModule.GetGlBufferPool());
             
-            m_pRenderable = CreateUIMeshRenderable(*pRenderableMesh, *m_Material, m_vertexBindingPool, p_ecefPosition);
+            m_pRenderable = CreateUIMeshRenderable(*pRenderableMesh, *m_Material, m_vertexBindingPool, p_ecefPosition, p_RenderLayer);
             
             m_renderableFilters.AddRenderableFilter(*this);
         }
@@ -161,8 +162,7 @@ namespace Eegeo
             if(m_pRenderable->GetEcefPosition().SquareDistanceTo(renderCamera.GetEcefLocation()) < 1)
                 return;
             
-            Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(m_pRenderable->GetEcefPosition(), renderCamera.GetEcefLocation().ToSingle());
-            m33 orientation = GetLookAtOrientationMatrix(renderCamera.GetEcefLocation().ToSingle(), m_pRenderable->GetEcefPosition().ToSingle(), basis.GetUp());
+            m33 orientation = GetLookAtOrientationMatrix(renderCamera.GetEcefLocation().ToSingle(), m_pRenderable->GetEcefPosition().ToSingle(), renderCamera.GetEcefLocation().ToSingle().Norm());
             m_pRenderable->SetOrientationEcef(orientation);
             
             const Eegeo::m44& viewProjection = renderCamera.GetViewProjectionMatrix();
@@ -173,7 +173,6 @@ namespace Eegeo
             
             renderQueue.EnqueueRenderable(m_pRenderable);
             
-            
         }
         
         void UIQuad::UpdateUVs(Eegeo::v2& min, Eegeo::v2& max)
@@ -181,7 +180,7 @@ namespace Eegeo
             Eegeo_DELETE pRenderableMesh;
             Eegeo_DELETE m_pRenderable;
             pRenderableMesh = CreateUnlitQuadMesh(m_Dimension, min, max, *CreatePositionUvVertexLayout(), m_renderingModule.GetGlBufferPool());
-            m_pRenderable = CreateUIMeshRenderable(*pRenderableMesh, *m_Material, m_vertexBindingPool, m_ecefPosition);
+            m_pRenderable = CreateUIMeshRenderable(*pRenderableMesh, *m_Material, m_vertexBindingPool, m_ecefPosition, m_RenderLayer);
             
         }
     }
