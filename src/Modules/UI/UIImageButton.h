@@ -9,7 +9,6 @@
 #pragma once
 
 #include "UIImageButtonClickedCallback.h"
-
 #include "UIQuad.h"
 #include "IUIInteractableItem.h"
 

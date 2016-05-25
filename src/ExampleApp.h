@@ -13,12 +13,13 @@
 #include "Modules/VRDistortionModule/VRDistortionModule.h"
 #include "Modules/SkyboxModule/SkyboxModule.h"
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
+#include "Modules/GazeUI/GazeUI.h"
+#include "Modules/UI/UIAnimatedSprite.h"
 #include "Modules/UI/UIImageButton.h"
 #include "Modules/UI/UIInteractionModule.h"
 #include "Modules/UI/IUICameraProvider.h"
-#include "Logger.h"
-#include "Modules/GazeUI/GazeUI.h"
 #include "Modules/JumpPoints/JumpPoint.h"
+#include "Logger.h"
 #include "Modules/JumpPoints/JumpPointsModule.h"
 #include "Modules/JumpPoints/JumpPointRepository.h"
 
@@ -41,6 +42,11 @@ private:
     Eegeo::UI::UIImageButton *m_UIButton;
     Eegeo::UI::UIInteractionModule *m_UIInteractionModule;
     Eegeo::GazeUI::GazeUIModule* m_GazeUIModule;
+    Eegeo::GazeUI::GazeUIView* m_GazeUIView;
+    
+    
+    Eegeo::UI::UIAnimatedSprite *m_Loader;
+    Eegeo::UI::UIImageButton *m_Pointer;
     
     Eegeo::Helpers::IdentityProvider m_identityProvider;
     InteriorsExplorer::InteriorsExplorerModule* m_interiorExplorerModule;

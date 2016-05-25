@@ -13,6 +13,8 @@
 #include "InteriorVisibilityUpdater.h"
 #include "InteriorsExplorerModel.h"
 
+#include "Logger.h"
+
 namespace Examples
 {
     VRCameraSplineExample::VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
@@ -84,6 +86,11 @@ namespace Examples
 //        m_pSplineCameraController->UpdateScreenProperties(screenProperties);
     }
     
+    
+    Eegeo::m33& VRCameraSplineExample::getCurrentCameraOrientation()
+    {
+        return m_pSplineCameraController->GetOrientation();
+    }
     
     Eegeo::Camera::RenderCamera* VRCameraSplineExample::GetRenderCamera(){
         return m_pSplineCameraController->GetCamera();

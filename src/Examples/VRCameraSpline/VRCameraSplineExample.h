@@ -57,6 +57,8 @@ public:
 	void Draw() {}
 	void Suspend();
     
+    Eegeo::m33& getCurrentCameraOrientation();
+    
     void UpdateCardboardProfile(float cardboardProfile[]);
     
     virtual Eegeo::Camera::RenderCamera* GetRenderCamera();

@@ -1,28 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:weightSum="2" >
-    <RelativeLayout
-   	 	android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:gravity="center_horizontal|center_vertical"
-	    android:layout_weight="1">  
+    android:layout_height="match_parent" >
 		<com.github.lzyzsd.arcprogress.ArcProgress 
 		    android:id="@+id/left_progress_arc"
 		    android:layout_width="10dp"
 		    android:layout_height="10dp"/>
-    </RelativeLayout>
-    
-    <RelativeLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:gravity="center_horizontal|center_vertical"
-	    android:layout_weight="1">
 		<com.github.lzyzsd.arcprogress.ArcProgress
 		    android:id="@+id/right_progress_arc"
 		    android:layout_width="10dp"
 		    android:layout_height="10dp"/>
-    </RelativeLayout>
-</LinearLayout>
+</FrameLayout>

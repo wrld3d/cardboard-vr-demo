@@ -26,6 +26,7 @@ namespace Eegeo {
             void UpdateGazeProgress(int progress);
             void ShowView();
             void HideView();
+            void SetCenterPoint(float x, float y);
         };
 
     }

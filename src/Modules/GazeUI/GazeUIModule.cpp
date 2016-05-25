@@ -14,9 +14,17 @@ namespace Eegeo
         }
         
         void GazeUIModule::Update(float dt){
+            
+            
             m_pGazeProgress +=1;
             m_pGazeUIView.UpdateGazeProgress(m_pGazeProgress);
+            
+            
+            
         }
+        
+//        vodi
+        
         
         
     }

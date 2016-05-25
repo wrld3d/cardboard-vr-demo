@@ -69,6 +69,7 @@
 #include "InteriorsCameraControllerFactory.h"
 #include "GlobeCameraControllerFactory.h"
 #include "Modules/GazeUI/GazeUIModule.h"
+#include "Modules/GazeUI/GazeUIView.h"
 
 #include "Logger.h"
 
@@ -146,7 +147,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     const float cameraControllerOrientationDegrees = 0.0f;
     const float cameraControllerDistanceFromInterestPointMeters = 1781.0f;
     
-    m_GazeUIModule = new Eegeo::GazeUI::GazeUIModule(gazeUIView);
     
     m_pStreamingVolume = Eegeo_NEW(Eegeo::Streaming::CameraFrustumStreamingVolume)(mapModule.GetResourceCeilingProvider(),
                                                                                    Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
@@ -185,6 +185,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 
     Eegeo::Modules::Core::RenderingModule& renderingModule = m_pWorld->GetRenderingModule();
+    
     m_VRDistortion = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortionModule)(m_screenPropertiesProvider.GetScreenProperties(),
                                                 renderingModule.GetVertexLayoutPool(),
                                                 renderingModule.GetVertexBindingPool(),
@@ -193,6 +194,9 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                 renderingModule.GetRenderableFilters(),
                                              renderingModule.GetGlBufferPool());
     m_VRDistortion->Initialize();
+    
+    Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+    
     
     m_VRSkybox = Eegeo_NEW(Eegeo::Skybox::SkyboxModule)(renderingModule,
                                                                       renderingModule.GetGlBufferPool(),
@@ -203,35 +207,61 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_VRSkybox->Start();
     
     Eegeo::dv3 quadPosition = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 250).ToECEF();
-    Eegeo::v2 dim = Eegeo::v2(50,50);
+    Eegeo::v2 dimUI = Eegeo::v2(50,50);
     m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(renderingModule,
                                             pWorld->GetPlatformAbstractionModule(),
                                             "mesh_example/quadrants.png",
                                             quadPosition,
-                                            dim,
+                                            dimUI,
                                             m_ClickCallback,
                                             Eegeo::v2::Zero(),
                                             Eegeo::v2::One()/2.0f,
                                             Eegeo::v4(1.0f, 1.0f, 1.0f, 0.75f)
                                             );
     
-    m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(*pWorld, *this);
+    Eegeo::dv3 spritePos = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 200).ToECEF();
+    Eegeo::v2 dim = Eegeo::v2(0.25f,0.25f);
+    m_Loader = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(renderingModule,
+                                                                pWorld->GetPlatformAbstractionModule(),
+                                                                "mesh_example/gaze_loader.png",
+                                                                spritePos,
+                                                                dim,
+                                                                m_ClickCallback,
+                                                                *(new Eegeo::v2(7,7)),
+                                                                20
+                                                                );
+    
+    dim = Eegeo::v2(0.075f,0.075f);
+    m_Pointer = Eegeo_NEW(Eegeo::UI::UIImageButton)(renderingModule,
+                                                     pWorld->GetPlatformAbstractionModule(),
+                                                     "mesh_example/gaze_point.png",
+                                                     quadPosition,
+                                                     dim,
+                                                     m_ClickCallback
+                                                     );
+    
+    m_GazeUIView = new Eegeo::GazeUI::GazeUIView(*m_Loader, *m_Pointer);
+    
+    m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(*pWorld, *this, *m_GazeUIView);
     m_UIInteractionModule->RegisterInteractableItem(m_UIButton);
     
-
     m_JumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1, Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250));
     m_JumpPoint2 = new Eegeo::UI::JumpPoints::JumpPoint(2, Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250));
     m_JumpPoint3 = new Eegeo::UI::JumpPoints::JumpPoint(3, Eegeo::Space::LatLongAltitude::FromDegrees(56.451235, -2.976600, 250));
     
     m_JumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(renderingModule,
-                                                                                               pWorld->GetPlatformAbstractionModule(),
-                                                                                               *m_UIInteractionModule,
-                                                                                               *this,
-                                                                                               "mesh_example/quadrants.png",
-                                                                                               dim);
+                                                                     pWorld->GetPlatformAbstractionModule(),
+                                                                     *m_UIInteractionModule,
+                                                                     *this,
+                                                                     "mesh_example/quadrants.png",
+                                                                     dimUI);
     m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint1);
     m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint2);
     m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint3);
+
+//    m_GazeUIModule = new Eegeo::GazeUI::GazeUIModule(gazeUIView);
+//    m_GazeUIModule->getGazeUIView().SetCenterPoint(screenProperties.GetScreenWidth()/2.f, screenProperties.GetScreenHeight()/2.f);
+    
     
 //	register all generic examples
 
@@ -287,6 +317,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 //	m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
 
     
+    m_GazeUIView->HideView();
     
 }
 
@@ -363,11 +394,16 @@ void ExampleApp::Update (float dt, float headTansform[])
     m_UIInteractionModule->Update(dt);
     
     const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
-    Eegeo::v2 dim = Eegeo::v2(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-    
-    Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(dim.x,dim.y);
+    Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
     m_UIInteractionModule->Event_ScreenInteractionMoved(center);
-    m_GazeUIModule->Update(dt);
+    
+    m_Loader->Update(dt);
+    
+    Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
+    Eegeo::dv3 position(m_pExampleController->GetCurrentCameraState().LocationEcef() + (forward*10));
+    
+    m_GazeUIView->UpdateEcefPosition(position);
+    
     
     m_JumpPointsModule->Update(dt);
 }
@@ -400,8 +436,6 @@ void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld&
                                               cameraState.ProjectionMatrix(),
                                               m_screenPropertiesProvider.GetScreenProperties());
     
-    
-
     
     eegeoWorld.Draw(drawParameters);
     
@@ -548,7 +582,10 @@ void ExampleApp::UpdateLoadingScreen(float dt)
     
     if (!m_pLoadingScreen->IsVisible())
     {
-        m_GazeUIModule->getGazeUIView().ShowView();
+        
+//        m_GazeUIView->ShowView();
+        
+//        m_GazeUIModule->getGazeUIView().ShowView();
         Eegeo_DELETE m_pLoadingScreen;
         m_pLoadingScreen = NULL;
     }

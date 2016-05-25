@@ -1,15 +1,12 @@
 package com.github.lzyzsd.arcprogress;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.text.TextPaint;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -17,8 +14,13 @@ import android.view.View;
  * Created by bruce on 11/6/14.
  */
 public class ArcProgress extends View {
+	
     private Paint paint;
 
+    private float measuredWidth = -1;
+    private float measuredHeight = -1;
+    private SizeMeasureListner mSizeMeasureListner;
+    
     private RectF rectF = new RectF();
 
     private float strokeWidth = 8;
@@ -31,8 +33,6 @@ public class ArcProgress extends View {
     private static final String INSTANCE_STROKE_WIDTH = "stroke_width";
     private static final String INSTANCE_PROGRESS = "progress";
     private static final String INSTANCE_MAX = "max";
-    private static final String INSTANCE_FINISHED_STROKE_COLOR = "finished_stroke_color";
-    private static final String INSTANCE_UNFINISHED_STROKE_COLOR = "unfinished_stroke_color";
     private static final String INSTANCE_ARC_ANGLE = "arc_angle";
 
     public ArcProgress(Context context) {
@@ -110,15 +110,16 @@ public class ArcProgress extends View {
         this.invalidate();
     }
 
-
-
+    
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
         int width = MeasureSpec.getSize(widthMeasureSpec);
-        rectF.set(strokeWidth / 2f, strokeWidth / 2f, width - strokeWidth / 2f, MeasureSpec.getSize(heightMeasureSpec) - strokeWidth / 2f);
-        float radius = width / 2f;
-        float angle = (360 - arcAngle) / 2f;
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+        rectF.set(strokeWidth / 2f, strokeWidth / 2f, width - strokeWidth / 2f, height - strokeWidth / 2f);
+        
+        if(mSizeMeasureListner!=null)
+        	mSizeMeasureListner.OnSizeMeasured(width, height);
     }
 
     @Override
@@ -127,7 +128,7 @@ public class ArcProgress extends View {
         float startAngle = 270 - arcAngle / 2f;
         float finishedSweepAngle = progress / (float) getMax() * arcAngle;
         float finishedStartAngle = startAngle;
-        
+
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
         paint.setAlpha(105);
@@ -167,4 +168,15 @@ public class ArcProgress extends View {
         }
         super.onRestoreInstanceState(state);
     }
+    
+    public void setSizeMeasureListner(SizeMeasureListner sizeMeasureListner){
+    	mSizeMeasureListner = sizeMeasureListner;
+    	if(measuredWidth!=-1 && mSizeMeasureListner!=null)
+    		mSizeMeasureListner.OnSizeMeasured(measuredWidth, measuredHeight);
+    }
+    
+    public interface SizeMeasureListner{
+    	public void OnSizeMeasured(float width, float height);
+    }
+    
 }

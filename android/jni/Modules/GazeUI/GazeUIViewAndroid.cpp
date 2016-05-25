@@ -2,6 +2,7 @@
 
 #include "GazeUIViewAndroid.h"
 #include <jni.h>
+#include "logger.h"
 
 namespace Eegeo {
     namespace GazeUI{
@@ -41,11 +42,9 @@ namespace Eegeo {
             AndroidSafeNativeThreadAttachment attached(m_nativeState);
             JNIEnv* env = attached.envForThread;
             
-            //Get a reference to the 'removeHud' method and call it to remove the HUD.
             jmethodID destroyMethod = env->GetMethodID(m_androidGazeUIClass, "DestroyView", "()V");
             env->CallVoidMethod(m_androidGazeUIView, destroyMethod);
             
-            //Destroy the cached global references.
             env->DeleteGlobalRef(m_androidGazeUIView);
             env->DeleteGlobalRef(m_androidGazeUIClass);
         }
@@ -55,7 +54,6 @@ namespace Eegeo {
             AndroidSafeNativeThreadAttachment attached(m_nativeState);
             JNIEnv* env = attached.envForThread;
             
-            //Get a reference to the 'removeHud' method and call it to remove the HUD.
             jmethodID createGazeUIMethod = env->GetMethodID(m_androidGazeUIClass, "CreateGazeUI", "()V");
             env->CallVoidMethod(m_androidGazeUIView, createGazeUIMethod);
         }
@@ -66,7 +64,6 @@ namespace Eegeo {
             AndroidSafeNativeThreadAttachment attached(m_nativeState);
             JNIEnv* env = attached.envForThread;
             
-            //Get a reference to the 'removeHud' method and call it to remove the HUD.
             jmethodID gazeHitStartedMethod = env->GetMethodID(m_androidGazeUIClass, "UpdateGazeProgress", "(I)V");
             env->CallVoidMethod(m_androidGazeUIView, gazeHitStartedMethod, progress);
             
@@ -76,7 +73,6 @@ namespace Eegeo {
             AndroidSafeNativeThreadAttachment attached(m_nativeState);
             JNIEnv* env = attached.envForThread;
             
-            //Get a reference to the 'removeHud' method and call it to remove the HUD.
             jmethodID showViewMethod = env->GetMethodID(m_androidGazeUIClass, "ShowView", "()V");
             env->CallVoidMethod(m_androidGazeUIView, showViewMethod);
         }
@@ -85,9 +81,16 @@ namespace Eegeo {
             AndroidSafeNativeThreadAttachment attached(m_nativeState);
             JNIEnv* env = attached.envForThread;
             
-            //Get a reference to the 'removeHud' method and call it to remove the HUD.
             jmethodID hideViewMethod = env->GetMethodID(m_androidGazeUIClass, "HideView", "()V");
             env->CallVoidMethod(m_androidGazeUIView, hideViewMethod);
+        }
+        
+        void GazeUIViewAndroid::SetCenterPoint(float x, float y){
+            AndroidSafeNativeThreadAttachment attached(m_nativeState);
+            JNIEnv* env = attached.envForThread;
+            
+            jmethodID hideViewMethod = env->GetMethodID(m_androidGazeUIClass, "SetCenterPoint", "(FF)V");
+            env->CallVoidMethod(m_androidGazeUIView, hideViewMethod, x, y);
         }
         
     }

@@ -37,6 +37,10 @@ namespace Eegeo
             Eegeo::Helpers::ITextureFileLoader& m_textureFileLoader;
             Eegeo::m33 m_basisToEcef;
             
+            Eegeo::Rendering::Mesh* pRenderableMesh;
+            Eegeo::v2 m_Dimension;
+            Eegeo::dv3 m_ecefPosition;
+            
         public:
             UIQuad(Eegeo::Modules::Core::RenderingModule& p_RenderingModule,
                    Eegeo::Rendering::GlBufferPool& p_glBufferPool,
@@ -45,7 +49,7 @@ namespace Eegeo
                    Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
                    Eegeo::Rendering::RenderableFilters& p_RenderableFilters,
                    const std::string& fileName,
-                   const Eegeo::dv3& p_ecefPosition,
+                   const Eegeo::dv3 p_ecefPosition,
                    const Eegeo::v2& p_Dimension,
                    const Eegeo::v2& p_uvMin = Eegeo::v2::Zero(),
                    const Eegeo::v2& p_uvMax = Eegeo::v2::One(),
@@ -57,6 +61,8 @@ namespace Eegeo
             inline Eegeo::v3 GetScale() { return m_pRenderable->GetScale(); }
             inline void SetScale(Eegeo::v3 p_scale) { m_pRenderable->SetScale(p_scale); }
             inline void SetColor(const Eegeo::v4& color) { m_pRenderable->SetColor(color); }
+            
+            void UpdateUVs(Eegeo::v2& min, Eegeo::v2& max);
             
             // IRenderableFilter interface
             void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);

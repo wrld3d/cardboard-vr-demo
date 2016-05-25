@@ -2,6 +2,8 @@ set(headers ${headers} ../src/Modules/GazeUI/
 )
 set(currsources
   ../src/Modules/GazeUI/GazeUI.h
+  ../src/Modules/GazeUI/GazeUIView.h
+  ../src/Modules/GazeUI/GazeUIView.cpp
   ../src/Modules/GazeUI/IGazeUIView.h
   ../src/Modules/GazeUI/IGazeUIModule.h
   ../src/Modules/GazeUI/GazeUIModule.cpp

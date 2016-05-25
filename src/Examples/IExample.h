@@ -27,6 +27,7 @@ namespace Examples
         virtual void Suspend()= 0;
         virtual void AfterCameraUpdate() { }
         
+        virtual Eegeo::m33& getCurrentCameraOrientation(){return *(new Eegeo::m33());}
         
         virtual void UpdateCardboardProfile(float cardboardProfile[]){}
         

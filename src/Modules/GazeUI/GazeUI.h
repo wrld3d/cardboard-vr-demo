@@ -4,6 +4,7 @@ namespace Eegeo
 {
     namespace GazeUI
     {
+        class GazeUIView;
         class IGazeUIView;
         class IGazeUIModule;
         class GazeUIModule;

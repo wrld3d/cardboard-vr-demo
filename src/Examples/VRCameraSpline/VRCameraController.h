@@ -45,6 +45,7 @@ namespace Eegeo
             {
                 m_renderCamera = new Camera::RenderCamera();
                 m_orientation.Identity();
+                m_currentOrientation.Identity();
                 
                 m_renderCamera->SetViewport(0,0,screenWidth, screenHeight);
                 m_renderCamera->SetProjection(0.7, 0.1, 4000);
@@ -94,6 +95,8 @@ namespace Eegeo
             
             void SetShiftDown(bool down) { m_shiftDown = down; }
             
+            m33& GetOrientation();
+            
         private:
             bool CanAcceptUserInput() const;
             
@@ -124,6 +127,7 @@ namespace Eegeo
             dv3 m_interestEcef;
             dv3 m_ecefPosition;
             m33 m_orientation;
+            m33 m_currentOrientation;
         };
     }
 }

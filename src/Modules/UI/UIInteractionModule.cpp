@@ -10,6 +10,7 @@
 
 #include "UIInteractionModule.h"
 #include "../../Examples/VRCameraSpline/VRCameraController.h"
+#include "../GazeUI/GazeUIView.h"
 #include "VectorMath.h"
 
 #define PICKED_COLOUR Eegeo::v4(1.0f, 1.0f, 0.0f, 0.5f)
@@ -93,11 +94,13 @@ namespace Eegeo
             return true;
         }
         
-        UIInteractionModule::UIInteractionModule(Eegeo::EegeoWorld& world, IUICameraProvider& p_CameraProvider):
+        UIInteractionModule::UIInteractionModule(Eegeo::EegeoWorld& world, IUICameraProvider& p_CameraProvider, GazeUI::GazeUIView& gazeUIView):
         m_pCameraProvider(p_CameraProvider),
         m_InteractableItems(),
-        m_debugRenderer(world.GetDebugRenderingModule().GetDebugRenderer())
+        m_debugRenderer(world.GetDebugRenderingModule().GetDebugRenderer()),
+        m_GazeUIView(gazeUIView)
         {
+            m_FocusedUIItemId = -1;
         }
         
         UIInteractionModule::~UIInteractionModule()
@@ -107,6 +110,9 @@ namespace Eegeo
         
         void UIInteractionModule::Update(float dt)
         {
+            if(m_FocusedUIItemId>=0)
+                m_GazedTime += dt;
+            
             for (int i = 0; i != m_InteractableItems.size(); i++) {
                 m_InteractableItems[i]->Update(dt);
             }
@@ -114,22 +120,65 @@ namespace Eegeo
         
         void UIInteractionModule::Event_ScreenInteractionStart(const Eegeo::v2& point)
         {
+            m_FocusedUIItemId = -1;
             for (int i = 0; i != m_InteractableItems.size(); i++) {
                 if (IsScreenPointInsideModel(point, m_InteractableItems[i])) {
                     m_InteractableItems[i]->SetItemHasFocus(true);
+                    m_FocusedUIItemId = i;
                 }
             }
         }
         
         void UIInteractionModule::Event_ScreenInteractionMoved(const Eegeo::v2& point)
         {
-            for (int i = 0; i != m_InteractableItems.size(); i++) {
-                if (IsScreenPointInsideModel(point, m_InteractableItems[i])) {
+            int touchedItemId = -1;
+            for (int i = 0; i != m_InteractableItems.size(); i++)
+            {
+                if (IsScreenPointInsideModel(point, m_InteractableItems[i]))
+                {
+                    touchedItemId = i;
                     m_InteractableItems[i]->SetItemHasFocus(true);
                 }
                 else
+                {
                     m_InteractableItems[i]->SetItemHasFocus(false);
+                }
             }
+            
+            if(m_FocusedUIItemId!=-1 && touchedItemId==-1)
+            {
+                m_GazedTime = 0.0f;
+                m_GazeUIView.HideView();
+                // end
+            }
+            else if(m_FocusedUIItemId!=-1 && touchedItemId!=-1 && m_FocusedUIItemId==touchedItemId)
+            {
+                if(m_GazedTime>=3.f)
+                {
+                    touchedItemId = -1;
+                    m_GazedTime = 0.0f;
+                    m_GazeUIView.HideView();
+                    
+                    Event_ScreenInteractionClick(point);
+                    
+                }
+                // same continued
+            }
+            else if(m_FocusedUIItemId!=-1 && touchedItemId!=-1 && m_FocusedUIItemId!=touchedItemId)
+            {
+                m_GazedTime = 0.0f;
+                m_GazeUIView.ResetProgress();
+                // new item focused
+            }
+            else if(m_FocusedUIItemId==-1 && touchedItemId!=-1)
+            {
+                m_GazedTime = 0.0f;
+                m_GazeUIView.ShowView();
+                // start
+            }
+            
+            m_FocusedUIItemId = touchedItemId;
+            
         }
         
         void UIInteractionModule::Event_ScreenInteractionEnd(const Eegeo::v2& point)

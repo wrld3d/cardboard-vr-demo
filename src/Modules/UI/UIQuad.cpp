@@ -74,7 +74,7 @@ namespace Eegeo
             const Eegeo::Rendering::VertexLayouts::VertexBinding& vertexBinding =
             vertexBindingPool.GetVertexBinding(mesh.GetVertexLayout(), material.GetShader().GetVertexAttributes());
             
-            const Eegeo::Rendering::LayerIds::Values renderLayer = Eegeo::Rendering::LayerIds::AfterAll;
+            const Eegeo::Rendering::LayerIds::Values renderLayer = Eegeo::Rendering::LayerIds::AfterWorld;
             const bool depthTest = true;
             const bool alphaBlend = true;
             
@@ -99,7 +99,7 @@ namespace Eegeo
                        Eegeo::Helpers::ITextureFileLoader& textureFileLoader,
                        Eegeo::Rendering::RenderableFilters& p_RenderableFilters,
                        const std::string& fileName,
-                       const Eegeo::dv3& p_ecefPosition,
+                       const Eegeo::dv3 p_ecefPosition,
                        const Eegeo::v2& p_Dimension,
                        const Eegeo::v2& p_uvMin,
                        const Eegeo::v2& p_uvMax,
@@ -113,6 +113,10 @@ namespace Eegeo
         m_textureFileLoader(textureFileLoader),
         m_pRenderable(NULL)
         {
+            
+            m_Dimension = Eegeo::v2(p_Dimension);
+            m_ecefPosition = Eegeo::dv3(p_ecefPosition);
+
             m_textureInfo.textureId = 0;
             m_textureInfo.width = 0;
             m_textureInfo.height = 0;
@@ -131,7 +135,7 @@ namespace Eegeo
                                                                                             m_textureInfo.textureId,
                                                                                             p_initialColor);
             
-            Eegeo::Rendering::Mesh* pRenderableMesh = CreateUnlitQuadMesh(p_Dimension, p_uvMin, p_uvMax, *CreatePositionUvVertexLayout(), m_renderingModule.GetGlBufferPool());
+             pRenderableMesh = CreateUnlitQuadMesh(p_Dimension, p_uvMin, p_uvMax, *CreatePositionUvVertexLayout(), m_renderingModule.GetGlBufferPool());
             
             m_pRenderable = CreateUIMeshRenderable(*pRenderableMesh, *m_Material, m_vertexBindingPool, p_ecefPosition);
             
@@ -142,7 +146,8 @@ namespace Eegeo
         {
             Eegeo::Rendering::RenderableFilters& platformRenderableFilters = m_renderingModule.GetRenderableFilters();
             platformRenderableFilters.RemoveRenderableFilter(*this);
-         
+            
+            Eegeo_DELETE pRenderableMesh;
             Eegeo_DELETE m_pRenderable;
             Eegeo_DELETE m_Material;
             Eegeo_DELETE m_Shader;
@@ -167,6 +172,17 @@ namespace Eegeo
             m_pRenderable->SetModelViewProjection(mvp);
             
             renderQueue.EnqueueRenderable(m_pRenderable);
+            
+            
+        }
+        
+        void UIQuad::UpdateUVs(Eegeo::v2& min, Eegeo::v2& max)
+        {
+            Eegeo_DELETE pRenderableMesh;
+            Eegeo_DELETE m_pRenderable;
+            pRenderableMesh = CreateUnlitQuadMesh(m_Dimension, min, max, *CreatePositionUvVertexLayout(), m_renderingModule.GetGlBufferPool());
+            m_pRenderable = CreateUIMeshRenderable(*pRenderableMesh, *m_Material, m_vertexBindingPool, m_ecefPosition);
+            
         }
     }
 }

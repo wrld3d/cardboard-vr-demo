@@ -15,6 +15,9 @@ set(currsources
   ../src/Modules/UI/UIImageButtonClickedCallback.h
   ../src/Modules/UI/IUICameraProvider.h
   ../src/Modules/UI/IUIInteractionObservable.h
+  ../src/Modules/UI/UIAnimatedSprite.h
+  ../src/Modules/UI/UIAnimatedSprite.cpp
+
 )
 
 set(sources ${sources} ${currsources})

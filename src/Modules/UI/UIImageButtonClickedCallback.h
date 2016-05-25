@@ -12,6 +12,7 @@ namespace Eegeo
 {
     namespace UI
     {
+        
         class IUIImageButtonClickedCallback
         {
         public:

@@ -42,6 +42,11 @@ namespace Eegeo
                                        m_renderCamera->GetProjectionMatrix());
         }
         
+        m33& VRCameraController::GetOrientation()
+        {
+            return m_currentOrientation;
+        }
+        
         void VRCameraController::UpdateFromPose(const Eegeo::m33& orientation, float eyeDistance)
         {
             m_ecefPosition = m_renderCamera->GetEcefLocation();
@@ -77,6 +82,8 @@ namespace Eegeo
                 if(factor > 0.9f)
                     factor = 0.9f;
             }
+            
+            m_currentOrientation = Eegeo::m33(orientationMatrix);
             
             float near, far;
             GetNearFarPlaneDistances(near,far);
