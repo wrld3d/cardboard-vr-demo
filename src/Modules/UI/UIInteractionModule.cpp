@@ -153,7 +153,7 @@ namespace Eegeo
             }
             else if(m_FocusedUIItemId!=-1 && touchedItemId!=-1 && m_FocusedUIItemId==touchedItemId)
             {
-                if(m_GazedTime>=3.f)
+                if(m_GazedTime>=2.f)
                 {
                     touchedItemId = -1;
                     m_GazedTime = 0.0f;

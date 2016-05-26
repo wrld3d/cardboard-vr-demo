@@ -220,7 +220,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                             );
     
     Eegeo::dv3 spritePos = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 200).ToECEF();
-    Eegeo::v2 dim = Eegeo::v2(0.25f,0.25f);
+    Eegeo::v2 dim = Eegeo::v2(0.25f,0.25f)*7.f;
     m_Loader = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(renderingModule,
                                                                 pWorld->GetPlatformAbstractionModule(),
                                                                 "mesh_example/gaze_loader.png",
@@ -228,10 +228,10 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                 dim,
                                                                 m_ClickCallback,
                                                                 *(new Eegeo::v2(7,7)),
-                                                                20
+                                                                49.f/2.f
                                                                 );
     
-    dim = Eegeo::v2(0.075f,0.075f);
+    dim = Eegeo::v2(0.075f,0.075f)*3.f;
     m_Pointer = Eegeo_NEW(Eegeo::UI::UIImageButton)(renderingModule,
                                                      pWorld->GetPlatformAbstractionModule(),
                                                      "mesh_example/gaze_point.png",
@@ -386,14 +386,6 @@ void ExampleApp::Update (float dt, float headTansform[])
                                                   *m_pStreamingVolume,
                                                   m_screenPropertiesProvider.GetScreenProperties());
     
-	eegeoWorld.Update(updateParameters);
-    
-    if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
-        m_pExampleController->Update(dt);
-    
-    UpdateNightTParam(dt);
-    UpdateFogging();
-    UpdateLoadingScreen(dt);
     
     m_UIInteractionModule->Update(dt);
     
@@ -404,13 +396,22 @@ void ExampleApp::Update (float dt, float headTansform[])
     m_Loader->Update(dt);
     
     Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
-    Eegeo::dv3 position(m_pExampleController->GetCurrentCameraState().LocationEcef() + (forward*10));
+    Eegeo::dv3 position(m_pExampleController->GetCurrentCameraState().LocationEcef() + (forward*50));
     
     m_GazeUIView->UpdateEcefPosition(position);
     
-    
     m_JumpPointsModule->Update(dt);
-}
+
+    
+	eegeoWorld.Update(updateParameters);
+    
+    if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
+        m_pExampleController->Update(dt);
+    
+    UpdateNightTParam(dt);
+    UpdateFogging();
+    UpdateLoadingScreen(dt);
+    }
 
 void ExampleApp::Draw (float dt, float headTansform[]){
     Eegeo::EegeoWorld& eegeoWorld = World();

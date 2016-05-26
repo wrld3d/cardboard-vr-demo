@@ -35,7 +35,6 @@ namespace Eegeo
             void ResetProgress();
             void SetCenterPoint(float x, float y);
             
-            
             void UpdateEcefPosition(dv3 position);
             
         };
