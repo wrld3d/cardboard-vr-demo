@@ -12,15 +12,11 @@ namespace Eegeo
                                                , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
                                                , IUIInteractionObservable& p_IUIInteractionObservable
                                                , IUICameraProvider& p_UICameraProvider
-                                               , const std::string& fileName
-                                               , const Eegeo::v2& p_Dimension
                                                )
             {
                 m_pViewFactory = new JumpPointViewFactory(p_RenderingModule
                                                           , p_PlatformAbstractionModule
-                                                          , p_UICameraProvider
-                                                          , fileName
-                                                          , p_Dimension);
+                                                          , p_UICameraProvider);
                 m_pRepository = new JumpPointRepository();
                 m_pController = new JumpPointController(*m_pRepository, *m_pViewFactory, p_IUIInteractionObservable);
             }

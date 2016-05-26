@@ -29,8 +29,6 @@ namespace Eegeo
                                  , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
                                  , IUIInteractionObservable& p_IUIInteractionObservable
                                  , IUICameraProvider& p_UICameraProvider
-                                 , const std::string& fileName
-                                 , const Eegeo::v2& p_Dimension
                                  );
                 
                 ~JumpPointsModule();

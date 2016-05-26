@@ -7,6 +7,11 @@
 //
 
 #include "UIGeometryHelpers.h"
+#include "TexturedUniformColoredMaterial.h"
+#include "TexturedUniformColoredShader.h"
+#include "ShaderIdGenerator.h"
+#include "MaterialIdGenerator.h"
+
 namespace Eegeo
 {
     namespace UI
@@ -52,6 +57,30 @@ namespace Eegeo
             Eegeo::m33 orientation;
             orientation.SetFromBasis(right, up, direction);
             return orientation;
+        }
+        
+        void GetMaterialForQuadFromTexture(Eegeo::Modules::Core::RenderingModule& p_RenderingModule, Eegeo::Helpers::ITextureFileLoader& textureFileLoader, const std::string& fileName, Helpers::GLHelpers::TextureInfo& out_textureInfo, Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* out_material, Eegeo::Rendering::Shaders::TexturedUniformColoredShader* out_shader)
+        {
+            out_textureInfo.textureId = 0;
+            out_textureInfo.width = 0;
+            out_textureInfo.height = 0;
+            
+            const bool generateMipmaps = true;
+            bool success = textureFileLoader.LoadTexture(out_textureInfo, fileName, generateMipmaps);
+            Eegeo_ASSERT(success, "failed to load texture");
+            if (!success)
+                return;
+            
+            Eegeo::Rendering::Shaders::TexturedUniformColoredShader* m_Shader = Eegeo::Rendering::Shaders::TexturedUniformColoredShader::Create(p_RenderingModule.GetShaderIdGenerator().GetNextId());
+            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* material = new (Eegeo::Rendering::Materials::TexturedUniformColoredMaterial) (
+                                                                                                                                                       p_RenderingModule.GetMaterialIdGenerator().GetNextId(),
+                                                                                                                                                       "UIRectMaterial",
+                                                                                                                                                       *m_Shader,
+                                                                                                                                                       out_textureInfo.textureId,
+                                                                                                                                                       Eegeo::v4::One());
+            
+            out_material = material;
+            out_shader = m_Shader;
         }
     }
 }

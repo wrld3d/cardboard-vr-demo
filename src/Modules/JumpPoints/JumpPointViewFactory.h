@@ -20,9 +20,7 @@ namespace Eegeo
             public:
                 JumpPointViewFactory(Eegeo::Modules::Core::RenderingModule& p_RenderingModule
                                      , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
-                                     , IUICameraProvider& p_UICameraProvider
-                                     , const std::string& p_FileName
-                                     , const Eegeo::v2& p_Dimension);
+                                     , IUICameraProvider& p_UICameraProvider);
                 
                 ~JumpPointViewFactory();
                 

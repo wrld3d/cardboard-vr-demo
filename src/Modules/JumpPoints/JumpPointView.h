@@ -29,10 +29,6 @@ namespace Eegeo
                               , Eegeo::Modules::Core::RenderingModule& p_RenderingModule
                               , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
                               , IUICameraProvider& p_UICameraProvider
-                              , const std::string& fileName
-                              , const Eegeo::v2& p_Dimension
-                              , const Eegeo::v2& p_uvMin = Eegeo::v2::One()/2.0f
-                              , const Eegeo::v2& p_uvMax = Eegeo::v2::One()
                               );
                 
                 /*! Retrieve the JumpPoint model that the view represents.

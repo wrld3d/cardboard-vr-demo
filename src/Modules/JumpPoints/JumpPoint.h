@@ -6,6 +6,7 @@
 #include "JumpPoints.h"
 #include "VectorMath.h"
 #include "LatLongAltitude.h"
+#include "string"
 
 namespace Eegeo
 {
@@ -25,10 +26,20 @@ namespace Eegeo
                 /*! Create a Jump Point object at a particular position in the world.
                  * \param id A unique identifier for the Jump Point.
                  * \param latLongAlt The position of the Jump Point.
+                 * \param p_FileName The name texture file to load icon from.
+                 * \param p_Dimension The dimensions of the Jump Point.
+                 * \param p_uvMin The min uvs of the Jump Point sprite.
+                 * \param p_uvMax The max uvs of the Jump Point sprite.
                  * \param pUserData An optional piece of application user data to be attached to the Jump Point. N.B. It is the application's responsibility to manage the lifetime of any user data it attaches to Jump Point objects.
                  * \return A Jump Point object
                  */
-                JumpPoint(const TJumpPointId id, const Space::LatLongAltitude& latLongAlt, const void* pUserData = NULL);
+                JumpPoint(const TJumpPointId id
+                          , const Space::LatLongAltitude& latLongAlt
+                          , const std::string& p_FileName
+                          , const Eegeo::v2& p_Dimension
+                          , const Eegeo::v2& p_uvMin = Eegeo::v2::Zero()
+                          , const Eegeo::v2& p_uvMax = Eegeo::v2::One()
+                          , const void* pUserData = NULL);
                 
                 /*! Get the unique identifier for the JumpPoint.
                  * \return The JumpPoint's unique identifier.
@@ -50,13 +61,36 @@ namespace Eegeo
                  */
                 const v4& GetColor() const;
                 
+                /*! Get the File name of the JumpPoint icon.
+                 * \return The JumpPoint's icon file name.
+                 */
+                const std::string& GetFileName() const;
+                
+                /*! Get the Dimensions of the JumpPoint icon.
+                 * \return The JumpPoint's dimensions.
+                 */
+                const v2& GetDimensions() const;
+                
+                /*! Get the min UVs of the JumpPoint icon.
+                 * \return The JumpPoint's min UVs.
+                 */
+                const v2& GetUVMin() const;
+                
+                /*! Get the max UVs of the JumpPoint icon.
+                 * \return The JumpPoint's max UVs.
+                 */
+                const v2& GetUVMax() const;
+                
             private:
                 TJumpPointId m_id;
                 Space::LatLongAltitude m_latLongAlt;
                 const void* const m_pUserData;
                 
                 v4 m_color;
-                
+                const std::string m_FileName;
+                const Eegeo::v2 m_Dimension;
+                const Eegeo::v2 m_uvMin;
+                const Eegeo::v2 m_uvMax;
             };
         }
     }

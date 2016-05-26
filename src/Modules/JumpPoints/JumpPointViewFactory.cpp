@@ -12,14 +12,10 @@ namespace Eegeo
             
             JumpPointViewFactory::JumpPointViewFactory(Eegeo::Modules::Core::RenderingModule& p_RenderingModule
                                                        , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
-                                                       , IUICameraProvider& p_UICameraProvider
-                                                       , const std::string& p_FileName
-                                                       , const Eegeo::v2& p_Dimension)
+                                                       , IUICameraProvider& p_UICameraProvider)
             : m_RenderingModule(p_RenderingModule)
             , m_PlatformAbstractionModule(p_PlatformAbstractionModule)
             , m_UICameraProvider(p_UICameraProvider)
-            , m_FileName(p_FileName)
-            , m_Dimension(p_Dimension)
             {
                 
             }
@@ -36,8 +32,6 @@ namespace Eegeo
                                                                         , m_RenderingModule
                                                                         , m_PlatformAbstractionModule
                                                                         , m_UICameraProvider
-                                                                        , m_FileName
-                                                                        , m_Dimension
                                                                         );
                 return jumpPointView;
             }

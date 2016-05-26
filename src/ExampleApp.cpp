@@ -249,16 +249,32 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(*pWorld, *this, *m_GazeUIView);
     m_UIInteractionModule->RegisterInteractableItem(m_UIButton);
     
-    m_JumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1, Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250));
-    m_JumpPoint2 = new Eegeo::UI::JumpPoints::JumpPoint(2, Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250));
-    m_JumpPoint3 = new Eegeo::UI::JumpPoints::JumpPoint(3, Eegeo::Space::LatLongAltitude::FromDegrees(56.451235, -2.976600, 250));
+    m_JumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1,
+                                                        Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250),
+                                                        "mesh_example/quadrants.png",
+                                                        dimUI,
+                                                        Eegeo::v2(0.5, 0),
+                                                        Eegeo::v2(1, 0.5)
+                                                        );
+    m_JumpPoint2 = new Eegeo::UI::JumpPoints::JumpPoint(2,
+                                                        Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250),
+                                                        "mesh_example/quadrants.png",
+                                                        dimUI,
+                                                        Eegeo::v2(0, 0.5),
+                                                        Eegeo::v2(0.5, 1)
+                                                        );
+    m_JumpPoint3 = new Eegeo::UI::JumpPoints::JumpPoint(3,
+                                                        Eegeo::Space::LatLongAltitude::FromDegrees(56.451235, -2.976600, 250),
+                                                        "mesh_example/quadrants.png",
+                                                        dimUI,
+                                                        Eegeo::v2::One()/2.0,
+                                                        Eegeo::v2::One()
+                                                        );
     
     m_JumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(renderingModule,
                                                                      pWorld->GetPlatformAbstractionModule(),
                                                                      *m_UIInteractionModule,
-                                                                     *this,
-                                                                     "mesh_example/quadrants.png",
-                                                                     dimUI);
+                                                                     *this);
     m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint1);
     m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint2);
     m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint3);
