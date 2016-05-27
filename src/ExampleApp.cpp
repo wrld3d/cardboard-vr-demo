@@ -68,13 +68,12 @@
 #include "InteriorsModelModule.h"
 #include "InteriorsCameraControllerFactory.h"
 #include "GlobeCameraControllerFactory.h"
-#include "Modules/GazeUI/GazeUIModule.h"
-#include "Modules/GazeUI/GazeUIView.h"
-
-#include "Logger.h"
-
 #include "LatLongAltitude.h"
+
+#include "Modules/UI/UIGaze/UIGazeView.h"
+#include "Modules/UI/UIInteraction/UIInteractionModule.h"
 #include "Modules/VRDistortionModule/VRCardboardDeviceProfile.h"
+#include "Logger.h"
 
 namespace
 {
@@ -110,7 +109,6 @@ namespace
 ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                        Eegeo::Config::DeviceSpec deviceSpecs,
                        Examples::IExampleControllerView& view,
-                       Eegeo::GazeUI::IGazeUIView& gazeUIView,
                        const Eegeo::Rendering::ScreenProperties& screenProperties,
                        Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
                        Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule)
@@ -128,6 +126,8 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_screenPropertiesProvider(screenProperties)
 , m_ClickCallback(this, &ExampleApp::ToggleNight)
 {
+    
+    
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration touchControllerConfig = Eegeo::Camera::GlobeCamera::GlobeCameraTouchControllerConfiguration::CreateDefault();
@@ -146,6 +146,8 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     const float interestPointAltitudeMeters = 2.7f;
     const float cameraControllerOrientationDegrees = 0.0f;
     const float cameraControllerDistanceFromInterestPointMeters = 1781.0f;
+    
+    
     
     
     m_pStreamingVolume = Eegeo_NEW(Eegeo::Streaming::CameraFrustumStreamingVolume)(mapModule.GetResourceCeilingProvider(),
@@ -195,9 +197,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                              renderingModule.GetGlBufferPool());
     m_VRDistortion->Initialize();
     
-    Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-    
-    
     m_VRSkybox = Eegeo_NEW(Eegeo::Skybox::SkyboxModule)(renderingModule,
                                                                       renderingModule.GetGlBufferPool(),
                                                                       renderingModule.GetVertexBindingPool(),
@@ -221,6 +220,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     Eegeo::dv3 spritePos = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 200).ToECEF();
     Eegeo::v2 dim = Eegeo::v2(0.25f,0.25f)*7.f;
+    
     m_Loader = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(renderingModule,
                                                                 pWorld->GetPlatformAbstractionModule(),
                                                                 "mesh_example/gaze_loader.png",
@@ -244,9 +244,9 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                     Eegeo::Rendering::LayerIds::Values::AfterAll
                                                      );
     
-    m_GazeUIView = new Eegeo::GazeUI::GazeUIView(*m_Loader, *m_Pointer);
+    m_UIGazeView = new Eegeo::UIGaze::UIGazeView(*m_Loader, *m_Pointer);
     
-    m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(*pWorld, *this, *m_GazeUIView);
+    m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(*pWorld, *this, *m_UIGazeView);
     m_UIInteractionModule->RegisterInteractableItem(m_UIButton);
     
     m_JumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1,
@@ -279,65 +279,10 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint2);
     m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint3);
 
-//    m_GazeUIModule = new Eegeo::GazeUI::GazeUIModule(gazeUIView);
-//    m_GazeUIModule->getGazeUIView().SetCenterPoint(screenProperties.GetScreenWidth()/2.f, screenProperties.GetScreenHeight()/2.f);
-    
-    
-//	register all generic examples
-
-//    m_pExampleController->RegisterCameraExample<Examples::BuildingHighlightExampleFactory>();
-//    m_pExampleController->RegisterExample(Eegeo_NEW(Examples::BuildingSelectionExampleFactory)(World(),
-//                                                                                               *m_pCameraControllerFactory,
-//                                                                                               *m_pCameraTouchController,
-//                                                                                               collisionVisualizationModule,
-//                                                                                               buildingFootprintsModule));
-    
-//    m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RenderToTextureExampleFactory>(m_screenPropertiesProvider);
     m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule);
-    
-//    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineExampleFactory>(m_screenPropertiesProvider);
-//    m_pExampleController->RegisterScreenPropertiesProviderExample<Examples::CameraSplineDualCameraExampleFactory>(m_screenPropertiesProvider);
-    
-//    m_pExampleController->RegisterCameraExample<Examples::VRCameraSplineExampleFactory>();
-//    m_pExampleController->RegisterCameraExample<Examples::CameraTransitionExampleFactory>();
-    
-//    m_pExampleController->RegisterCameraExample<Examples::ControlCityThemeExampleFactory>();
-//    m_pExampleController->RegisterCameraExample<Examples::DebugPrimitiveRenderingExampleFactory>();
-//    TODO: Completely remove DebugSphere example as we should be using DebugRenderer now
-//	  m_pExampleController->RegisterCameraExample<Examples::DebugSphereExampleFactory>();
-//	  m_pExampleController->RegisterCameraExample<Examples::DynamicText3DExampleFactory>();
-//	  m_pExampleController->RegisterCameraExample<Examples::EnvironmentFlatteningExampleFactory>();
-//	  m_pExampleController->RegisterCameraExample<Examples::EnvironmentNotifierExampleFactory>();
-//    m_pExampleController->RegisterCameraExample<Examples::EnvironmentRayCasterExampleFactory>();
-//	  m_pExampleController->RegisterCameraExample<Examples::FileIOExampleFactory>();
-//    m_pExampleController->RegisterCameraExample<Examples::FireworksExampleFactory>();
-//    m_pExampleController->RegisterCameraExample<Examples::GeofenceExampleFactory>();
-//    m_pExampleController->RegisterCameraExample<Examples::HeatmapExampleFactory>();
-//	  m_pExampleController->RegisterCameraExample<Examples::LoadModelExampleFactory>();
-//    m_pExampleController->RegisterCameraExample<Examples::MeshExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::ModifiedRenderingExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::NavigationGraphExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::Pick3DObjectExampleFactory>();
-//	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinsExampleFactory>(m_screenPropertiesProvider);
-//	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::PinOverModelExampleFactory>(m_screenPropertiesProvider  );
-//	m_pExampleController->RegisterCameraExample<Examples::PODAnimationExampleFactory>();
-//    m_pExampleController->RegisterCameraExample<Examples::PolyChartExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::ReadHeadingExampleFactory>();
-//    m_pExampleController->RegisterCameraExample<Examples::RemoveMapLayerExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::ResourceSpatialQueryExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::RouteDrawingExampleFactory>();
-//	m_pExampleController->RegisterCameraControllerScreenPropertiesProviderExample<Examples::RouteSimulationAnimationExampleFactory>(m_screenPropertiesProvider);
-//	m_pExampleController->RegisterCameraExample<Examples::RouteThicknessPolicyExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::ScreenPickExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::ScreenUnprojectExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::SingleCityExampleFactory>();
-//    m_pExampleController->RegisterCameraExample<Examples::StencilAreaExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::ToggleTrafficExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::TrafficCongestionExampleFactory>();
-//	m_pExampleController->RegisterCameraExample<Examples::WebRequestExampleFactory>();
 
     
-    m_GazeUIView->HideView();
+    m_UIGazeView->HideView();
     
 }
 
@@ -414,7 +359,7 @@ void ExampleApp::Update (float dt, float headTansform[])
     Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
     Eegeo::dv3 position(m_pExampleController->GetCurrentCameraState().LocationEcef() + (forward*50));
     
-    m_GazeUIView->UpdateEcefPosition(position);
+    m_UIGazeView->UpdateEcefPosition(position);
     
     m_JumpPointsModule->Update(dt);
 
@@ -603,10 +548,6 @@ void ExampleApp::UpdateLoadingScreen(float dt)
     
     if (!m_pLoadingScreen->IsVisible())
     {
-        
-//        m_GazeUIView->ShowView();
-        
-//        m_GazeUIModule->getGazeUIView().ShowView();
         Eegeo_DELETE m_pLoadingScreen;
         m_pLoadingScreen = NULL;
     }

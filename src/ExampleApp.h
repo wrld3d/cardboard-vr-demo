@@ -13,15 +13,15 @@
 #include "Modules/VRDistortionModule/VRDistortionModule.h"
 #include "Modules/SkyboxModule/SkyboxModule.h"
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
-#include "Modules/GazeUI/GazeUI.h"
+#include "Modules/UI/UIGaze/UIGazeView.h"
 #include "Modules/UI/UIAnimatedSprite.h"
 #include "Modules/UI/UIImageButton.h"
-#include "Modules/UI/UIInteractionModule.h"
+#include "Modules/UI/UIInteraction/UIInteractionModule.h"
 #include "Modules/UI/IUICameraProvider.h"
 #include "Modules/JumpPoints/JumpPoint.h"
-#include "Logger.h"
 #include "Modules/JumpPoints/JumpPointsModule.h"
 #include "Modules/JumpPoints/JumpPointRepository.h"
+#include "Logger.h"
 
 class ExampleApp : private Eegeo::NonCopyable, Eegeo::UI::IUICameraProvider
 {
@@ -41,8 +41,7 @@ private:
     Eegeo::Skybox::SkyboxModule *m_VRSkybox;
     Eegeo::UI::UIImageButton *m_UIButton;
     Eegeo::UI::UIInteractionModule *m_UIInteractionModule;
-    Eegeo::GazeUI::GazeUIModule* m_GazeUIModule;
-    Eegeo::GazeUI::GazeUIView* m_GazeUIView;
+    Eegeo::UIGaze::UIGazeView* m_UIGazeView;
     
     
     Eegeo::UI::UIAnimatedSprite *m_Loader;
@@ -72,7 +71,6 @@ public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
                Eegeo::Config::DeviceSpec deviceSpecs,
                Examples::IExampleControllerView& view,
-               Eegeo::GazeUI::IGazeUIView& gazeUIView,
                const Eegeo::Rendering::ScreenProperties& screenProperties,
                Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
                Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule);

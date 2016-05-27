@@ -14,7 +14,6 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.eegeo.examples.vr.ui.GazeUI;
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams.VerticalAlignmentType;
 import com.google.vrtoolkit.cardboard.FieldOfView;

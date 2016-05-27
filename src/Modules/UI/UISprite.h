@@ -10,7 +10,7 @@
 #define UISprite_h
 
 #include "UIBaseItem.h"
-#include "UIQuad.h"
+#include "UIQuad/UIQuad.h"
 
 namespace Eegeo
 {

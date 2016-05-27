@@ -4,18 +4,17 @@
 
 namespace Eegeo
 {
-    namespace GazeUI
+    namespace UIGaze
     {
-        class IGazeUIView
+        class IUIGazeView
         {
             
         public:
             
-            virtual void UpdateGazeProgress(int progress) = 0;
             virtual void ShowView() = 0;
             virtual void HideView() = 0;
-            virtual void SetCenterPoint(float x, float y) = 0;
-            
+            virtual void ResetProgress() = 0;
+            virtual void UpdateEcefPosition(dv3 position) = 0;
             
         };
     }

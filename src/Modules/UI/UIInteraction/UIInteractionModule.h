@@ -13,7 +13,7 @@
 #include "IUICameraProvider.h"
 #include "IUIInteractableItem.h"
 #include "IUIInteractionObservable.h"
-#include "../GazeUI/GazeUIView.h"
+#include "../UIGaze/UIGazeView.h"
 
 namespace Eegeo
 {
@@ -30,7 +30,7 @@ namespace Eegeo
             
             float m_GazedTime = 0.0f;
             
-            GazeUI::GazeUIView& m_GazeUIView;
+            UIGaze::UIGazeView& m_UIGazeView;
             int m_FocusedUIItemId;
             
             std::vector<IUIInteractableItem*> m_InteractableItems;
@@ -41,7 +41,7 @@ namespace Eegeo
             bool IsScreenPointInsideModel(const Eegeo::v2& screenPoint, IUIInteractableItem* uiItem);
             void CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenPoint, Ray& ray);
         public:
-            UIInteractionModule(Eegeo::EegeoWorld& world, IUICameraProvider& p_CameraProvider, GazeUI::GazeUIView& gazeUIView);
+            UIInteractionModule(Eegeo::EegeoWorld& world, IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView);
             virtual ~UIInteractionModule();
             void Update(float dt);
             void Event_ScreenInteractionStart(const Eegeo::v2& point);

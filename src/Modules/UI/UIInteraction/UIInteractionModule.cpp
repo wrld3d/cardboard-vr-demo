@@ -10,7 +10,7 @@
 
 #include "UIInteractionModule.h"
 #include "../../Examples/VRCameraSpline/VRCameraController.h"
-#include "../GazeUI/GazeUIView.h"
+#include "../UIGaze/IUIGazeView.h"
 #include "VectorMath.h"
 
 #define PICKED_COLOUR Eegeo::v4(1.0f, 1.0f, 0.0f, 0.5f)
@@ -94,11 +94,11 @@ namespace Eegeo
             return true;
         }
         
-        UIInteractionModule::UIInteractionModule(Eegeo::EegeoWorld& world, IUICameraProvider& p_CameraProvider, GazeUI::GazeUIView& gazeUIView):
+        UIInteractionModule::UIInteractionModule(Eegeo::EegeoWorld& world, IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView):
         m_pCameraProvider(p_CameraProvider),
         m_InteractableItems(),
         m_debugRenderer(world.GetDebugRenderingModule().GetDebugRenderer()),
-        m_GazeUIView(gazeUIView)
+        m_UIGazeView(UIGazeView)
         {
             m_FocusedUIItemId = -1;
         }
@@ -148,7 +148,7 @@ namespace Eegeo
             if(m_FocusedUIItemId!=-1 && touchedItemId==-1)
             {
                 m_GazedTime = 0.0f;
-                m_GazeUIView.HideView();
+                m_UIGazeView.HideView();
                 // end
             }
             else if(m_FocusedUIItemId!=-1 && touchedItemId!=-1 && m_FocusedUIItemId==touchedItemId)
@@ -157,7 +157,7 @@ namespace Eegeo
                 {
                     touchedItemId = -1;
                     m_GazedTime = 0.0f;
-                    m_GazeUIView.HideView();
+                    m_UIGazeView.HideView();
                     
                     Event_ScreenInteractionClick(point);
                     
@@ -167,13 +167,13 @@ namespace Eegeo
             else if(m_FocusedUIItemId!=-1 && touchedItemId!=-1 && m_FocusedUIItemId!=touchedItemId)
             {
                 m_GazedTime = 0.0f;
-                m_GazeUIView.ResetProgress();
+                m_UIGazeView.ResetProgress();
                 // new item focused
             }
             else if(m_FocusedUIItemId==-1 && touchedItemId!=-1)
             {
                 m_GazedTime = 0.0f;
-                m_GazeUIView.ShowView();
+                m_UIGazeView.ShowView();
                 // start
             }
             

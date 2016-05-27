@@ -33,7 +33,7 @@ namespace Eegeo
             
             void JumpPointController::Update(float deltaTime)
             {
-//                UpdateViews();
+                UpdateViews();
             }
             
             void JumpPointController::OnJumpPointAdded(JumpPoint& jumpPoint)

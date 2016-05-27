@@ -6,8 +6,8 @@
 //
 //
 
-#include "UIQuad.h"
-#include "IUIInteractableItem.h"
+#include "UIQuad/UIQuad.h"
+#include "UIInteraction/IUIInteractableItem.h"
 #include "UIImageButtonClickedCallback.h"
 
 #ifndef UIAnimatedSprite_h

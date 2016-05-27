@@ -1,43 +1,40 @@
 //
-//  GazeUIView.hpp
+//  UIGazeView.hpp
 //  SDKSamplesApp
 //
 //  Created by Aqif Hamid on 5/25/16.
 //
 //
 
-#ifndef GazeUIView_h
-#define GazeUIView_h
+#ifndef UIGazeView_h
+#define UIGazeView_h
 
-#include "../UI/UIAnimatedSprite.h"
-#include "../UI/UIImageButton.h"
+#include "../UIAnimatedSprite.h"
+#include "../UIImageButton.h"
 
 
 namespace Eegeo
 {
-    namespace GazeUI
+    namespace UIGaze
     {
-        class GazeUIView 
+        class UIGazeView 
         {
             
             UI::UIAnimatedSprite& m_Loader;
             UI::UIImageButton& m_Pointer;
             
-            
         public:
             
-            GazeUIView(UI::UIAnimatedSprite& loader, UI::UIImageButton& pointer);
-            ~GazeUIView();
+            UIGazeView(UI::UIAnimatedSprite& loader, UI::UIImageButton& pointer);
+            ~UIGazeView();
             
-            void UpdateGazeProgress(int progress);
             void ShowView();
             void HideView();
             void ResetProgress();
-            void SetCenterPoint(float x, float y);
             
             void UpdateEcefPosition(dv3 position);
             
         };
     }
 }
-#endif /* GazeUIView_h */
+#endif /* UIGazeView_h */

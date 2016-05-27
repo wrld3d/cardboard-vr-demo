@@ -37,7 +37,6 @@
 #include "AndroidRouteSimulationExampleViewFactory.h"
 #include "ExampleCameraJumpController.h"
 
-#include "Modules/GazeUI/GazeUIViewAndroid.h"
 
 class AppHost : protected Eegeo::NonCopyable
 {
@@ -83,7 +82,6 @@ private:
 	AndroidNativeState& m_nativeState;
 	AppInputDelegate* m_pAppInputDelegate;
     
-    Eegeo::GazeUI::GazeUIViewAndroid* m_pGazeUIViewAndroid;
 	Eegeo::Android::Input::AndroidInputHandler m_inputHandler;
 	Eegeo::UI::NativeInput::Android::AndroidInputBoxFactory m_androidInputBoxFactory;
 	Eegeo::UI::NativeInput::Android::AndroidKeyboardInputFactory m_androidKeyboardInputFactory;

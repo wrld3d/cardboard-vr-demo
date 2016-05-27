@@ -9,8 +9,8 @@
 #pragma once
 
 #include "UIImageButtonClickedCallback.h"
-#include "UIQuad.h"
-#include "IUIInteractableItem.h"
+#include "UIQuad/UIQuad.h"
+#include "UIInteraction/IUIInteractableItem.h"
 
 namespace Eegeo
 {

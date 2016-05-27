@@ -4,7 +4,7 @@
 
 #include "Rendering.h"
 #include "EegeoWorld.h"
-#include "../UI/IUIInteractionObservable.h"
+#include "../UI/UIInteraction/IUIInteractionObservable.h"
 #include "JumpPointController.h"
 #include "JumpPointRepository.h"
 #include "JumpPointViewFactory.h"
