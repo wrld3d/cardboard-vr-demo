@@ -24,6 +24,7 @@ namespace Eegeo
                                  , const void* pUserData)
             : m_id(id)
             , m_latLongAlt(latLongAlt)
+            , m_EcefPosition(latLongAlt.ToECEF())
             , m_FileName(p_FileName)
             , m_Dimension(p_Dimension)
             , m_uvMin(p_uvMin)
@@ -43,9 +44,9 @@ namespace Eegeo
                 return m_pUserData;
             }
             
-            const dv3 JumpPoint::GetEcefPosition() const
+            const dv3& JumpPoint::GetEcefPosition() const
             {
-                return m_latLongAlt.ToECEF();
+                return m_EcefPosition;
             }
             
             const v4& JumpPoint::GetColor() const

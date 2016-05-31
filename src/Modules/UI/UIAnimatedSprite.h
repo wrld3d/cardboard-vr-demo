@@ -8,7 +8,7 @@
 
 #include "UIQuad/UIQuad.h"
 #include "UIInteraction/IUIInteractableItem.h"
-#include "UIImageButtonClickedCallback.h"
+#include "ICallback.h"
 
 #ifndef UIAnimatedSprite_h
 #define UIAnimatedSprite_h
@@ -31,7 +31,7 @@ namespace Eegeo
             Eegeo::v2& m_FramesGridSize;
             
             UIQuad* m_Quad;
-            IUIImageButtonClickedCallback& m_OnClickedEvent;
+            Eegeo::Helpers::ICallback0& m_OnClickedEvent;
             
             Eegeo::v3 m_scale;
             
@@ -41,7 +41,7 @@ namespace Eegeo
                              , const std::string& p_SpriteSheetName
                              , const Eegeo::dv3& p_EcefPosition
                              , const Eegeo::v2& p_Dimension
-                             , IUIImageButtonClickedCallback& p_OnClickedEvent
+                             , Eegeo::Helpers::ICallback0& p_OnClickedEvent
                              , Eegeo::v2& p_FramesGridSize
                              , float p_FrameRate
                           );

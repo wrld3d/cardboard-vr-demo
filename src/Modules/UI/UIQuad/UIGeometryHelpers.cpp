@@ -16,7 +16,7 @@ namespace Eegeo
 {
     namespace UI
     {
-        void BuildQuad(const Eegeo::v2& halfDimensions, const Eegeo::v2& uv_min, const Eegeo::v2& uv_max, std::vector<Vertex>& out_vertices, std::vector<u16>& out_triangleIndices)
+        void BuildQuad(const Eegeo::v2& halfDimensions, const Eegeo::v2& uv_min, const Eegeo::v2& uv_max, std::vector<Rendering::VertexTypes::TexturedVertex>& out_vertices, std::vector<u16>& out_triangleIndices)
         {
             const int faces = 1;
             const int pointsPerFace = 4;
@@ -35,10 +35,10 @@ namespace Eegeo
                 Eegeo::v3(-halfDimensions.x, -halfDimensions.y, 0),
             };
             
-            out_vertices.push_back(Vertex(points[0], faceNormal, Eegeo::v2(uv_min.x, uv_min.y)));
-            out_vertices.push_back(Vertex(points[1], faceNormal, Eegeo::v2(uv_min.x, uv_max.y)));
-            out_vertices.push_back(Vertex(points[2], faceNormal, Eegeo::v2(uv_max.x, uv_max.y)));
-            out_vertices.push_back(Vertex(points[3], faceNormal, Eegeo::v2(uv_max.x, uv_min.y)));
+            out_vertices.push_back(Rendering::VertexTypes::CreateTexturedVertex(points[0], Eegeo::v2(uv_min.x, uv_min.y)));
+            out_vertices.push_back(Rendering::VertexTypes::CreateTexturedVertex(points[1], Eegeo::v2(uv_min.x, uv_max.y)));
+            out_vertices.push_back(Rendering::VertexTypes::CreateTexturedVertex(points[2], Eegeo::v2(uv_max.x, uv_max.y)));
+            out_vertices.push_back(Rendering::VertexTypes::CreateTexturedVertex(points[3], Eegeo::v2(uv_max.x, uv_min.y)));
             
             out_triangleIndices.push_back(0);
             out_triangleIndices.push_back(1);

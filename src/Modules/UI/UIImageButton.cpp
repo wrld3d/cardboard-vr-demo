@@ -20,17 +20,13 @@ namespace Eegeo
                                      , const std::string& fileName
                                      , const Eegeo::dv3& p_ecefPosition
                                      , const Eegeo::v2& p_Dimension
-                                     , IUIImageButtonClickedCallback& p_OnClickedEvent
+                                     , Eegeo::Helpers::ICallback0& p_OnClickedEvent
                                      , const Eegeo::v2& p_uvMin
                                      , const Eegeo::v2& p_uvMax
                                      , const Eegeo::v4& p_initialColor
                                      , const Eegeo::Rendering::LayerIds::Values p_RenderLayer
-//                                     , const Eegeo::v3& p_ButtonFocusedScale
                                      ) :
           m_OnClickedEvent(p_OnClickedEvent)
-//        , m_ButtonFocusedScale(p_ButtonFocusedScale)
-//        , m_IsFocused(false)
-//        , m_ScaleChangeSpeed(2.0f)
         {
             m_ButtonImage = Eegeo_NEW(Eegeo::UI::UIQuad)(p_RenderingModule,
                                                          p_RenderingModule.GetGlBufferPool(),
@@ -52,7 +48,6 @@ namespace Eegeo
         
         void UIImageButton::Update(float dt)
         {
-//            m_ButtonImage->SetScale(Eegeo::v3::Lerp(m_ButtonImage->GetScale(), m_IsFocused ? m_ButtonFocusedScale : Eegeo::v3::One(), dt * m_ScaleChangeSpeed));
         }
         
         void UIImageButton::OnItemClicked()
@@ -62,13 +57,11 @@ namespace Eegeo
         
         void UIImageButton::OnFocusGained()
         {
-//            m_IsFocused = true;
             m_ButtonImage->SetScale(Eegeo::v3::One() * 1.1f);
         }
         
         void UIImageButton::OnFocusLost()
         {
-//            m_IsFocused = false;
             m_ButtonImage->SetScale(Eegeo::v3::One());
         }
         

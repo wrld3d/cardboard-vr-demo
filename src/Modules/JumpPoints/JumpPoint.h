@@ -54,7 +54,7 @@ namespace Eegeo
                 /*! Get the ECEF position of the JumpPoint.
                  * \return The JumpPoint's position.
                  */
-                const dv3 GetEcefPosition() const;
+                const dv3& GetEcefPosition() const;
                 
                 /*! Get the color tint of the JumpPoint. The X,Y,Z, and W components refer to Red, Green, Blue and Alpha values between 0 and 1.
                  * \return The color vector applied to the JumpPoint.
@@ -84,6 +84,7 @@ namespace Eegeo
             private:
                 TJumpPointId m_id;
                 Space::LatLongAltitude m_latLongAlt;
+                dv3 m_EcefPosition;
                 const void* const m_pUserData;
                 
                 v4 m_color;

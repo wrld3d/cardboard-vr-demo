@@ -7,7 +7,8 @@
 //
 
 #include <algorithm>
-
+#include "CameraHelpers.h"
+#include "IntersectionTests.h"
 #include "UIInteractionModule.h"
 #include "../../Examples/VRCameraSpline/VRCameraController.h"
 #include "../UIGaze/IUIGazeView.h"
@@ -19,85 +20,27 @@ namespace Eegeo
 {
     namespace UI
     {
-        void UIInteractionModule::CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenPoint, Ray& ray)
-        {
-            Eegeo::Camera::RenderCamera* renderCamera = m_pCameraProvider.GetRenderCameraForUI();
-            
-            //normalize the point
-            float nx = 2.0f * screenPoint.GetX() / renderCamera->GetViewportWidth() - 1.f;
-            float ny = - 2.0f * screenPoint.GetY() / renderCamera->GetViewportHeight() + 1.f;
-            
-            //prepare near and far points
-            Eegeo::v4 near(nx, ny, renderCamera->GetNearClip(), 1.0f);
-            Eegeo::v4 far(nx, ny, renderCamera->GetFarClip(), 1.0f);
-            
-            Eegeo::m44 invVP;
-            Eegeo::m44::Inverse(invVP, renderCamera->GetViewProjectionMatrix());
-            
-            //unproject the points
-            Eegeo::v4 unprojectedNear = Eegeo::v4::Mul(near, invVP);
-            Eegeo::v4 unprojectedFar = Eegeo::v4::Mul(far, invVP);
-            
-            //convert to 3d
-            Eegeo::v3 unprojectedNearWorld = unprojectedNear / unprojectedNear.GetW();
-            Eegeo::v3 unprojectedFarWorld = unprojectedFar / unprojectedFar.GetW();
-            
-            //check intersection with a ray cast from camera position
-            ray.origin = renderCamera->GetEcefLocation();
-            ray.direction = (unprojectedNearWorld - unprojectedFarWorld).Norm();
-        }
         
         bool UIInteractionModule::IsScreenPointInsideModel(const Eegeo::v2& screenPoint, IUIInteractableItem* uiItem)
         {
-            Ray ray;
-            CreateWorldSpaceRayFromScreen(screenPoint, ray);
-            //            m_debugRenderer.DrawTextScreenSpace(screenPoint, "E", 100);
-            ray.origin -= uiItem->GetItemEcefPosition();
+            Eegeo::Camera::RenderCamera* renderCamera = m_pCameraProvider.GetRenderCameraForUI();
             
-            //the following is a standard ray sphere intersection - for other shapes, an appropriate intersection method
-            //should be used
-            
-            double a =
-            ray.direction.GetX() * ray.direction.GetX()
-            + ray.direction.GetY() * ray.direction.GetY()
-            + ray.direction.GetZ() * ray.direction.GetZ();
-            
-            double b =
-            ray.direction.GetX() * (2.0 * ray.origin.GetX())
-            + ray.direction.GetY() * (2.0 * ray.origin.GetY())
-            + ray.direction.GetZ() * (2.0 * ray.origin.GetZ());
-            
-            double c =
-            (ray.origin.GetX() * ray.origin.GetX()
-             + ray.origin.GetY() * ray.origin.GetY()
-             + ray.origin.GetZ() * ray.origin.GetZ());
-            
-            c -= (uiItem->GetItemRadius() * uiItem->GetItemRadius());
-            
-            double d = b * b + (-4.0) * a * c;
-            
-            //if determinant is negative sphere is in negative ray direction so can't hit
-            if (d < 0.0)
-            {
+            if (renderCamera->GetEcefLocation().SquareDistanceTo(uiItem->GetItemEcefPosition()) < (uiItem->GetItemRadius() * uiItem->GetItemRadius())) {
+                //Camera is within item's radius
                 return false;
             }
             
-            d = sqrt(d);
+            Eegeo::dv3 rayOrigin = renderCamera->GetEcefLocation();
+            Eegeo::dv3 rayDirection;
             
-            double t = (-0.5) * (b - d) / a;
+            Eegeo::Camera::CameraHelpers::GetScreenPickRay(*renderCamera, screenPoint.GetX(), screenPoint.GetY(), rayDirection);
             
-            if (t >= 0.0)
-            {
-                return false;
-            }
-            
-            return true;
+            return Eegeo::Geometry::IntersectionTests::TestRaySphere(rayOrigin, rayDirection, uiItem->GetItemEcefPosition(), uiItem->GetItemRadius());
         }
         
-        UIInteractionModule::UIInteractionModule(Eegeo::EegeoWorld& world, IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView):
+        UIInteractionModule::UIInteractionModule(IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView):
         m_pCameraProvider(p_CameraProvider),
         m_InteractableItems(),
-        m_debugRenderer(world.GetDebugRenderingModule().GetDebugRenderer()),
         m_UIGazeView(UIGazeView)
         {
             m_FocusedUIItemId = -1;

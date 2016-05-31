@@ -21,7 +21,7 @@ namespace Eegeo
                          , const std::string& p_SpriteSheetName
                          , const Eegeo::dv3& p_EcefPosition
                          , const Eegeo::v2& p_Dimension
-                         , IUIImageButtonClickedCallback& p_OnClickedEvent
+                         , Eegeo::Helpers::ICallback0& p_OnClickedEvent
                          , Eegeo::v2& p_FramesGridSize
                          , float p_FrameRate
         ):

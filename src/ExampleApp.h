@@ -22,6 +22,7 @@
 #include "Modules/JumpPoints/JumpPointsModule.h"
 #include "Modules/JumpPoints/JumpPointRepository.h"
 #include "Logger.h"
+#include "ICallback.h"
 
 class ExampleApp : private Eegeo::NonCopyable, Eegeo::UI::IUICameraProvider
 {
@@ -65,7 +66,7 @@ private:
     
     void UpdateLoadingScreen(float dt);
     
-    Eegeo::UI::TUIImageButtonClickedCallback<ExampleApp> m_ClickCallback;
+    Eegeo::Helpers::TCallback0<ExampleApp> m_ClickCallback;
 
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,

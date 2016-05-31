@@ -28,8 +28,6 @@ namespace Eegeo
             Eegeo::Modules::Core::RenderingModule& m_renderingModule;
             Eegeo::Rendering::Shaders::TexturedUniformColoredShader* m_Shader;
             Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* m_Material;
-            Eegeo::Rendering::GlBufferPool& m_glBufferPool;
-            Eegeo::Rendering::VertexLayouts::VertexLayoutPool& m_vertexLayoutPool;
             Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
             UIMeshRenderable* m_pRenderable;
             Eegeo::Rendering::RenderableFilters& m_renderableFilters;

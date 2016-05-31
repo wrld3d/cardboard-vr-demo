@@ -22,11 +22,6 @@ namespace Eegeo
         class UIInteractionModule : public IUIInteractionObservable
         {
         private:
-            struct Ray
-            {
-                Eegeo::dv3 origin;
-                Eegeo::v3 direction;
-            };
             
             float m_GazedTime = 0.0f;
             
@@ -36,12 +31,9 @@ namespace Eegeo
             std::vector<IUIInteractableItem*> m_InteractableItems;
             IUICameraProvider& m_pCameraProvider;
             
-            Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
-            
             bool IsScreenPointInsideModel(const Eegeo::v2& screenPoint, IUIInteractableItem* uiItem);
-            void CreateWorldSpaceRayFromScreen(const Eegeo::v2& screenPoint, Ray& ray);
         public:
-            UIInteractionModule(Eegeo::EegeoWorld& world, IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView);
+            UIInteractionModule(IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView);
             virtual ~UIInteractionModule();
             void Update(float dt);
             void Event_ScreenInteractionStart(const Eegeo::v2& point);

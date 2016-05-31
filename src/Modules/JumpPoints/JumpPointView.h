@@ -2,12 +2,12 @@
 
 #pragma once
 
+#include "ICallback.h"
 #include "Types.h"
 #include "VectorMath.h"
 #include "Bounds.h"
 #include "JumpPoints.h"
 #include "../UI/UIImageButton.h"
-#include "../UI/UIImageButtonClickedCallback.h"
 #include "../UI/IUICameraProvider.h"
 
 namespace Eegeo
@@ -44,7 +44,7 @@ namespace Eegeo
             private:
                 JumpPoint& m_JumpPoint;
                 IUICameraProvider& m_UICameraProvider;
-                TUIImageButtonClickedCallback<JumpPointView> m_JumpPointClickCallback;
+                Eegeo::Helpers::TCallback0<JumpPointView> m_JumpPointClickCallback;
             };
         }
     }

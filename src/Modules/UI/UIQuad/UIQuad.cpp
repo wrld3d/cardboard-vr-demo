@@ -32,12 +32,12 @@ namespace Eegeo
         Eegeo::Rendering::VertexLayouts::VertexLayout* CreatePositionUvVertexLayout()
         {
             using namespace Eegeo::Rendering::VertexLayouts;
-            VertexLayout* pLayout = new (VertexLayout)(sizeof(PositionUvVertex));
+            VertexLayout* pLayout = new (VertexLayout)(sizeof(Rendering::VertexTypes::TexturedVertex));
             
-            int positionOffset = offsetof(PositionUvVertex, x);
+            int positionOffset = offsetof(Rendering::VertexTypes::TexturedVertex, x);
             pLayout->AddElement(VertexLayoutElement(Eegeo::Rendering::VertexSemanticId::Position, 3, GL_FLOAT,  positionOffset));
             
-            int uvOffset = offsetof(PositionUvVertex, u);
+            int uvOffset = offsetof(Rendering::VertexTypes::TexturedVertex, u);
             pLayout->AddElement(VertexLayoutElement(Eegeo::Rendering::VertexSemanticId::UV, 2, GL_FLOAT, uvOffset));
             
             return pLayout;
@@ -45,27 +45,23 @@ namespace Eegeo
         
         Eegeo::Rendering::Mesh* CreateUnlitQuadMesh(const Eegeo::v2& dimensions, const Eegeo::v2& uv_min, const Eegeo::v2& uv_max, const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout, Eegeo::Rendering::GlBufferPool& glBufferPool)
         {
-            std::vector<Vertex> boxVertices;
+            std::vector<Rendering::VertexTypes::TexturedVertex> boxVertices;
             std::vector<u16> triangleIndices;
             
             BuildQuad(dimensions/2.0f, uv_min, uv_max, boxVertices, triangleIndices);
             
-            std::vector<PositionUvVertex> unlitVertices;
-            
-            std::transform(boxVertices.begin(), boxVertices.end(), std::back_inserter(unlitVertices), GeometryHelpersVertexToPositionUvVertex);
-            
-            size_t vertexBufferSizeBytes = sizeof(PositionUvVertex) * unlitVertices.size();
+            size_t vertexBufferSizeBytes = sizeof(Rendering::VertexTypes::TexturedVertex) * boxVertices.size();
             size_t indexBufferSizeBytes = sizeof(u16) * triangleIndices.size();
             
             return new (Eegeo::Rendering::Mesh)(
                                                 vertexLayout,
                                                 glBufferPool,
-                                                unlitVertices.data(),
+                                                boxVertices.data(),
                                                 vertexBufferSizeBytes,
                                                 triangleIndices.data(),
                                                 indexBufferSizeBytes,
                                                 static_cast<u32>(triangleIndices.size()),
-                                                "UnlitBoxMesh"
+                                                "UnlitQuadMesh"
                                                 );
         }
         
@@ -106,8 +102,6 @@ namespace Eegeo
                        const Eegeo::Rendering::LayerIds::Values p_RenderLayer
                        ):
         m_renderingModule(p_RenderingModule),
-        m_glBufferPool(p_glBufferPool),
-        m_vertexLayoutPool(p_VertexLayoutPool),
         m_vertexBindingPool(p_VertexBindingPool),
         m_renderableFilters(p_RenderableFilters),
         m_textureFileLoader(textureFileLoader),

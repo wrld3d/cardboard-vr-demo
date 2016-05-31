@@ -246,7 +246,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_UIGazeView = new Eegeo::UIGaze::UIGazeView(*m_Loader, *m_Pointer);
     
-    m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(*pWorld, *this, *m_UIGazeView);
+    m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(*this, *m_UIGazeView);
     m_UIInteractionModule->RegisterInteractableItem(m_UIButton);
     
     m_JumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1,
