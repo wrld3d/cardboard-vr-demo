@@ -4,6 +4,7 @@ set(currsources
   ../src/ExampleApp.cpp
   ../src/ExampleApp.h
   ../src/Logger.h
+  ../src/ApiKey.h
 )
 set(sources ${sources} ${currsources})
 source_group(\\src\\ FILES ${currsources})
