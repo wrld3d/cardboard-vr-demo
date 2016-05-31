@@ -21,3 +21,4 @@ Include
 .settings/
 project.properties
 **/xcuserdata/
+src/ApiKey.h
