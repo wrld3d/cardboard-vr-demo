@@ -94,9 +94,9 @@ namespace Eegeo
                        Eegeo::Rendering::RenderableFilters& renderableFilters,
                        Eegeo::Rendering::GlBufferPool& glBufferPool,
                        const Eegeo::v2& dimension,
-                       const Eegeo::dv3& ecefPosition,
                        const Eegeo::v2& uvMin,
                        const Eegeo::v2& uvMax,
+                       const Eegeo::dv3& ecefPosition,
                        const Eegeo::v4& initialColor,
                        const Eegeo::Rendering::LayerIds::Values renderLayer
                        )

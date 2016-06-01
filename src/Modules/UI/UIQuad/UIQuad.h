@@ -35,7 +35,6 @@ namespace Eegeo
             
             UIMeshRenderable* m_Renderable;
             
-            
             Eegeo::m33 m_basisToEcef;
             
             Eegeo::v2 m_Dimension;
@@ -50,9 +49,9 @@ namespace Eegeo
                    Eegeo::Rendering::RenderableFilters& renderableFilters,
                    Eegeo::Rendering::GlBufferPool& glBufferPool,
                    const Eegeo::v2& dimension,
-                   const Eegeo::dv3& ecefPosition = Eegeo::v3::One(),
                    const Eegeo::v2& uvMin = Eegeo::v2::Zero(),
                    const Eegeo::v2& uvMax = Eegeo::v2::One(),
+                   const Eegeo::dv3& ecefPosition = Eegeo::v3::One(),
                    const Eegeo::v4& initialColor = Eegeo::v4::One(),
                    const Eegeo::Rendering::LayerIds::Values renderLayer = Eegeo::Rendering::LayerIds::Values::AfterWorld
                    );

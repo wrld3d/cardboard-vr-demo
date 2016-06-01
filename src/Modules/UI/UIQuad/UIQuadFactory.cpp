@@ -43,6 +43,14 @@ namespace Eegeo
         }
         
         
+        UIQuad* UIQuadFactory::CreateUIQuad(const std::string& spriteSheet,
+                             const Eegeo::v2& dimension,
+                             const Eegeo::v2& uvMin,
+                             const Eegeo::v2& uvMax){
+            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* material = GetMaterialForAsset(spriteSheet);
+            return new UIQuad(*material, m_VertexBindingPool, m_RenderableFilters, m_GlBufferPool, dimension, uvMin, uvMax);
+        }
+        
         Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* UIQuadFactory::GetMaterialForAsset(const std::string& assetPath)
         {
             TMaterialMap::const_iterator foundMaterial = m_MaterialMap.find(assetPath.c_str());

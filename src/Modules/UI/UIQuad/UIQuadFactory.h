@@ -36,13 +36,20 @@ namespace Eegeo
             
             Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* GetMaterialForAsset(const std::string& assetPath);
             
+            
         public:
             UIQuadFactory(const Eegeo::Modules::Core::RenderingModule& renderingModule,
                           Eegeo::Helpers::ITextureFileLoader& textureFileLoader);
             
             virtual ~UIQuadFactory();
             
-            UIQuad* CreateUIQuad(const std::string& assetPath, const Eegeo::v2& dimension);
+            UIQuad* CreateUIQuad(const std::string& assetPath,
+                                 const Eegeo::v2& dimension);
+            
+            UIQuad* CreateUIQuad(const std::string& spriteSheet,
+                                         const Eegeo::v2& dimension,
+                                         const Eegeo::v2& uvMin = Eegeo::v2::Zero(),
+                                         const Eegeo::v2& uvMax = Eegeo::v2::One());
             
             
         };
