@@ -19,6 +19,7 @@
     * [Gaze Button](#gaze-button)
         * [Creating a Button](#creating-a-button)
     * [Changing Gaze Icon](#changing-gaze-icon)
+    * [Icon Sheet](#icon-sheet)
 * [License](#license)
 
 This example app showcases the [eeGeo SDK's](http://www.eegeo.com/) integration with Google Cardboard for creating VR experiences.
@@ -206,7 +207,12 @@ m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(renderingModule,
 
 In order to change the gaze icon replace the gaze icon with the your custom image by replacing [gaze_point.png](https://github.com/eegeo/cardboard-vr-integration/blob/ui/android/assets/mesh_example/gaze_point.png).
 
+## Icon Sheet
+
+![Icon Sheet](https://github.com/eegeo/cardboard-vr-integration/blob/ui/android/assets/mesh_example/PinIconTexturePage.png)
+
+This is a default 4x4 grid that is being used by the sdk to draw the icons. In order to use different icons either add a new sheet or simply replace an icon from the placeholders provided and use their UVs to draw the appropriate image.
+
 ## License
 
 The eeGeo 3D Maps SDK is released under the Eegeo Platform SDK Evaluation license. See the [LICENSE.md](https://github.com/eegeo/cardboard-vr-integration/blob/master/LICENSE.md) file for details.
-
