@@ -26,8 +26,7 @@ namespace Eegeo
             {
             public:
                 JumpPointView(JumpPoint& jumpPoint
-                              , Eegeo::Modules::Core::RenderingModule& p_RenderingModule
-                              , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
+                              , UIQuad* quad
                               , IUICameraProvider& p_UICameraProvider
                               );
                 

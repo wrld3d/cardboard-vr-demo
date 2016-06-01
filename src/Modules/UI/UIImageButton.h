@@ -24,16 +24,10 @@ namespace Eegeo
             float m_Radius;
             
         public:
-            UIImageButton(Eegeo::Modules::Core::RenderingModule& p_RenderingModule
-                          , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
-                          , const std::string& fileName
-                          , const Eegeo::dv3& p_ecefPosition
-                          , const Eegeo::v2& p_Dimension
-                          , Eegeo::Helpers::ICallback0& p_OnClickedEvent
-                          , const Eegeo::v2& p_uvMin = Eegeo::v2::Zero()
-                          , const Eegeo::v2& p_uvMax = Eegeo::v2::One()
-                          , const Eegeo::v4& p_initialColor = Eegeo::v4::One()
-                          , const Eegeo::Rendering::LayerIds::Values p_RenderLayer = Eegeo::Rendering::LayerIds::Values::AfterWorld
+            UIImageButton(UIQuad* quad,
+                          const Eegeo::v2& p_Dimension,
+                          const Eegeo::dv3& ecefPosition,
+                          Eegeo::Helpers::ICallback0& onClickedEvent
                           );
             
             virtual ~UIImageButton();

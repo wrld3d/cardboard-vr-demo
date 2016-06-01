@@ -7,7 +7,10 @@ set(currsources
   ../src/Modules/UI/UIQuad/UIQuad.h
   ../src/Modules/UI/UIQuad/UIMeshRenderable.cpp
   ../src/Modules/UI/UIQuad/UIMeshRenderable.h
+  ../src/Modules/UI/UIQuad/UIQuadFactory.cpp
+  ../src/Modules/UI/UIQuad/UIQuadFactory.h
+  ../src/Modules/UI/UIQuad/IUIQuadFactory.h
 )
 set(sources ${sources} ${currsources})
 source_group(\\src\\Modules\\UI\\UIQuad\\ FILES ${currsources})
-
+

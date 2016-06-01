@@ -18,6 +18,7 @@
 #include "Modules/UI/UIImageButton.h"
 #include "Modules/UI/UIInteraction/UIInteractionController.h"
 #include "Modules/UI/IUICameraProvider.h"
+#include "Modules/UI/UIQuad/IUIQuadFactory.h"
 #include "Modules/JumpPoints/JumpPoint.h"
 #include "Modules/JumpPoints/JumpPointsModule.h"
 #include "Modules/JumpPoints/JumpPointRepository.h"
@@ -44,6 +45,7 @@ private:
     Eegeo::UI::UIInteractionController *m_UIInteractionController;
     Eegeo::UIGaze::UIGazeView* m_UIGazeView;
     
+    Eegeo::UI::IUIQuadFactory* m_QuadFactory;
     
     Eegeo::UI::UIAnimatedSprite *m_GazeProgress;
     Eegeo::UI::UIImageButton *m_Pointer;

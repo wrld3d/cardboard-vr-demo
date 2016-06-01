@@ -15,24 +15,18 @@ namespace Eegeo
     {
         namespace JumpPoints
         {
-            
             JumpPointView::JumpPointView(JumpPoint& jumpPoint
-                                         , Eegeo::Modules::Core::RenderingModule& p_RenderingModule
-                                         , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
+                                         , UIQuad* quad
                                          , IUICameraProvider& p_UICameraProvider
                                          )
             : m_JumpPoint(jumpPoint)
             , m_UICameraProvider(p_UICameraProvider)
             , m_JumpPointClickCallback(this, &JumpPointView::MoveCameraToJumpPoint)
-            , UIImageButton(p_RenderingModule
-                            , p_PlatformAbstractionModule
-                            , jumpPoint.GetFileName()
-                            , jumpPoint.GetEcefPosition()
+            , UIImageButton(
+                            quad
                             , jumpPoint.GetDimensions()
+                            , jumpPoint.GetEcefPosition()
                             , m_JumpPointClickCallback
-                            , jumpPoint.GetUVMin()
-                            , jumpPoint.GetUVMax()
-                            , jumpPoint.GetColor()
                             )
             {}
             

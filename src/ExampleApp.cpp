@@ -70,6 +70,10 @@
 #include "GlobeCameraControllerFactory.h"
 #include "LatLongAltitude.h"
 
+
+#include "Modules/UI/UIQuad/IUIQuadFactory.h"
+#include "Modules/UI/UIQuad/UIQuadFactory.h"
+
 #include "Modules/UI/UIGaze/UIGazeView.h"
 #include "Modules/UI/UIInteraction/UIInteractionController.h"
 #include "Modules/VRDistortionModule/VRCardboardDeviceProfile.h"
@@ -188,6 +192,8 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
     Eegeo::Modules::Core::RenderingModule& renderingModule = m_pWorld->GetRenderingModule();
     
+    m_QuadFactory = Eegeo_NEW(Eegeo::UI::UIQuadFactory)(renderingModule, m_pWorld->GetPlatformAbstractionModule().GetTextureFileLoader());
+    
     m_VRDistortion = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortionModule)(m_screenPropertiesProvider.GetScreenProperties(),
                                                 renderingModule.GetVertexLayoutPool(),
                                                 renderingModule.GetVertexBindingPool(),
@@ -295,6 +301,7 @@ ExampleApp::~ExampleApp()
 	delete m_pCameraTouchController;
     delete m_pLoadingScreen;
     delete m_pExampleController;
+    Eegeo_DELETE m_QuadFactory;
 }
 
 void ExampleApp::OnPause()
