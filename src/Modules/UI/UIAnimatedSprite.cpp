@@ -50,6 +50,10 @@ namespace Eegeo
             m_Radius = (p_Dimension.x > p_Dimension.y ? p_Dimension.x : p_Dimension.y)/2.0f;
         }
         
+        UIAnimatedSprite::~UIAnimatedSprite(){
+            Eegeo_DELETE m_Quad;
+        }
+        
         void UIAnimatedSprite::Reset()
         {
             m_TimeElapsed = 0.0f;
@@ -103,8 +107,5 @@ namespace Eegeo
             m_Quad->SetScale(Eegeo::v3::One());
         }
         
-        UIAnimatedSprite::~UIAnimatedSprite(){
-            Eegeo_DELETE m_Quad;
-        }
     }
 }

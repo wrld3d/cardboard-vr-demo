@@ -71,7 +71,7 @@
 #include "LatLongAltitude.h"
 
 #include "Modules/UI/UIGaze/UIGazeView.h"
-#include "Modules/UI/UIInteraction/UIInteractionModule.h"
+#include "Modules/UI/UIInteraction/UIInteractionController.h"
 #include "Modules/VRDistortionModule/VRCardboardDeviceProfile.h"
 #include "Logger.h"
 
@@ -221,7 +221,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     Eegeo::dv3 spritePos = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 200).ToECEF();
     Eegeo::v2 dim = Eegeo::v2(0.25f,0.25f)*7.f;
     
-    m_Loader = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(renderingModule,
+    m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(renderingModule,
                                                                 pWorld->GetPlatformAbstractionModule(),
                                                                 "mesh_example/gaze_loader.png",
                                                                 spritePos,
@@ -244,10 +244,10 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                     Eegeo::Rendering::LayerIds::Values::AfterAll
                                                      );
     
-    m_UIGazeView = new Eegeo::UIGaze::UIGazeView(*m_Loader, *m_Pointer);
+    m_UIGazeView = new Eegeo::UIGaze::UIGazeView(*m_GazeProgress, *m_Pointer);
     
-    m_UIInteractionModule = Eegeo_NEW(Eegeo::UI::UIInteractionModule)(*this, *m_UIGazeView);
-    m_UIInteractionModule->RegisterInteractableItem(m_UIButton);
+    m_UIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*this, *m_UIGazeView);
+    m_UIInteractionController->RegisterInteractableItem(m_UIButton);
     
     m_JumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1,
                                                         Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250),
@@ -273,7 +273,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_JumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(renderingModule,
                                                                      pWorld->GetPlatformAbstractionModule(),
-                                                                     *m_UIInteractionModule,
+                                                                     *m_UIInteractionController,
                                                                      *this);
     m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint1);
     m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint2);
@@ -290,7 +290,7 @@ ExampleApp::~ExampleApp()
 {
     delete m_VRDistortion;
     delete m_VRSkybox;
-    delete m_UIInteractionModule;
+    delete m_UIInteractionController;
     delete m_UIButton;
 	delete m_pCameraTouchController;
     delete m_pLoadingScreen;
@@ -348,13 +348,13 @@ void ExampleApp::Update (float dt, float headTansform[])
                                                   m_screenPropertiesProvider.GetScreenProperties());
     
     
-    m_UIInteractionModule->Update(dt);
+    m_UIInteractionController->Update(dt);
     
     const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
     Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-    m_UIInteractionModule->Event_ScreenInteractionMoved(center);
+    m_UIInteractionController->Event_ScreenInteractionMoved(center);
     
-    m_Loader->Update(dt);
+    m_GazeProgress->Update(dt);
     
     Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
     Eegeo::dv3 position(m_pExampleController->GetCurrentCameraState().LocationEcef() + (forward*50));
@@ -506,7 +506,7 @@ void ExampleApp::MagnetTriggered(){
     const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
     Eegeo::v2 dim = Eegeo::v2(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
     Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(dim.x,dim.y);
-    m_UIInteractionModule->Event_ScreenInteractionClick(center);
+    m_UIInteractionController->Event_ScreenInteractionClick(center);
 }
 
 void ExampleApp::UpdateFogging(){
@@ -656,7 +656,7 @@ void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
     const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
     Eegeo::v2 dim = Eegeo::v2(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
     Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(dim.x,dim.y);
-    m_UIInteractionModule->Event_ScreenInteractionClick(center);
+    m_UIInteractionController->Event_ScreenInteractionClick(center);
 }
 
 void ExampleApp::Event_TouchDoubleTap(const AppInterface::TapData& data)

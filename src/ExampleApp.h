@@ -16,7 +16,7 @@
 #include "Modules/UI/UIGaze/UIGazeView.h"
 #include "Modules/UI/UIAnimatedSprite.h"
 #include "Modules/UI/UIImageButton.h"
-#include "Modules/UI/UIInteraction/UIInteractionModule.h"
+#include "Modules/UI/UIInteraction/UIInteractionController.h"
 #include "Modules/UI/IUICameraProvider.h"
 #include "Modules/JumpPoints/JumpPoint.h"
 #include "Modules/JumpPoints/JumpPointsModule.h"
@@ -41,11 +41,11 @@ private:
     Eegeo::VR::Distortion::VRDistortionModule* m_VRDistortion;
     Eegeo::Skybox::SkyboxModule *m_VRSkybox;
     Eegeo::UI::UIImageButton *m_UIButton;
-    Eegeo::UI::UIInteractionModule *m_UIInteractionModule;
+    Eegeo::UI::UIInteractionController *m_UIInteractionController;
     Eegeo::UIGaze::UIGazeView* m_UIGazeView;
     
     
-    Eegeo::UI::UIAnimatedSprite *m_Loader;
+    Eegeo::UI::UIAnimatedSprite *m_GazeProgress;
     Eegeo::UI::UIImageButton *m_Pointer;
     
     Eegeo::Helpers::IdentityProvider m_identityProvider;

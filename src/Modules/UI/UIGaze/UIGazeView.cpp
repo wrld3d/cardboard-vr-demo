@@ -12,31 +12,33 @@ namespace Eegeo
 {
     namespace UIGaze
     {
-        UIGazeView::UIGazeView(UI::UIAnimatedSprite& loader, UI::UIImageButton& pointer)
-        : m_Loader(loader)
+        UIGazeView::UIGazeView(UI::UIAnimatedSprite& gazeProgress, UI::UIImageButton& pointer)
+        : m_GazeProgress(gazeProgress)
         , m_Pointer(pointer)
         {
         }
+        UIGazeView::~UIGazeView()
+        {}
         
         void UIGazeView::ShowView()
         {
-            m_Loader.SetScale(v3::One());
+            m_GazeProgress.SetScale(v3::One());
         }
         
         void UIGazeView::HideView()
         {
-            m_Loader.SetScale(v3::Zero());
-            m_Loader.Reset();
+            m_GazeProgress.SetScale(v3::Zero());
+            m_GazeProgress.Reset();
         }
         
         void UIGazeView::ResetProgress()
         {
-            m_Loader.Reset();
+            m_GazeProgress.Reset();
         }
         
-        void UIGazeView::UpdateEcefPosition(dv3 position)
+        void UIGazeView::UpdateEcefPosition(const dv3& position)
         {
-            m_Loader.SetEcefPosition(position);
+            m_GazeProgress.SetEcefPosition(position);
             m_Pointer.SetEcefPosition(position);
         }
         

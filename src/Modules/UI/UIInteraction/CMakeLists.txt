@@ -3,8 +3,8 @@ set(headers ${headers} ../src/Modules/UI/UIInteraction/
 set(currsources
   ../src/Modules/UI/UIInteraction/IUIInteractableItem.h
   ../src/Modules/UI/UIInteraction/IUIInteractionObservable.h
-  ../src/Modules/UI/UIInteraction/UIInteractionModule.cpp
-  ../src/Modules/UI/UIInteraction/UIInteractionModule.h
+  ../src/Modules/UI/UIInteraction/UIInteractionController.cpp
+  ../src/Modules/UI/UIInteraction/UIInteractionController.h
 )
 
 

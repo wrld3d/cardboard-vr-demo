@@ -1,5 +1,5 @@
 //
-//  UIInteractionModule.h
+//  UIInteractionController.h
 //  SDKSamplesApp
 //
 //  Created by Ali on 5/16/16.
@@ -19,7 +19,7 @@ namespace Eegeo
 {
     namespace UI
     {
-        class UIInteractionModule : public IUIInteractionObservable
+        class UIInteractionController : public IUIInteractionObservable
         {
         private:
             
@@ -33,8 +33,8 @@ namespace Eegeo
             
             bool IsScreenPointInsideModel(const Eegeo::v2& screenPoint, IUIInteractableItem* uiItem);
         public:
-            UIInteractionModule(IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView);
-            virtual ~UIInteractionModule();
+            UIInteractionController(IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView);
+            virtual ~UIInteractionController();
             void Update(float dt);
             void Event_ScreenInteractionStart(const Eegeo::v2& point);
             void Event_ScreenInteractionMoved(const Eegeo::v2& point);

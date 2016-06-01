@@ -1,5 +1,5 @@
 //
-//  UIInteractionModule.cpp
+//  UIInteractionController.cpp
 //  SDKSamplesApp
 //
 //  Created by Ali on 5/16/16.
@@ -9,7 +9,7 @@
 #include <algorithm>
 #include "CameraHelpers.h"
 #include "IntersectionTests.h"
-#include "UIInteractionModule.h"
+#include "UIInteractionController.h"
 #include "../../Examples/VRCameraSpline/VRCameraController.h"
 #include "../UIGaze/IUIGazeView.h"
 #include "VectorMath.h"
@@ -21,7 +21,7 @@ namespace Eegeo
     namespace UI
     {
         
-        bool UIInteractionModule::IsScreenPointInsideModel(const Eegeo::v2& screenPoint, IUIInteractableItem* uiItem)
+        bool UIInteractionController::IsScreenPointInsideModel(const Eegeo::v2& screenPoint, IUIInteractableItem* uiItem)
         {
             Eegeo::Camera::RenderCamera* renderCamera = m_pCameraProvider.GetRenderCameraForUI();
             
@@ -38,7 +38,7 @@ namespace Eegeo
             return Eegeo::Geometry::IntersectionTests::TestRaySphere(rayOrigin, rayDirection, uiItem->GetItemEcefPosition(), uiItem->GetItemRadius());
         }
         
-        UIInteractionModule::UIInteractionModule(IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView):
+        UIInteractionController::UIInteractionController(IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView):
         m_pCameraProvider(p_CameraProvider),
         m_InteractableItems(),
         m_UIGazeView(UIGazeView)
@@ -46,12 +46,12 @@ namespace Eegeo
             m_FocusedUIItemId = -1;
         }
         
-        UIInteractionModule::~UIInteractionModule()
+        UIInteractionController::~UIInteractionController()
         {
             m_InteractableItems.clear();
         }
         
-        void UIInteractionModule::Update(float dt)
+        void UIInteractionController::Update(float dt)
         {
             if(m_FocusedUIItemId>=0)
                 m_GazedTime += dt;
@@ -61,7 +61,7 @@ namespace Eegeo
             }
         }
         
-        void UIInteractionModule::Event_ScreenInteractionStart(const Eegeo::v2& point)
+        void UIInteractionController::Event_ScreenInteractionStart(const Eegeo::v2& point)
         {
             m_FocusedUIItemId = -1;
             for (int i = 0; i != m_InteractableItems.size(); i++) {
@@ -72,7 +72,7 @@ namespace Eegeo
             }
         }
         
-        void UIInteractionModule::Event_ScreenInteractionMoved(const Eegeo::v2& point)
+        void UIInteractionController::Event_ScreenInteractionMoved(const Eegeo::v2& point)
         {
             int touchedItemId = -1;
             for (int i = 0; i != m_InteractableItems.size(); i++)
@@ -124,7 +124,7 @@ namespace Eegeo
             
         }
         
-        void UIInteractionModule::Event_ScreenInteractionEnd(const Eegeo::v2& point)
+        void UIInteractionController::Event_ScreenInteractionEnd(const Eegeo::v2& point)
         {
             for (int i = 0; i != m_InteractableItems.size(); i++) {
                 if (IsScreenPointInsideModel(point, m_InteractableItems[i])) {
@@ -133,7 +133,7 @@ namespace Eegeo
             }
         }
         
-        void UIInteractionModule::Event_ScreenInteractionClick(const Eegeo::v2& point)
+        void UIInteractionController::Event_ScreenInteractionClick(const Eegeo::v2& point)
         {
             for (int i = 0; i != m_InteractableItems.size(); i++) {
                 if (IsScreenPointInsideModel(point, m_InteractableItems[i])) {
@@ -142,7 +142,7 @@ namespace Eegeo
             }
         }
         
-        const IUIInteractableItem* UIInteractionModule::GetItemAtScreenPoint(const Eegeo::v2& point)
+        const IUIInteractableItem* UIInteractionController::GetItemAtScreenPoint(const Eegeo::v2& point)
         {
             for (int i = 0; i != m_InteractableItems.size(); i++) {
                 if (IsScreenPointInsideModel(point, m_InteractableItems[i])) {
@@ -153,12 +153,12 @@ namespace Eegeo
             return NULL;
         }
         
-        void UIInteractionModule::RegisterInteractableItem(IUIInteractableItem* interactableItem)
+        void UIInteractionController::RegisterInteractableItem(IUIInteractableItem* interactableItem)
         {
             m_InteractableItems.push_back(interactableItem);
         }
         
-        void UIInteractionModule::UnRegisterInteractableItem(IUIInteractableItem* interactableItem)
+        void UIInteractionController::UnRegisterInteractableItem(IUIInteractableItem* interactableItem)
         {
             std::vector<IUIInteractableItem*>::iterator position = std::find(m_InteractableItems.begin(), m_InteractableItems.end(), interactableItem);
             if (position != m_InteractableItems.end())

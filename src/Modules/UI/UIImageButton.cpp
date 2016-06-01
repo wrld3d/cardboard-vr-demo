@@ -46,6 +46,10 @@ namespace Eegeo
             m_Radius = (p_Dimension.x > p_Dimension.y ? p_Dimension.x : p_Dimension.y)/2.0f;
         }
         
+        UIImageButton::~UIImageButton(){
+            Eegeo_DELETE m_ButtonImage;
+        }
+        
         void UIImageButton::Update(float dt)
         {
         }
@@ -65,8 +69,5 @@ namespace Eegeo
             m_ButtonImage->SetScale(Eegeo::v3::One());
         }
         
-        UIImageButton::~UIImageButton(){
-            Eegeo_DELETE m_ButtonImage;
-        }
     }
 }

@@ -20,19 +20,19 @@ namespace Eegeo
         class UIGazeView 
         {
             
-            UI::UIAnimatedSprite& m_Loader;
+            UI::UIAnimatedSprite& m_GazeProgress;
             UI::UIImageButton& m_Pointer;
             
         public:
             
-            UIGazeView(UI::UIAnimatedSprite& loader, UI::UIImageButton& pointer);
+            UIGazeView(UI::UIAnimatedSprite& gazeProgress, UI::UIImageButton& pointer);
             ~UIGazeView();
             
             void ShowView();
             void HideView();
             void ResetProgress();
             
-            void UpdateEcefPosition(dv3 position);
+            void UpdateEcefPosition(const dv3& position);
             
         };
     }
