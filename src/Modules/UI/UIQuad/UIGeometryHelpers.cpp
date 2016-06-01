@@ -1,3 +1,4 @@
+
 //
 //  UIGeometryHelpers.cpp
 //  SDKSamplesApp
@@ -81,6 +82,21 @@ namespace Eegeo
             
             out_material = material;
             out_shader = m_Shader;
+        }
+        
+        void CalculateUV(const v2& textureItemsSize, const int& spriteId, v2& out_uvMin, v2& out_uvMax)
+        {
+            
+            int x = spriteId % ((int) textureItemsSize.GetX());
+            int y = spriteId / ((int) textureItemsSize.GetY());
+            float xSize = 1.f/textureItemsSize.GetX();
+            float ySize = 1.f/textureItemsSize.GetY();
+            
+            out_uvMin.x = x*xSize;
+            out_uvMin.y = y*ySize;
+            out_uvMax.x = (x+1)*xSize;
+            out_uvMax.y = (y+1)*ySize;
+            
         }
     }
 }
