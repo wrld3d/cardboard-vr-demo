@@ -78,6 +78,7 @@
 #include "Modules/UI/UIInteraction/UIInteractionController.h"
 #include "Modules/VRDistortionModule/VRCardboardDeviceProfile.h"
 #include "Logger.h"
+#include "Modules/UI/UIQuad/UIGeometryHelpers.h"
 
 namespace
 {
@@ -244,26 +245,31 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_UIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*this, *m_UIGazeView);
     m_UIInteractionController->RegisterInteractableItem(m_UIButton);
     
+    Eegeo::v2 size(4,4);
+    Eegeo::v2 min;
+    Eegeo::v2 max;
+    Eegeo::UI::CalculateUV(size, 0, min, max);
+    
     m_JumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1,
                                                         Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250),
-                                                        "mesh_example/quadrants.png",
+                                                        "mesh_example/PinIconTexturePage.png",
                                                         dimUI,
-                                                        Eegeo::v2(0.5, 0),
-                                                        Eegeo::v2(1, 0.5)
+                                                        min,
+                                                        max
                                                         );
     m_JumpPoint2 = new Eegeo::UI::JumpPoints::JumpPoint(2,
                                                         Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250),
-                                                        "mesh_example/quadrants.png",
+                                                        "mesh_example/PinIconTexturePage.png",
                                                         dimUI,
-                                                        Eegeo::v2(0, 0.5),
-                                                        Eegeo::v2(0.5, 1)
+                                                        min,
+                                                        max
                                                         );
     m_JumpPoint3 = new Eegeo::UI::JumpPoints::JumpPoint(3,
                                                         Eegeo::Space::LatLongAltitude::FromDegrees(56.451235, -2.976600, 250),
-                                                        "mesh_example/quadrants.png",
+                                                        "mesh_example/PinIconTexturePage.png",
                                                         dimUI,
-                                                        Eegeo::v2::One()/2.0,
-                                                        Eegeo::v2::One()
+                                                        min,
+                                                        max
                                                         );
     
     m_JumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(*m_QuadFactory,
