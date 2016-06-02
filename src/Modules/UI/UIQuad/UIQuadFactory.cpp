@@ -36,19 +36,15 @@ namespace Eegeo
             Eegeo_DELETE m_Shader;
         }
         
-        UIQuad* UIQuadFactory::CreateUIQuad(const std::string& assetPath, const Eegeo::v2& dimension)
-        {
-            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* material = GetMaterialForAsset(assetPath);
-            return new UIQuad(*material, m_VertexBindingPool, m_RenderableFilters, m_GlBufferPool, dimension);
-        }
-        
-        
-        UIQuad* UIQuadFactory::CreateUIQuad(const std::string& spriteSheet,
+        UIQuad* UIQuadFactory::CreateUIQuad(const std::string& assetPath,
                              const Eegeo::v2& dimension,
                              const Eegeo::v2& uvMin,
-                             const Eegeo::v2& uvMax){
-            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* material = GetMaterialForAsset(spriteSheet);
-            return new UIQuad(*material, m_VertexBindingPool, m_RenderableFilters, m_GlBufferPool, dimension, uvMin, uvMax);
+                             const Eegeo::v2& uvMax,
+                             const Eegeo::dv3& ecefPosition,
+                             const Eegeo::v4& initialColor,
+                             const Eegeo::Rendering::LayerIds::Values renderLayer){
+            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* material = GetMaterialForAsset(assetPath);
+            return new UIQuad(*material, m_VertexBindingPool, m_RenderableFilters, m_GlBufferPool, dimension, uvMin, uvMax, ecefPosition, initialColor, renderLayer);
         }
         
         Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* UIQuadFactory::GetMaterialForAsset(const std::string& assetPath)

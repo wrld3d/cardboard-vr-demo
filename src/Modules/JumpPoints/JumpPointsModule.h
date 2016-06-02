@@ -25,8 +25,7 @@ namespace Eegeo
             {
             public:
                 
-                JumpPointsModule(Eegeo::Modules::Core::RenderingModule& p_RenderingModule
-                                 , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
+                JumpPointsModule(IUIQuadFactory& p_IUIQuadFactory
                                  , IUIInteractionObservable& p_IUIInteractionObservable
                                  , IUICameraProvider& p_UICameraProvider
                                  );

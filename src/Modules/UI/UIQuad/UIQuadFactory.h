@@ -44,12 +44,13 @@ namespace Eegeo
             virtual ~UIQuadFactory();
             
             UIQuad* CreateUIQuad(const std::string& assetPath,
-                                 const Eegeo::v2& dimension);
+                                 const Eegeo::v2& dimension,
+                                 const Eegeo::v2& uvMin = Eegeo::v2::Zero(),
+                                 const Eegeo::v2& uvMax = Eegeo::v2::One(),
+                                 const Eegeo::dv3& ecefPosition = Eegeo::v3::One(),
+                                 const Eegeo::v4& initialColor = Eegeo::v4::One(),
+                                 const Eegeo::Rendering::LayerIds::Values renderLayer = Eegeo::Rendering::LayerIds::Values::AfterWorld);
             
-            UIQuad* CreateUIQuad(const std::string& spriteSheet,
-                                         const Eegeo::v2& dimension,
-                                         const Eegeo::v2& uvMin = Eegeo::v2::Zero(),
-                                         const Eegeo::v2& uvMax = Eegeo::v2::One());
             
             
         };

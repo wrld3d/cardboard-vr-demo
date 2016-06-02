@@ -10,11 +10,9 @@ namespace Eegeo
         namespace JumpPoints
         {
             
-            JumpPointViewFactory::JumpPointViewFactory(Eegeo::Modules::Core::RenderingModule& p_RenderingModule
-                                                       , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
+            JumpPointViewFactory::JumpPointViewFactory(IUIQuadFactory& p_IUIQuadFactory
                                                        , IUICameraProvider& p_UICameraProvider)
-            : m_RenderingModule(p_RenderingModule)
-            , m_PlatformAbstractionModule(p_PlatformAbstractionModule)
+            : m_IUIQuadFactory(p_IUIQuadFactory)
             , m_UICameraProvider(p_UICameraProvider)
             {
                 
@@ -29,8 +27,12 @@ namespace Eegeo
             {
                 
                 JumpPointView* jumpPointView = Eegeo_NEW(JumpPointView)(jumpPointModel
-                                                                        , m_RenderingModule
-                                                                        , m_PlatformAbstractionModule
+                                                                        , m_IUIQuadFactory.CreateUIQuad(jumpPointModel.GetFileName()
+                                                                                                        , jumpPointModel.GetDimensions()
+                                                                                                        , jumpPointModel.GetUVMin()
+                                                                                                        , jumpPointModel.GetUVMax()
+                                                                                                        , jumpPointModel.GetEcefPosition()
+                                                                                                        , jumpPointModel.GetColor())
                                                                         , m_UICameraProvider
                                                                         );
                 return jumpPointView;

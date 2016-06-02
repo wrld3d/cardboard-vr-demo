@@ -8,6 +8,7 @@
 #include "JumpPoint.h"
 #include "Bounds.h"
 #include "JumpPointView.h"
+#include "IUIQuadFactory.h"
 
 namespace Eegeo
 {
@@ -18,8 +19,7 @@ namespace Eegeo
             class JumpPointViewFactory : protected Eegeo::NonCopyable, public IJumpPointViewFactory
             {
             public:
-                JumpPointViewFactory(Eegeo::Modules::Core::RenderingModule& p_RenderingModule
-                                     , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
+                JumpPointViewFactory(IUIQuadFactory& p_IUIQuadFactory
                                      , IUICameraProvider& p_UICameraProvider);
                 
                 ~JumpPointViewFactory();
@@ -27,11 +27,8 @@ namespace Eegeo
                 virtual JumpPointView* CreateViewForJumpPoint(JumpPoint& jumpPointModel);
                 
             private:
-                Eegeo::Modules::Core::RenderingModule& m_RenderingModule;
-                Modules::IPlatformAbstractionModule& m_PlatformAbstractionModule;
                 IUICameraProvider& m_UICameraProvider;
-                const std::string m_FileName;
-                const Eegeo::v2 m_Dimension;
+                IUIQuadFactory& m_IUIQuadFactory;
             };
         }
     }
