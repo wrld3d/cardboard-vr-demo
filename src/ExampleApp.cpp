@@ -256,6 +256,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                         outMin,
                                                         outMax
                                                         );
+    
     m_JumpPoint2 = new Eegeo::UI::JumpPoints::JumpPoint(2,
                                                         Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250),
                                                         "mesh_example/PinIconTexturePage.png",
@@ -263,6 +264,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                         outMin,
                                                         outMax
                                                         );
+    
     m_JumpPoint3 = new Eegeo::UI::JumpPoints::JumpPoint(3,
                                                         Eegeo::Space::LatLongAltitude::FromDegrees(56.451235, -2.976600, 250),
                                                         "mesh_example/PinIconTexturePage.png",
