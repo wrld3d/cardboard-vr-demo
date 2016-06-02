@@ -127,7 +127,6 @@ Assuming that you have a class named MyExampleClass with a method MyExampleMetho
 class MyExampleClass
 {
 private:
-
     //The callback to be passed to the button
     Eegeo::Helpers::TCallback0<MyExampleClass>* m_ClickCallback;
     //Button pointer
@@ -141,46 +140,37 @@ public:
         EXAMPLE_LOG("Button was gazed upon");
     }
     
-    void CreateButton(Eegeo::EegeoWorld& world, Eegeo::UI::UIInteractionModule& interactionModule)
+    void CreateButton(Eegeo::EegeoWorld& world, Eegeo::UI::IUIInteractionObservable& p_InteractionModule, Eegeo::UI::IUIQuadFactory& p_QuadFactory)
     {
         //Initializing callback for button
         m_ClickCallback =
-            Eegeo_NEW(Eegeo::Helpers::TCallback0<MyExampleClass>)(this, &MyExampleClass::MyExampleMethod);
+        Eegeo_NEW(Eegeo::Helpers::TCallback0<MyExampleClass>)(this, &MyExampleClass::MyExampleMethod);
         
         //Position of button
         Eegeo::Space::LatLongAltitude buttonPosition = Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250);
-        //Path of icon for button
-        std::string buttonIcon = "mesh_example/quadrants.png";
+        //Path of sprite sheet for button
+        std::string buttonIcon = "mesh_example/PinIconTexturePage.png";
+        //Size of our sprite sheet
+        Eegeo::v2 size(4,4);
+        int spriteID = 1; //Sprite id start from 0 from bottom left and end at top right
+        //Calculating UVs for the spriteID that we want in sprite sheet
+        Eegeo::v2 outUVMin;
+        Eegeo::v2 outUVMax;
+        Eegeo::UI::CalculateUV(size, spriteID, outUVMin, outUVMax);
         //Size of button
         Eegeo::v2 buttonSize = Eegeo::v2(50,50);
-
+        
         //Create a button object
-        m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(world.GetRenderingModule(),
-                                                         world.GetPlatformAbstractionModule(),
-                                                         buttonIcon,
-                                                         buttonPosition.ToECEF(),
+        m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(
+                                                         p_QuadFactory.CreateUIQuad(buttonIcon, buttonSize, outUVMin, outUVMax),
                                                          buttonSize,
+                                                         buttonPosition.ToECEF(),
                                                          *m_ClickCallback);
         
-        //Register the button with interaction module so it can start receiving interaction events
-        interactionModule.RegisterInteractableItem(m_UIButton);
+        //Register the button with interaction module so it can start receiving gaze events
+        p_InteractionModule.RegisterInteractableItem(m_UIButton);
     }
 };
-```
-
-As with jump points, there are also optional parameters that can be used. These include the min and max UVs for the texture and button's color.
-
-```c++
-m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(renderingModule,
-                                                 world.GetPlatformAbstractionModule(),
-                                                 buttonIcon,
-                                                 buttonPosition.ToECEF(),
-                                                 buttonSize,
-                                                 *clickCallback,
-                                                 Eegeo::v2::Zero(),
-                                                 Eegeo::v2::One(),
-                                                 Eegeo::Rendering::Colors::RED
-                                                 );
 ```
 
 ### Changing Gaze Icon
@@ -188,20 +178,18 @@ m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(renderingModule,
 In order to change the interaction animation, follow these steps:
 * Replace the loading sprite sheet with the your custom image by replacing [gaze_loader.png](https://github.com/eegeo/cardboard-vr-integration/blob/ui/android/assets/mesh_example/gaze_loader.png).
 * Update the following things in the code below located in constructor of [ExampleApp.cpp](https://github.com/eegeo/cardboard-vr-integration/blob/ui/src/ExampleApp.cpp)
-    * Change the `spriteGridSize` according to your sprite sheet.
+    * Change the `spriteSheetGridSize` according to your sprite sheet.
     * Change the last parameter `framesPerSecond` to change the speed of animation.
 
 ```c++
 ...
-m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(renderingModule,
-                                                platformAbstractionModule,
-                                                spriteSheetPath,
-                                                spritePosition,
-                                                dimension,
-                                                clickCallback,
-                                                spriteGridSize,
-                                                framesPerSecond
-                                                );
+m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(
+                                m_QuadFactory->CreateUIQuad(spriteSheetPath, dimension)
+                                , clickCallback
+                                , dimension
+                                , spriteSheetGridSize
+                                , framesPerSecond
+                                );
 ...    
 ```
 
