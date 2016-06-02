@@ -9,8 +9,6 @@
 * [Support](#support)
 * [Getting Started](#getting-started)
     * [eeGeo API Key](#eegeo-api-key)
-    * [Optional Steps](#optional-steps)
-* [Features](#features)
 * [eeGeo SDK Documentation](#eegeo-sdk-documentation)
 * [Cardboard API Documentation](#cardboard-api-documentation)
     * [Jump Points](#jump-points)
