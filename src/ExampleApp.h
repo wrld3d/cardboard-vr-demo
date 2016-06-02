@@ -14,11 +14,24 @@
 #include "Modules/SkyboxModule/SkyboxModule.h"
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
 #include "Examples/VRCameraSpline/IVRHeadTracker.h"
+#include "Modules/UI/UIGaze/UIGazeView.h"
+#include "Modules/UI/UIAnimatedSprite.h"
+#include "Modules/UI/UIImageButton.h"
+#include "Modules/UI/UIInteraction/UIInteractionController.h"
+#include "Modules/UI/IUICameraProvider.h"
+#include "Modules/UI/UIQuad/IUIQuadFactory.h"
+#include "Modules/JumpPoints/JumpPoint.h"
+#include "Modules/JumpPoints/JumpPointsModule.h"
+#include "Modules/JumpPoints/JumpPointRepository.h"
+#include "Logger.h"
+#include "ICallback.h"
 
-class ExampleApp : private Eegeo::NonCopyable
+class ExampleApp : private Eegeo::NonCopyable, Eegeo::UI::IUICameraProvider
 {
 private:
     
+    Eegeo::UI::JumpPoints::JumpPoint *m_JumpPoint1, *m_JumpPoint2, *m_JumpPoint3;
+    Eegeo::UI::JumpPoints::JumpPointsModule* m_JumpPointsModule;
     Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
 	Eegeo::EegeoWorld* m_pWorld;
@@ -29,6 +42,14 @@ private:
     
     Eegeo::VR::Distortion::VRDistortionModule* m_VRDistortion;
     Eegeo::Skybox::SkyboxModule *m_VRSkybox;
+    Eegeo::UI::UIImageButton *m_UIButton;
+    Eegeo::UI::UIInteractionController *m_UIInteractionController;
+    Eegeo::UIGaze::UIGazeView* m_UIGazeView;
+    
+    Eegeo::UI::IUIQuadFactory* m_QuadFactory;
+    
+    Eegeo::UI::UIAnimatedSprite *m_GazeProgress;
+    Eegeo::UI::UIImageButton *m_Pointer;
     
     Eegeo::Helpers::IdentityProvider m_identityProvider;
     InteriorsExplorer::InteriorsExplorerModule* m_interiorExplorerModule;
@@ -47,11 +68,13 @@ private:
 	}
     
     void UpdateLoadingScreen(float dt);
+    
+    Eegeo::Helpers::TCallback0<ExampleApp> m_ClickCallback;
 
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
                Eegeo::Config::DeviceSpec deviceSpecs,
-	           Examples::IExampleControllerView& view,
+                Examples::IExampleControllerView& view,
                Examples::IVRHeadTracker& headTracker,
                const Eegeo::Rendering::ScreenProperties& screenProperties,
                Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
@@ -111,6 +134,8 @@ public:
 	void Event_TouchDown 			(const AppInterface::TouchData& data);
 	void Event_TouchMove 			(const AppInterface::TouchData& data);
 	void Event_TouchUp 				(const AppInterface::TouchData& data);
+    
+    Eegeo::Camera::RenderCamera* GetRenderCameraForUI();
 };
 
 #endif /* defined(__ExampleApp__ExampleApp__) */

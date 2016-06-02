@@ -38,6 +38,7 @@
 #include "ExampleCameraJumpController.h"
 #include "AndroidVRHeadTracker.h"
 
+
 class AppHost : protected Eegeo::NonCopyable
 {
 public:
@@ -81,7 +82,7 @@ private:
     Eegeo::Modules::BuildingFootprintsModule* m_pBuildingFootprintsModule;
 	AndroidNativeState& m_nativeState;
 	AppInputDelegate* m_pAppInputDelegate;
-
+    
 	Eegeo::Android::Input::AndroidInputHandler m_inputHandler;
 	Eegeo::UI::NativeInput::Android::AndroidInputBoxFactory m_androidInputBoxFactory;
 	Eegeo::UI::NativeInput::Android::AndroidKeyboardInputFactory m_androidKeyboardInputFactory;

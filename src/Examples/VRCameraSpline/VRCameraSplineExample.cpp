@@ -17,6 +17,8 @@
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
 
+#include "Logger.h"
+
 namespace Examples
 {
     VRCameraSplineExample::VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
@@ -32,7 +34,7 @@ namespace Examples
         NotifyScreenPropertiesChanged(initialScreenProperties);
         Eegeo::m44 projectionMatrix = Eegeo::m44(cameraController->GetRenderCamera().GetProjectionMatrix());
         m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight(), headTracker);
-        m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
+        m_pSplineCameraController->GetCamera()->SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
     }
     
@@ -43,7 +45,7 @@ namespace Examples
     void VRCameraSplineExample::Start()
     {
         
-        Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(37.7858,-122.401, 100);
+        Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250);
         m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla);
     }
     
@@ -57,7 +59,7 @@ namespace Examples
     
     void VRCameraSplineExample::EarlyUpdate(float dt)
     {
-        m_pSplineCameraController->Update(dt);
+        //m_pSplineCameraController->Update(dt);
         
             if (m_pSplineCameraController->GetVRCameraPositionSpline().IsInteriorSpline()) {
                 m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
@@ -90,7 +92,12 @@ namespace Examples
     }
     
     
-    Eegeo::Camera::RenderCamera VRCameraSplineExample::GetRenderCamera(){
+    Eegeo::m33& VRCameraSplineExample::getCurrentCameraOrientation()
+    {
+        return m_pSplineCameraController->GetOrientation();
+    }
+    
+    Eegeo::Camera::RenderCamera* VRCameraSplineExample::GetRenderCamera(){
         return m_pSplineCameraController->GetCamera();
     }
     

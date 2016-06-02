@@ -14,5 +14,11 @@
         android:id="@+id/ui_container"
     	android:layout_width="fill_parent" 
     	android:layout_height="fill_parent"/>
-
+    
+    <!-- app ui goes here -->
+    <RelativeLayout 
+        android:id="@+id/gaze_ui_container"
+    	android:layout_width="fill_parent" 
+    	android:layout_height="fill_parent"/>
+    
 </RelativeLayout>

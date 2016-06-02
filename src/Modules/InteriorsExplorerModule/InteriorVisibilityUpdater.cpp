@@ -32,14 +32,14 @@
     
     void InteriorVisibilityUpdater::UpdateVisiblityImmediately()
     {
-        const bool shouldDisplay = m_interiorShouldDisplay && m_interiorSelectionModel.IsInteriorSelected();
+        const bool shouldDisplay = m_interiorShouldDisplay && m_interiorSelectionModel.IsInteriorSelected() && m_interiorInteractionModel.HasInteriorModel();
         m_interiorTransitionParameter = shouldDisplay ? 1.f : 0.f;
         m_interiorTransitionModel.SetVisibilityParam(m_interiorTransitionParameter);
     }
     
     void InteriorVisibilityUpdater::Update(float dt)
     {
-        const bool shouldDisplay = m_interiorShouldDisplay && m_interiorSelectionModel.IsInteriorSelected();
+        const bool shouldDisplay = m_interiorShouldDisplay && m_interiorSelectionModel.IsInteriorSelected() && m_interiorInteractionModel.HasInteriorModel();
         const float transitionTarget = shouldDisplay ? 1.f : 0.f;
         
         float delta = 0.f;

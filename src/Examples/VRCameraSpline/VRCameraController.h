@@ -53,10 +53,12 @@ namespace Eegeo
             , m_nearMultiplier(0.1f)
             , m_pHeadTracker(headTracker)
             {
+                m_renderCamera = new Camera::RenderCamera();
                 m_orientation.Identity();
+                m_currentOrientation.Identity();
                 
-                m_renderCamera.SetViewport(0,0,screenWidth, screenHeight);
-                m_renderCamera.SetProjection(0.7, 0.1, 4000);
+                m_renderCamera->SetViewport(0,0,screenWidth, screenHeight);
+                m_renderCamera->SetProjection(0.7, 0.1, 4000);
                 
                 m_VRCameraPositionSpline.Start();
 
@@ -67,7 +69,7 @@ namespace Eegeo
             Eegeo::dv3 GetEcefInterestPoint() const;
             double GetAltitudeAboveSeaLevel() const;
 
-            Eegeo::Camera::RenderCamera& GetCamera() { return m_renderCamera; }
+            Eegeo::Camera::RenderCamera* GetCamera() { return m_renderCamera; }
             const bool IsMoving() const { return m_moving; }
             const bool IsFalling() const { return m_falling; }
             const bool IsFollowingSpline() const { return m_VRCameraPositionSpline.IsPlaying(); }
@@ -105,6 +107,8 @@ namespace Eegeo
             
             void SetShiftDown(bool down) { m_shiftDown = down; }
             
+            m33& GetOrientation();
+            
         private:
             bool CanAcceptUserInput() const;
             
@@ -130,7 +134,7 @@ namespace Eegeo
             float m_splineEndPauseTime;
             float m_splineEndPauseTimeElapsed;
             
-            Eegeo::Camera::RenderCamera m_renderCamera;
+            Eegeo::Camera::RenderCamera* m_renderCamera;
             Eegeo::Resources::Terrain::Heights::TerrainHeightProvider * m_pTerrainHeightProvider;
             
             VRCameraPositionSpline m_VRCameraPositionSpline;
@@ -140,8 +144,9 @@ namespace Eegeo
             dv3 m_interestEcef;
             dv3 m_ecefPosition;
             m33 m_orientation;
-            
+            m33 m_currentOrientation;
             float m_nearMultiplier;
+
         };
     }
 }

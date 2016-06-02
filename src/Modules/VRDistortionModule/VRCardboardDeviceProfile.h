@@ -71,6 +71,7 @@ namespace Eegeo
                 void GetLeftEyeVisibleTanAngles(float* result);
                 void GetLeftEyeNoLensTanAngles(float* result);
                 float GetVerticalLensOffset();
+                Eegeo::v2 GetScreenMeshCenter(float width, float height);
                 VRDevice GetDevice();
             private:
                 VRDevice device;

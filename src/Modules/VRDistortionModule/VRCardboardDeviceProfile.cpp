@@ -242,6 +242,14 @@ namespace Eegeo
                 rect[2] = right - left;
                 rect[3] = top - bottom;
             }
+            
+            Eegeo::v2 VRCardboardDeviceProfile::GetScreenMeshCenter(float width, float height) {
+                Eegeo::v2 screenCenter = Eegeo::v2(width/2.0f, height/2.0f);
+                
+                float offset = GetVerticalLensOffset() * (height);
+                screenCenter.y -= offset;
+                return screenCenter;
+            }
         }
     }
 }

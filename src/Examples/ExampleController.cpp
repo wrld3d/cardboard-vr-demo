@@ -173,8 +173,11 @@ void ExampleController::DestroyCurrentExample()
 		m_pCurrentExample = NULL;
 	}
 }
+    Eegeo::m33& ExampleController::GetOrientation(){
+        return m_pCurrentExample->getCurrentCameraOrientation();
+    }
     
-    Eegeo::Camera::RenderCamera ExampleController::GetRenderCamera(){
+    Eegeo::Camera::RenderCamera* ExampleController::GetRenderCamera(){
         return m_pCurrentExample->GetRenderCamera();
     }
     

@@ -1,63 +1,218 @@
-eeGeo 3D Maps mobile-sdk-harness
-================================
+<a href="http://www.eegeo.com/">
+    <img src="http://cdn2.eegeo.com/wp-content/uploads/2016/03/eegeo_logo_quite_big.png" alt="eeGeo Logo" title="eegeo" align="right" height="80px" />
+</a>
 
-Additional documentation available at http://www.eegeo.com/developers/documentation/
+# eeGeo Cardboard API
 
-iOS
-===
-> Requirements:  
-\- [Xcode](https://developer.apple.com/xcode/) (version tested: 7.2)  
-\- [CMake](https://cmake.org/) (>= 3.1.1)
+![eeGeo](http://cdn2.eegeo.com/wp-content/uploads/2016/03/readme-banner.jpg)
 
-* Run ./update.platform.sh -p ios to get the latest platform libraries and headers.
-* Within the ios directory, create a build directory for your project
-* Navigate to your build directory and generate the project with CMake: `cmake -G Xcode ..`  
-This is an 'out of source' build - all of the objects and binaries will be built inside of this directory. The `..` denotes that we're generating from source in the parent (in this case 'ios') directory.
-* Open the SDKSamplesApp.xcodeproj that CMake has generated
-* The platform needs an API key to operate. Sign up at https://www.eegeo.com/developers/ to get your API key and introduce it into the following line in ViewController.mm : 
-  const std::string API_KEY "OBTAIN API_KEY FROM https://www.eegeo.com/developers/ AND INSERT IT HERE".
-* Scroll between the examples using the Next and Previous buttons; the current example name is displayed at the top of the screen.
-* To build at the command line, run ./build -p ios from the repository root.
+* [Support](#support)
+* [Getting Started](#getting-started)
+    * [eeGeo API Key](#eegeo-api-key)
+    * [Optional Steps](#optional-steps)
+* [Features](#features)
+* [eeGeo SDK Documentation](#eegeo-sdk-documentation)
+* [Cardboard API Documentation](#cardboard-api-documentation)
+    * [Jump Points](#jump-points)
+        * [Creating a Jump Point](#creating-a-jump-point)  
+        * [Removing a Jump Point](#removing-a-jump-point)
+    * [Gaze Button](#gaze-button)
+        * [Creating a Button](#creating-a-button)
+    * [Changing Gaze Icon](#changing-gaze-icon)
+    * [Icon Sheet](#icon-sheet)
+* [License](#license)
 
-Android
-=======
-> Requirements:  
-\- [Eclipse IDE for Java Developers](https://eclipse.org/downloads/)   
-\- [Android Developer Tools](http://developer.android.com/tools/help/adt.html) (>= 22.6)  
-\- [Android NDK](http://developer.android.com/tools/sdk/ndk/index.html) (>= r10d)
+This example app showcases the [eeGeo SDK's](http://www.eegeo.com/) integration with Google Cardboard for creating VR experiences.
 
-* Install the Android SDK and NDK
-* Run ./update.platform.sh -p android to get the latest platform libraries and headers.
-* Open an ADT Eclipse workspace, importing the cloned repository as an Android project
-* Configure your workspace:
-    * File -> Import -> Android: 'Existing Android Code Into Workspace'
-    * Select the 'android' directory in the repository
-    * ADT -> Preferences -> Android -> NDK : Set NDK location to the root of your NDK directory
-    * Select imported activity -> Android Tools : 'Add native support'
-    * Select jni directory -> New folder -> Advanced -> Linked folder : mobile-sdk-harness/src
-    * Pass COMPILE_CPP_11=1 to ndk-build to build cpp11
-* The platform needs an API key to operate. Sign up at https://www.eegeo.com/developers/ to get your API key and introduce it into the following line in jni/main.cpp : 
-  const std::string API_KEY "OBTAIN API_KEY FROM https://www.eegeo.com/developers/ AND INSERT IT HERE"
-* Build and debug from within ADT Eclipse
-* build.sh can be used to generate the native library if you want to manually package the .apk
-* Scroll between the examples using the Next and Previous buttons, or select the example from the drop-down list; the current example name is displayed at the top of the screen. 
-* To build at the command line, run ./build -p android from the repository root.
-* The project is configured to build for multiple target CPU architectures, creating a universal .apk containing exectutables for each of these architectures.
-       * The supported architectures are defined in ./Android/jni/Application.mk, by the line:
-               APP_ABI := armeabi,armeabi-v7a,arm64-v8a
-       * Removing the APP_ABI line will build and package for the default armeabi architecture. The armeabi architecture is backwards-compatible with armeabi-v7a, but will not run on devices 64-bit Arm instruction sets.
-       * For further information about supporting multiple architectures see: http://developer.android.com/google/play/publishing/multiple-apks.html
+### What does the API have to offer?
 
-C++03 Only Builds
-=================
-It's possible to build C++03 only versions of the application. To do this, you'll need to pull down a C\++03 version of the SDK.
-* `./update.platform.sh -p [ios|android] -c` will fetch c\++03/libc++ ABI compatible versions of the SDK for libc++
-* `./build -p [ios|android] -c` from the command line will build targeting c\++03 / libc++
-* For Android builds, add `COMPILE_CPP_03=1` to your ndkbuild command
-* For CMake builds, add `DCOMPILE_CPP_03=1` to your cmake command. e.g. `cmake -G Xcode -DCOMPILE_CPP_03=1 ..`
+* Integration with Google Cardboard SDK
+* Head tracking and magnet trigger usage
+* Lens distortion integration with Google Cardboard QR Code based profile selector
+* Ability to add elements on screen and detect gaze on them for interaction 
+* API for adding jump points in the world to jump around different locations
 
-Staying up to date
-==================
-Note that the eeGeo SDK is continuously improved. In order to take advantage of the latest features and fixes, developers should run the update.platform.sh script frequently to build against the latest version of the SDK. This is important, because as we improve our map data, old versions of the SDK may lose the ability to load it. By taking frequent SDK updates, the cost of keeping up to date with the latest SDK version will be low, and you will always be able to use the latest and best data.
+## Support
 
-[![](http://apikey.eegeo.com/tracker/UA-21564666-7/mobile-sdk-harness-readme)]()
+If you have any questions, bug reports, or feature requests, feel free to submit to the [issue tracker](https://github.com/eegeo/cardboard-vr-integration/issues) for this repository.
+
+## Getting Started
+
+This example app demonstrates the use of eeGeo's Cardboard API that allows developers to create VR experiences on Android.
+
+This section will walk you through the process of getting up and running quickly on each platform.
+
+1.  Clone this repo: `git clone https://github.com/eegeo/cardboard-vr-integration/tree/ui`
+2.  Obtain an [eeGeo API key](https://www.eegeo.com/developers/apikeys) and place it in the [ApiKey.h](https://github.com/eegeo/cardboard-vr-integration/blob/ui/src/ApiKey.h#L11) file.
+3.  Choose a platform from the below table to see detailed instructions for building the app.
+
+Platform                                        | Languages         
+------------------------------------------------|-------------------
+[Getting started on Android](/android#readme)   | C++, Java         
+
+### eeGeo API Key 
+
+In order to use the eeGeo 3D Maps SDK, you must sign up for a free developer account at https://www.eegeo.com/developers. After signing up, you'll be able to create an [API key](https://www.eegeo.com/developers/apikeys) for your apps. 
+
+To run this example app, you must place the API key in the [ApiKey.h](https://github.com/eegeo/cardboard-vr-integration/blob/ui/src/ApiKey.h#L11) file.
+
+## eeGeo SDK Documentation
+
+See the [eeGeo API reference](http://cdn1.eegeo.com/docs/mobile-sdk/namespaces.html) for documentation on the individual SDK types.
+
+## Cardboard API Documentation
+
+Following are some example of how to use specific features of the Gaze UI API.
+
+### Jump Points
+
+#### Creating a Jump Point
+
+In order to create a jump point you need to create an object of the JumpPoint class
+
+```c++
+//Following attributes are required for creation of jump points.
+
+//A unique id for jump point
+Eegeo::UI::JumpPoints::TJumpPointId jumpPointID = 1;
+//The latitude, longitude and altitude for the jump point
+Eegeo::Space::LatLongAltitude jumpPointPosition = Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250);
+//Path to the image file to be used as jump point icon
+std::string jumpPointIcon = "mesh_example/quadrants.png";
+//The size of the jump point
+Eegeo::v2 jumpPointSize = Eegeo::v2(50,50);
+
+//Create an object of JumpPoint that will be added to the jump point repository
+Eegeo::UI::JumpPoints::JumpPoint* myJumpPoint = 
+Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint) ( jumpPointID
+                                            , jumpPointPosition
+                                            , jumpPointIcon
+                                            , jumpPointSize);
+
+//Add the jump point to repository so it can start drawing on screen at the specified location
+m_JumpPointsModule->GetRepository().AddJumpPoint(myJumpPoint);
+```
+
+There are also optional parameters that can be used. These include the min and max UVs for the jump point texture and custom user data.
+
+```c++
+//Create and object of JumpPoint that will be added to the jump point repository
+Eegeo::UI::JumpPoints::JumpPoint* myJumpPoint = 
+Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint) ( jumpPointID
+                                            , jumpPointPosition
+                                            , jumpPointIcon
+                                            , jumpPointSize
+                                            , minUVs
+                                            , maxUVs
+                                            , cutsomUserData);
+```
+
+#### Removing a Jump Point
+
+To remove a jump point, simply remove the jump point object from the repository.
+
+```c++
+m_JumpPointsModule->GetRepository().RemoveJumpPoint(myJumpPoint);
+```
+
+### Gaze Button
+
+In order to create a gaze button we need a callback that will be called when button is interacted with.
+
+#### Creating a Button
+
+Assuming that you have a class named MyExampleClass with a method MyExampleMethod that needs to be triggered with a button
+
+```c++
+class MyExampleClass
+{
+private:
+
+    //The callback to be passed to the button
+    Eegeo::Helpers::TCallback0<MyExampleClass>* m_ClickCallback;
+    //Button pointer
+    Eegeo::UI::UIImageButton *m_UIButton;
+
+public:
+    //Method that will be called when the button is triggered
+    void MyExampleMethod()
+    {
+        //Log to show that gaze interaction with button was completed.
+        EXAMPLE_LOG("Button was gazed upon");
+    }
+    
+    void CreateButton(Eegeo::EegeoWorld& world, Eegeo::UI::UIInteractionModule& interactionModule)
+    {
+        //Initializing callback for button
+        m_ClickCallback =
+            Eegeo_NEW(Eegeo::Helpers::TCallback0<MyExampleClass>)(this, &MyExampleClass::MyExampleMethod);
+        
+        //Position of button
+        Eegeo::Space::LatLongAltitude buttonPosition = Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250);
+        //Path of icon for button
+        std::string buttonIcon = "mesh_example/quadrants.png";
+        //Size of button
+        Eegeo::v2 buttonSize = Eegeo::v2(50,50);
+
+        //Create a button object
+        m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(world.GetRenderingModule(),
+                                                         world.GetPlatformAbstractionModule(),
+                                                         buttonIcon,
+                                                         buttonPosition.ToECEF(),
+                                                         buttonSize,
+                                                         *m_ClickCallback);
+        
+        //Register the button with interaction module so it can start receiving interaction events
+        interactionModule.RegisterInteractableItem(m_UIButton);
+    }
+};
+```
+
+As with jump points, there are also optional parameters that can be used. These include the min and max UVs for the texture and button's color.
+
+```c++
+m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(renderingModule,
+                                                 world.GetPlatformAbstractionModule(),
+                                                 buttonIcon,
+                                                 buttonPosition.ToECEF(),
+                                                 buttonSize,
+                                                 *clickCallback,
+                                                 Eegeo::v2::Zero(),
+                                                 Eegeo::v2::One(),
+                                                 Eegeo::Rendering::Colors::RED
+                                                 );
+```
+
+### Changing Gaze Icon
+
+In order to change the interaction animation, follow these steps:
+* Replace the loading sprite sheet with the your custom image by replacing [gaze_loader.png](https://github.com/eegeo/cardboard-vr-integration/blob/ui/android/assets/mesh_example/gaze_loader.png).
+* Update the following things in the code below located in constructor of [ExampleApp.cpp](https://github.com/eegeo/cardboard-vr-integration/blob/ui/src/ExampleApp.cpp)
+    * Change the `spriteGridSize` according to your sprite sheet.
+    * Change the last parameter `framesPerSecond` to change the speed of animation.
+
+```c++
+...
+m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(renderingModule,
+                                                platformAbstractionModule,
+                                                spriteSheetPath,
+                                                spritePosition,
+                                                dimension,
+                                                clickCallback,
+                                                spriteGridSize,
+                                                framesPerSecond
+                                                );
+...    
+```
+
+In order to change the gaze icon replace the gaze icon with the your custom image by replacing [gaze_point.png](https://github.com/eegeo/cardboard-vr-integration/blob/ui/android/assets/mesh_example/gaze_point.png).
+
+## Icon Sheet
+
+![Icon Sheet](https://github.com/eegeo/cardboard-vr-integration/blob/ui/android/assets/mesh_example/PinIconTexturePage.png)
+
+This is a default 4x4 grid that is being used by the sdk to draw the icons. In order to use different icons either add a new sheet or simply replace an icon from the placeholders provided and use their UVs to draw the appropriate image.
+
+## License
+
+The eeGeo 3D Maps SDK is released under the Eegeo Platform SDK Evaluation license. See the [LICENSE.md](https://github.com/eegeo/cardboard-vr-integration/blob/master/LICENSE.md) file for details.

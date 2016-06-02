@@ -67,7 +67,9 @@ namespace Examples
         
         void RegisterExample(IExampleFactory* pFactory);
         
-        Eegeo::Camera::RenderCamera GetRenderCamera();
+        Eegeo::m33& GetOrientation();
+        
+        Eegeo::Camera::RenderCamera* GetRenderCamera();
         
         Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const;
         Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const;

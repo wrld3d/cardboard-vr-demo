@@ -28,8 +28,6 @@ import com.google.vrtoolkit.cardboard.sensors.NfcSensor.OnCardboardNfcListener;
 public class BackgroundThreadActivity extends MainActivity
 {
 
-	private static final float METERS_PER_INCH = 0.0254f;
-
 	private EegeoSurfaceView m_surfaceView;
 	private SurfaceHolder m_surfaceHolder;
 	private long m_nativeAppWindowPtr;
@@ -52,11 +50,11 @@ public class BackgroundThreadActivity extends MainActivity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
-
+		
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		final float dpi = dm.ydpi;
 		final Activity activity = this;
-		
+
 		m_surfaceView = (EegeoSurfaceView)findViewById(R.id.surface);
 		m_surfaceView.getHolder().addCallback(this);
 		m_surfaceView.setActivity(this);

@@ -2,6 +2,7 @@
 
 #include <jni.h>
 #include "AppRunner.h"
+#include "ApiKey.h"
 #include "main.h"
 #include <android/native_window.h>
 #include <android/native_window_jni.h>
@@ -11,8 +12,6 @@
 
 using namespace Eegeo::Android;
 using namespace Eegeo::Android::Input;
-
-const std::string ApiKey = "3429dfad9362f1cd42cb614671e5199c";
 
 AndroidNativeState g_nativeState;
 AppRunner* g_pAppRunner;
