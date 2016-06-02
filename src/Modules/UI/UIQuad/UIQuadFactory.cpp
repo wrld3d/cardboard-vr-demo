@@ -34,6 +34,11 @@ namespace Eegeo
         UIQuadFactory::~UIQuadFactory()
         {
             Eegeo_DELETE m_Shader;
+            for(TMaterialMap::iterator it = m_MaterialMap.begin(); it != m_MaterialMap.end(); ++it)
+            {
+                Eegeo_DELETE it->second;
+            }
+            m_MaterialMap.clear();
         }
         
         UIQuad* UIQuadFactory::CreateUIQuad(const std::string& assetPath,
