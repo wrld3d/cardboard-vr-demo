@@ -192,9 +192,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 
     Eegeo::Modules::Core::RenderingModule& renderingModule = m_pWorld->GetRenderingModule();
-    
-    m_QuadFactory = Eegeo_NEW(Eegeo::UI::UIQuadFactory)(renderingModule, m_pWorld->GetPlatformAbstractionModule().GetTextureFileLoader());
-    
     m_VRDistortion = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortionModule)(m_screenPropertiesProvider.GetScreenProperties(),
                                                 renderingModule.GetVertexLayoutPool(),
                                                 renderingModule.GetVertexBindingPool(),
@@ -213,29 +210,33 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_VRSkybox->Start();
     
     Eegeo::dv3 quadPosition = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 250).ToECEF();
-    Eegeo::v2 dimUI = Eegeo::v2(50,50);
+    Eegeo::v2 dimension = Eegeo::v2(50,50);
+    Eegeo::v2 size(4,4);
     
+    Eegeo::v2 outMin;
+    Eegeo::v2 outMax;
+    Eegeo::UI::CalculateUV(size, 1, outMin, outMax);
+    
+    m_QuadFactory = Eegeo_NEW(Eegeo::UI::UIQuadFactory)(renderingModule, m_pWorld->GetPlatformAbstractionModule().GetTextureFileLoader());
     
     
     m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(
-                                                     m_QuadFactory->CreateUIQuad("mesh_example/quadrants.png", dimUI, Eegeo::v2::Zero(), Eegeo::v2::One()/2.0f),
-                                                     dimUI,
+                                                     m_QuadFactory->CreateUIQuad("mesh_example/PinIconTexturePage.png", dimension, outMin, outMax),
+                                                     dimension,
                                                      quadPosition,
                                                      m_ClickCallback);
     
-//    Eegeo::dv3 spritePos = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 200).ToECEF();
-    Eegeo::v2 dim = Eegeo::v2(0.25f,0.25f)*7.f;
-    
-    m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(m_QuadFactory->CreateUIQuad("mesh_example/gaze_loader.png", dim),
+    dimension = Eegeo::v2(0.25f,0.25f)*7.f;
+    m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(m_QuadFactory->CreateUIQuad("mesh_example/gaze_loader.png", dimension),
                                                                 m_ClickCallback,
-                                                                dim,
+                                                                dimension,
                                                                 *(new Eegeo::v2(7,7)),
                                                                 49.f/2.f
                                                                 );
     
-    dim = Eegeo::v2(0.075f,0.075f)*3.f;
-    m_Pointer = Eegeo_NEW(Eegeo::UI::UIImageButton)(m_QuadFactory->CreateUIQuad("mesh_example/gaze_point.png", dim, Eegeo::v2::Zero(), Eegeo::v2::One()/2.0f, quadPosition, Eegeo::v4::One(), Eegeo::Rendering::LayerIds::Values::AfterAll),
-                                                     dim,
+    dimension = Eegeo::v2(0.075f,0.075f)*3.f;
+    m_Pointer = Eegeo_NEW(Eegeo::UI::UIImageButton)(m_QuadFactory->CreateUIQuad("mesh_example/gaze_point.png", dimension, Eegeo::v2::Zero(), Eegeo::v2::One()/2.0f, quadPosition, Eegeo::v4::One(), Eegeo::Rendering::LayerIds::Values::AfterAll),
+                                                     dimension,
                                                      quadPosition,
                                                     m_ClickCallback
                                                      );
@@ -245,31 +246,29 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_UIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*this, *m_UIGazeView);
     m_UIInteractionController->RegisterInteractableItem(m_UIButton);
     
-    Eegeo::v2 size(4,4);
-    Eegeo::v2 min;
-    Eegeo::v2 max;
-    Eegeo::UI::CalculateUV(size, 0, min, max);
+    Eegeo::UI::CalculateUV(size, 0, outMin, outMax);
+    dimension = Eegeo::v2(50,50);
     
     m_JumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1,
                                                         Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250),
                                                         "mesh_example/PinIconTexturePage.png",
-                                                        dimUI,
-                                                        min,
-                                                        max
+                                                        dimension,
+                                                        outMin,
+                                                        outMax
                                                         );
     m_JumpPoint2 = new Eegeo::UI::JumpPoints::JumpPoint(2,
                                                         Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250),
                                                         "mesh_example/PinIconTexturePage.png",
-                                                        dimUI,
-                                                        min,
-                                                        max
+                                                        dimension,
+                                                        outMin,
+                                                        outMax
                                                         );
     m_JumpPoint3 = new Eegeo::UI::JumpPoints::JumpPoint(3,
                                                         Eegeo::Space::LatLongAltitude::FromDegrees(56.451235, -2.976600, 250),
                                                         "mesh_example/PinIconTexturePage.png",
-                                                        dimUI,
-                                                        min,
-                                                        max
+                                                        dimension,
+                                                        outMin,
+                                                        outMax
                                                         );
     
     m_JumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(*m_QuadFactory,
