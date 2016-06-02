@@ -23,7 +23,6 @@ namespace Eegeo
             
             UIQuad* m_Quad;
             
-            std::string m_SpriteSheetName;
             Eegeo::v2 m_SpriteGridSize;
             int m_SpriteId;
             
@@ -34,9 +33,7 @@ namespace Eegeo
             
         public:
             
-            UISprite(Eegeo::Modules::Core::RenderingModule& renderingModule
-                     , Modules::IPlatformAbstractionModule& platformAbstractionModule
-                     , const std::string& spriteSheetName
+            UISprite(  UIQuad* quad
                      , Eegeo::v2 spriteGridSize = Eegeo::v2::One()
                      , int spriteId = 1
                      , Eegeo::dv3 ecefPosition = Eegeo::dv3::Zero()

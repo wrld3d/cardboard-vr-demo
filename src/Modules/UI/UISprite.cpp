@@ -17,34 +17,21 @@ namespace Eegeo
     namespace UI
     {
         
-        UISprite::UISprite(Eegeo::Modules::Core::RenderingModule& renderingModule
-                           , Modules::IPlatformAbstractionModule& platformAbstractionModule
-                           , const std::string& spriteSheetName
+        UISprite::UISprite(UIQuad* quad
                            , Eegeo::v2 spriteGridSize
                            , int spriteId
                            , Eegeo::dv3 ecefPosition
                            , Eegeo::v2 size
                            , Eegeo::v3 scale
-                           , Eegeo::v4 color) : UIBaseItem(ecefPosition, size, scale, color){
+                           , Eegeo::v4 color)
+        : UIBaseItem(ecefPosition, size, scale, color)
+        , m_Quad(quad){
             
             m_SpriteId = spriteId;
-            m_SpriteSheetName = std::string(spriteSheetName);
             m_SpriteGridSize = Eegeo::v2(spriteGridSize);
             
             UpdateUVs();
             
-            m_Quad = Eegeo_NEW(Eegeo::UI::UIQuad)(renderingModule,
-                                                  renderingModule.GetGlBufferPool(),
-                                                  renderingModule.GetVertexBindingPool(),
-                                                  renderingModule.GetVertexLayoutPool(),
-                                                  platformAbstractionModule.GetTextureFileLoader(),
-                                                  renderingModule.GetRenderableFilters(),
-                                                  m_SpriteSheetName,
-                                                  GetEcefPosition(),
-                                                  GetSize(),
-                                                  m_MinUV,
-                                                  m_MaxUV,
-                                                  color);
 
         }
         

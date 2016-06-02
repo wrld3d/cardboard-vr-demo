@@ -49,7 +49,7 @@ namespace Eegeo
         
         Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* UIQuadFactory::GetMaterialForAsset(const std::string& assetPath)
         {
-            TMaterialMap::const_iterator foundMaterial = m_MaterialMap.find(assetPath.c_str());
+            TMaterialMap::const_iterator foundMaterial = m_MaterialMap.find(assetPath);
             
             if(foundMaterial != m_MaterialMap.end())
             {
@@ -76,7 +76,7 @@ namespace Eegeo
                                                                                *m_Shader,
                                                                                textureInfo.textureId,
                                                                                initialColor);
-            m_MaterialMap[assetPath.c_str()] = material;
+            m_MaterialMap[assetPath] = material;
             return material;
             
         }

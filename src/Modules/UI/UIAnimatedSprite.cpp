@@ -16,38 +16,20 @@ namespace Eegeo
     namespace UI
     {
         
-        UIAnimatedSprite::UIAnimatedSprite(Eegeo::Modules::Core::RenderingModule& p_RenderingModule
-                         , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
-                         , const std::string& p_SpriteSheetName
-                         , const Eegeo::dv3& p_EcefPosition
-                         , const Eegeo::v2& p_Dimension
-                         , Eegeo::Helpers::ICallback0& p_OnClickedEvent
-                         , Eegeo::v2& p_FramesGridSize
-                         , float p_FrameRate
+        UIAnimatedSprite::UIAnimatedSprite(UIQuad* quad
+                                           , Eegeo::Helpers::ICallback0& onClickedEvent
+                                           , const Eegeo::v2& dimension
+                                           , Eegeo::v2& framesGridSize
+                                           , float frameRate
         ):
-        m_FramesGridSize(p_FramesGridSize),
-        m_FrameRate(p_FrameRate),
-        m_OnClickedEvent(p_OnClickedEvent)
+        m_Quad(quad),
+        m_FramesGridSize(framesGridSize),
+        m_FrameRate(frameRate),
+        m_OnClickedEvent(onClickedEvent)
         {
             m_TimeElapsed = 0;
             m_CurrentFrameNumber = 0;
-            
-            m_Quad = Eegeo_NEW(Eegeo::UI::UIQuad)(p_RenderingModule,
-                                                            p_RenderingModule.GetGlBufferPool(),
-                                                            p_RenderingModule.GetVertexBindingPool(),
-                                                            p_RenderingModule.GetVertexLayoutPool(),
-                                                            p_PlatformAbstractionModule.GetTextureFileLoader(),
-                                                            p_RenderingModule.GetRenderableFilters(),
-                                                            p_SpriteSheetName,
-                                                            p_EcefPosition,
-                                                            p_Dimension,
-                                                            Eegeo::v2::Zero(),
-                                                            Eegeo::v2(1.f/m_FramesGridSize.GetX(), 1.f/m_FramesGridSize.GetY()),
-                                                            Eegeo::v4::One(),
-                                                            Eegeo::Rendering::LayerIds::Values::AfterAll
-                                                         );
-            
-            m_Radius = (p_Dimension.x > p_Dimension.y ? p_Dimension.x : p_Dimension.y)/2.0f;
+            m_Radius = (dimension.x > dimension.y ? dimension.x : dimension.y)/2.0f;
         }
         
         UIAnimatedSprite::~UIAnimatedSprite(){

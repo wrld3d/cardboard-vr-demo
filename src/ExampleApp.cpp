@@ -222,15 +222,12 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                      quadPosition,
                                                      m_ClickCallback);
     
-    Eegeo::dv3 spritePos = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 200).ToECEF();
+//    Eegeo::dv3 spritePos = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 200).ToECEF();
     Eegeo::v2 dim = Eegeo::v2(0.25f,0.25f)*7.f;
     
-    m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(renderingModule,
-                                                                pWorld->GetPlatformAbstractionModule(),
-                                                                "mesh_example/gaze_loader.png",
-                                                                spritePos,
-                                                                dim,
+    m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(m_QuadFactory->CreateUIQuad("mesh_example/gaze_loader.png", dim),
                                                                 m_ClickCallback,
+                                                                dim,
                                                                 *(new Eegeo::v2(7,7)),
                                                                 49.f/2.f
                                                                 );

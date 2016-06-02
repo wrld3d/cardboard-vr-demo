@@ -36,14 +36,11 @@ namespace Eegeo
             Eegeo::v3 m_scale;
             
         public:
-            UIAnimatedSprite(Eegeo::Modules::Core::RenderingModule& p_RenderingModule
-                             , Modules::IPlatformAbstractionModule& p_PlatformAbstractionModule
-                             , const std::string& p_SpriteSheetName
-                             , const Eegeo::dv3& p_EcefPosition
-                             , const Eegeo::v2& p_Dimension
-                             , Eegeo::Helpers::ICallback0& p_OnClickedEvent
-                             , Eegeo::v2& p_FramesGridSize
-                             , float p_FrameRate
+            UIAnimatedSprite(UIQuad* quad
+                             , Eegeo::Helpers::ICallback0& onClickedEvent
+                             , const Eegeo::v2& dimension
+                             , Eegeo::v2& framesGridSize
+                             , float frameRate
                           );
             
             virtual ~UIAnimatedSprite();

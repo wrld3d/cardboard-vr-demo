@@ -20,7 +20,7 @@ namespace Eegeo
             
         private:
             
-            typedef std::map<const char *, Eegeo::Rendering::Materials::TexturedUniformColoredMaterial*> TMaterialMap;
+            typedef std::map<std::string, Eegeo::Rendering::Materials::TexturedUniformColoredMaterial*> TMaterialMap;
             TMaterialMap m_MaterialMap;
             
             Eegeo::Rendering::Shaders::TexturedUniformColoredShader* m_Shader;
