@@ -20,15 +20,15 @@
     * [Icon Sheet](#icon-sheet)
 * [License](#license)
 
-This example app showcases the [eeGeo SDK's](http://www.eegeo.com/) integration with Google Cardboard for creating VR experiences.
+This example app showcases the [eeGeo SDK's](http://www.eegeo.com/) integration with Google Cardboard for creating map based VR experiences.
 
 ### What does the API have to offer?
 
-* Integration with Google Cardboard SDK
+* A full 3D, virtual reality map of the world.
 * Head tracking and magnet trigger usage
 * Lens distortion integration with Google Cardboard QR Code based profile selector
-* Ability to add elements on screen and detect gaze on them for interaction 
-* API for adding jump points in the world to jump around different locations
+* Gaze UI - The ability to add buttons that the user can select by gazing at them.
+* Jump Points - Adding points in the world that the user can jump to by gazing at them.
 
 ## Support
 
@@ -113,13 +113,11 @@ To remove a jump point, simply remove the jump point object from the repository.
 m_JumpPointsModule->GetRepository().RemoveJumpPoint(myJumpPoint);
 ```
 
-### Gaze Button
-
-In order to create a gaze button we need a callback that will be called when button is interacted with.
+### Gaze UI
 
 #### Creating a Button
 
-Assuming that you have a class named MyExampleClass with a method MyExampleMethod that needs to be triggered with a button
+In order to create a gaze button we need a callback that will be called when button is interacted with. Assuming that you have a class named MyExampleClass with a method MyExampleMethod that needs to be triggered with a button
 
 ```c++
 class MyExampleClass
@@ -170,8 +168,7 @@ public:
     }
 };
 ```
-
-### Changing Gaze Icon
+### Changing Gaze Icons
 
 In order to change the interaction animation, follow these steps:
 * Replace the loading sprite sheet with the your custom image by replacing [gaze_loader.png](https://github.com/eegeo/cardboard-vr-integration/blob/master/android/assets/mesh_example/gaze_loader.png).
