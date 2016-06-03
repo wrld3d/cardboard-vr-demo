@@ -42,7 +42,9 @@ namespace Eegeo
 
             }
             
-            ~JumpPointsCameraController() { };
+            ~JumpPointsCameraController() {
+                delete m_renderCamera;
+            };
             
             Eegeo::dv3 GetEcefInterestPoint() const;
             double GetAltitudeAboveSeaLevel() const;
