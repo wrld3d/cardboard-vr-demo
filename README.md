@@ -14,9 +14,9 @@
     * [Jump Points](#jump-points)
         * [Creating a Jump Point](#creating-a-jump-point)  
         * [Removing a Jump Point](#removing-a-jump-point)
-    * [Gaze Button](#gaze-button)
+    * [Gaze UI](#gaze-ui)
         * [Creating a Button](#creating-a-button)
-    * [Changing Gaze Icon](#changing-gaze-icon)
+    * [Changing Gaze Icons](#changing-gaze-icons)
     * [Icon Sheet](#icon-sheet)
 * [License](#license)
 
