@@ -54,6 +54,7 @@
 #include "WebRequestExampleFactory.h"
 
 #include "Examples/VRCameraSpline/VRCameraSplineExampleFactory.h"
+#include "Examples/JumpPoints/JumpPointsExampleFactory.h"
 #include "CameraSplineExampleFactory.h"
 #include "ReadHeadingExampleFactory.h"
 #include "FireworksExampleFactory.h"
@@ -243,41 +244,12 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_UIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*this, *m_UIGazeView);
     m_UIInteractionController->RegisterInteractableItem(m_UIButton);
     
-    Eegeo::UI::CalculateUV(size, 0, outMin, outMax);
-    dimension = Eegeo::v2(50,50);
-    
-    m_JumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1,
-                                                        Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250),
-                                                        "mesh_example/PinIconTexturePage.png",
-                                                        dimension,
-                                                        outMin,
-                                                        outMax
-                                                        );
-    
-    m_JumpPoint2 = new Eegeo::UI::JumpPoints::JumpPoint(2,
-                                                        Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250),
-                                                        "mesh_example/PinIconTexturePage.png",
-                                                        dimension,
-                                                        outMin,
-                                                        outMax
-                                                        );
-    
-    m_JumpPoint3 = new Eegeo::UI::JumpPoints::JumpPoint(3,
-                                                        Eegeo::Space::LatLongAltitude::FromDegrees(56.451235, -2.976600, 250),
-                                                        "mesh_example/PinIconTexturePage.png",
-                                                        dimension,
-                                                        outMin,
-                                                        outMax
-                                                        );
-    
-    m_JumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(*m_QuadFactory,
-                                                                     *m_UIInteractionController,
-                                                                     *this);
-    m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint1);
-    m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint2);
-    m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint3);
-
-    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
+//    const IScreenPropertiesProvider& screenPropertiesProvider,
+//    Eegeo::UI::IUIQuadFactory& quadFactory,
+//    Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
+//    Eegeo::UI::IUICameraProvider& uICameraProvider
+//    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
+    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_QuadFactory, *m_UIInteractionController, *this);
 
     
     m_UIGazeView->HideView();
@@ -289,7 +261,6 @@ ExampleApp::~ExampleApp()
     delete m_VRDistortion;
     delete m_VRSkybox;
     delete m_UIInteractionController;
-    delete m_UIButton;
     delete m_pCameraTouchController;
     delete m_pLoadingScreen;
     delete m_pExampleController;
@@ -360,7 +331,6 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     m_UIGazeView->UpdateEcefPosition(position);
     
-    m_JumpPointsModule->Update(dt);
 
     
     eegeoWorld.Update(updateParameters);

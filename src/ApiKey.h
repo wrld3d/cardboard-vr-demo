@@ -8,6 +8,6 @@ namespace
 {
     
     //! REQUIRED: You must obtain an API key for the eeGeo SDK from https://www.eegeo.com/developers/
-    static const std::string ApiKey = "OBTAIN API_KEY FROM https://www.eegeo.com/developers/ AND INSERT IT HERE";
+    static const std::string ApiKey = "3429dfad9362f1cd42cb614671e5199c";
 
 }
