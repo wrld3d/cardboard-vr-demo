@@ -105,6 +105,8 @@ Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint) ( jumpPointID
                                             , cutsomUserData);
 ```
 
+Sample usage can be seen in the [Example App Class](https://github.com/eegeo/cardboard-vr-integration/blob/master/src/ExampleApp.cpp#L249).
+
 #### Removing a Jump Point
 
 To remove a jump point, simply remove the jump point object from the repository.
@@ -168,11 +170,14 @@ public:
     }
 };
 ```
+
+Sample usage can be seen in the [Example App Class](https://github.com/eegeo/cardboard-vr-integration/blob/master/src/ExampleApp.cpp#L220).
+
 ### Changing Gaze Icons
 
 In order to change the interaction animation, follow these steps:
 * Replace the loading sprite sheet with the your custom image by replacing [gaze_loader.png](https://github.com/eegeo/cardboard-vr-integration/blob/master/android/assets/mesh_example/gaze_loader.png).
-* Update the following things in the code below located in constructor of [ExampleApp.cpp](https://github.com/eegeo/cardboard-vr-integration/blob/master/src/ExampleApp.cpp)
+* Update the following things in the code below located in constructor of [ExampleApp.cpp](https://github.com/eegeo/cardboard-vr-integration/blob/master/src/ExampleApp.cpp#L227)
     * Change the `spriteSheetGridSize` according to your sprite sheet.
     * Change the last parameter `framesPerSecond` to change the speed of animation.
 
