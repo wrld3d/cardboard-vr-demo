@@ -43,7 +43,7 @@ namespace Eegeo
             SetDirty();
         }
         
-        Eegeo::dv3 UIBaseItem::GetEcefPosition()
+        const Eegeo::dv3& UIBaseItem::GetEcefPosition()
         {
             return m_EcefPosition;
         }
@@ -54,7 +54,7 @@ namespace Eegeo
             SetDirty();
         }
         
-        Eegeo::v2 UIBaseItem::GetSize()
+        const Eegeo::v2& UIBaseItem::GetSize()
         {
             return m_Size;
         }
@@ -65,7 +65,7 @@ namespace Eegeo
             SetDirty();
         }
         
-        Eegeo::v4 UIBaseItem::GetColor()
+        const Eegeo::v4& UIBaseItem::GetColor()
         {
             return m_Color;
         }
@@ -76,7 +76,7 @@ namespace Eegeo
             SetDirty();
         }
         
-        Eegeo::v3 UIBaseItem::GetScale()
+        const Eegeo::v3& UIBaseItem::GetScale()
         {
             return m_Scale;
         }

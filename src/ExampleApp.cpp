@@ -217,38 +217,29 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_QuadFactory = Eegeo_NEW(Eegeo::UI::UIQuadFactory)(renderingModule, m_pWorld->GetPlatformAbstractionModule().GetTextureFileLoader());
     
-    
     m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(
                                                      m_QuadFactory->CreateUIQuad("mesh_example/PinIconTexturePage.png", dimension, outMin, outMax),
-                                                     dimension,
-                                                     quadPosition,
-                                                     m_ClickCallback);
+                                                     m_ClickCallback,
+                                                     dimension);
+    m_UIButton->SetEcefPosition(quadPosition);
     
     dimension = Eegeo::v2(0.25f,0.25f)*7.f;
     m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(m_QuadFactory->CreateUIQuad("mesh_example/gaze_loader.png", dimension),
-                                                                m_ClickCallback,
-                                                                dimension,
-                                                                *(new Eegeo::v2(7,7)),
-                                                                49.f/2.f
-                                                                );
+                                                                49.f/2.f,
+                                                                Eegeo::v2(7,7),
+                                                                0,
+                                                                dimension);
     
     dimension = Eegeo::v2(0.075f,0.075f)*3.f;
     m_Pointer = Eegeo_NEW(Eegeo::UI::UIImageButton)(m_QuadFactory->CreateUIQuad("mesh_example/gaze_point.png", dimension, Eegeo::v2::Zero(), Eegeo::v2::One()/2.0f, quadPosition, Eegeo::v4::One(), Eegeo::Rendering::LayerIds::Values::AfterAll),
-                                                     dimension,
-                                                     quadPosition,
-                                                    m_ClickCallback
-                                                     );
+                                                    m_ClickCallback,
+                                                    dimension);
     
     m_UIGazeView = new Eegeo::UIGaze::UIGazeView(*m_GazeProgress, *m_Pointer);
     
     m_UIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*this, *m_UIGazeView);
     m_UIInteractionController->RegisterInteractableItem(m_UIButton);
     
-//    const IScreenPropertiesProvider& screenPropertiesProvider,
-//    Eegeo::UI::IUIQuadFactory& quadFactory,
-//    Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
-//    Eegeo::UI::IUICameraProvider& uICameraProvider
-//    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_QuadFactory, *m_UIInteractionController, *this);
 
     
@@ -258,13 +249,18 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 ExampleApp::~ExampleApp()
 {
-    delete m_VRDistortion;
-    delete m_VRSkybox;
-    delete m_UIInteractionController;
-    delete m_pCameraTouchController;
-    delete m_pLoadingScreen;
-    delete m_pExampleController;
+    Eegeo_DELETE m_VRDistortion;
+    Eegeo_DELETE m_VRSkybox;
+    Eegeo_DELETE m_UIInteractionController;
+    Eegeo_DELETE m_pCameraTouchController;
+    Eegeo_DELETE m_pLoadingScreen;
+    Eegeo_DELETE m_pExampleController;
     Eegeo_DELETE m_QuadFactory;
+    
+    Eegeo_DELETE m_UIGazeView;
+    Eegeo_DELETE m_Pointer;
+    Eegeo_DELETE m_GazeProgress;
+    
 }
 
 void ExampleApp::OnPause()

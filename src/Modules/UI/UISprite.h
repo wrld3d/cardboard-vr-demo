@@ -16,7 +16,7 @@ namespace Eegeo
 {
     namespace UI
     {
-        class UISprite : public UIBaseItem, private NonCopyable
+        class UISprite : public UIBaseItem
         {
         
         private:
@@ -33,20 +33,24 @@ namespace Eegeo
             
         public:
             
-            UISprite(  UIQuad* quad
-                     , Eegeo::v2 spriteGridSize = Eegeo::v2::One()
-                     , int spriteId = 1
-                     , Eegeo::dv3 ecefPosition = Eegeo::dv3::Zero()
+            UISprite( UIQuad* quad
                      , Eegeo::v2 size = Eegeo::v2::One()
+                     , Eegeo::dv3 ecefPosition = Eegeo::dv3::Zero()
                      , Eegeo::v3 scale = Eegeo::v3::One()
-                     , Eegeo::v4 color = Eegeo::v4::One());
+                     , Eegeo::v4 color = Eegeo::v4::One()
+                     , int spriteId = 0
+                     , Eegeo::v2 spriteGridSize = Eegeo::v2::One());
             
             virtual ~UISprite();
             
+            int GetSpriteId();
             void SetSpriteId(int spriteId);
-            int getSpriteId();
             
-            virtual void Update();
+            int GetMaxSpriteId();
+            void SetPreviousSprite();
+            void SetNextSprite();
+            
+            virtual void Update(float dt);
             
             
         };

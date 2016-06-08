@@ -16,28 +16,18 @@ namespace Eegeo
     {
         namespace JumpPoints
         {
-            /*!
-             * \brief A view object representing a JumpPoint in the world.
-             *
-             *  This class deals with the concerns of displaying a JumpPoint.
-             *
-             */
-            class JumpPointView : protected Eegeo::NonCopyable , public UIImageButton
+            class JumpPointView : public UIImageButton
             {
             public:
                 JumpPointView(JumpPoint& jumpPoint
                               , UIQuad* quad
-                              , IUICameraProvider& p_UICameraProvider
-                              );
+                              , IUICameraProvider& p_UICameraProvider);
                 
-                /*! Retrieve the JumpPoint model that the view represents.
-                 * \return The view's JumpPoint model.
-                 */
+                virtual ~JumpPointView(){}
+                
                 JumpPoint& GetJumpPoint() const;
                 
-                /*! Move the render camera to jump point.
-                 * \param The color vector to apply to the JumpPoint.
-                 */
+               
                 void MoveCameraToJumpPoint();
                 
             private:

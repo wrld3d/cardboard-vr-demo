@@ -22,12 +22,10 @@ namespace Eegeo
             : m_JumpPoint(jumpPoint)
             , m_UICameraProvider(p_UICameraProvider)
             , m_JumpPointClickCallback(this, &JumpPointView::MoveCameraToJumpPoint)
-            , UIImageButton(
-                            quad
-                            , jumpPoint.GetDimensions()
-                            , jumpPoint.GetEcefPosition()
+            , UIImageButton(quad
                             , m_JumpPointClickCallback
-                            )
+                            , jumpPoint.GetDimensions()
+                            , jumpPoint.GetEcefPosition())
             {}
             
             void JumpPointView::MoveCameraToJumpPoint()

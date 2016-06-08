@@ -15,8 +15,8 @@ namespace Eegeo
         UIGazeView::UIGazeView(UI::UIAnimatedSprite& gazeProgress, UI::UIImageButton& pointer)
         : m_GazeProgress(gazeProgress)
         , m_Pointer(pointer)
-        {
-        }
+        {}
+        
         UIGazeView::~UIGazeView()
         {}
         

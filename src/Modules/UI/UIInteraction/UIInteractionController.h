@@ -31,18 +31,22 @@ namespace Eegeo
             std::vector<IUIInteractableItem*> m_InteractableItems;
             IUICameraProvider& m_pCameraProvider;
             
-            bool IsScreenPointInsideModel(const Eegeo::v2& screenPoint, IUIInteractableItem* uiItem);
         public:
+            
             UIInteractionController(IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView);
             virtual ~UIInteractionController();
+            
             void Update(float dt);
+            
             void Event_ScreenInteractionStart(const Eegeo::v2& point);
             void Event_ScreenInteractionMoved(const Eegeo::v2& point);
             void Event_ScreenInteractionEnd(const Eegeo::v2& point);
             void Event_ScreenInteractionClick(const Eegeo::v2& point);
+            
             const IUIInteractableItem* GetItemAtScreenPoint(const Eegeo::v2& point);
             virtual void RegisterInteractableItem(IUIInteractableItem* interactableItem);
             virtual void UnRegisterInteractableItem(IUIInteractableItem* interactableItem);
+            
         };
         
     }

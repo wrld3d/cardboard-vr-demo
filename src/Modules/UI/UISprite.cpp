@@ -18,12 +18,12 @@ namespace Eegeo
     {
         
         UISprite::UISprite(UIQuad* quad
-                           , Eegeo::v2 spriteGridSize
-                           , int spriteId
-                           , Eegeo::dv3 ecefPosition
                            , Eegeo::v2 size
+                           , Eegeo::dv3 ecefPosition
                            , Eegeo::v3 scale
-                           , Eegeo::v4 color)
+                           , Eegeo::v4 color
+                           , int spriteId
+                           , Eegeo::v2 spriteGridSize)
         : UIBaseItem(ecefPosition, size, scale, color)
         , m_Quad(quad){
             
@@ -40,7 +40,7 @@ namespace Eegeo
             delete m_Quad;
         }
         
-        void UISprite::Update()
+        void UISprite::Update(float dt)
         {
             if(IsDirty())
             {
@@ -48,7 +48,7 @@ namespace Eegeo
                 m_Quad->SetColor(GetColor());
                 m_Quad->SetScale(GetScale());
 //                m_Quad->SetSize(GetSize()); Not yet incorporated.
-                SetDirty();
+                SetDirty(false);
             }
         }
         
@@ -68,13 +68,40 @@ namespace Eegeo
             m_SpriteId = spriteId;
             UpdateUVs();
             m_Quad->UpdateUVs(m_MinUV, m_MaxUV);
+            
+            SetDirty();
+            
         }
         
-        int UISprite::getSpriteId()
+        int UISprite::GetSpriteId()
         {
             return m_SpriteId;
         }
         
+        void UISprite::SetNextSprite()
+        {
+            int spriteId = GetSpriteId()+1;
+            if(spriteId > GetMaxSpriteId())
+            {
+                spriteId = 0;
+            }
+            SetSpriteId(spriteId);
+        }
+        
+        void UISprite::SetPreviousSprite()
+        {
+            int spriteId = GetSpriteId()-1;
+            if(spriteId < 0)
+            {
+                spriteId = GetMaxSpriteId();
+            }
+            SetSpriteId(spriteId);
+        }
+        
+        int UISprite::GetMaxSpriteId()
+        {
+            return ((int)(m_SpriteGridSize.GetX()+m_SpriteGridSize.GetY()))-1;
+        }
         
         
     }
