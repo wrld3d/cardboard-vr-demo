@@ -157,12 +157,10 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                                    Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
                                                                                    Eegeo::Streaming::QuadTreeCube::MAX_DEPTH_TO_VISIT,
                                                                                    mapModule.GetEnvironmentFlatteningService());
-    
     m_pStreamingVolume->setDeepestLevelForAltitudeLodRefinement(11);
     m_pStreamingVolume->SetForceMaximumRefinement(true);
     
-    m_pCameraControllerFactory = new Examples::DefaultCameraControllerFactory(
-                                                                    terrainModelModule,
+    m_pCameraControllerFactory = new Examples::DefaultCameraControllerFactory( terrainModelModule,
                                                                     mapModule,
                                                                     *m_pCameraTouchController,
                                                                     m_screenPropertiesProvider,
@@ -172,7 +170,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                     interestPointLongitudeDegrees,
                                                                     interestPointAltitudeMeters,
                                                                     cameraControllerOrientationDegrees,
-                                                                    cameraControllerDistanceFromInterestPointMeters);
+                                                                    cameraControllerDistanceFromInterestPointMeters );
     
     m_pLoadingScreen = CreateLoadingScreen(screenProperties, eegeoWorld.GetRenderingModule(), eegeoWorld.GetPlatformAbstractionModule());
     
@@ -233,23 +231,17 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                 );
     
     dimension = Eegeo::v2(0.075f,0.075f)*3.f;
-    m_Pointer = Eegeo_NEW(Eegeo::UI::UIImageButton)(m_QuadFactory->CreateUIQuad("mesh_example/gaze_point.png", dimension, Eegeo::v2::Zero(), Eegeo::v2::One()/2.0f, quadPosition, Eegeo::v4::One(), Eegeo::Rendering::LayerIds::Values::AfterAll),
-                                                     dimension,
-                                                     quadPosition,
-                                                    m_ClickCallback
-                                                     );
+    m_Pointer = Eegeo_NEW(Eegeo::UI::UIImageButton)(m_QuadFactory->CreateUIQuad("mesh_example/gaze_point.png", dimension, Eegeo::v2::Zero(), Eegeo::v2::One()/2.0f, quadPosition, Eegeo::v4::One(), Eegeo::Rendering::LayerIds::Values::AfterAll), dimension,
+                                                quadPosition,
+                                                m_ClickCallback);
     
     m_UIGazeView = new Eegeo::UIGaze::UIGazeView(*m_GazeProgress, *m_Pointer);
     
     m_UIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*this, *m_UIGazeView);
     m_UIInteractionController->RegisterInteractableItem(m_UIButton);
     
-//    const IScreenPropertiesProvider& screenPropertiesProvider,
-//    Eegeo::UI::IUIQuadFactory& quadFactory,
-//    Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
-//    Eegeo::UI::IUICameraProvider& uICameraProvider
-//    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
-    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_QuadFactory, *m_UIInteractionController, *this);
+    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
+//    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_QuadFactory, *m_UIInteractionController, *this);
 
     
     m_UIGazeView->HideView();
@@ -258,13 +250,31 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 ExampleApp::~ExampleApp()
 {
-    delete m_VRDistortion;
-    delete m_VRSkybox;
-    delete m_UIInteractionController;
-    delete m_pCameraTouchController;
-    delete m_pLoadingScreen;
-    delete m_pExampleController;
+    
+    if(m_pLoadingScreen!=NULL)
+    {
+        Eegeo_DELETE m_pLoadingScreen;
+    }
+    
+    Eegeo_DELETE m_UIInteractionController;
+    
     Eegeo_DELETE m_QuadFactory;
+    
+    Eegeo_DELETE m_GazeProgress;
+    Eegeo_DELETE m_Pointer;
+    Eegeo_DELETE m_UIGazeView;
+    
+    Eegeo_DELETE m_UIButton;
+    
+    Eegeo_DELETE m_VRSkybox;
+    Eegeo_DELETE m_VRDistortion;
+    
+    Eegeo_DELETE m_pStreamingVolume;
+    Eegeo_DELETE m_pCameraControllerFactory;
+    Eegeo_DELETE m_interiorExplorerModule;
+    Eegeo_DELETE m_pCameraTouchController;
+    Eegeo_DELETE m_pExampleController;
+    
 }
 
 void ExampleApp::OnPause()
