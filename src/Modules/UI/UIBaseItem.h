@@ -41,19 +41,19 @@ namespace Eegeo
             
             virtual ~UIBaseItem();
             
-            virtual void Update() = 0;
+            virtual void Update(float dt) = 0;
             
             void SetEcefPosition(Eegeo::dv3 position);
-            Eegeo::dv3 GetEcefPosition();
+            const Eegeo::dv3& GetEcefPosition();
             
             void SetSize(Eegeo::v2 size);
-            Eegeo::v2 GetSize();
+            const Eegeo::v2& GetSize();
             
             void SetColor(Eegeo::v4 color);
-            Eegeo::v4 GetColor();
+            const Eegeo::v4& GetColor();
             
             void SetScale(Eegeo::v3 scale);
-            Eegeo::v3 GetScale();
+            const Eegeo::v3& GetScale();
             
             
         };

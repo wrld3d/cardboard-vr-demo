@@ -41,9 +41,12 @@ namespace Eegeo
             Eegeo::dv3 m_EcefPosition;
             const Eegeo::Rendering::LayerIds::Values m_RenderLayer;
             
+            std::string m_Name;
+            
         public:
             
             UIQuad(
+                   const std::string& name,
                    Eegeo::Rendering::Materials::TexturedUniformColoredMaterial& material,
                    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
                    Eegeo::Rendering::RenderableFilters& renderableFilters,

@@ -89,6 +89,7 @@ namespace Eegeo
         
         
         UIQuad::UIQuad(
+                       const std::string& name,
                        Eegeo::Rendering::Materials::TexturedUniformColoredMaterial& material,
                        Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
                        Eegeo::Rendering::RenderableFilters& renderableFilters,
@@ -107,6 +108,7 @@ namespace Eegeo
         , m_RenderLayer(renderLayer)
         , m_Renderable(NULL)
         {
+            m_Name = name;
             
             m_Dimension = Eegeo::v2(dimension);
             m_EcefPosition = Eegeo::dv3(ecefPosition);
@@ -120,6 +122,9 @@ namespace Eegeo
         
         UIQuad::~UIQuad()
         {
+            
+            EXAMPLE_LOG("logs:: deleting quad: %s", m_Name.c_str());
+            
             m_RenderableFilters.RemoveRenderableFilter(*this);
             
             Eegeo_DELETE m_RenderableMesh;

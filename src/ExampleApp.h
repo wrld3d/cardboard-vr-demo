@@ -44,8 +44,6 @@ private:
     
     Eegeo::UI::IUIQuadFactory* m_QuadFactory;
     
-    Eegeo::UI::UIAnimatedSprite *m_GazeProgress;
-    Eegeo::UI::UIImageButton *m_Pointer;
     
     Eegeo::Helpers::IdentityProvider m_identityProvider;
     InteriorsExplorer::InteriorsExplorerModule* m_interiorExplorerModule;

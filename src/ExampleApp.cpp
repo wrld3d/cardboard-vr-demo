@@ -157,10 +157,12 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                                    Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
                                                                                    Eegeo::Streaming::QuadTreeCube::MAX_DEPTH_TO_VISIT,
                                                                                    mapModule.GetEnvironmentFlatteningService());
+    
     m_pStreamingVolume->setDeepestLevelForAltitudeLodRefinement(11);
     m_pStreamingVolume->SetForceMaximumRefinement(true);
     
-    m_pCameraControllerFactory = new Examples::DefaultCameraControllerFactory( terrainModelModule,
+    m_pCameraControllerFactory = new Examples::DefaultCameraControllerFactory(
+                                                                    terrainModelModule,
                                                                     mapModule,
                                                                     *m_pCameraTouchController,
                                                                     m_screenPropertiesProvider,
@@ -170,7 +172,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                     interestPointLongitudeDegrees,
                                                                     interestPointAltitudeMeters,
                                                                     cameraControllerOrientationDegrees,
-                                                                    cameraControllerDistanceFromInterestPointMeters );
+                                                                    cameraControllerDistanceFromInterestPointMeters);
     
     m_pLoadingScreen = CreateLoadingScreen(screenProperties, eegeoWorld.GetRenderingModule(), eegeoWorld.GetPlatformAbstractionModule());
     
@@ -215,33 +217,19 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_QuadFactory = Eegeo_NEW(Eegeo::UI::UIQuadFactory)(renderingModule, m_pWorld->GetPlatformAbstractionModule().GetTextureFileLoader());
     
-    
     m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(
                                                      m_QuadFactory->CreateUIQuad("mesh_example/PinIconTexturePage.png", dimension, outMin, outMax),
-                                                     dimension,
-                                                     quadPosition,
-                                                     m_ClickCallback);
+                                                     m_ClickCallback,
+                                                     dimension);
+    m_UIButton->SetEcefPosition(quadPosition);
     
-    dimension = Eegeo::v2(0.25f,0.25f)*7.f;
-    m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(m_QuadFactory->CreateUIQuad("mesh_example/gaze_loader.png", dimension),
-                                                                m_ClickCallback,
-                                                                dimension,
-                                                                *(new Eegeo::v2(7,7)),
-                                                                49.f/2.f
-                                                                );
-    
-    dimension = Eegeo::v2(0.075f,0.075f)*3.f;
-    m_Pointer = Eegeo_NEW(Eegeo::UI::UIImageButton)(m_QuadFactory->CreateUIQuad("mesh_example/gaze_point.png", dimension, Eegeo::v2::Zero(), Eegeo::v2::One()/2.0f, quadPosition, Eegeo::v4::One(), Eegeo::Rendering::LayerIds::Values::AfterAll), dimension,
-                                                quadPosition,
-                                                m_ClickCallback);
-    
-    m_UIGazeView = new Eegeo::UIGaze::UIGazeView(*m_GazeProgress, *m_Pointer);
+    m_UIGazeView = new Eegeo::UIGaze::UIGazeView(*m_QuadFactory);
     
     m_UIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*this, *m_UIGazeView);
     m_UIInteractionController->RegisterInteractableItem(m_UIButton);
     
-    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
-//    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_QuadFactory, *m_UIInteractionController, *this);
+//    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
+    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_QuadFactory, *m_UIInteractionController, *this);
 
     
     m_UIGazeView->HideView();
@@ -256,12 +244,8 @@ ExampleApp::~ExampleApp()
         Eegeo_DELETE m_pLoadingScreen;
     }
     
-    Eegeo_DELETE m_UIInteractionController;
-    
     Eegeo_DELETE m_QuadFactory;
     
-    Eegeo_DELETE m_GazeProgress;
-    Eegeo_DELETE m_Pointer;
     Eegeo_DELETE m_UIGazeView;
     
     Eegeo_DELETE m_UIButton;
@@ -274,6 +258,8 @@ ExampleApp::~ExampleApp()
     Eegeo_DELETE m_interiorExplorerModule;
     Eegeo_DELETE m_pCameraTouchController;
     Eegeo_DELETE m_pExampleController;
+    
+    Eegeo_DELETE m_UIInteractionController;
     
 }
 
@@ -293,20 +279,19 @@ void ExampleApp::OnResume()
 void ExampleApp::Update (float dt, float headTansform[])
 {
     
+    const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
+    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
+    Eegeo::Camera::RenderCamera renderCamera = *m_pExampleController->GetRenderCamera();
     Eegeo::EegeoWorld& eegeoWorld(World());
     
     eegeoWorld.EarlyUpdate(dt);
     
-    
-    m_interiorExplorerModule ->Update(dt);
     
     
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
         m_pExampleController->EarlyUpdate(dt);
     
     
-    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
-    Eegeo::Camera::RenderCamera renderCamera = *m_pExampleController->GetRenderCamera();
     
     std::vector<Eegeo::Geometry::Plane> frustumPlanes(Eegeo::Geometry::Frustum::PLANES_COUNT);
     BuildFrustumPlanesFromViewProjection(frustumPlanes, renderCamera.GetViewProjectionMatrix());
@@ -325,21 +310,7 @@ void ExampleApp::Update (float dt, float headTansform[])
                                                   cameraState.ViewMatrix(),
                                                   cameraState.ProjectionMatrix(),
                                                   *m_pStreamingVolume,
-                                                  m_screenPropertiesProvider.GetScreenProperties());
-    
-    
-    m_UIInteractionController->Update(dt);
-    
-    const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
-    Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-    m_UIInteractionController->Event_ScreenInteractionMoved(center);
-    
-    m_GazeProgress->Update(dt);
-    
-    Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
-    Eegeo::dv3 position(m_pExampleController->GetCurrentCameraState().LocationEcef() + (forward*50));
-    
-    m_UIGazeView->UpdateEcefPosition(position);
+                                                  screenProperties);
     
 
     
@@ -347,6 +318,19 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
         m_pExampleController->Update(dt);
+    
+    m_UIInteractionController->Update(dt);
+    
+    Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+    m_UIInteractionController->Event_ScreenInteractionMoved(center);
+    
+    
+    Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
+    Eegeo::dv3 position(m_pExampleController->GetCurrentCameraState().LocationEcef() + (forward*50));
+    m_UIGazeView->Update(dt);
+    m_UIGazeView->SetEcefPosition(position);
+    
+    m_interiorExplorerModule ->Update(dt);
     
     UpdateNightTParam(dt);
     UpdateFogging();

@@ -22,15 +22,16 @@ namespace Eegeo
              *  This class deals with the concerns of displaying a JumpPoint.
              *
              */
-            class JumpPointView : protected Eegeo::NonCopyable , public UIImageButton
+            class JumpPointView : public UIImageButton
             {
             public:
                 JumpPointView(JumpPoint& jumpPoint
                               , UIQuad* quad
-                              , IUICameraProvider& p_UICameraProvider
-                              );
+                              , IUICameraProvider& p_UICameraProvider);
+
+                virtual ~JumpPointView(){}
                 
-                /*! Retrieve the JumpPoint model that the view represents.
+	         /*! Retrieve the JumpPoint model that the view represents.
                  * \return The view's JumpPoint model.
                  */
                 JumpPoint& GetJumpPoint() const;

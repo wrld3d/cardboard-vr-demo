@@ -21,22 +21,6 @@ namespace Eegeo
     namespace UI
     {
         
-        bool UIInteractionController::IsScreenPointInsideModel(const Eegeo::v2& screenPoint, IUIInteractableItem* uiItem)
-        {
-            Eegeo::Camera::RenderCamera* renderCamera = m_pCameraProvider.GetRenderCameraForUI();
-            
-            if (renderCamera->GetEcefLocation().SquareDistanceTo(uiItem->GetItemEcefPosition()) < (uiItem->GetItemRadius() * uiItem->GetItemRadius())) {
-                //Camera is within item's radius
-                return false;
-            }
-            
-            Eegeo::dv3 rayOrigin = renderCamera->GetEcefLocation();
-            Eegeo::dv3 rayDirection;
-            
-            Eegeo::Camera::CameraHelpers::GetScreenPickRay(*renderCamera, screenPoint.GetX(), screenPoint.GetY(), rayDirection);
-            
-            return Eegeo::Geometry::IntersectionTests::TestRaySphere(rayOrigin, rayDirection, uiItem->GetItemEcefPosition(), uiItem->GetItemRadius());
-        }
         
         UIInteractionController::UIInteractionController(IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView):
         m_pCameraProvider(p_CameraProvider),
@@ -56,16 +40,13 @@ namespace Eegeo
             if(m_FocusedUIItemId>=0)
                 m_GazedTime += dt;
             
-            for (int i = 0; i != m_InteractableItems.size(); i++) {
-                m_InteractableItems[i]->Update(dt);
-            }
         }
         
         void UIInteractionController::Event_ScreenInteractionStart(const Eegeo::v2& point)
         {
             m_FocusedUIItemId = -1;
             for (int i = 0; i != m_InteractableItems.size(); i++) {
-                if (IsScreenPointInsideModel(point, m_InteractableItems[i])) {
+                if (m_InteractableItems[i]->IsCollidingWithPoint(point, m_pCameraProvider)) {
                     m_InteractableItems[i]->SetItemHasFocus(true);
                     m_FocusedUIItemId = i;
                 }
@@ -77,7 +58,7 @@ namespace Eegeo
             int touchedItemId = -1;
             for (int i = 0; i != m_InteractableItems.size(); i++)
             {
-                if (IsScreenPointInsideModel(point, m_InteractableItems[i]))
+                if (m_InteractableItems[i]->IsCollidingWithPoint(point, m_pCameraProvider))
                 {
                     touchedItemId = i;
                     m_InteractableItems[i]->SetItemHasFocus(true);
@@ -127,7 +108,7 @@ namespace Eegeo
         void UIInteractionController::Event_ScreenInteractionEnd(const Eegeo::v2& point)
         {
             for (int i = 0; i != m_InteractableItems.size(); i++) {
-                if (IsScreenPointInsideModel(point, m_InteractableItems[i])) {
+                if (m_InteractableItems[i]->IsCollidingWithPoint(point, m_pCameraProvider)) {
                     m_InteractableItems[i]->SetItemHasFocus(false);
                 }
             }
@@ -136,7 +117,7 @@ namespace Eegeo
         void UIInteractionController::Event_ScreenInteractionClick(const Eegeo::v2& point)
         {
             for (int i = 0; i != m_InteractableItems.size(); i++) {
-                if (IsScreenPointInsideModel(point, m_InteractableItems[i])) {
+                if (m_InteractableItems[i]->IsCollidingWithPoint(point, m_pCameraProvider)) {
                     m_InteractableItems[i]->OnItemClicked();
                 }
             }
@@ -145,7 +126,7 @@ namespace Eegeo
         const IUIInteractableItem* UIInteractionController::GetItemAtScreenPoint(const Eegeo::v2& point)
         {
             for (int i = 0; i != m_InteractableItems.size(); i++) {
-                if (IsScreenPointInsideModel(point, m_InteractableItems[i])) {
+                if (m_InteractableItems[i]->IsCollidingWithPoint(point, m_pCameraProvider)) {
                     return m_InteractableItems[i];
                 }
             }

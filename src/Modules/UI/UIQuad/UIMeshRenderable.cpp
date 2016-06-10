@@ -30,8 +30,7 @@ namespace Eegeo
         , m_depthTest(depthTest)
         , m_alphaBlend(alphaBlend)
         , m_orientationEcef(Eegeo::m44::CreateIdentity())
-        {
-            
+        {   
         }
         
         void UIMeshRenderable::OnMaterialChanged(const Eegeo::Rendering::Materials::IMaterial* pMaterial, Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool)

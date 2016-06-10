@@ -6,9 +6,9 @@
 //
 //
 
-#include "UIQuad/UIQuad.h"
-#include "UIInteraction/IUIInteractableItem.h"
+#include "UISprite.h"
 #include "ICallback.h"
+#include "UIQuad/UIQuad.h"
 
 #ifndef UIAnimatedSprite_h
 #define UIAnimatedSprite_h
@@ -17,7 +17,7 @@ namespace Eegeo
 {
     namespace UI
     {
-        class UIAnimatedSprite : public Eegeo::UI::IUIInteractableItem
+        class UIAnimatedSprite : public UISprite
         {
             
         private:
@@ -25,42 +25,30 @@ namespace Eegeo
             float m_TimeElapsed;
             float m_FrameRate;
             
-            int m_CurrentFrameNumber;
-            float m_Radius;
-            
-            Eegeo::v2& m_FramesGridSize;
             
             UIQuad* m_Quad;
-            Eegeo::Helpers::ICallback0& m_OnClickedEvent;
             
-            Eegeo::v3 m_scale;
             
         public:
-            UIAnimatedSprite(UIQuad* quad
-                             , Eegeo::Helpers::ICallback0& onClickedEvent
-                             , const Eegeo::v2& dimension
-                             , Eegeo::v2& framesGridSize
+            
+            UIAnimatedSprite( UIQuad* quad
                              , float frameRate
-                          );
+                             , Eegeo::v2 spriteGridSize = Eegeo::v2::One()
+                             , int spriteId = 0
+                             , Eegeo::v2 size = Eegeo::v2::One()
+                             , Eegeo::dv3 ecefPosition = Eegeo::dv3::Zero()
+                             , Eegeo::v3 scale = Eegeo::v3::One()
+                             , Eegeo::v4 color = Eegeo::v4::One()
+                             );
+        
             
             virtual ~UIAnimatedSprite();
             
             void Reset();
             
-            inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){ m_Quad->SetEcefPosition(ecefPosition); }
-            inline Eegeo::v3 GetScale() { return m_Quad->GetScale(); }
-            void SetScale(Eegeo::v3 p_scale);
-            
-            // UIInteractableItem interface
-            virtual void OnItemClicked();
-            virtual void OnFocusGained();
-            virtual void OnFocusLost();
-            
             virtual void Update(float dt);
             
-            const virtual float GetItemRadius() { return m_Radius; }
             
-            const virtual Eegeo::dv3& GetItemEcefPosition() { return m_Quad->GetEcefPosition(); }
         };
         
     }

@@ -9,8 +9,9 @@
 #ifndef UIGazeView_h
 #define UIGazeView_h
 
+#include "../UIQuad/UIQuadFactory.h"
 #include "../UIAnimatedSprite.h"
-#include "../UIImageButton.h"
+#include "../UISprite.h"
 
 
 namespace Eegeo
@@ -19,20 +20,25 @@ namespace Eegeo
     {
         class UIGazeView 
         {
+            Eegeo::UI::IUIQuadFactory& m_QuadFactory;
+            UI::UIAnimatedSprite* m_GazeProgress;
+            UI::UISprite* m_Pointer;
             
-            UI::UIAnimatedSprite& m_GazeProgress;
-            UI::UIImageButton& m_Pointer;
+            void Init();
             
         public:
             
-            UIGazeView(UI::UIAnimatedSprite& gazeProgress, UI::UIImageButton& pointer);
+            
+            UIGazeView(Eegeo::UI::IUIQuadFactory& quadFactory);
             ~UIGazeView();
+            
+            void Update(float dt);
+            void SetEcefPosition(const dv3& position);
             
             void ShowView();
             void HideView();
             void ResetProgress();
             
-            void UpdateEcefPosition(const dv3& position);
             
         };
     }

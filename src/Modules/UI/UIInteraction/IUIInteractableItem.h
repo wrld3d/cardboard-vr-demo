@@ -9,6 +9,7 @@
 #pragma once
 
 #include "VectorMath.h"
+#include "IUICameraProvider.h"
 
 namespace Eegeo
 {
@@ -23,8 +24,8 @@ namespace Eegeo
         {
             bool m_ItemHasFocus;
         public:
-            const virtual float GetItemRadius() = 0;
-            const virtual Eegeo::dv3& GetItemEcefPosition() = 0;
+            virtual bool IsCollidingWithPoint(const Eegeo::v2& screenPoint, IUICameraProvider& cameraProvider) = 0;
+            virtual void OnItemClicked() = 0;
             
             void SetItemHasFocus(bool p_focus)
             {
@@ -38,9 +39,6 @@ namespace Eegeo
                         OnFocusLost();
                 }
             }
-            
-            virtual void OnItemClicked() = 0;
-            virtual void Update(float dt)   {}
             
         protected:
             virtual void OnFocusGained() {}

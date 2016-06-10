@@ -44,11 +44,18 @@ namespace Examples
         
     }
     
-    JumpPointsExample::~JumpPointsExample(){
-        Eegeo_DELETE m_JumpPoint1;
-        Eegeo_DELETE m_JumpPoint2;
-        Eegeo_DELETE m_JumpPoint3;
-        Eegeo_DELETE m_JumpPointsModule;
+    JumpPointsExample::~JumpPointsExample()
+    {
+        Eegeo_DELETE m_pSplineCameraController;
+        
+        if(m_JumpPointsModule!=NULL)
+            Eegeo_DELETE m_JumpPointsModule;
+        if(m_JumpPoint1!=NULL)
+            Eegeo_DELETE m_JumpPoint1;
+        if(m_JumpPoint2!=NULL)
+            Eegeo_DELETE m_JumpPoint2;
+        if(m_JumpPoint3!=NULL)
+            Eegeo_DELETE m_JumpPoint3;
     }
     
     void JumpPointsExample::Start()
