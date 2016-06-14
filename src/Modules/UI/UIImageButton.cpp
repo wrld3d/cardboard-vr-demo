@@ -36,16 +36,16 @@ namespace Eegeo
         
         bool UIImageButton::IsCollidingWithPoint(const Eegeo::v2& screenPoint, IUICameraProvider& cameraProvider)
         {
-            Eegeo::Camera::RenderCamera* renderCamera = cameraProvider.GetRenderCameraForUI();
+            Eegeo::Camera::RenderCamera& renderCamera = cameraProvider.GetRenderCameraForUI();
             
-            if (renderCamera->GetEcefLocation().SquareDistanceTo(GetEcefPosition()) < (GetItemRadius() * GetItemRadius())) {
+            if (renderCamera.GetEcefLocation().SquareDistanceTo(GetEcefPosition()) < (GetItemRadius() * GetItemRadius())) {
                 return false;
             }
             
-            Eegeo::dv3 rayOrigin = renderCamera->GetEcefLocation();
+            Eegeo::dv3 rayOrigin = renderCamera.GetEcefLocation();
             Eegeo::dv3 rayDirection;
             
-            Eegeo::Camera::CameraHelpers::GetScreenPickRay(*renderCamera, screenPoint.GetX(), screenPoint.GetY(), rayDirection);
+            Eegeo::Camera::CameraHelpers::GetScreenPickRay(renderCamera, screenPoint.GetX(), screenPoint.GetY(), rayDirection);
             return Eegeo::Geometry::IntersectionTests::TestRaySphere(rayOrigin, rayDirection, GetEcefPosition(), GetItemRadius());
         }
         

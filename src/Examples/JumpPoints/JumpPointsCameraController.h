@@ -49,7 +49,7 @@ namespace Eegeo
             Eegeo::dv3 GetEcefInterestPoint() const;
             double GetAltitudeAboveSeaLevel() const;
 
-            Eegeo::Camera::RenderCamera* GetCamera() { return m_renderCamera; }
+            Eegeo::Camera::RenderCamera& GetCamera() { return *m_renderCamera; }
             const dv3& GetCameraPosition() const { return m_ecefPosition; }
             const m33& GetCameraOrientation() const { return m_orientation; }
             

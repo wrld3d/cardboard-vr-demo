@@ -69,7 +69,7 @@ namespace Eegeo
             Eegeo::dv3 GetEcefInterestPoint() const;
             double GetAltitudeAboveSeaLevel() const;
 
-            Eegeo::Camera::RenderCamera* GetCamera() { return m_renderCamera; }
+            Eegeo::Camera::RenderCamera& GetCamera() { return *m_renderCamera; }
             const bool IsMoving() const { return m_moving; }
             const bool IsFalling() const { return m_falling; }
             const bool IsFollowingSpline() const { return m_VRCameraPositionSpline.IsPlaying(); }

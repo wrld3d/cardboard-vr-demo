@@ -177,7 +177,7 @@ void ExampleController::DestroyCurrentExample()
         return m_pCurrentExample->getCurrentCameraOrientation();
     }
     
-    Eegeo::Camera::RenderCamera* ExampleController::GetRenderCamera(){
+    Eegeo::Camera::RenderCamera& ExampleController::GetRenderCamera(){
         return m_pCurrentExample->GetRenderCamera();
     }
     
@@ -325,6 +325,11 @@ void ExampleController::Event_TouchUp(const AppInterface::TouchData& data)
 	{
 		m_pCurrentExample->Event_TouchUp(data);
 	}
+}
+    
+Eegeo::Camera::RenderCamera& ExampleController::GetRenderCameraForUI()
+{
+        return GetRenderCamera();
 }
 
 }

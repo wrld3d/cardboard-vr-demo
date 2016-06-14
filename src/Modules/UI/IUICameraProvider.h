@@ -22,7 +22,9 @@ namespace Eegeo
         class IUICameraProvider
         {
         public:
-            virtual Eegeo::Camera::RenderCamera* GetRenderCameraForUI() = 0;
+            virtual Eegeo::Camera::RenderCamera& GetRenderCameraForUI() = 0;
+            
+            virtual ~IUICameraProvider(){};
         };
         
     }
