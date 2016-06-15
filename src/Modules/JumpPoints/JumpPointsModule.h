@@ -25,7 +25,8 @@ namespace Eegeo
             {
             public:
                 
-                JumpPointsModule(IUIQuadFactory& p_IUIQuadFactory
+                JumpPointsModule(IUIRenderableFilter& p_UIRenderableFilter
+                                 , IUIQuadFactory& p_IUIQuadFactory
                                  , IUIInteractionObservable& p_IUIInteractionObservable
                                  , IUICameraProvider& p_UICameraProvider
                                  );

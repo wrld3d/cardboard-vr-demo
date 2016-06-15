@@ -17,7 +17,8 @@ namespace Eegeo
     namespace UI
     {
         
-        UISprite::UISprite(UIQuad* quad
+        UISprite::UISprite(IUIRenderableFilter& p_UIRenderableFilter
+                           , UIQuad* quad
                            , Eegeo::v2 size
                            , Eegeo::dv3 ecefPosition
                            , Eegeo::v3 scale
@@ -25,6 +26,7 @@ namespace Eegeo
                            , int spriteId
                            , Eegeo::v2 spriteGridSize)
         : UIBaseItem(ecefPosition, size, scale, color)
+        , m_UIRenderableFilter(p_UIRenderableFilter)
         , m_Quad(quad){
             
             m_SpriteId = spriteId;
@@ -32,11 +34,12 @@ namespace Eegeo
             
             UpdateUVs();
             
-
+            m_UIRenderableFilter.RegisterRenderable(m_Quad);
         }
         
         UISprite::~UISprite()
         {
+            m_UIRenderableFilter.UnRegisterRenderable(m_Quad);
             delete m_Quad;
         }
         

@@ -26,7 +26,8 @@ namespace Eegeo
             float m_Radius;
             
         public:
-            UIImageButton(UIQuad* quad
+            UIImageButton(IUIRenderableFilter& p_UIRenderableFilter
+                          , UIQuad* quad
                           , Eegeo::Helpers::ICallback0& onClickedEvent
                           , Eegeo::v2 size = Eegeo::v2::One()
                           , Eegeo::dv3 ecefPosition = Eegeo::dv3::Zero()

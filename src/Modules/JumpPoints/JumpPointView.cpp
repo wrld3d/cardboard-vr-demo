@@ -16,13 +16,15 @@ namespace Eegeo
         namespace JumpPoints
         {
             JumpPointView::JumpPointView(JumpPoint& jumpPoint
+                                         , IUIRenderableFilter& p_UIRenderableFilter
                                          , UIQuad* quad
                                          , IUICameraProvider& p_UICameraProvider
                                          )
             : m_JumpPoint(jumpPoint)
             , m_UICameraProvider(p_UICameraProvider)
             , m_JumpPointClickCallback(this, &JumpPointView::MoveCameraToJumpPoint)
-            , UIImageButton(quad
+            , UIImageButton(p_UIRenderableFilter
+                            , quad
                             , m_JumpPointClickCallback
                             , jumpPoint.GetDimensions()
                             , jumpPoint.GetEcefPosition())

@@ -12,6 +12,7 @@
 #include "Modules/UI/UIInteraction/UIInteractionController.h"
 #include "Modules/UI/IUICameraProvider.h"
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
+#include "Modules/UI/UIRenderableFilter.h"
 
 #include "Modules/JumpPoints/JumpPoint.h"
 #include "Modules/JumpPoints/JumpPointsModule.h"
@@ -36,6 +37,9 @@ namespace Examples
         Eegeo::VR::JumpPointsCameraController* m_pSplineCameraController;
         Eegeo::UI::JumpPoints::JumpPoint *m_JumpPoint1, *m_JumpPoint2, *m_JumpPoint3;
         Eegeo::UI::JumpPoints::JumpPointsModule* m_JumpPointsModule;
+        
+        Eegeo::Rendering::RenderableFilters& m_RenderableFilters;
+        Eegeo::UI::UIRenderableFilter* m_UIRenderableFilter;
         
     public:
         

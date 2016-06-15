@@ -215,15 +215,18 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     Eegeo::v2 outMax;
     Eegeo::UI::CalculateUV(size, 1, outMin, outMax);
     
+    m_UIRenderableFilter = Eegeo_NEW(Eegeo::UI::UIRenderableFilter)();
+    renderingModule.GetRenderableFilters().AddRenderableFilter(*m_UIRenderableFilter);
+    
     m_QuadFactory = Eegeo_NEW(Eegeo::UI::UIQuadFactory)(renderingModule, m_pWorld->GetPlatformAbstractionModule().GetTextureFileLoader());
     
-    m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(
+    m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(*m_UIRenderableFilter,
                                                      m_QuadFactory->CreateUIQuad("mesh_example/PinIconTexturePage.png", dimension, outMin, outMax),
                                                      m_ClickCallback,
                                                      dimension);
     m_UIButton->SetEcefPosition(quadPosition);
     
-    m_UIGazeView = new Eegeo::UIGaze::UIGazeView(*m_QuadFactory);
+    m_UIGazeView = new Eegeo::UIGaze::UIGazeView(*m_QuadFactory, *m_UIRenderableFilter);
     
     m_UIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*m_pExampleController, *m_UIGazeView);
     m_UIInteractionController->RegisterInteractableItem(m_UIButton);
@@ -261,6 +264,8 @@ ExampleApp::~ExampleApp()
     
     Eegeo_DELETE m_UIInteractionController;
     
+    m_pWorld->GetRenderingModule().GetRenderableFilters().RemoveRenderableFilter(*m_UIRenderableFilter);
+    Eegeo_DELETE m_UIRenderableFilter;
 }
 
 void ExampleApp::OnPause()

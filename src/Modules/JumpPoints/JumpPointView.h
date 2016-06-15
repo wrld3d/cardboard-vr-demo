@@ -26,6 +26,7 @@ namespace Eegeo
             {
             public:
                 JumpPointView(JumpPoint& jumpPoint
+                              , IUIRenderableFilter& p_UIRenderableFilter
                               , UIQuad* quad
                               , IUICameraProvider& p_UICameraProvider);
 

@@ -22,7 +22,6 @@ namespace Eegeo
         : m_GlBufferPool(renderingModule.GetGlBufferPool())
         , m_VertexBindingPool(renderingModule.GetVertexBindingPool())
         , m_VertexLayoutPool(renderingModule.GetVertexLayoutPool())
-        , m_RenderableFilters(renderingModule.GetRenderableFilters())
         , m_ShaderIdGenerator(renderingModule.GetShaderIdGenerator())
         , m_MaterialIdGenerator(renderingModule.GetMaterialIdGenerator())
         , m_TextureFileLoader(textureFileLoader)
@@ -49,7 +48,7 @@ namespace Eegeo
                              const Eegeo::v4& initialColor,
                              const Eegeo::Rendering::LayerIds::Values renderLayer){
             Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* material = GetMaterialForAsset(assetPath);
-            return new UIQuad(assetPath, *material, m_VertexBindingPool, m_RenderableFilters, m_GlBufferPool, dimension, uvMin, uvMax, ecefPosition, initialColor, renderLayer);
+            return new UIQuad(assetPath, *material, m_VertexBindingPool, m_GlBufferPool, dimension, uvMin, uvMax, ecefPosition, initialColor, renderLayer);
         }
         
         Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* UIQuadFactory::GetMaterialForAsset(const std::string& assetPath)

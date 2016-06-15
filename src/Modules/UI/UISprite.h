@@ -11,6 +11,7 @@
 
 #include "UIBaseItem.h"
 #include "UIQuad/UIQuad.h"
+#include "IUIRenderableFilter.h"
 
 namespace Eegeo
 {
@@ -20,7 +21,7 @@ namespace Eegeo
         {
         
         private:
-            
+            IUIRenderableFilter& m_UIRenderableFilter;
             UIQuad* m_Quad;
             
             Eegeo::v2 m_SpriteGridSize;
@@ -33,7 +34,8 @@ namespace Eegeo
             
         public:
             
-            UISprite( UIQuad* quad
+            UISprite(IUIRenderableFilter& p_UIRenderableFilter
+                     , UIQuad* quad
                      , Eegeo::v2 size = Eegeo::v2::One()
                      , Eegeo::dv3 ecefPosition = Eegeo::dv3::Zero()
                      , Eegeo::v3 scale = Eegeo::v3::One()

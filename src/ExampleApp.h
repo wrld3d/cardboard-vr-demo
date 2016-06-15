@@ -14,6 +14,7 @@
 #include "Modules/SkyboxModule/SkyboxModule.h"
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
 #include "Examples/VRCameraSpline/IVRHeadTracker.h"
+#include "Modules/UI/UIRenderableFilter.h"
 #include "Modules/UI/UIGaze/UIGazeView.h"
 #include "Modules/UI/UIAnimatedSprite.h"
 #include "Modules/UI/UIImageButton.h"
@@ -40,6 +41,7 @@ private:
     Eegeo::UI::UIImageButton *m_UIButton;
 
     Eegeo::UI::UIInteractionController *m_UIInteractionController;
+    Eegeo::UI::UIRenderableFilter *m_UIRenderableFilter;
     Eegeo::UIGaze::UIGazeView* m_UIGazeView;
     
     Eegeo::UI::IUIQuadFactory* m_QuadFactory;
