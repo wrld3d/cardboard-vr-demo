@@ -37,7 +37,7 @@ namespace Examples
         NotifyScreenPropertiesChanged(initialScreenProperties);
         Eegeo::m44 projectionMatrix = Eegeo::m44(cameraController->GetRenderCamera().GetProjectionMatrix());
         m_pSplineCameraController = new Eegeo::VR::JumpPointsCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
-        m_pSplineCameraController->GetCamera()->SetProjectionMatrix(projectionMatrix);
+        m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
         
         
@@ -135,7 +135,7 @@ namespace Examples
         return m_pSplineCameraController->GetOrientation();
     }
     
-    Eegeo::Camera::RenderCamera* JumpPointsExample::GetRenderCamera(){
+    Eegeo::Camera::RenderCamera& JumpPointsExample::GetRenderCamera(){
         return m_pSplineCameraController->GetCamera();
     }
     

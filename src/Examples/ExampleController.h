@@ -23,7 +23,7 @@
 
 namespace Examples
 {
-    class ExampleController : private Eegeo::NonCopyable
+    class ExampleController : private Eegeo::NonCopyable, public Eegeo::UI::IUICameraProvider
     {
         IExample* m_pCurrentExample;
         int m_currentExampleFactoryIndex;
@@ -72,7 +72,7 @@ namespace Examples
         
         Eegeo::m33& GetOrientation();
         
-        Eegeo::Camera::RenderCamera* GetRenderCamera();
+        Eegeo::Camera::RenderCamera& GetRenderCamera();
         
         Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const;
         Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const;
@@ -144,6 +144,8 @@ namespace Examples
         void Event_TouchDown(const AppInterface::TouchData& data);
         void Event_TouchMove(const AppInterface::TouchData& data);
         void Event_TouchUp(const AppInterface::TouchData& data);
+        
+        Eegeo::Camera::RenderCamera& GetRenderCameraForUI();
     };
 }
 

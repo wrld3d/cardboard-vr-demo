@@ -225,11 +225,11 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_UIGazeView = new Eegeo::UIGaze::UIGazeView(*m_QuadFactory);
     
-    m_UIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*this, *m_UIGazeView);
+    m_UIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*m_pExampleController, *m_UIGazeView);
     m_UIInteractionController->RegisterInteractableItem(m_UIButton);
     
 //    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
-    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_QuadFactory, *m_UIInteractionController, *this);
+    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_QuadFactory, *m_UIInteractionController, *m_pExampleController);
 
     
     m_UIGazeView->HideView();
@@ -281,7 +281,7 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
-    Eegeo::Camera::RenderCamera renderCamera = *m_pExampleController->GetRenderCamera();
+    Eegeo::Camera::RenderCamera& renderCamera = m_pExampleController->GetRenderCamera();
     Eegeo::EegeoWorld& eegeoWorld(World());
     
     eegeoWorld.EarlyUpdate(dt);
@@ -335,7 +335,7 @@ void ExampleApp::Update (float dt, float headTansform[])
     UpdateNightTParam(dt);
     UpdateFogging();
     UpdateLoadingScreen(dt);
-    
+    m_UIButton->Update(dt);
 }
 
 void ExampleApp::Draw (float dt, float headTansform[]){
@@ -452,11 +452,6 @@ void ExampleApp::UpdateCardboardProfile(float cardboardProfile[])
 {
     m_pExampleController->UpdateCardboardProfile(cardboardProfile);
     m_VRDistortion->UpdateCardboardProfile(cardboardProfile);
-}
-
-Eegeo::Camera::RenderCamera* ExampleApp::GetRenderCameraForUI()
-{
-    return m_pExampleController->GetRenderCamera();
 }
 
 void ExampleApp::MagnetTriggered(){

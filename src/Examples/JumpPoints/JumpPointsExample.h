@@ -70,7 +70,7 @@ namespace Examples
         
         void UpdateCardboardProfile(float cardboardProfile[]);
         
-        virtual Eegeo::Camera::RenderCamera* GetRenderCamera();
+        virtual Eegeo::Camera::RenderCamera& GetRenderCamera();
         virtual Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const;
         virtual Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const;
         virtual Eegeo::Camera::CameraState GetCurrentCameraState() const;

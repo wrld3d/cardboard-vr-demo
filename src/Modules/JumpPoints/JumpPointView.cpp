@@ -30,7 +30,7 @@ namespace Eegeo
             
             void JumpPointView::MoveCameraToJumpPoint()
             {
-                m_UICameraProvider.GetRenderCameraForUI()->SetEcefLocation(m_JumpPoint.GetEcefPosition());
+                m_UICameraProvider.GetRenderCameraForUI().SetEcefLocation(m_JumpPoint.GetEcefPosition());
             }
             
         }

@@ -23,7 +23,7 @@
 #include "Logger.h"
 #include "ICallback.h"
 
-class ExampleApp : private Eegeo::NonCopyable, Eegeo::UI::IUICameraProvider
+class ExampleApp : private Eegeo::NonCopyable
 {
 private:
     
@@ -129,7 +129,6 @@ public:
 	void Event_TouchMove 			(const AppInterface::TouchData& data);
 	void Event_TouchUp 				(const AppInterface::TouchData& data);
     
-    Eegeo::Camera::RenderCamera* GetRenderCameraForUI();
 };
 
 #endif /* defined(__ExampleApp__ExampleApp__) */
