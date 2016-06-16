@@ -19,7 +19,8 @@ namespace Eegeo
             class JumpPointViewFactory : protected Eegeo::NonCopyable, public IJumpPointViewFactory
             {
             public:
-                JumpPointViewFactory(IUIQuadFactory& p_IUIQuadFactory
+                JumpPointViewFactory(IUIRenderableFilter& p_UIRenderableFilter
+                                     , IUIQuadFactory& p_IUIQuadFactory
                                      , IUICameraProvider& p_UICameraProvider);
                 
                 ~JumpPointViewFactory();
@@ -29,6 +30,7 @@ namespace Eegeo
             private:
                 IUICameraProvider& m_UICameraProvider;
                 IUIQuadFactory& m_IUIQuadFactory;
+                IUIRenderableFilter& m_UIRenderableFilter;
             };
         }
     }

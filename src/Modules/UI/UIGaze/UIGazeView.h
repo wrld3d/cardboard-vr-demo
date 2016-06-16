@@ -12,7 +12,7 @@
 #include "../UIQuad/UIQuadFactory.h"
 #include "../UIAnimatedSprite.h"
 #include "../UISprite.h"
-
+#include "../IUIRenderableFilter.h"
 
 namespace Eegeo
 {
@@ -20,16 +20,14 @@ namespace Eegeo
     {
         class UIGazeView 
         {
-            Eegeo::UI::IUIQuadFactory& m_QuadFactory;
             UI::UIAnimatedSprite* m_GazeProgress;
             UI::UISprite* m_Pointer;
             
-            void Init();
+            void Init(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter);
             
         public:
             
-            
-            UIGazeView(Eegeo::UI::IUIQuadFactory& quadFactory);
+            UIGazeView(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter);
             ~UIGazeView();
             
             void Update(float dt);

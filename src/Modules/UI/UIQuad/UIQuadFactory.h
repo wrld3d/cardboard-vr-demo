@@ -28,7 +28,6 @@ namespace Eegeo
             Eegeo::Rendering::GlBufferPool& m_GlBufferPool;
             Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_VertexBindingPool;
             Eegeo::Rendering::VertexLayouts::VertexLayoutPool& m_VertexLayoutPool;
-            Eegeo::Rendering::RenderableFilters& m_RenderableFilters;
             
             Eegeo::Helpers::ITextureFileLoader& m_TextureFileLoader;
             Rendering::Shaders::ShaderIdGenerator& m_ShaderIdGenerator;

@@ -32,6 +32,7 @@ namespace Examples
     , m_UIQuadFactory(quadFactory)
     , m_UIInteractionObservable(uIInteractionObservable)
     , m_UICameraProvider(uICameraProvider)
+    , m_RenderableFilters(eegeoWorld.GetRenderingModule().GetRenderableFilters())
     {
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
@@ -40,8 +41,8 @@ namespace Examples
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
         
-        
-        
+        m_UIRenderableFilter = Eegeo_NEW(Eegeo::UI::UIRenderableFilter)();
+        m_RenderableFilters.AddRenderableFilter(*m_UIRenderableFilter);
     }
     
     JumpPointsExample::~JumpPointsExample()
@@ -56,6 +57,9 @@ namespace Examples
             Eegeo_DELETE m_JumpPoint2;
         if(m_JumpPoint3!=NULL)
             Eegeo_DELETE m_JumpPoint3;
+        
+        m_RenderableFilters.RemoveRenderableFilter(*m_UIRenderableFilter);
+        Eegeo_DELETE m_UIRenderableFilter;
     }
     
     void JumpPointsExample::Start()
@@ -96,14 +100,13 @@ namespace Examples
                                                             outMax
                                                             );
         
-        m_JumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(m_UIQuadFactory,
+        m_JumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(*m_UIRenderableFilter,
+                                                                         m_UIQuadFactory,
                                                                          m_UIInteractionObservable,
                                                                          m_UICameraProvider);
         m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint1);
         m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint2);
         m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint3);
-        
-        
     }
     
     void JumpPointsExample::Suspend(){}

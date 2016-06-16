@@ -12,6 +12,10 @@ set(currsources
   ../src/Modules/UI/IUICameraProvider.h
   ../src/Modules/UI/UIAnimatedSprite.h
   ../src/Modules/UI/UIAnimatedSprite.cpp
+  ../src/Modules/UI/IUIRenderable.h
+  ../src/Modules/UI/IUIRenderableFilter.h
+  ../src/Modules/UI/UIRenderableFilter.cpp
+  ../src/Modules/UI/UIRenderableFilter.h
 )
 
 set(sources ${sources} ${currsources})

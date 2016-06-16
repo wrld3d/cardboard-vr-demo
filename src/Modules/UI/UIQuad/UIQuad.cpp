@@ -92,7 +92,6 @@ namespace Eegeo
                        const std::string& name,
                        Eegeo::Rendering::Materials::TexturedUniformColoredMaterial& material,
                        Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-                       Eegeo::Rendering::RenderableFilters& renderableFilters,
                        Eegeo::Rendering::GlBufferPool& glBufferPool,
                        const Eegeo::v2& dimension,
                        const Eegeo::v2& uvMin,
@@ -103,7 +102,6 @@ namespace Eegeo
                        )
         : m_Material(material)
         , m_VertexBindingPool(vertexBindingPool)
-        , m_RenderableFilters(renderableFilters)
         , m_GlBufferPool(glBufferPool)
         , m_RenderLayer(renderLayer)
         , m_Renderable(NULL)
@@ -116,28 +114,22 @@ namespace Eegeo
             m_RenderableMesh = CreateUnlitQuadMesh(m_Dimension, uvMin, uvMax, *CreatePositionUvVertexLayout(), m_GlBufferPool);
             m_Renderable = CreateUIMeshRenderable(*m_RenderableMesh, m_Material, m_VertexBindingPool, m_EcefPosition, m_RenderLayer);
             
-            m_RenderableFilters.AddRenderableFilter(*this);
+            SetItemShouldRender(true);
         }
-
         
         UIQuad::~UIQuad()
         {
             
             EXAMPLE_LOG("logs:: deleting quad: %s", m_Name.c_str());
             
-            m_RenderableFilters.RemoveRenderableFilter(*this);
-            
             Eegeo_DELETE m_RenderableMesh;
             Eegeo_DELETE m_Renderable;
         }
         
         // IRenderableFilter interface
-        void UIQuad::EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue)
+        Eegeo::Rendering::RenderableBase& UIQuad::GetUpdatedRenderable(const Eegeo::Rendering::RenderContext& renderContext)
         {
             const Eegeo::Camera::RenderCamera& renderCamera = renderContext.GetRenderCamera();
-            
-            if(m_Renderable->GetEcefPosition().SquareDistanceTo(renderCamera.GetEcefLocation()) < 1)
-                return;
             
             m33 orientation = GetLookAtOrientationMatrix(renderCamera.GetEcefLocation().ToSingle(), m_Renderable->GetEcefPosition().ToSingle(), renderCamera.GetEcefLocation().ToSingle().Norm());
             m_Renderable->SetOrientationEcef(orientation);
@@ -148,8 +140,7 @@ namespace Eegeo
             const Eegeo::m44& mvp = m_Renderable->CalcModelViewProjection(ecefCameraPosition, viewProjection);
             m_Renderable->SetModelViewProjection(mvp);
             
-            renderQueue.EnqueueRenderable(m_Renderable);
-            
+            return *m_Renderable;
         }
         
         void UIQuad::UpdateUVs(Eegeo::v2& min, Eegeo::v2& max)

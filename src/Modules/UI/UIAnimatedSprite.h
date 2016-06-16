@@ -25,13 +25,10 @@ namespace Eegeo
             float m_TimeElapsed;
             float m_FrameRate;
             
-            
-            UIQuad* m_Quad;
-            
-            
         public:
             
-            UIAnimatedSprite( UIQuad* quad
+            UIAnimatedSprite(IUIRenderableFilter& p_UIRenderableFilter
+                             , UIQuad* quad
                              , float frameRate
                              , Eegeo::v2 spriteGridSize = Eegeo::v2::One()
                              , int spriteId = 0

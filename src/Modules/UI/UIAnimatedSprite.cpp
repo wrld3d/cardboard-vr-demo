@@ -17,7 +17,8 @@ namespace Eegeo
     namespace UI
     {
         
-        UIAnimatedSprite::UIAnimatedSprite( UIQuad* quad
+        UIAnimatedSprite::UIAnimatedSprite(IUIRenderableFilter& p_UIRenderableFilter
+                         , UIQuad* quad
                          , float frameRate
                          , Eegeo::v2 spriteGridSize
                          , int spriteId
@@ -25,7 +26,7 @@ namespace Eegeo
                          , Eegeo::dv3 ecefPosition
                          , Eegeo::v3 scale
                          , Eegeo::v4 color)
-        : UISprite(quad, size, ecefPosition, scale, color, spriteId, spriteGridSize)
+        : UISprite(p_UIRenderableFilter, quad, size, ecefPosition, scale, color, spriteId, spriteGridSize)
         , m_FrameRate(frameRate)
         {
             m_TimeElapsed = 0;
@@ -41,8 +42,6 @@ namespace Eegeo
         
         void UIAnimatedSprite::Update(float dt)
         {
-            
-            
             m_TimeElapsed += dt;
             if(m_TimeElapsed>(1.0f/m_FrameRate)) {
                 Reset();

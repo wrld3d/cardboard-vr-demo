@@ -81,12 +81,10 @@ public class BackgroundThreadActivity extends MainActivity
 		mNfcSensor.addOnCardboardNfcListener(new OnCardboardNfcListener() {
 			@Override
 			public void onRemovedFromCardboard() {
-//				System.out.println("On Removed From Cardboard.");
 			}
 			
 			@Override
 			public void onInsertedIntoCardboard(CardboardDeviceParams params) {
-//				System.out.println("params: "+params.getDistortion().getCoefficients()[0]);
 			}
 		});
 		
@@ -141,13 +139,7 @@ public class BackgroundThreadActivity extends MainActivity
                 distCoef[1]  //K2
             };
 		
-//		String logStr = "Parameters";
-//		
-//		for (int i = 0; i < cardboardProperties.length; i++)
-//			logStr += cardboardProperties[i] + ",\n";
-//		
 		Log.i("Eegeo VR", "Cardboard profile for " + cardboardDeviceParams.getModel() + " by " + cardboardDeviceParams.getVendor() + "has been loaded.");
-//		Log.i("CardboardVRTest", logStr);
 		
 		return cardboardProperties;
 
@@ -155,24 +147,6 @@ public class BackgroundThreadActivity extends MainActivity
 	
 	public void SetHeadMountedDisplayResolution(int width, int height) {
 		
-//		try {
-//			if (m_cardboardView == null)
-//				return;
-//			
-//			Display display = getWindowManager().getDefaultDisplay();
-//			ScreenParams sp = new ScreenParams(display);
-//			Phone.PhoneParams pp = new Phone.PhoneParams();
-//			pp.setXPpi(width / sp.getWidthMeters() * METERS_PER_INCH);
-//			pp.setYPpi(height / sp.getHeightMeters() * METERS_PER_INCH);
-//			sp = ScreenParams.fromProto(display, pp);
-//			
-//			sp.setWidth(width);
-//			sp.setHeight(height);
-//			m_cardboardView.updateScreenParams(sp);
-//			
-//		} catch (Exception e) {
-//			Log.e("backgroundThreadActivity", "exception", e);
-//		}
 	}
 	
 	public void ResetTracker(){

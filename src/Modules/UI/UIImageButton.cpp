@@ -17,7 +17,8 @@ namespace Eegeo
 {
     namespace UI
     {
-        UIImageButton::UIImageButton(UIQuad* quad
+        UIImageButton::UIImageButton(IUIRenderableFilter& p_UIRenderableFilter
+                                     , UIQuad* quad
                                      , Eegeo::Helpers::ICallback0& onClickedEvent
                                      , Eegeo::v2 size
                                      , Eegeo::dv3 ecefPosition
@@ -25,7 +26,7 @@ namespace Eegeo
                                      , Eegeo::v4 color
                                      , int spriteId
                                      , Eegeo::v2 spriteGridSize)
-        : UISprite(quad, size, ecefPosition, scale, color, spriteId, spriteGridSize)
+        : UISprite(p_UIRenderableFilter, quad, size, ecefPosition, scale, color, spriteId, spriteGridSize)
         , m_OnClickedEvent(onClickedEvent)
         {
             m_Radius = (size.x > size.y ? size.x : size.y)/2.0f;

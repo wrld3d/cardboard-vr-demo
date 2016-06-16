@@ -13,24 +13,24 @@ namespace Eegeo
 {
     namespace UIGaze
     {
-        UIGazeView::UIGazeView(Eegeo::UI::IUIQuadFactory& quadFactory)
-        : m_QuadFactory(quadFactory)
+        UIGazeView::UIGazeView(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter)
         {
-            Init();
+            Init(quadFactory, uiRenderableFilter);
         }
         
-        void UIGazeView::Init()
+        void UIGazeView::Init(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter)
         {
             Eegeo::v2 dimension = Eegeo::v2(0.25f,0.25f)*7.f;
-            m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(m_QuadFactory.CreateUIQuad("mesh_example/gaze_loader.png", dimension),
+            m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(uiRenderableFilter,
+                                                                    quadFactory.CreateUIQuad("mesh_example/gaze_loader.png", dimension),
                                                                     49.f/2.f,
                                                                     Eegeo::v2(7,7),
                                                                     0,
                                                                     dimension);
             
             dimension = Eegeo::v2(0.075f,0.075f)*3.f;
-            m_Pointer = Eegeo_NEW(Eegeo::UI::UISprite)(
-                                                       m_QuadFactory.CreateUIQuad("mesh_example/gaze_point.png",
+            m_Pointer = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter,
+                                                       quadFactory.CreateUIQuad("mesh_example/gaze_point.png",
                                                                                 dimension,
                                                                                 Eegeo::v2::Zero(),
                                                                                 Eegeo::v2::One(),

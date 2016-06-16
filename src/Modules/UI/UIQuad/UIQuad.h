@@ -17,12 +17,13 @@
 #include "GLHelpers.h"
 #include "ITextureFileLoader.h"
 #include "UIGeometryHelpers.h"
+#include "IUIRenderable.h"
 
 namespace Eegeo
 {
     namespace UI
     {
-        class UIQuad : public Eegeo::Rendering::IRenderableFilter
+        class UIQuad : public IUIRenderable
         {
         private:
             
@@ -30,7 +31,6 @@ namespace Eegeo
             Eegeo::Rendering::Mesh* m_RenderableMesh;
             
             Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_VertexBindingPool;
-            Eegeo::Rendering::RenderableFilters& m_RenderableFilters;
             Eegeo::Rendering::GlBufferPool& m_GlBufferPool;
             
             UIMeshRenderable* m_Renderable;
@@ -49,7 +49,6 @@ namespace Eegeo
                    const std::string& name,
                    Eegeo::Rendering::Materials::TexturedUniformColoredMaterial& material,
                    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-                   Eegeo::Rendering::RenderableFilters& renderableFilters,
                    Eegeo::Rendering::GlBufferPool& glBufferPool,
                    const Eegeo::v2& dimension,
                    const Eegeo::v2& uvMin = Eegeo::v2::Zero(),
@@ -67,9 +66,9 @@ namespace Eegeo
             inline void SetColor(const Eegeo::v4& color) { m_Renderable->SetColor(color); }
             
             void UpdateUVs(Eegeo::v2& min, Eegeo::v2& max);
-            
-            // IRenderableFilter interface
-            void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
+
+            // IUIRenderable interface
+            virtual Eegeo::Rendering::RenderableBase& GetUpdatedRenderable(const Eegeo::Rendering::RenderContext& renderContext);
         };
         
     }
