@@ -23,6 +23,7 @@ namespace Eegeo
         {
         public:
             virtual Eegeo::Camera::RenderCamera& GetRenderCameraForUI() = 0;
+            virtual Eegeo::m33& GetOrientation() = 0;
             
             virtual ~IUICameraProvider(){};
         };

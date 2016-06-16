@@ -71,6 +71,7 @@
 #include "GlobeCameraControllerFactory.h"
 #include "LatLongAltitude.h"
 
+#include "Modules/DeadZoneMenu/DeadZoneMenuModule.h"
 
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
 #include "Modules/UI/UIQuad/UIQuadFactory.h"
@@ -231,6 +232,18 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_UIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*m_pExampleController, *m_UIGazeView);
     m_UIInteractionController->RegisterInteractableItem(m_UIButton);
     
+    
+    std::string menuTextureFileName("mesh_example/PinIconTexturePage.png");
+    m_DeadZoneMenuModule = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule(*m_UIRenderableFilter, *m_QuadFactory, *m_UIInteractionController, *m_pExampleController, menuTextureFileName, 4);
+    
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* mMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 1, m_ClickCallback);
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* mMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 2, m_ClickCallback);
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* mMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 3, m_ClickCallback);
+    
+    m_DeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(mMenuItem1);
+    m_DeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(mMenuItem2);
+    m_DeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(mMenuItem3);
+    
 //    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_QuadFactory, *m_UIInteractionController, *m_pExampleController);
 
@@ -248,9 +261,7 @@ ExampleApp::~ExampleApp()
     }
     
     Eegeo_DELETE m_QuadFactory;
-    
     Eegeo_DELETE m_UIGazeView;
-    
     Eegeo_DELETE m_UIButton;
     
     Eegeo_DELETE m_VRSkybox;
@@ -291,12 +302,8 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     eegeoWorld.EarlyUpdate(dt);
     
-    
-    
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
         m_pExampleController->EarlyUpdate(dt);
-    
-    
     
     std::vector<Eegeo::Geometry::Plane> frustumPlanes(Eegeo::Geometry::Frustum::PLANES_COUNT);
     BuildFrustumPlanesFromViewProjection(frustumPlanes, renderCamera.GetViewProjectionMatrix());
@@ -317,23 +324,16 @@ void ExampleApp::Update (float dt, float headTansform[])
                                                   *m_pStreamingVolume,
                                                   screenProperties);
     
-
-    
     eegeoWorld.Update(updateParameters);
     
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
         m_pExampleController->Update(dt);
     
+    m_DeadZoneMenuModule->Update(dt);
     m_UIInteractionController->Update(dt);
     
     Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
     m_UIInteractionController->Event_ScreenInteractionMoved(center);
-    
-    
-    Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
-    Eegeo::dv3 position(m_pExampleController->GetCurrentCameraState().LocationEcef() + (forward*50));
-    m_UIGazeView->Update(dt);
-    m_UIGazeView->SetEcefPosition(position);
     
     m_interiorExplorerModule ->Update(dt);
     
@@ -371,8 +371,10 @@ void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld&
                                               cameraState.ProjectionMatrix(),
                                               m_screenPropertiesProvider.GetScreenProperties());
     
-    
-
+    Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
+    Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
+    m_UIGazeView->Update(dt);
+    m_UIGazeView->SetEcefPosition(position);
     
     eegeoWorld.Draw(drawParameters);
     
@@ -393,7 +395,10 @@ void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld
                                                cameraState.ViewMatrix(),
                                                cameraState.ProjectionMatrix(),
                                                m_screenPropertiesProvider.GetScreenProperties());
-    
+    Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
+    Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
+    m_UIGazeView->Update(dt);
+    m_UIGazeView->SetEcefPosition(position);
     eegeoWorld.Draw(drawParameters);
     
     m_pExampleController->Draw();

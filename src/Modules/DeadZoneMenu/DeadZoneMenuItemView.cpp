@@ -17,15 +17,17 @@ namespace Eegeo
         {
             
             DeadZoneMenuItemView::DeadZoneMenuItemView(DeadZoneMenuItem& deadZoneMenuItem
+                                                       , IUIRenderableFilter& p_UIRenderableFilter
                                                        , UIQuad* quad
                                                        , IUICameraProvider& p_UICameraProvider
+                                                       , Eegeo::v2& dimension
                                                        )
             : m_DeadZoneMenuItem(deadZoneMenuItem)
             , m_UICameraProvider(p_UICameraProvider)
-            , UIImageButton(quad
+            , UIImageButton(p_UIRenderableFilter
+                            , quad
                             , deadZoneMenuItem.GetCallback()
-                            , deadZoneMenuItem.GetDimensions()
-                            , deadZoneMenuItem.GetEcefPosition())
+                            , dimension)
             {}
             
         }

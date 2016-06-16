@@ -16,7 +16,9 @@ namespace Eegeo
             
             class DeadZoneMenuItemRepository : protected Eegeo::NonCopyable, public IDeadZoneMenuItemObservable
             {
+                
             public:
+                
                 DeadZoneMenuItemRepository();
                 
                 ~DeadZoneMenuItemRepository();
@@ -36,6 +38,7 @@ namespace Eegeo
                 virtual void RemoveDeadZoneMenuObserver(IDeadZoneMenuItemObserver* observerToRemove);
                 
             private:
+                
                 typedef std::vector<DeadZoneMenuItem*> TDeadZoneMenuItems;
                 TDeadZoneMenuItems m_DeadZoneMenuItem;
                 

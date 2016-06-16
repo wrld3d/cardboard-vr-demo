@@ -35,7 +35,7 @@ namespace Eegeo
                 virtual void OnJumpPointRemoved(JumpPoint& jumpPoint);
                 
             protected:
-                virtual void UpdateViews();
+                virtual void UpdateViews(float deltaTime);
                 
             private:
                 IJumpPointObservable& m_jumppointRepository;

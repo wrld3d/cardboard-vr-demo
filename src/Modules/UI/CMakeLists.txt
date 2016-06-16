@@ -3,8 +3,6 @@ set(headers ${headers} ../src/Modules/UI/
 
 
 set(currsources
-  ../src/Modules/UI/UIBaseItem.cpp
-  ../src/Modules/UI/UIBaseItem.h
   ../src/Modules/UI/UISprite.cpp
   ../src/Modules/UI/UISprite.h
   ../src/Modules/UI/UIImageButton.cpp

@@ -25,9 +25,12 @@ namespace Eegeo
             {
             public:
                 
-                DeadZoneMenuModule(IUIQuadFactory& p_IUIQuadFactory
+                DeadZoneMenuModule(IUIRenderableFilter& p_UIRenderableFilter
+                                   , IUIQuadFactory& p_IUIQuadFactory
                                    , IUIInteractionObservable& p_IUIInteractionObservable
                                    , IUICameraProvider& p_UICameraProvider
+                                   , std::string& spriteFileName
+                                   , int numberOfTilesAlong1Axis
                                    );
                 
                 ~DeadZoneMenuModule();

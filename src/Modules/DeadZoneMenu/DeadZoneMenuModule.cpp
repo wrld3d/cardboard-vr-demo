@@ -8,15 +8,17 @@ namespace Eegeo
     {
         namespace DeadZoneMenu
         {
-            DeadZoneMenuModule::DeadZoneMenuModule(IUIQuadFactory& p_IUIQuadFactory
+            DeadZoneMenuModule::DeadZoneMenuModule(IUIRenderableFilter& p_UIRenderableFilter
+                                                   , IUIQuadFactory& p_IUIQuadFactory
                                                    , IUIInteractionObservable& p_IUIInteractionObservable
                                                    , IUICameraProvider& p_UICameraProvider
+                                                   , std::string& spriteFileName
+                                                   , int numberOfTilesAlong1Axis
                                                    )
             {
-                m_pViewFactory = new DeadZoneMenuItemViewFactory(p_IUIQuadFactory
-                                                                 , p_UICameraProvider);
+                m_pViewFactory = new DeadZoneMenuItemViewFactory(p_UIRenderableFilter, p_IUIQuadFactory, p_UICameraProvider, spriteFileName, numberOfTilesAlong1Axis);
                 m_pRepository = new DeadZoneMenuItemRepository();
-                m_pController = new DeadZoneMenuController(*m_pRepository, *m_pViewFactory, p_IUIInteractionObservable);
+                m_pController = new DeadZoneMenuController(*m_pRepository, *m_pViewFactory, p_IUIInteractionObservable, p_UICameraProvider);
             }
             
             DeadZoneMenuModule::~DeadZoneMenuModule()

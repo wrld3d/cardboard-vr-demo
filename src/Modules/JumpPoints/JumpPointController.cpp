@@ -33,7 +33,7 @@ namespace Eegeo
             
             void JumpPointController::Update(float deltaTime)
             {
-                UpdateViews();
+                UpdateViews(deltaTime);
             }
             
             void JumpPointController::OnJumpPointAdded(JumpPoint& jumpPoint)
@@ -56,7 +56,7 @@ namespace Eegeo
                 Eegeo_DELETE(pView);
             }
             
-            void JumpPointController::UpdateViews()
+            void JumpPointController::UpdateViews(float deltaTime)
             {
                 for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
                 {
@@ -66,6 +66,7 @@ namespace Eegeo
                     const dv3& origin = pJumpPoint->GetEcefPosition();
                     pView->SetEcefPosition(origin);
                     pView->SetColor(pJumpPoint->GetColor());
+                    pView->Update(deltaTime);
                 }
             }
             

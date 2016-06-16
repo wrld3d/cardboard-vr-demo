@@ -10,11 +10,14 @@ namespace Eegeo
         namespace DeadZoneMenu
         {
             
-            DeadZoneMenuController::DeadZoneMenuController(IDeadZoneMenuItemObservable& DeadZoneMenuItemObservable, IDeadZoneMenuItemViewFactory& viewFactory, IUIInteractionObservable& p_IUIInteractionObservable)
+            DeadZoneMenuController::DeadZoneMenuController(IDeadZoneMenuItemObservable& DeadZoneMenuItemObservable, IDeadZoneMenuItemViewFactory& viewFactory, IUIInteractionObservable& p_IUIInteractionObservable , IUICameraProvider& p_UICameraProvider)
             : m_DeadZoneMenuItemRepository(DeadZoneMenuItemObservable)
             , m_viewFactory(viewFactory)
             , m_pIUIInteractionObservable(p_IUIInteractionObservable)
+            , m_UICameraProvider(p_UICameraProvider)
             {
+                
+                shouldReposition = false;
                 m_DeadZoneMenuItemRepository.AddDeadZoneMenuObserver(this);
             }
             
@@ -33,7 +36,16 @@ namespace Eegeo
             
             void DeadZoneMenuController::Update(float deltaTime)
             {
-                UpdateViews();
+                if(shouldReposition)
+                {    
+                    PositionItems();
+                }
+                
+                for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
+                {
+                    DeadZoneMenuItemView* view = it->second;
+                    view->Update(deltaTime);
+                }
             }
             
             void DeadZoneMenuController::OnDeadZoneMenuItemAdded(DeadZoneMenuItem& DeadZoneMenuItem)
@@ -42,7 +54,9 @@ namespace Eegeo
                 
                 DeadZoneMenuItemView* pView = m_viewFactory.CreateViewForDeadZoneMenuItem(DeadZoneMenuItem);
                 m_viewsByModel[&DeadZoneMenuItem] = pView;
+                
                 m_pIUIInteractionObservable.RegisterInteractableItem(pView);
+                shouldReposition = true;
             }
             
             void DeadZoneMenuController::OnDeadZoneMenuItemRemoved(DeadZoneMenuItem& DeadZoneMenuItem)
@@ -56,16 +70,26 @@ namespace Eegeo
                 Eegeo_DELETE(pView);
             }
             
-            void DeadZoneMenuController::UpdateViews()
+            
+            void DeadZoneMenuController::PositionItems()
             {
+                
+                shouldReposition = false;
+                
+                int halfCount = (int) m_viewsByModel.size()/2;
+                
+                Eegeo::dv3 center = m_UICameraProvider.GetRenderCameraForUI().GetEcefLocation();
+                
+                Eegeo::v3 right(m_UICameraProvider.GetOrientation().GetRow(0));
+                Eegeo::v3 forward(m_UICameraProvider.GetOrientation().GetRow(2));
+                
                 for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
                 {
-                    const DeadZoneMenuItem* pDeadZoneMenuItem = it->first;
-                    DeadZoneMenuItemView* pView = it->second;
+                    DeadZoneMenuItemView* view = it->second;
+                    Eegeo::dv3 position(center + (forward*-350) + (right*(50*halfCount)));
+                    view->SetEcefPosition(position);
+                    halfCount --;
                     
-                    const dv3& origin = pDeadZoneMenuItem->GetEcefPosition();
-                    pView->SetEcefPosition(origin);
-                    pView->SetColor(pDeadZoneMenuItem->GetColor());
                 }
             }
             

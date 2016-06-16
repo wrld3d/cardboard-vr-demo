@@ -21,6 +21,9 @@
 #include "Modules/UI/UIInteraction/UIInteractionController.h"
 #include "Modules/UI/IUICameraProvider.h"
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
+
+#include "Modules/DeadZoneMenu/DeadZoneMenu.h"
+
 #include "Logger.h"
 #include "ICallback.h"
 
@@ -28,6 +31,7 @@ class ExampleApp : private Eegeo::NonCopyable
 {
 private:
     
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule* m_DeadZoneMenuModule;
     Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
 	Eegeo::EegeoWorld* m_pWorld;

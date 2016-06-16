@@ -9,6 +9,7 @@ namespace Eegeo
         namespace DeadZoneMenu
         {
             typedef int TDeadZoneMenuItemId;
+            typedef int TDeadZoneMenuItemSpriteId;
             
             class IDeadZoneMenuItemObservable;
             class IDeadZoneMenuItemObserver;

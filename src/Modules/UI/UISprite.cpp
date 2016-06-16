@@ -6,7 +6,7 @@
 //
 //
 
-#include "UIBaseItem.h"
+#include "UISprite.h"
 
 #include "UISprite.h"
 #include "RenderingModule.h"
@@ -25,10 +25,13 @@ namespace Eegeo
                            , Eegeo::v4 color
                            , int spriteId
                            , Eegeo::v2 spriteGridSize)
-        : UIBaseItem(ecefPosition, size, scale, color)
-        , m_UIRenderableFilter(p_UIRenderableFilter)
-        , m_Quad(quad){
-            
+        : m_Quad(quad)
+        , m_UIRenderableFilter(p_UIRenderableFilter){
+          
+            m_EcefPosition = ecefPosition;
+            m_Scale = scale;
+            m_Size = size;
+            m_Color = color;
             m_SpriteId = spriteId;
             m_SpriteGridSize = Eegeo::v2(spriteGridSize);
             
@@ -45,13 +48,49 @@ namespace Eegeo
         
         void UISprite::Update(float dt)
         {
-            if(IsDirty())
-            {
-                m_Quad->SetEcefPosition(GetEcefPosition());
-                m_Quad->SetColor(GetColor());
-                m_Quad->SetScale(GetScale());
-                SetDirty(false);
-            }
+        }
+        
+        void UISprite::SetEcefPosition(Eegeo::dv3 position)
+        {
+            m_EcefPosition = Eegeo::dv3(position);
+            m_Quad->SetEcefPosition(m_EcefPosition);
+        }
+        
+        const Eegeo::dv3& UISprite::GetEcefPosition()
+        {
+            return m_EcefPosition;
+        }
+        
+        void UISprite::SetSize(Eegeo::v2 size)
+        {
+            m_Size = Eegeo::v2(size);
+        }
+        
+        const Eegeo::v2& UISprite::GetSize()
+        {
+            return m_Size;
+        }
+        
+        void UISprite::SetColor(Eegeo::v4 color)
+        {
+            m_Color = Eegeo::v4(color);
+            m_Quad->SetColor(color);
+        }
+        
+        const Eegeo::v4& UISprite::GetColor()
+        {
+            return m_Color;
+        }
+        
+        void UISprite::SetScale(Eegeo::v3 scale)
+        {
+            m_Scale = Eegeo::v3(scale);
+            m_Quad->SetScale(m_Scale);
+        }
+        
+        const Eegeo::v3& UISprite::GetScale()
+        {
+            return m_Scale;
         }
         
         void UISprite::UpdateUVs(){
@@ -71,7 +110,6 @@ namespace Eegeo
             UpdateUVs();
             m_Quad->UpdateUVs(m_MinUV, m_MaxUV);
             
-            SetDirty();
             
         }
         

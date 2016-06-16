@@ -25,13 +25,18 @@ namespace Eegeo
             {
             public:
                 DeadZoneMenuItemView(DeadZoneMenuItem& deadZoneMenuItem
+                                     , IUIRenderableFilter& p_UIRenderableFilter
                                      , UIQuad* quad
-                                     , IUICameraProvider& p_UICameraProvider);
+                                     , IUICameraProvider& p_UICameraProvider
+                                     , Eegeo::v2& dimension);
                 
                 /*! Retrieve the DeadZoneMenuItem model that the view represents.
                  * \return The view's DeadZoneMenuItem model.
                  */
-                DeadZoneMenuItem& GetDeadZoneMenuItem() const;
+                DeadZoneMenuItem& GetDeadZoneMenuItem() const
+                {
+                    return m_DeadZoneMenuItem;
+                }
                 
             private:
                 DeadZoneMenuItem& m_DeadZoneMenuItem;
