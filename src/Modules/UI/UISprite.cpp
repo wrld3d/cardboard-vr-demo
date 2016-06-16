@@ -74,7 +74,7 @@ namespace Eegeo
         void UISprite::SetColor(Eegeo::v4 color)
         {
             m_Color = Eegeo::v4(color);
-            m_Quad->SetColor(color);
+            m_Quad->SetColor(m_Color);
         }
         
         const Eegeo::v4& UISprite::GetColor()
@@ -109,6 +109,9 @@ namespace Eegeo
             m_SpriteId = spriteId;
             UpdateUVs();
             m_Quad->UpdateUVs(m_MinUV, m_MaxUV);
+            m_Quad->SetScale(m_Scale);
+            m_Quad->SetColor(m_Color);
+            m_Quad->SetEcefPosition(m_EcefPosition);
             
             
         }
