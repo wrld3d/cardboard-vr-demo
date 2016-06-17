@@ -236,9 +236,9 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     std::string menuTextureFileName("mesh_example/PinIconTexturePage.png");
     m_DeadZoneMenuModule = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule(*m_UIRenderableFilter, *m_QuadFactory, *m_UIInteractionController, *m_pExampleController, menuTextureFileName, 4);
     
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* mMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 1, m_ClickCallback);
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* mMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 2, m_ClickCallback);
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* mMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 3, m_ClickCallback);
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* mMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 0, m_ClickCallback);
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* mMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 1, m_ClickCallback);
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* mMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 2, m_ClickCallback);
     
     m_DeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(mMenuItem1);
     m_DeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(mMenuItem2);

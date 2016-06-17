@@ -2,6 +2,7 @@
 
 #include "DeadZoneMenuController.h"
 #include "DeadZoneMenuItem.h"
+#include "Logger.h"
 
 namespace Eegeo
 {
@@ -17,7 +18,7 @@ namespace Eegeo
             , m_UICameraProvider(p_UICameraProvider)
             {
                 
-                shouldReposition = false;
+                isMenuShown = false;
                 m_DeadZoneMenuItemRepository.AddDeadZoneMenuObserver(this);
             }
             
@@ -36,11 +37,7 @@ namespace Eegeo
             
             void DeadZoneMenuController::Update(float deltaTime)
             {
-                if(shouldReposition)
-                {    
-                    PositionItems();
-                }
-                
+                PositionItems();
                 for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
                 {
                     DeadZoneMenuItemView* view = it->second;
@@ -56,7 +53,7 @@ namespace Eegeo
                 m_viewsByModel[&DeadZoneMenuItem] = pView;
                 
                 m_pIUIInteractionObservable.RegisterInteractableItem(pView);
-                shouldReposition = true;
+                isMenuShown = false;
             }
             
             void DeadZoneMenuController::OnDeadZoneMenuItemRemoved(DeadZoneMenuItem& DeadZoneMenuItem)
@@ -74,24 +71,53 @@ namespace Eegeo
             void DeadZoneMenuController::PositionItems()
             {
                 
-                shouldReposition = false;
                 
-                int halfCount = (int) m_viewsByModel.size()/2;
+                float halfCount =  m_viewsByModel.size()/2;
+                if(m_viewsByModel.size()%2==0)
+                    halfCount-=0.5f;
                 
                 Eegeo::dv3 center = m_UICameraProvider.GetRenderCameraForUI().GetEcefLocation();
                 
                 Eegeo::v3 right(m_UICameraProvider.GetOrientation().GetRow(0));
+                Eegeo::v3 top(m_UICameraProvider.GetOrientation().GetRow(1));
                 Eegeo::v3 forward(m_UICameraProvider.GetOrientation().GetRow(2));
                 
-                for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
+                Eegeo::v3 vA = center.ToSingle();
+                Eegeo::v3 vB = forward;
+                float angle = Eegeo::Math::Rad2Deg(Eegeo::Math::ACos(Eegeo::v3::Dot(vA, vB)/(vA.Length()*vB.Length())));
+                float marginAngle = 150;
+                
+                int positionMultiplier = 550;
+                if(angle<marginAngle)
+                    positionMultiplier *= -1;
+                
+                bool shouldUpdatePosition = false;
+                
+                if(!isMenuShown && angle>marginAngle)
                 {
-                    DeadZoneMenuItemView* view = it->second;
-                    Eegeo::dv3 position(center + (forward*-350) + (right*(50*halfCount)));
-                    view->SetEcefPosition(position);
-                    halfCount --;
-                    
+                    isMenuShown = true;
+                    shouldUpdatePosition = true;
                 }
+                else if(isMenuShown && angle<marginAngle)
+                {
+                    isMenuShown = false;
+                    shouldUpdatePosition = true;
+                }
+                
+                if(shouldUpdatePosition)
+                {
+                    
+                    for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
+                    {
+                        DeadZoneMenuItemView* view = it->second;
+                        Eegeo::dv3 position(center + (forward*positionMultiplier) + (right*(-50*halfCount)) + (top*-35));
+                        view->SetEcefPosition(position);
+                        halfCount--;
+                    }
+                }
+                
             }
+            
             
             DeadZoneMenuItemView* DeadZoneMenuController::GetViewForModel(const DeadZoneMenuItem& jp) const
             {

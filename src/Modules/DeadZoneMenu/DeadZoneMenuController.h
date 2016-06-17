@@ -44,7 +44,7 @@ namespace Eegeo
                 IUIInteractionObservable& m_pIUIInteractionObservable;
                 IUICameraProvider& m_UICameraProvider;
                 
-                bool shouldReposition;
+                bool isMenuShown;
                 typedef std::map<DeadZoneMenuItem*, DeadZoneMenuItemView*> TViewsByModel;
                 
                 TViewsByModel m_viewsByModel;
