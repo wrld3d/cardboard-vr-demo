@@ -23,12 +23,12 @@ namespace Eegeo
                 /*! Register an observer to receive notifications when the collection's contents are modified.
                  * \param observerToAdd The observer to register.
                  */
-                virtual void AddJumpPointObserver(IJumpPointObserver* observerToAdd) = 0;
+                virtual void AddJumpPointObserver(IJumpPointObserver* pObserverToAdd) = 0;
                 
                 /*! De-register an observer from receiving notifications when the collection's contents are modified.
                  * \param observerToRemove The observer to de-register.
                  */
-                virtual void RemoveJumpPointObserver(IJumpPointObserver* observerToRemove) = 0;
+                virtual void RemoveJumpPointObserver(IJumpPointObserver* pObserverToRemove) = 0;
                 virtual ~IJumpPointObservable() {};
             };
         }

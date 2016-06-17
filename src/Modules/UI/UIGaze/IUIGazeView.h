@@ -15,7 +15,7 @@ namespace Eegeo
             virtual void ShowView() = 0;
             virtual void HideView() = 0;
             virtual void ResetProgress() = 0;
-            
+            virtual ~IUIGazeView(){}
         };
     }
 }

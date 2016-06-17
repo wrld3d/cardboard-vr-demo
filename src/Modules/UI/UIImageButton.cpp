@@ -17,17 +17,17 @@ namespace Eegeo
 {
     namespace UI
     {
-        UIImageButton::UIImageButton(IUIRenderableFilter& p_UIRenderableFilter
-                                     , UIQuad* quad
+        UIImageButton::UIImageButton(IUIRenderableFilter& uiRenderableFilter
+                                     , UIQuad* pQuad
                                      , Eegeo::Helpers::ICallback0& onClickedEvent
                                      , const Eegeo::v2& size
                                      , const Eegeo::dv3& ecefPosition
                                      , const Eegeo::v3& scale
                                      , const Eegeo::v4& color)
-        : UISprite(p_UIRenderableFilter, quad, size, ecefPosition, scale, color)
-        , m_OnClickedEvent(onClickedEvent)
+        : UISprite(uiRenderableFilter, pQuad, size, ecefPosition, scale, color)
+        , m_onClickedEvent(onClickedEvent)
         {
-            m_Radius = (size.x > size.y ? size.x : size.y)/2.0f;
+            m_radius = (size.x > size.y ? size.x : size.y)/2.0f;
         }
         
         UIImageButton::~UIImageButton(){
@@ -50,7 +50,7 @@ namespace Eegeo
         
         void UIImageButton::OnItemClicked()
         {
-            m_OnClickedEvent();
+            m_onClickedEvent();
         }
         
         void UIImageButton::OnFocusGained()

@@ -60,7 +60,7 @@ namespace Eegeo
                 m_renderCamera->SetViewport(0,0,screenWidth, screenHeight);
                 m_renderCamera->SetProjection(0.7, 0.1, 4000);
                 
-                m_VRCameraPositionSpline.Start();
+                m_vrCameraPositionSpline.Start();
 
             }
             
@@ -72,7 +72,7 @@ namespace Eegeo
             Eegeo::Camera::RenderCamera& GetCamera() { return *m_renderCamera; }
             const bool IsMoving() const { return m_moving; }
             const bool IsFalling() const { return m_falling; }
-            const bool IsFollowingSpline() const { return m_VRCameraPositionSpline.IsPlaying(); }
+            const bool IsFollowingSpline() const { return m_vrCameraPositionSpline.IsPlaying(); }
             const dv3& GetCameraPosition() const { return m_ecefPosition; }
             const m33& GetCameraOrientation() const { return m_orientation; }
             
@@ -82,7 +82,7 @@ namespace Eegeo
             const v3 GetUp() const { return m_orientation.GetRow(1); }
             const v3 GetForward() const { return m_orientation.GetRow(2); }
             
-            VRCameraPositionSpline& GetVRCameraPositionSpline() { return m_VRCameraPositionSpline; }
+            VRCameraPositionSpline& GetVRCameraPositionSpline() { return m_vrCameraPositionSpline; }
             
             void SetProjectionMatrix(Eegeo::m44& projection);
             void UpdateFromPose(const Eegeo::m33& orientation, float eyeDistance);
@@ -137,7 +137,7 @@ namespace Eegeo
             Eegeo::Camera::RenderCamera* m_renderCamera;
             Eegeo::Resources::Terrain::Heights::TerrainHeightProvider * m_pTerrainHeightProvider;
             
-            VRCameraPositionSpline m_VRCameraPositionSpline;
+            VRCameraPositionSpline m_vrCameraPositionSpline;
             
             bool m_shiftDown;
             

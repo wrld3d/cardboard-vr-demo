@@ -31,9 +31,9 @@ namespace Eegeo
                 
                 JumpPoint* GetJumpPointById(TJumpPointId id) const;
                 
-                virtual void AddJumpPointObserver(IJumpPointObserver* observerToAdd);
+                virtual void AddJumpPointObserver(IJumpPointObserver* pObserverToAdd);
                 
-                virtual void RemoveJumpPointObserver(IJumpPointObserver* observerToRemove);
+                virtual void RemoveJumpPointObserver(IJumpPointObserver* pObserverToRemove);
                 
             private:
                 typedef std::vector<JumpPoint*> TJumpPoints;

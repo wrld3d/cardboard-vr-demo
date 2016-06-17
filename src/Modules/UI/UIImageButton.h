@@ -22,12 +22,12 @@ namespace Eegeo
         {
         private:
             
-            Eegeo::Helpers::ICallback0& m_OnClickedEvent;
-            float m_Radius;
+            Eegeo::Helpers::ICallback0& m_onClickedEvent;
+            float m_radius;
             
         public:
-            UIImageButton(IUIRenderableFilter& p_UIRenderableFilter
-                          , UIQuad* quad
+            UIImageButton(IUIRenderableFilter& uiRenderableFilter
+                          , UIQuad* pQuad
                           , Eegeo::Helpers::ICallback0& onClickedEvent
                           , const Eegeo::v2& size = Eegeo::v2::One()
                           , const Eegeo::dv3& ecefPosition = Eegeo::dv3::Zero()
@@ -43,7 +43,7 @@ namespace Eegeo
             virtual void OnFocusGained();
             virtual void OnFocusLost();
             
-            const virtual float GetItemRadius() { return m_Radius; }
+            const virtual float GetItemRadius() { return m_radius; }
         };
         
     }

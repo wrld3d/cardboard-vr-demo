@@ -23,17 +23,17 @@ namespace Eegeo
         {
         private:
             
-            float m_GazedTime = 0.0f;
+            float m_gazedTime = 0.0f;
             
-            UIGaze::UIGazeView& m_UIGazeView;
-            int m_FocusedUIItemId;
+            UIGaze::UIGazeView& m_uiGazeView;
+            int m_focusedUIItemId;
             
-            std::vector<IUIInteractableItem*> m_InteractableItems;
-            IUICameraProvider& m_pCameraProvider;
+            std::vector<IUIInteractableItem*> m_interactableItems;
+            IUICameraProvider& m_cameraProvider;
             
         public:
             
-            UIInteractionController(IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView);
+            UIInteractionController(IUICameraProvider& cameraProvider, UIGaze::UIGazeView& uiGazeView);
             virtual ~UIInteractionController();
             
             void Update(float dt);
@@ -44,8 +44,8 @@ namespace Eegeo
             void Event_ScreenInteractionClick(const Eegeo::v2& point);
             
             const IUIInteractableItem* GetItemAtScreenPoint(const Eegeo::v2& point);
-            virtual void RegisterInteractableItem(IUIInteractableItem* interactableItem);
-            virtual void UnRegisterInteractableItem(IUIInteractableItem* interactableItem);
+            virtual void RegisterInteractableItem(IUIInteractableItem* pInteractableItem);
+            virtual void UnRegisterInteractableItem(IUIInteractableItem* pInteractableItem);
             
         };
         

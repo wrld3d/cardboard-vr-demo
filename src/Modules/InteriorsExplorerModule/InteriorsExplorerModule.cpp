@@ -17,7 +17,7 @@ namespace InteriorsExplorer
     InteriorsExplorerModule::InteriorsExplorerModule(Eegeo::Resources::Interiors::InteriorInteractionModel& interiorInteractionModel,
                                                      Eegeo::Resources::Interiors::InteriorSelectionModel& interiorSelectionModel,
                                                      Eegeo::Resources::Interiors::InteriorTransitionModel& interiorTransitionModel) :
-    m_InteriorInteractionModel(interiorInteractionModel)
+    m_interiorInteractionModel(interiorInteractionModel)
     {
         Eegeo::Resources::Interiors::InteriorId id(std::string("westport_house"));
         interiorSelectionModel.SelectInteriorId(id);
@@ -34,7 +34,7 @@ namespace InteriorsExplorer
         Eegeo_DELETE m_pVisibilityUpdater;
     }
     void InteriorsExplorerModule::ToggleInteriorDisplay(){
-        m_InteriorInteractionModel.SetSelectedFloorIndex(2);
+        m_interiorInteractionModel.SetSelectedFloorIndex(2);
         m_pVisibilityUpdater->SetInteriorShouldDisplay(!m_pVisibilityUpdater->GetInteriorShouldDisplay());
     }
     
@@ -44,7 +44,7 @@ namespace InteriorsExplorer
     }
     
     bool InteriorsExplorerModule::InteriorLoaded(){
-        return m_InteriorInteractionModel.HasInteriorModel();
+        return m_interiorInteractionModel.HasInteriorModel();
     }
     
     void InteriorsExplorerModule::Update(float dt) const

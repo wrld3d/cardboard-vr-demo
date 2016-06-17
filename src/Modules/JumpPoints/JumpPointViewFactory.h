@@ -28,9 +28,9 @@ namespace Eegeo
                 virtual JumpPointView* CreateViewForJumpPoint(JumpPoint& jumpPointModel);
                 
             private:
-                IUICameraProvider& m_UICameraProvider;
-                IUIQuadFactory& m_IUIQuadFactory;
-                IUIRenderableFilter& m_UIRenderableFilter;
+                IUICameraProvider& m_uiCameraProvider;
+                IUIQuadFactory& m_uiQuadFactory;
+                IUIRenderableFilter& m_uiRenderableFilter;
             };
         }
     }

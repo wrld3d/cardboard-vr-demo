@@ -24,8 +24,8 @@ namespace Eegeo
             class DeadZoneMenuController : protected Eegeo::NonCopyable, public IDeadZoneMenuItemObserver
             {
             public:
-                DeadZoneMenuController(IDeadZoneMenuItemObservable& deadZoneMenuItemObservable, IDeadZoneMenuItemViewFactory& viewFactory, IUIInteractionObservable& p_IUIInteractionObservable
-                                       , IUICameraProvider& p_UICameraProvider);
+                DeadZoneMenuController(IDeadZoneMenuItemObservable& deadZoneMenuItemObservable, IDeadZoneMenuItemViewFactory& viewFactory, IUIInteractionObservable& uiInteractionObservable
+                                       , IUICameraProvider& uiCameraProvider);
                 
                 ~DeadZoneMenuController();
                 
@@ -39,12 +39,12 @@ namespace Eegeo
                 void PositionItems();
                 
             private:
-                IDeadZoneMenuItemObservable& m_DeadZoneMenuItemRepository;
+                IDeadZoneMenuItemObservable& m_deadZoneMenuItemRepository;
                 IDeadZoneMenuItemViewFactory& m_viewFactory;
                 IUIInteractionObservable& m_pIUIInteractionObservable;
                 IUICameraProvider& m_UICameraProvider;
                 
-                bool isMenuShown;
+                bool m_isMenuShown;
                 typedef std::map<DeadZoneMenuItem*, DeadZoneMenuItemView*> TViewsByModel;
                 
                 TViewsByModel m_viewsByModel;

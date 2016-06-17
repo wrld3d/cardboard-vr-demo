@@ -98,7 +98,7 @@ namespace
         loadingScreenConfig.layout = Eegeo::Rendering::LoadingScreenLayout::Centred;
        
         
-        Eegeo::Rendering::LoadingScreen* loadingScreen = Eegeo::Rendering::LoadingScreen::Create(
+        Eegeo::Rendering::LoadingScreen* pLoadingScreen = Eegeo::Rendering::LoadingScreen::Create(
             "SplashScreen-1024x768.png",
             loadingScreenConfig,
             renderingModule.GetShaderIdGenerator(),
@@ -108,7 +108,7 @@ namespace
             renderingModule.GetVertexBindingPool(),
             platformAbstractionModule.GetTextureFileLoader());
             
-        return loadingScreen;
+        return pLoadingScreen;
     }
 }
 
@@ -132,7 +132,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_startClearColor(0.f/255.f,24.f/255.f,72.f/255.f)
     , m_destClearColor(135.f/255.0f, 206.f/255.0f, 235.f/255.0f)
     , m_screenPropertiesProvider(screenProperties)
-    , m_ClickCallback(this, &ExampleApp::ToggleNight)
+    , m_clickCallback(this, &ExampleApp::ToggleNight)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -179,7 +179,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     Eegeo::Modules::Map::Layers::InteriorsPresentationModule& interiorsPresentationModule = mapModule.GetInteriorsPresentationModule();
     
-    m_interiorExplorerModule = Eegeo_NEW(InteriorsExplorer::InteriorsExplorerModule)(
+    m_pInteriorExplorerModule = Eegeo_NEW(InteriorsExplorer::InteriorsExplorerModule)(
                             interiorsPresentationModule.GetInteriorInteractionModel(),
                             interiorsPresentationModule.GetInteriorSelectionModel(),
                             interiorsPresentationModule.GetInteriorTransitionModel());
@@ -191,22 +191,22 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
 
     Eegeo::Modules::Core::RenderingModule& renderingModule = m_pWorld->GetRenderingModule();
-    m_VRDistortion = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortionModule)(m_screenPropertiesProvider.GetScreenProperties(),
+    m_pVRDistortion = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortionModule)(m_screenPropertiesProvider.GetScreenProperties(),
                                                 renderingModule.GetVertexLayoutPool(),
                                                 renderingModule.GetVertexBindingPool(),
                                                 renderingModule.GetShaderIdGenerator(),
                                                 renderingModule.GetMaterialIdGenerator(),
                                                 renderingModule.GetRenderableFilters(),
                                              renderingModule.GetGlBufferPool());
-    m_VRDistortion->Initialize();
+    m_pVRDistortion->Initialize();
     
-    m_VRSkybox = Eegeo_NEW(Eegeo::Skybox::SkyboxModule)(renderingModule,
+    m_pVRSkybox = Eegeo_NEW(Eegeo::Skybox::SkyboxModule)(renderingModule,
                                                                       renderingModule.GetGlBufferPool(),
                                                                       renderingModule.GetVertexBindingPool(),
                                                                       renderingModule.GetVertexLayoutPool(),
                                                                       renderingModule.GetRenderableFilters()
                                                                       );
-    m_VRSkybox->Start();
+    m_pVRSkybox->Start();
     
     Eegeo::dv3 quadPosition = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 250).ToECEF();
     Eegeo::v2 dimension = Eegeo::v2(50,50);
@@ -216,39 +216,39 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     Eegeo::v2 outMax;
     Eegeo::UI::CalculateUV(size, 1, outMin, outMax);
     
-    m_UIRenderableFilter = Eegeo_NEW(Eegeo::UI::UIRenderableFilter)();
-    renderingModule.GetRenderableFilters().AddRenderableFilter(*m_UIRenderableFilter);
+    m_pUIRenderableFilter = Eegeo_NEW(Eegeo::UI::UIRenderableFilter)();
+    renderingModule.GetRenderableFilters().AddRenderableFilter(*m_pUIRenderableFilter);
     
-    m_QuadFactory = Eegeo_NEW(Eegeo::UI::UIQuadFactory)(renderingModule, m_pWorld->GetPlatformAbstractionModule().GetTextureFileLoader());
+    m_pQuadFactory = Eegeo_NEW(Eegeo::UI::UIQuadFactory)(renderingModule, m_pWorld->GetPlatformAbstractionModule().GetTextureFileLoader());
     
-    m_UIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(*m_UIRenderableFilter,
-                                                     m_QuadFactory->CreateUIQuad("mesh_example/PinIconTexturePage.png", dimension, outMin, outMax),
-                                                     m_ClickCallback,
+    m_pUIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(*m_pUIRenderableFilter,
+                                                     m_pQuadFactory->CreateUIQuad("mesh_example/PinIconTexturePage.png", dimension, outMin, outMax),
+                                                     m_clickCallback,
                                                      dimension);
-    m_UIButton->SetEcefPosition(quadPosition);
+    m_pUIButton->SetEcefPosition(quadPosition);
     
-    m_UIGazeView = new Eegeo::UIGaze::UIGazeView(*m_QuadFactory, *m_UIRenderableFilter);
+    m_pUIGazeView = new Eegeo::UIGaze::UIGazeView(*m_pQuadFactory, *m_pUIRenderableFilter);
     
-    m_UIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*m_pExampleController, *m_UIGazeView);
-    m_UIInteractionController->RegisterInteractableItem(m_UIButton);
+    m_pUIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*m_pExampleController, *m_pUIGazeView);
+    m_pUIInteractionController->RegisterInteractableItem(m_pUIButton);
     
     
     std::string menuTextureFileName("mesh_example/PinIconTexturePage.png");
-    m_DeadZoneMenuModule = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule(*m_UIRenderableFilter, *m_QuadFactory, *m_UIInteractionController, *m_pExampleController, menuTextureFileName, 4);
+    m_pDeadZoneMenuModule = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, menuTextureFileName, 4);
     
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* mMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 0, m_ClickCallback);
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* mMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 1, m_ClickCallback);
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* mMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 2, m_ClickCallback);
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* pMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 0, m_clickCallback);
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* pMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 1, m_clickCallback);
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* pMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 2, m_clickCallback);
     
-    m_DeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(mMenuItem1);
-    m_DeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(mMenuItem2);
-    m_DeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(mMenuItem3);
+    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(pMenuItem1);
+    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(pMenuItem2);
+    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(pMenuItem3);
     
 //    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
-    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_QuadFactory, *m_UIInteractionController, *m_pExampleController);
+    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController);
 
     
-    m_UIGazeView->HideView();
+    m_pUIGazeView->HideView();
     
 }
 
@@ -260,23 +260,23 @@ ExampleApp::~ExampleApp()
         Eegeo_DELETE m_pLoadingScreen;
     }
     
-    Eegeo_DELETE m_QuadFactory;
-    Eegeo_DELETE m_UIGazeView;
-    Eegeo_DELETE m_UIButton;
+    Eegeo_DELETE m_pQuadFactory;
+    Eegeo_DELETE m_pUIGazeView;
+    Eegeo_DELETE m_pUIButton;
     
-    Eegeo_DELETE m_VRSkybox;
-    Eegeo_DELETE m_VRDistortion;
+    Eegeo_DELETE m_pVRSkybox;
+    Eegeo_DELETE m_pVRDistortion;
     
     Eegeo_DELETE m_pStreamingVolume;
     Eegeo_DELETE m_pCameraControllerFactory;
-    Eegeo_DELETE m_interiorExplorerModule;
+    Eegeo_DELETE m_pInteriorExplorerModule;
     Eegeo_DELETE m_pCameraTouchController;
     Eegeo_DELETE m_pExampleController;
     
-    Eegeo_DELETE m_UIInteractionController;
+    Eegeo_DELETE m_pUIInteractionController;
     
-    m_pWorld->GetRenderingModule().GetRenderableFilters().RemoveRenderableFilter(*m_UIRenderableFilter);
-    Eegeo_DELETE m_UIRenderableFilter;
+    m_pWorld->GetRenderingModule().GetRenderableFilters().RemoveRenderableFilter(*m_pUIRenderableFilter);
+    Eegeo_DELETE m_pUIRenderableFilter;
 }
 
 void ExampleApp::OnPause()
@@ -329,29 +329,29 @@ void ExampleApp::Update (float dt, float headTansform[])
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
         m_pExampleController->Update(dt);
     
-    m_DeadZoneMenuModule->Update(dt);
-    m_UIInteractionController->Update(dt);
+    m_pDeadZoneMenuModule->Update(dt);
+    m_pUIInteractionController->Update(dt);
     
-    Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-    m_UIInteractionController->Event_ScreenInteractionMoved(center);
+    Eegeo::v2 center = m_pVRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+    m_pUIInteractionController->Event_ScreenInteractionMoved(center);
     
-    m_interiorExplorerModule ->Update(dt);
+    m_pInteriorExplorerModule ->Update(dt);
     
     UpdateNightTParam(dt);
     UpdateFogging();
     UpdateLoadingScreen(dt);
-    m_UIButton->Update(dt);
+    m_pUIButton->Update(dt);
 }
 
 void ExampleApp::Draw (float dt, float headTansform[]){
     Eegeo::EegeoWorld& eegeoWorld = World();
     if(eegeoWorld.Validated())
     {
-        m_VRDistortion->BeginRendering();
+        m_pVRDistortion->BeginRendering();
         DrawLeftEye(dt, headTansform, eegeoWorld);
-        m_VRDistortion->RegisterRenderable();
+        m_pVRDistortion->RegisterRenderable();
         DrawRightEye(dt, headTansform, eegeoWorld);
-        m_VRDistortion->UnRegisterRenderable();
+        m_pVRDistortion->UnRegisterRenderable();
     }
     
     DrawLoadingScreen();
@@ -373,8 +373,8 @@ void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld&
     
     Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
     Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
-    m_UIGazeView->Update(dt);
-    m_UIGazeView->SetEcefPosition(position);
+    m_pUIGazeView->Update(dt);
+    m_pUIGazeView->SetEcefPosition(position);
     
     eegeoWorld.Draw(drawParameters);
     
@@ -397,8 +397,8 @@ void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld
                                                m_screenPropertiesProvider.GetScreenProperties());
     Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
     Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
-    m_UIGazeView->Update(dt);
-    m_UIGazeView->SetEcefPosition(position);
+    m_pUIGazeView->Update(dt);
+    m_pUIGazeView->SetEcefPosition(position);
     eegeoWorld.Draw(drawParameters);
     
     m_pExampleController->Draw();
@@ -428,7 +428,7 @@ void ExampleApp::UpdateNightTParam(float dt)
     m_nightTParam = Eegeo::Math::Clamp01(m_nightTParam);
     m_currentClearColor = Eegeo::v3::Lerp(m_startClearColor, m_destClearColor, m_nightTParam);
     
-    m_VRSkybox->UpdateSkyColor(m_currentClearColor);
+    m_pVRSkybox->UpdateSkyColor(m_currentClearColor);
 }
 
 void ExampleApp::ToggleNight()
@@ -461,32 +461,17 @@ void ExampleApp::ToggleNight()
 void ExampleApp::UpdateCardboardProfile(float cardboardProfile[])
 {
     m_pExampleController->UpdateCardboardProfile(cardboardProfile);
-    m_VRDistortion->UpdateCardboardProfile(cardboardProfile);
+    m_pVRDistortion->UpdateCardboardProfile(cardboardProfile);
 }
 
 void ExampleApp::MagnetTriggered(){
     const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
     Eegeo::v2 dim = Eegeo::v2(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-    Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(dim.x,dim.y);
-    m_UIInteractionController->Event_ScreenInteractionClick(center);
+    Eegeo::v2 center = m_pVRDistortion->GetCardboardProfile().GetScreenMeshCenter(dim.x,dim.y);
+    m_pUIInteractionController->Event_ScreenInteractionClick(center);
 }
 
 void ExampleApp::UpdateFogging(){
-    
-//    void SetFogColour(const Eegeo::v4& fogColour) { m_fogColour = fogColour; }
-//    void SetHeightFogAltitudes(float minAltitude, float maxAltitude) { m_heightFogMinAltitude = minAltitude; m_heightFogMaxAltitude = maxAltitude; }
-//    void SetDistanceFogDistances(float nearFog, float farFog) { m_distanceFogNear = nearFog; m_distanceFogFar = farFog; }
-//    void SetDistanceFogAltitudes(float low, float high) { m_distanceFogLow = low; m_distanceFogHigh = high; }
-//    void SetCameraPositionEcef(const Eegeo::dv3& cameraPositionEcef) { m_cameraPositionEcef = cameraPositionEcef; }
-//    void SetFogDensity(float fogDensity) { m_fogDensity = fogDensity; }
-//    void SetHeightFogIntensity(float heightFogIntensity) { m_heightFogIntensity = heightFogIntensity; }
-//    void SetDistanceFogIntensity(float distanceFogIntensity) { m_distanceFogInstensity = distanceFogIntensity; }
-//    void SetBaseAltitude(float baseAltitude) { m_baseAltitude = baseAltitude; }
-//    
-//    void GetUniformValues(GlobalFoggingUniformValues& values) const;
-//    
-//    bool IsEnabled() const { return m_fogDensity > 0.f;}
-
     Eegeo::Lighting::GlobalFogging& fogging = m_pWorld->GetCoreModule().GetLightingModule().GetGlobalFogging();
     fogging.SetHeightFogIntensity(0.0f);
     fogging.SetDistanceFogIntensity(1.0f);
@@ -632,8 +617,8 @@ void ExampleApp::Event_TouchTap(const AppInterface::TapData& data)
     
     const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
     Eegeo::v2 dim = Eegeo::v2(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-    Eegeo::v2 center = m_VRDistortion->GetCardboardProfile().GetScreenMeshCenter(dim.x,dim.y);
-    m_UIInteractionController->Event_ScreenInteractionClick(center);
+    Eegeo::v2 center = m_pVRDistortion->GetCardboardProfile().GetScreenMeshCenter(dim.x,dim.y);
+    m_pUIInteractionController->Event_ScreenInteractionClick(center);
 }
 
 void ExampleApp::Event_TouchDoubleTap(const AppInterface::TapData& data)

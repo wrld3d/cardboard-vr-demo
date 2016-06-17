@@ -16,18 +16,18 @@ namespace Eegeo
             
         private:
             typedef std::vector<UISprite*> TSpriteFrames;
-            TSpriteFrames m_Frames;
+            TSpriteFrames m_frames;
 
-            int m_CurrentFrame;
-            float m_TimeElapsed;
-            float m_FrameRate;
+            int m_currentFrame;
+            float m_timeElapsed;
+            float m_frameRate;
 
             void LoadNextFrame();
             
         public:
             
-            UIAnimatedSprite(IUIRenderableFilter& p_UIRenderableFilter
-                             , IUIQuadFactory& p_IUIQuadFactory
+            UIAnimatedSprite(IUIRenderableFilter& uiRenderableFilter
+                             , IUIQuadFactory& uiQuadFactory
                              , const std::string& assetPath
                              , float frameRate
                              , const Eegeo::v2& spriteGridSize = Eegeo::v2::One()
@@ -41,8 +41,8 @@ namespace Eegeo
             
             virtual ~UIAnimatedSprite();
             
-            void CreateFrames(IUIRenderableFilter& p_UIRenderableFilter
-                              , IUIQuadFactory& p_IUIQuadFactory
+            void CreateFrames(IUIRenderableFilter& uiRenderableFilter
+                              , IUIQuadFactory& uiQuadFactory
                               , const std::string& assetPath
                               , const Eegeo::v2& spriteGridSize
                               , const Eegeo::v2& size

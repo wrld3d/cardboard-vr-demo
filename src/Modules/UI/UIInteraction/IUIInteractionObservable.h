@@ -24,8 +24,8 @@ namespace Eegeo
         class IUIInteractionObservable
         {
         public:
-            virtual void RegisterInteractableItem(IUIInteractableItem* interactableItem) = 0;
-            virtual void UnRegisterInteractableItem(IUIInteractableItem* interactableItem) = 0;
+            virtual void RegisterInteractableItem(IUIInteractableItem* pInteractableItem) = 0;
+            virtual void UnRegisterInteractableItem(IUIInteractableItem* pInteractableItem) = 0;
             virtual ~IUIInteractionObservable() {}
         };
         

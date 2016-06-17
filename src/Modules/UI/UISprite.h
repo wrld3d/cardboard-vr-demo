@@ -22,13 +22,13 @@ namespace Eegeo
         private:
             IUIRenderableFilter& m_UIRenderableFilter;
             
-            UIQuad* m_Quad;
+            UIQuad* m_pQuad;
             Eegeo::v2 m_Size;
             
         public:
             
-            UISprite(IUIRenderableFilter& p_UIRenderableFilter
-                     , UIQuad* quad
+            UISprite(IUIRenderableFilter& uiRenderableFilter
+                     , UIQuad* pQuad
                      , const Eegeo::v2& size = Eegeo::v2::One()
                      , const Eegeo::dv3& ecefPosition = Eegeo::dv3::Zero()
                      , const Eegeo::v3& scale = Eegeo::v3::One()
@@ -50,8 +50,8 @@ namespace Eegeo
             void SetScale(const Eegeo::v3& scale);
             Eegeo::v3 GetScale();
             
-            bool GetItemShouldRender(){ return m_Quad->GetItemShouldRender(); }
-            void SetItemShouldRender(bool shouldRender){ m_Quad->SetItemShouldRender(shouldRender); }
+            bool GetItemShouldRender(){ return m_pQuad->GetItemShouldRender(); }
+            void SetItemShouldRender(bool shouldRender){ m_pQuad->SetItemShouldRender(shouldRender); }
             
         };
         

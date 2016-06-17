@@ -29,13 +29,13 @@ private:
     Eegeo::Geometry::CatmullRomSpline* m_pPositionSpline;
 	Eegeo::Geometry::CatmullRomSpline* m_pTargetSpline;
     Eegeo::VR::VRCameraController* m_pSplineCameraController;
-    const InteriorsExplorer::IInteriorsExplorerModule& m_InteriorsExplorerModule;
+    const InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
     
 public:
     
     VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
                           Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
-                          Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
+                          Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                           IVRHeadTracker& headTracker,
                           const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
                           const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);

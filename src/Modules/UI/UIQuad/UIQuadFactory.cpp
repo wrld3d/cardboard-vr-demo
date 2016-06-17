@@ -19,25 +19,25 @@ namespace Eegeo
         UIQuadFactory::UIQuadFactory(const Eegeo::Modules::Core::RenderingModule& renderingModule,
                                      Eegeo::Helpers::ITextureFileLoader& textureFileLoader
 )
-        : m_GlBufferPool(renderingModule.GetGlBufferPool())
-        , m_VertexBindingPool(renderingModule.GetVertexBindingPool())
-        , m_VertexLayoutPool(renderingModule.GetVertexLayoutPool())
-        , m_ShaderIdGenerator(renderingModule.GetShaderIdGenerator())
-        , m_MaterialIdGenerator(renderingModule.GetMaterialIdGenerator())
-        , m_TextureFileLoader(textureFileLoader)
-        , m_Shader(NULL)
+        : m_glBufferPool(renderingModule.GetGlBufferPool())
+        , m_vertexBindingPool(renderingModule.GetVertexBindingPool())
+        , m_vertexLayoutPool(renderingModule.GetVertexLayoutPool())
+        , m_shaderIdGenerator(renderingModule.GetShaderIdGenerator())
+        , m_materialIdGenerator(renderingModule.GetMaterialIdGenerator())
+        , m_textureFileLoader(textureFileLoader)
+        , m_pShader(NULL)
         {
-            m_Shader = Eegeo::Rendering::Shaders::TexturedUniformColoredShader::Create(m_ShaderIdGenerator.GetNextId());
+            m_pShader = Eegeo::Rendering::Shaders::TexturedUniformColoredShader::Create(m_shaderIdGenerator.GetNextId());
         }
         
         UIQuadFactory::~UIQuadFactory()
         {
-            Eegeo_DELETE m_Shader;
-            for(TMaterialMap::iterator it = m_MaterialMap.begin(); it != m_MaterialMap.end(); ++it)
+            Eegeo_DELETE m_pShader;
+            for(TMaterialMap::iterator it = m_materialMap.begin(); it != m_materialMap.end(); ++it)
             {
                 Eegeo_DELETE it->second;
             }
-            m_MaterialMap.clear();
+            m_materialMap.clear();
         }
         
         UIQuad* UIQuadFactory::CreateUIQuad(const std::string& assetPath,
@@ -47,15 +47,15 @@ namespace Eegeo
                              const Eegeo::dv3& ecefPosition,
                              const Eegeo::v4& initialColor,
                              const Eegeo::Rendering::LayerIds::Values renderLayer){
-            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* material = GetMaterialForAsset(assetPath);
-            return new UIQuad(assetPath, *material, m_VertexBindingPool, m_GlBufferPool, dimension, uvMin, uvMax, ecefPosition, initialColor, renderLayer);
+            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* pMaterial = GetMaterialForAsset(assetPath);
+            return new UIQuad(assetPath, *pMaterial, m_vertexBindingPool, m_glBufferPool, dimension, uvMin, uvMax, ecefPosition, initialColor, renderLayer);
         }
         
         Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* UIQuadFactory::GetMaterialForAsset(const std::string& assetPath)
         {
-            TMaterialMap::const_iterator foundMaterial = m_MaterialMap.find(assetPath);
+            TMaterialMap::const_iterator foundMaterial = m_materialMap.find(assetPath);
             
-            if(foundMaterial != m_MaterialMap.end())
+            if(foundMaterial != m_materialMap.end())
             {
                 return foundMaterial->second;
             }
@@ -67,21 +67,21 @@ namespace Eegeo
             
             
             const bool generateMipmaps = true;
-            bool success = m_TextureFileLoader.LoadTexture(textureInfo, assetPath, generateMipmaps);
+            bool success = m_textureFileLoader.LoadTexture(textureInfo, assetPath, generateMipmaps);
             
             Eegeo_ASSERT(success, "failed to load texture");
             if (!success)
                 return NULL;
             
             const v4& initialColor = v4::One();
-            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* material = new (Eegeo::Rendering::Materials::TexturedUniformColoredMaterial) (
-                                                                               m_MaterialIdGenerator.GetNextId(),
+            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* pMaterial = new (Eegeo::Rendering::Materials::TexturedUniformColoredMaterial) (
+                                                                               m_materialIdGenerator.GetNextId(),
                                                                                "UIRectMaterial",
-                                                                               *m_Shader,
+                                                                               *m_pShader,
                                                                                textureInfo.textureId,
                                                                                initialColor);
-            m_MaterialMap[assetPath] = material;
-            return material;
+            m_materialMap[assetPath] = pMaterial;
+            return pMaterial;
             
         }
         

@@ -21,17 +21,17 @@ namespace Eegeo
         private:
             
             typedef std::map<std::string, Eegeo::Rendering::Materials::TexturedUniformColoredMaterial*> TMaterialMap;
-            TMaterialMap m_MaterialMap;
+            TMaterialMap m_materialMap;
             
-            Eegeo::Rendering::Shaders::TexturedUniformColoredShader* m_Shader;
+            Eegeo::Rendering::Shaders::TexturedUniformColoredShader* m_pShader;
             
-            Eegeo::Rendering::GlBufferPool& m_GlBufferPool;
-            Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_VertexBindingPool;
-            Eegeo::Rendering::VertexLayouts::VertexLayoutPool& m_VertexLayoutPool;
+            Eegeo::Rendering::GlBufferPool& m_glBufferPool;
+            Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
+            Eegeo::Rendering::VertexLayouts::VertexLayoutPool& m_vertexLayoutPool;
             
-            Eegeo::Helpers::ITextureFileLoader& m_TextureFileLoader;
-            Rendering::Shaders::ShaderIdGenerator& m_ShaderIdGenerator;
-            Rendering::Materials::MaterialIdGenerator& m_MaterialIdGenerator;
+            Eegeo::Helpers::ITextureFileLoader& m_textureFileLoader;
+            Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
+            Rendering::Materials::MaterialIdGenerator& m_materialIdGenerator;
             
             Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* GetMaterialForAsset(const std::string& assetPath);
             

@@ -64,14 +64,14 @@ namespace Eegeo
                 return NULL;
             }
             
-            void JumpPointRepository::AddJumpPointObserver(IJumpPointObserver* observerToAdd)
+            void JumpPointRepository::AddJumpPointObserver(IJumpPointObserver* pObserverToAdd)
             {
-                m_observers.push_back(observerToAdd);
+                m_observers.push_back(pObserverToAdd);
             }
             
-            void JumpPointRepository::RemoveJumpPointObserver(IJumpPointObserver* observerToRemove)
+            void JumpPointRepository::RemoveJumpPointObserver(IJumpPointObserver* pObserverToRemove)
             {
-                std::vector<IJumpPointObserver*>::iterator position = std::find(m_observers.begin(), m_observers.end(), observerToRemove);
+                std::vector<IJumpPointObserver*>::iterator position = std::find(m_observers.begin(), m_observers.end(), pObserverToRemove);
                 if (position != m_observers.end())
                     m_observers.erase(position);
             }

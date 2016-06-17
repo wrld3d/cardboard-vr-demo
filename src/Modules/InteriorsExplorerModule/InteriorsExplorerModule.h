@@ -37,6 +37,6 @@ namespace InteriorsExplorer
         
         InteriorsExplorerModel* m_pModel;
         InteriorVisibilityUpdater* m_pVisibilityUpdater;
-        Eegeo::Resources::Interiors::InteriorInteractionModel& m_InteriorInteractionModel;
+        Eegeo::Resources::Interiors::InteriorInteractionModel& m_interiorInteractionModel;
     };
 }

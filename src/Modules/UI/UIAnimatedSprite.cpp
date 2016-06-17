@@ -9,13 +9,13 @@ namespace Eegeo
 {
     namespace UI
     {
-        void DeleteFrame(UISprite* frame)
+        void DeleteFrame(UISprite* pFrame)
         {
-            Eegeo_DELETE frame;
+            Eegeo_DELETE pFrame;
         }
         
-        UIAnimatedSprite::UIAnimatedSprite(IUIRenderableFilter& p_UIRenderableFilter
-                         , IUIQuadFactory& p_IUIQuadFactory
+        UIAnimatedSprite::UIAnimatedSprite(IUIRenderableFilter& uiRenderableFilter
+                         , IUIQuadFactory& uiQuadFactory
                          , const std::string& assetPath
                          , float frameRate
                          , const Eegeo::v2& spriteGridSize
@@ -24,22 +24,22 @@ namespace Eegeo
                          , const Eegeo::dv3& ecefPosition
                          , const Eegeo::v3& scale
                          , const Eegeo::v4& color)
-        : m_FrameRate(frameRate)
-        , m_TimeElapsed(0)
-        , m_CurrentFrame(0)
+        : m_frameRate(frameRate)
+        , m_timeElapsed(0)
+        , m_currentFrame(0)
         {
-            m_Frames.reserve(spriteGridSize.GetX() * spriteGridSize.GetY());
-            CreateFrames(p_UIRenderableFilter, p_IUIQuadFactory, assetPath, spriteGridSize, size, ecefPosition, scale, color);
+            m_frames.reserve(spriteGridSize.GetX() * spriteGridSize.GetY());
+            CreateFrames(uiRenderableFilter, uiQuadFactory, assetPath, spriteGridSize, size, ecefPosition, scale, color);
         }
         
         UIAnimatedSprite::~UIAnimatedSprite()
         {
-            std::for_each(m_Frames.begin(), m_Frames.end(), DeleteFrame);
-            m_Frames.clear();
+            std::for_each(m_frames.begin(), m_frames.end(), DeleteFrame);
+            m_frames.clear();
         }
         
-        void UIAnimatedSprite::CreateFrames(Eegeo::UI::IUIRenderableFilter &p_UIRenderableFilter
-                                            , IUIQuadFactory& p_IUIQuadFactory
+        void UIAnimatedSprite::CreateFrames(Eegeo::UI::IUIRenderableFilter &uiRenderableFilter
+                                            , IUIQuadFactory& uiQuadFactory
                                             , const std::string& assetPath
                                             , const Eegeo::v2& spriteGridSize
                                             , const Eegeo::v2& size
@@ -54,63 +54,63 @@ namespace Eegeo
                 Eegeo::v2 outMax;
                 Eegeo::UI::CalculateUV(spriteGridSize, i, outMin, outMax);
                 
-                UISprite* frame = Eegeo_NEW(UISprite)( p_UIRenderableFilter
-                                                     , p_IUIQuadFactory.CreateUIQuad(assetPath, size, outMin, outMax)
+                UISprite* pFrame = Eegeo_NEW(UISprite)( uiRenderableFilter
+                                                     , uiQuadFactory.CreateUIQuad(assetPath, size, outMin, outMax)
                                                      , size
                                                      , ecefPosition
                                                      , scale
                                                      , color);
                 
-                frame->SetItemShouldRender(false);
-                m_Frames.push_back(frame);
+                pFrame->SetItemShouldRender(false);
+                m_frames.push_back(pFrame);
             }
             
-            m_Frames[m_CurrentFrame]->SetItemShouldRender(true);
+            m_frames[m_currentFrame]->SetItemShouldRender(true);
         }
         
         void UIAnimatedSprite::Reset()
         {
-            m_TimeElapsed = 0.0f;
+            m_timeElapsed = 0.0f;
         }
         
         void UIAnimatedSprite::Update(float dt)
         {
-            m_TimeElapsed += dt;
-            if(m_TimeElapsed>(1.0f/m_FrameRate)) {
+            m_timeElapsed += dt;
+            if(m_timeElapsed>(1.0f/m_frameRate)) {
                 Reset();
                 LoadNextFrame();
             }
             
-            m_Frames[m_CurrentFrame]->Update(dt);
+            m_frames[m_currentFrame]->Update(dt);
         }
         
         void UIAnimatedSprite::LoadNextFrame()
         {
-            UISprite* oldFrame = m_Frames[m_CurrentFrame];
-            oldFrame->SetItemShouldRender(false);
+            UISprite* pOldFrame = m_frames[m_currentFrame];
+            pOldFrame->SetItemShouldRender(false);
             
-            m_CurrentFrame = (m_CurrentFrame + 1) % m_Frames.size();
-            UISprite* newFrame = m_Frames[m_CurrentFrame];
+            m_currentFrame = (m_currentFrame + 1) % m_frames.size();
+            UISprite* pNewFrame = m_frames[m_currentFrame];
             
-            newFrame->SetItemShouldRender(true);
-            newFrame->SetEcefPosition(oldFrame->GetEcefPosition());
-            newFrame->SetScale(oldFrame->GetScale());
-            newFrame->SetColor(oldFrame->GetColor());
+            pNewFrame->SetItemShouldRender(true);
+            pNewFrame->SetEcefPosition(pOldFrame->GetEcefPosition());
+            pNewFrame->SetScale(pOldFrame->GetScale());
+            pNewFrame->SetColor(pOldFrame->GetColor());
         }
         
         void UIAnimatedSprite::SetEcefPosition(const Eegeo::dv3 &ecefPosition)
         {
-            m_Frames[m_CurrentFrame]->SetEcefPosition(ecefPosition);
+            m_frames[m_currentFrame]->SetEcefPosition(ecefPosition);
         }
         
         void UIAnimatedSprite::SetScale(const Eegeo::v3 &scale)
         {
-            m_Frames[m_CurrentFrame]->SetScale(scale);
+            m_frames[m_currentFrame]->SetScale(scale);
         }
         
         void UIAnimatedSprite::SetColor(const Eegeo::v4 &color)
         {
-            m_Frames[m_CurrentFrame]->SetColor(color);
+            m_frames[m_currentFrame]->SetColor(color);
         }
     }
 }

@@ -17,18 +17,18 @@ namespace Eegeo
             
             JumpPoint::JumpPoint(const TJumpPointId id
                                  , const Space::LatLongAltitude& latLongAlt
-                                 , const std::string& p_FileName
-                                 , const Eegeo::v2& p_Dimension
-                                 , const Eegeo::v2& p_uvMin
-                                 , const Eegeo::v2& p_uvMax
+                                 , const std::string& fileName
+                                 , const Eegeo::v2& dimension
+                                 , const Eegeo::v2& uvMin
+                                 , const Eegeo::v2& uvMax
                                  , const void* pUserData)
             : m_id(id)
             , m_latLongAlt(latLongAlt)
-            , m_EcefPosition(latLongAlt.ToECEF())
-            , m_FileName(p_FileName)
-            , m_Dimension(p_Dimension)
-            , m_uvMin(p_uvMin)
-            , m_uvMax(p_uvMax)
+            , m_ecefPosition(latLongAlt.ToECEF())
+            , m_fileName(fileName)
+            , m_dimension(dimension)
+            , m_uvMin(uvMin)
+            , m_uvMax(uvMax)
             , m_pUserData(pUserData)
             {
                 m_color = Eegeo::v4::One();
@@ -46,7 +46,7 @@ namespace Eegeo
             
             const dv3& JumpPoint::GetEcefPosition() const
             {
-                return m_EcefPosition;
+                return m_ecefPosition;
             }
             
             const v4& JumpPoint::GetColor() const
@@ -56,12 +56,12 @@ namespace Eegeo
             
             const std::string& JumpPoint::GetFileName() const
             {
-                return m_FileName;
+                return m_fileName;
             }
 
             const v2& JumpPoint::GetDimensions() const
             {
-                return m_Dimension;
+                return m_dimension;
             }
             
             const v2& JumpPoint::GetUVMin() const

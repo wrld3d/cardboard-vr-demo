@@ -94,9 +94,9 @@ namespace Eegeo
             ,m_pRenderable(NULL)
             ,m_pVRDistortionRenderer(NULL)
             ,m_pRenderTexture(NULL),
-            m_MeshUpdateRequried(false)
+            m_meshUpdateRequried(false)
             {
-                m_cardboardProfile = new VRCardboardDeviceProfile();
+                m_pCardboardProfile = new VRCardboardDeviceProfile();
                 m_pPositionUvVertexLayout = CreatePositionUvVertexLayout();
             }
             
@@ -142,7 +142,7 @@ namespace Eegeo
                                                                              *m_pRenderTexture,
                                                                              m_screenProperties);
                 
-                Eegeo::Rendering::Mesh* pRenderableMesh = CreateUnlitDistortionMesh(m_screenProperties.GetScreenWidth()*2.f, m_screenProperties.GetScreenHeight(), *m_pPositionUvVertexLayout, m_glBufferPool, *m_cardboardProfile);
+                Eegeo::Rendering::Mesh* pRenderableMesh = CreateUnlitDistortionMesh(m_screenProperties.GetScreenWidth()*2.f, m_screenProperties.GetScreenHeight(), *m_pPositionUvVertexLayout, m_glBufferPool, *m_pCardboardProfile);
                 
                 const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout = pRenderableMesh->GetVertexLayout();
                 const Eegeo::Rendering::VertexLayouts::VertexAttribs& vertexAttributes = m_pVRDistortionShader->GetVertexAttributes();
@@ -191,17 +191,17 @@ namespace Eegeo
             
             void VRDistortionModule::UpdateCardboardProfile(float cardboardProfile[])
             {
-                m_cardboardProfile->SetupProfile(cardboardProfile);
-                m_MeshUpdateRequried = true;
+                m_pCardboardProfile->SetupProfile(cardboardProfile);
+                m_meshUpdateRequried = true;
             }
             
             void VRDistortionModule::BeginRendering()
             {
-                if(m_MeshUpdateRequried)
+                if(m_meshUpdateRequried)
                 {
                     Suspend();
                     Initialize();
-                    m_MeshUpdateRequried = false;
+                    m_meshUpdateRequried = false;
                 }
                 
                 m_pVRDistortionMaterial->setIsRenderingEnded(false);
@@ -225,19 +225,6 @@ namespace Eegeo
             
             VRDistortionModule::~VRDistortionModule(){
                 
-//                if(!m_pVRDistortionMaterial->isRenderingEnded()){
-//                    m_renderableFilters.RemoveRenderableFilter(*m_pVRDistortionRenderer);
-//                }
-//                
-//                Eegeo_DELETE m_pVRDistortionMaterial;
-//                m_pVRDistortionMaterial = NULL;
-//                
-//                Eegeo_DELETE m_pVRDistortionShader;
-//                m_pVRDistortionShader = NULL;
-//                
-////                Suspend();
-//                Eegeo_DELETE m_cardboardProfile;
-//                m_cardboardProfile = NULL;
             }
             
         }

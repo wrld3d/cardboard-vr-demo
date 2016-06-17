@@ -23,10 +23,10 @@ namespace Eegeo
             {
             public:
                 VRDistortionRenderable(Eegeo::Rendering::LayerIds::Values layerId,
-                                       Eegeo::Rendering::Materials::IMaterial* material,
+                                       Eegeo::Rendering::Materials::IMaterial* pMaterial,
                                        const Eegeo::Rendering::VertexLayouts::VertexBinding& vertexBinding,
                                        Eegeo::Rendering::Mesh* pMesh)
-                : MeshRenderable(layerId, Eegeo::dv3(), material, pMesh, vertexBinding)
+                : MeshRenderable(layerId, Eegeo::dv3(), pMaterial, pMesh, vertexBinding)
                 {}
                 
                 virtual void Render(Eegeo::Rendering::GLState& glState) const;

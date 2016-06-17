@@ -63,7 +63,7 @@ namespace Eegeo
                 m_screenProperties = screenProperties;
             }
             
-            void VRDistortionMaterial::SetStatePerRenderable(const Rendering::RenderableBase* renderableBase, Rendering::GLState& glState) const{}
+            void VRDistortionMaterial::SetStatePerRenderable(const Rendering::RenderableBase* pRenderableBase, Rendering::GLState& glState) const{}
         }
     }
 }

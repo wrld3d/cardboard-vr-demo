@@ -23,16 +23,16 @@ namespace Examples
 {
     VRCameraSplineExample::VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
                                                    Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
-                                                   Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
+                                                   Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                                 IVRHeadTracker& headTracker,
                                              const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
                                              const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule)
     : m_world(eegeoWorld),
-      m_InteriorsExplorerModule(interiorsExplorerModule)
+      m_interiorsExplorerModule(interiorsExplorerModule)
     {
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
-        Eegeo::m44 projectionMatrix = Eegeo::m44(cameraController->GetRenderCamera().GetProjectionMatrix());
+        Eegeo::m44 projectionMatrix = Eegeo::m44(pCameraController->GetRenderCamera().GetProjectionMatrix());
         m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight(), headTracker);
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
@@ -64,19 +64,19 @@ namespace Examples
             if (m_pSplineCameraController->GetVRCameraPositionSpline().IsInteriorSpline()) {
                 m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
                 
-                InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_InteriorsExplorerModule.GetInteriorVisibilityUpdater();
+                InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
                 
 //                if (!visiblityUpdater.GetInteriorShouldDisplay())
                 {
                     
-                    m_InteriorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
+                    m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
                     visiblityUpdater.SetInteriorShouldDisplay(true);
                 }
             }
             else {
                 m_pSplineCameraController->SetNearMultiplier(EXTERIOR_NEAR_MULTIPLIER);
                 
-                InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_InteriorsExplorerModule.GetInteriorVisibilityUpdater();
+                InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
                 
                 if (visiblityUpdater.GetInteriorShouldDisplay()) {
                     visiblityUpdater.SetInteriorShouldDisplay(false);

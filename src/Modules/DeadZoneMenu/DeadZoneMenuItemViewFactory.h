@@ -19,9 +19,9 @@ namespace Eegeo
             class DeadZoneMenuItemViewFactory : protected Eegeo::NonCopyable, public IDeadZoneMenuItemViewFactory
             {
             public:
-                DeadZoneMenuItemViewFactory(IUIRenderableFilter& p_UIRenderableFilter
-                                            , IUIQuadFactory& p_IUIQuadFactory
-                                            , IUICameraProvider& p_UICameraProvider
+                DeadZoneMenuItemViewFactory(IUIRenderableFilter& uiRenderableFilter
+                                            , IUIQuadFactory& uiQuadFactory
+                                            , IUICameraProvider& uiCameraProvider
                                             , std::string& spriteFileName
                                             , int numberOfTilesAlong1Axis
                                             );
@@ -31,12 +31,12 @@ namespace Eegeo
                 virtual DeadZoneMenuItemView* CreateViewForDeadZoneMenuItem(DeadZoneMenuItem& menuItemModel);
                 
             private:
-                IUIRenderableFilter& m_UIRenderableFilter;
-                IUICameraProvider& m_UICameraProvider;
-                IUIQuadFactory& m_IUIQuadFactory;
-                std::string m_SpriteFileName;
-                int m_NumberOfTilesAlong1Axis;
-                Eegeo::v2 p_ItemDimension;
+                IUIRenderableFilter& m_uiRenderableFilter;
+                IUICameraProvider& m_uiCameraProvider;
+                IUIQuadFactory& m_uiQuadFactory;
+                std::string m_spriteFileName;
+                int m_numberOfTilesAlong1Axis;
+                Eegeo::v2 m_itemDimension;
                 Eegeo::Rendering::ITexturePageLayout* m_pIconsTexturePageLayout;
             };
         }

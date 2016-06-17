@@ -16,24 +16,25 @@ namespace Eegeo
     namespace UI
     {
         /*!
-         * \brief Interface for items that can recieve UI events.
+         * \brief Interface for items that can receive UI events.
          *
          * This interface is used to notify UI items about events.
          */
         class IUIInteractableItem
         {
-            bool m_ItemHasFocus;
+            bool m_itemHasFocus;
         public:
             virtual bool IsCollidingWithPoint(const Eegeo::v2& screenPoint, IUICameraProvider& cameraProvider) = 0;
             virtual void OnItemClicked() = 0;
+            virtual ~IUIInteractableItem(){}
             
-            void SetItemHasFocus(bool p_focus)
+            void SetItemHasFocus(bool focus)
             {
-                if(m_ItemHasFocus != p_focus)
+                if(m_itemHasFocus != focus)
                 {
-                    m_ItemHasFocus = p_focus;
+                    m_itemHasFocus = focus;
                     
-                    if(m_ItemHasFocus)
+                    if(m_itemHasFocus)
                         OnFocusGained();
                     else
                         OnFocusLost();

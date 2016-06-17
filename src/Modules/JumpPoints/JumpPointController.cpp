@@ -10,10 +10,10 @@ namespace Eegeo
         namespace JumpPoints
         {
             
-            JumpPointController::JumpPointController(IJumpPointObservable& jumpPointObservable, IJumpPointViewFactory& viewFactory, IUIInteractionObservable& p_IUIInteractionObservable)
+            JumpPointController::JumpPointController(IJumpPointObservable& jumpPointObservable, IJumpPointViewFactory& viewFactory, IUIInteractionObservable& uiInteractionObservable)
             : m_jumppointRepository(jumpPointObservable)
             , m_viewFactory(viewFactory)
-            , m_pIUIInteractionObservable(p_IUIInteractionObservable)
+            , m_uiInteractionObservable(uiInteractionObservable)
             {
                 m_jumppointRepository.AddJumpPointObserver(this);
             }
@@ -25,7 +25,7 @@ namespace Eegeo
                 for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
                 {
                     JumpPointView* pView = it->second;
-                    m_pIUIInteractionObservable.UnRegisterInteractableItem(pView);
+                    m_uiInteractionObservable.UnRegisterInteractableItem(pView);
                     Eegeo_DELETE pView;
                 }
                 m_viewsByModel.clear();
@@ -42,7 +42,7 @@ namespace Eegeo
                 
                 JumpPointView* pView = m_viewFactory.CreateViewForJumpPoint(jumpPoint);
                 m_viewsByModel[&jumpPoint] = pView;
-                m_pIUIInteractionObservable.RegisterInteractableItem(pView);
+                m_uiInteractionObservable.RegisterInteractableItem(pView);
             }
             
             void JumpPointController::OnJumpPointRemoved(JumpPoint& jumpPoint)
@@ -51,7 +51,7 @@ namespace Eegeo
                 JumpPointView* pView = GetViewForModel(jumpPoint);
                 
                 m_viewsByModel.erase(&jumpPoint);
-                m_pIUIInteractionObservable.UnRegisterInteractableItem(pView);
+                m_uiInteractionObservable.UnRegisterInteractableItem(pView);
                 
                 Eegeo_DELETE(pView);
             }

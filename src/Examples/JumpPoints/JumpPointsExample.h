@@ -30,26 +30,26 @@ namespace Examples
         float m_eyeDistance;
         Eegeo::EegeoWorld& m_world;
         
-        Eegeo::UI::IUIQuadFactory& m_UIQuadFactory;
-        Eegeo::UI::IUIInteractionObservable& m_UIInteractionObservable;
-        Eegeo::UI::IUICameraProvider& m_UICameraProvider;
+        Eegeo::UI::IUIQuadFactory& m_uiQuadFactory;
+        Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
+        Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
         
         Eegeo::VR::JumpPointsCameraController* m_pSplineCameraController;
-        Eegeo::UI::JumpPoints::JumpPoint *m_JumpPoint1, *m_JumpPoint2, *m_JumpPoint3;
-        Eegeo::UI::JumpPoints::JumpPointsModule* m_JumpPointsModule;
+        Eegeo::UI::JumpPoints::JumpPoint *m_pJumpPoint1, *m_pJumpPoint2, *m_pJumpPoint3;
+        Eegeo::UI::JumpPoints::JumpPointsModule* m_pJumpPointsModule;
         
-        Eegeo::Rendering::RenderableFilters& m_RenderableFilters;
-        Eegeo::UI::UIRenderableFilter* m_UIRenderableFilter;
+        Eegeo::Rendering::RenderableFilters& m_renderableFilters;
+        Eegeo::UI::UIRenderableFilter* m_pUIRenderableFilter;
         
     public:
         
         JumpPointsExample(Eegeo::EegeoWorld& eegeoWorld,
                             Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
-                            Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
+                            Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                             const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
                             Eegeo::UI::IUIQuadFactory& quadFactory,
-                            Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
-                            Eegeo::UI::IUICameraProvider& uICameraProvider);
+                            Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
+                            Eegeo::UI::IUICameraProvider& uiCameraProvider);
         
         virtual ~JumpPointsExample();
         

@@ -22,33 +22,33 @@ namespace Eegeo
     {
         
         
-        UIInteractionController::UIInteractionController(IUICameraProvider& p_CameraProvider, UIGaze::UIGazeView& UIGazeView):
-        m_pCameraProvider(p_CameraProvider),
-        m_InteractableItems(),
-        m_UIGazeView(UIGazeView)
+        UIInteractionController::UIInteractionController(IUICameraProvider& cameraProvider, UIGaze::UIGazeView& uiGazeView):
+        m_cameraProvider(cameraProvider),
+        m_interactableItems(),
+        m_uiGazeView(uiGazeView)
         {
-            m_FocusedUIItemId = -1;
+            m_focusedUIItemId = -1;
         }
         
         UIInteractionController::~UIInteractionController()
         {
-            m_InteractableItems.clear();
+            m_interactableItems.clear();
         }
         
         void UIInteractionController::Update(float dt)
         {
-            if(m_FocusedUIItemId>=0)
-                m_GazedTime += dt;
+            if(m_focusedUIItemId>=0)
+                m_gazedTime += dt;
             
         }
         
         void UIInteractionController::Event_ScreenInteractionStart(const Eegeo::v2& point)
         {
-            m_FocusedUIItemId = -1;
-            for (int i = 0; i != m_InteractableItems.size(); i++) {
-                if (m_InteractableItems[i]->IsCollidingWithPoint(point, m_pCameraProvider)) {
-                    m_InteractableItems[i]->SetItemHasFocus(true);
-                    m_FocusedUIItemId = i;
+            m_focusedUIItemId = -1;
+            for (int i = 0; i != m_interactableItems.size(); i++) {
+                if (m_interactableItems[i]->IsCollidingWithPoint(point, m_cameraProvider)) {
+                    m_interactableItems[i]->SetItemHasFocus(true);
+                    m_focusedUIItemId = i;
                 }
             }
         }
@@ -56,94 +56,94 @@ namespace Eegeo
         void UIInteractionController::Event_ScreenInteractionMoved(const Eegeo::v2& point)
         {
             int touchedItemId = -1;
-            for (int i = 0; i != m_InteractableItems.size(); i++)
+            for (int i = 0; i != m_interactableItems.size(); i++)
             {
-                if (m_InteractableItems[i]->IsCollidingWithPoint(point, m_pCameraProvider))
+                if (m_interactableItems[i]->IsCollidingWithPoint(point, m_cameraProvider))
                 {
                     touchedItemId = i;
-                    m_InteractableItems[i]->SetItemHasFocus(true);
+                    m_interactableItems[i]->SetItemHasFocus(true);
                 }
                 else
                 {
-                    m_InteractableItems[i]->SetItemHasFocus(false);
+                    m_interactableItems[i]->SetItemHasFocus(false);
                 }
             }
             
-            if(m_FocusedUIItemId!=-1 && touchedItemId==-1)
+            if(m_focusedUIItemId!=-1 && touchedItemId==-1)
             {
-                m_GazedTime = 0.0f;
-                m_UIGazeView.HideView();
+                m_gazedTime = 0.0f;
+                m_uiGazeView.HideView();
                 // end
             }
-            else if(m_FocusedUIItemId!=-1 && touchedItemId!=-1 && m_FocusedUIItemId==touchedItemId)
+            else if(m_focusedUIItemId!=-1 && touchedItemId!=-1 && m_focusedUIItemId==touchedItemId)
             {
-                if(m_GazedTime>=2.f)
+                if(m_gazedTime>=2.f)
                 {
                     touchedItemId = -1;
-                    m_GazedTime = 0.0f;
-                    m_UIGazeView.HideView();
+                    m_gazedTime = 0.0f;
+                    m_uiGazeView.HideView();
                     
                     Event_ScreenInteractionClick(point);
                     
                 }
                 // same continued
             }
-            else if(m_FocusedUIItemId!=-1 && touchedItemId!=-1 && m_FocusedUIItemId!=touchedItemId)
+            else if(m_focusedUIItemId!=-1 && touchedItemId!=-1 && m_focusedUIItemId!=touchedItemId)
             {
-                m_GazedTime = 0.0f;
-                m_UIGazeView.ResetProgress();
+                m_gazedTime = 0.0f;
+                m_uiGazeView.ResetProgress();
                 // new item focused
             }
-            else if(m_FocusedUIItemId==-1 && touchedItemId!=-1)
+            else if(m_focusedUIItemId==-1 && touchedItemId!=-1)
             {
-                m_GazedTime = 0.0f;
-                m_UIGazeView.ShowView();
+                m_gazedTime = 0.0f;
+                m_uiGazeView.ShowView();
                 // start
             }
             
-            m_FocusedUIItemId = touchedItemId;
+            m_focusedUIItemId = touchedItemId;
             
         }
         
         void UIInteractionController::Event_ScreenInteractionEnd(const Eegeo::v2& point)
         {
-            for (int i = 0; i != m_InteractableItems.size(); i++) {
-                if (m_InteractableItems[i]->IsCollidingWithPoint(point, m_pCameraProvider)) {
-                    m_InteractableItems[i]->SetItemHasFocus(false);
+            for (int i = 0; i != m_interactableItems.size(); i++) {
+                if (m_interactableItems[i]->IsCollidingWithPoint(point, m_cameraProvider)) {
+                    m_interactableItems[i]->SetItemHasFocus(false);
                 }
             }
         }
         
         void UIInteractionController::Event_ScreenInteractionClick(const Eegeo::v2& point)
         {
-            for (int i = 0; i != m_InteractableItems.size(); i++) {
-                if (m_InteractableItems[i]->IsCollidingWithPoint(point, m_pCameraProvider)) {
-                    m_InteractableItems[i]->OnItemClicked();
+            for (int i = 0; i != m_interactableItems.size(); i++) {
+                if (m_interactableItems[i]->IsCollidingWithPoint(point, m_cameraProvider)) {
+                    m_interactableItems[i]->OnItemClicked();
                 }
             }
         }
         
         const IUIInteractableItem* UIInteractionController::GetItemAtScreenPoint(const Eegeo::v2& point)
         {
-            for (int i = 0; i != m_InteractableItems.size(); i++) {
-                if (m_InteractableItems[i]->IsCollidingWithPoint(point, m_pCameraProvider)) {
-                    return m_InteractableItems[i];
+            for (int i = 0; i != m_interactableItems.size(); i++) {
+                if (m_interactableItems[i]->IsCollidingWithPoint(point, m_cameraProvider)) {
+                    return m_interactableItems[i];
                 }
             }
             
             return NULL;
         }
         
-        void UIInteractionController::RegisterInteractableItem(IUIInteractableItem* interactableItem)
+        void UIInteractionController::RegisterInteractableItem(IUIInteractableItem* pInteractableItem)
         {
-            m_InteractableItems.push_back(interactableItem);
+            m_interactableItems.push_back(pInteractableItem);
         }
         
-        void UIInteractionController::UnRegisterInteractableItem(IUIInteractableItem* interactableItem)
+        void UIInteractionController::UnRegisterInteractableItem(IUIInteractableItem* pInteractableItem)
         {
-            std::vector<IUIInteractableItem*>::iterator position = std::find(m_InteractableItems.begin(), m_InteractableItems.end(), interactableItem);
-            if (position != m_InteractableItems.end())
-                m_InteractableItems.erase(position);
+            std::vector<IUIInteractableItem*>::iterator position = std::find(m_interactableItems.begin(), m_interactableItems.end(), pInteractableItem);
+            if (position != m_interactableItems.end())
+                m_interactableItems.erase(position);
         }
     }
 }

@@ -23,43 +23,43 @@ namespace Examples
 {
     JumpPointsExample::JumpPointsExample(Eegeo::EegeoWorld& eegeoWorld,
                                          Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
-                                         Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
+                                         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                          const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
                                          Eegeo::UI::IUIQuadFactory& quadFactory,
-                                         Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
-                                         Eegeo::UI::IUICameraProvider& uICameraProvider)
+                                         Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
+                                         Eegeo::UI::IUICameraProvider& uiCameraProvider)
     : m_world(eegeoWorld)
-    , m_UIQuadFactory(quadFactory)
-    , m_UIInteractionObservable(uIInteractionObservable)
-    , m_UICameraProvider(uICameraProvider)
-    , m_RenderableFilters(eegeoWorld.GetRenderingModule().GetRenderableFilters())
+    , m_uiQuadFactory(quadFactory)
+    , m_uiInteractionObservable(uiInteractionObservable)
+    , m_uiCameraProvider(uiCameraProvider)
+    , m_renderableFilters(eegeoWorld.GetRenderingModule().GetRenderableFilters())
     {
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
-        Eegeo::m44 projectionMatrix = Eegeo::m44(cameraController->GetRenderCamera().GetProjectionMatrix());
+        Eegeo::m44 projectionMatrix = Eegeo::m44(pCameraController->GetRenderCamera().GetProjectionMatrix());
         m_pSplineCameraController = new Eegeo::VR::JumpPointsCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
         
-        m_UIRenderableFilter = Eegeo_NEW(Eegeo::UI::UIRenderableFilter)();
-        m_RenderableFilters.AddRenderableFilter(*m_UIRenderableFilter);
+        m_pUIRenderableFilter = Eegeo_NEW(Eegeo::UI::UIRenderableFilter)();
+        m_renderableFilters.AddRenderableFilter(*m_pUIRenderableFilter);
     }
     
     JumpPointsExample::~JumpPointsExample()
     {
         Eegeo_DELETE m_pSplineCameraController;
         
-        if(m_JumpPointsModule!=NULL)
-            Eegeo_DELETE m_JumpPointsModule;
-        if(m_JumpPoint1!=NULL)
-            Eegeo_DELETE m_JumpPoint1;
-        if(m_JumpPoint2!=NULL)
-            Eegeo_DELETE m_JumpPoint2;
-        if(m_JumpPoint3!=NULL)
-            Eegeo_DELETE m_JumpPoint3;
+        if(m_pJumpPointsModule!=NULL)
+            Eegeo_DELETE m_pJumpPointsModule;
+        if(m_pJumpPoint1!=NULL)
+            Eegeo_DELETE m_pJumpPoint1;
+        if(m_pJumpPoint2!=NULL)
+            Eegeo_DELETE m_pJumpPoint2;
+        if(m_pJumpPoint3!=NULL)
+            Eegeo_DELETE m_pJumpPoint3;
         
-        m_RenderableFilters.RemoveRenderableFilter(*m_UIRenderableFilter);
-        Eegeo_DELETE m_UIRenderableFilter;
+        m_renderableFilters.RemoveRenderableFilter(*m_pUIRenderableFilter);
+        Eegeo_DELETE m_pUIRenderableFilter;
     }
     
     void JumpPointsExample::Start()
@@ -76,7 +76,7 @@ namespace Examples
         Eegeo::UI::CalculateUV(size, 0, outMin, outMax);
         dimension = Eegeo::v2(50,50);
         
-        m_JumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1,
+        m_pJumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1,
                                                             Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250),
                                                             "mesh_example/PinIconTexturePage.png",
                                                             dimension,
@@ -84,7 +84,7 @@ namespace Examples
                                                             outMax
                                                             );
         
-        m_JumpPoint2 = new Eegeo::UI::JumpPoints::JumpPoint(2,
+        m_pJumpPoint2 = new Eegeo::UI::JumpPoints::JumpPoint(2,
                                                             Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250),
                                                             "mesh_example/PinIconTexturePage.png",
                                                             dimension,
@@ -92,7 +92,7 @@ namespace Examples
                                                             outMax
                                                             );
         
-        m_JumpPoint3 = new Eegeo::UI::JumpPoints::JumpPoint(3,
+        m_pJumpPoint3 = new Eegeo::UI::JumpPoints::JumpPoint(3,
                                                             Eegeo::Space::LatLongAltitude::FromDegrees(56.451235, -2.976600, 250),
                                                             "mesh_example/PinIconTexturePage.png",
                                                             dimension,
@@ -100,13 +100,13 @@ namespace Examples
                                                             outMax
                                                             );
         
-        m_JumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(*m_UIRenderableFilter,
-                                                                         m_UIQuadFactory,
-                                                                         m_UIInteractionObservable,
-                                                                         m_UICameraProvider);
-        m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint1);
-        m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint2);
-        m_JumpPointsModule->GetRepository().AddJumpPoint(m_JumpPoint3);
+        m_pJumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(*m_pUIRenderableFilter,
+                                                                         m_uiQuadFactory,
+                                                                         m_uiInteractionObservable,
+                                                                         m_uiCameraProvider);
+        m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pJumpPoint1);
+        m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pJumpPoint2);
+        m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pJumpPoint3);
     }
     
     void JumpPointsExample::Suspend(){}
@@ -124,7 +124,7 @@ namespace Examples
     
     void JumpPointsExample::Update(float dt) {
     
-        m_JumpPointsModule->Update(dt);
+        m_pJumpPointsModule->Update(dt);
     }
     
     

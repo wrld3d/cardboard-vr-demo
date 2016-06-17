@@ -17,11 +17,11 @@ namespace Eegeo
             
             DeadZoneMenuItem::DeadZoneMenuItem(const TDeadZoneMenuItemId id
                                  , const TDeadZoneMenuItemSpriteId spriteId
-                                 , Eegeo::Helpers::ICallback0& p_OnClickedEvent
+                                 , Eegeo::Helpers::ICallback0& onClickedEvent
                                  , const void* pUserData)
             : m_id(id)
-            , m_SpriteId(spriteId)
-            , m_OnClickedEvent(p_OnClickedEvent)
+            , m_spriteId(spriteId)
+            , m_OnClickedEvent(onClickedEvent)
             , m_pUserData(pUserData)
             {
             }
@@ -33,7 +33,7 @@ namespace Eegeo
             
             TDeadZoneMenuItemId DeadZoneMenuItem::GetSpriteId() const
             {
-                return m_SpriteId;
+                return m_spriteId;
             }
             
             const void* DeadZoneMenuItem::GetUserData() const

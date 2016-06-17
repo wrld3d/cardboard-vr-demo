@@ -26,20 +26,20 @@ namespace Eegeo
         
         double JumpPointsCameraController::GetAltitudeAboveSeaLevel() const
         {
-            return Space::SpaceHelpers::GetAltitude(m_renderCamera->GetEcefLocation());
+            return Space::SpaceHelpers::GetAltitude(m_pRenderCamera->GetEcefLocation());
         }
         
         void JumpPointsCameraController::SetProjectionMatrix(Eegeo::m44& projection)
         {
-            m_renderCamera->SetProjectionMatrix(projection);
+            m_pRenderCamera->SetProjectionMatrix(projection);
         }
         
         Camera::CameraState JumpPointsCameraController::GetCameraState() const
         {
-            return Camera::CameraState(m_renderCamera->GetEcefLocation(),
+            return Camera::CameraState(m_pRenderCamera->GetEcefLocation(),
                                        GetEcefInterestPoint(),
-                                       m_renderCamera->GetViewMatrix(),
-                                       m_renderCamera->GetProjectionMatrix());
+                                       m_pRenderCamera->GetViewMatrix(),
+                                       m_pRenderCamera->GetProjectionMatrix());
         }
         
         m33& JumpPointsCameraController::GetOrientation()
@@ -49,7 +49,7 @@ namespace Eegeo
         
         void JumpPointsCameraController::UpdateFromPose(const Eegeo::m33& orientation, float eyeDistance)
         {
-            m_ecefPosition = m_renderCamera->GetEcefLocation();
+            m_ecefPosition = m_pRenderCamera->GetEcefLocation();
             m33 orientationMatrix;
             m33::Mul(orientationMatrix, m_orientation, orientation);
             
@@ -60,9 +60,9 @@ namespace Eegeo
             
             float near, far;
             GetNearFarPlaneDistances(near,far);
-            m_renderCamera->SetOrientationMatrix(orientationMatrix);
-            m_renderCamera->SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
-            m_renderCamera->SetProjection(0.7f, near*m_nearMultiplier, far);
+            m_pRenderCamera->SetOrientationMatrix(orientationMatrix);
+            m_pRenderCamera->SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
+            m_pRenderCamera->SetProjection(0.7f, near*m_nearMultiplier, far);
             
             
         }
@@ -70,7 +70,7 @@ namespace Eegeo
         void JumpPointsCameraController::SetEcefPosition(const Eegeo::dv3& ecef)
         {
             m_ecefPosition = ecef;
-            m_renderCamera->SetEcefLocation(m_ecefPosition);
+            m_pRenderCamera->SetEcefLocation(m_ecefPosition);
         }
         
         void JumpPointsCameraController::SetStartLatLongAltitude(const Eegeo::Space::LatLongAltitude& eyePos)
@@ -84,8 +84,8 @@ namespace Eegeo
             m_orientation.SetRow(1, tangentBasis.GetUp());
             m_orientation.SetRow(2, -tangentBasis.GetForward());
             
-            m_renderCamera->SetOrientationMatrix(m_orientation);
-            m_renderCamera->SetEcefLocation(m_ecefPosition);
+            m_pRenderCamera->SetOrientationMatrix(m_orientation);
+            m_pRenderCamera->SetEcefLocation(m_ecefPosition);
         }
         
         void JumpPointsCameraController::Update(float dt)

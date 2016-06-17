@@ -27,21 +27,21 @@ namespace Eegeo
         {
         private:
             
-            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial& m_Material;
-            Eegeo::Rendering::Mesh* m_RenderableMesh;
+            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial& m_material;
+            Eegeo::Rendering::Mesh* m_pRenderableMesh;
             
-            Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_VertexBindingPool;
-            Eegeo::Rendering::GlBufferPool& m_GlBufferPool;
+            Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
+            Eegeo::Rendering::GlBufferPool& m_glBufferPool;
             
-            UIMeshRenderable* m_Renderable;
+            UIMeshRenderable* m_pRenderable;
             
             Eegeo::m33 m_basisToEcef;
             
-            Eegeo::v2 m_Dimension;
-            Eegeo::dv3 m_EcefPosition;
-            const Eegeo::Rendering::LayerIds::Values m_RenderLayer;
+            Eegeo::v2 m_dimension;
+            Eegeo::dv3 m_ecefPosition;
+            const Eegeo::Rendering::LayerIds::Values m_renderLayer;
             
-            std::string m_Name;
+            std::string m_name;
             
         public:
             
@@ -59,12 +59,12 @@ namespace Eegeo
                    );
             
             virtual ~UIQuad();
-            inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){ m_Renderable->SetEcefPosition(ecefPosition); }
-            inline const dv3& GetEcefPosition() const { return m_Renderable->GetEcefPosition(); }
-            inline const Eegeo::v3& GetScale() { return m_Renderable->GetScale(); }
-            inline void SetScale(const Eegeo::v3& p_scale) { m_Renderable->SetScale(p_scale); }
-            inline void SetColor(const Eegeo::v4& color) { m_Renderable->SetColor(color); }
-            inline const Eegeo::v4& GetColor() { return m_Renderable->GetColor(); }
+            inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){ m_pRenderable->SetEcefPosition(ecefPosition); }
+            inline const dv3& GetEcefPosition() const { return m_pRenderable->GetEcefPosition(); }
+            inline const Eegeo::v3& GetScale() { return m_pRenderable->GetScale(); }
+            inline void SetScale(const Eegeo::v3& scale) { m_pRenderable->SetScale(scale); }
+            inline void SetColor(const Eegeo::v4& color) { m_pRenderable->SetColor(color); }
+            inline const Eegeo::v4& GetColor() { return m_pRenderable->GetColor(); }
 
             // IUIRenderable interface
             virtual Eegeo::Rendering::RenderableBase& GetUpdatedRenderable(const Eegeo::Rendering::RenderContext& renderContext);

@@ -32,28 +32,28 @@ namespace Eegeo
             , m_shiftDown(false)
             , m_nearMultiplier(0.1f)
             {
-                m_renderCamera = new Camera::RenderCamera();
+                m_pRenderCamera = new Camera::RenderCamera();
                 m_orientation.Identity();
                 m_currentOrientation.Identity();
                 
-                m_renderCamera->SetViewport(0,0,screenWidth, screenHeight);
-                m_renderCamera->SetProjection(0.7, 0.1, 4000);
+                m_pRenderCamera->SetViewport(0,0,screenWidth, screenHeight);
+                m_pRenderCamera->SetProjection(0.7, 0.1, 4000);
                 
 
             }
             
             ~JumpPointsCameraController() {
-                delete m_renderCamera;
+                delete m_pRenderCamera;
             };
             
             Eegeo::dv3 GetEcefInterestPoint() const;
             double GetAltitudeAboveSeaLevel() const;
 
-            Eegeo::Camera::RenderCamera& GetCamera() { return *m_renderCamera; }
+            Eegeo::Camera::RenderCamera& GetCamera() { return *m_pRenderCamera; }
             const dv3& GetCameraPosition() const { return m_ecefPosition; }
             const m33& GetCameraOrientation() const { return m_orientation; }
             
-            void SetNearMultiplier(float p_nearMultiplier) { m_nearMultiplier = p_nearMultiplier; }
+            void SetNearMultiplier(float nearMultiplier) { m_nearMultiplier = nearMultiplier; }
             
             const v3 GetRight() const { return m_orientation.GetRow(0); }
             const v3 GetUp() const { return m_orientation.GetRow(1); }
@@ -92,7 +92,7 @@ namespace Eegeo
             
             float m_time;
             
-            Eegeo::Camera::RenderCamera* m_renderCamera;
+            Eegeo::Camera::RenderCamera* m_pRenderCamera;
             Eegeo::Resources::Terrain::Heights::TerrainHeightProvider * m_pTerrainHeightProvider;
             
             bool m_shiftDown;

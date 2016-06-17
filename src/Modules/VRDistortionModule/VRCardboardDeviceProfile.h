@@ -66,10 +66,10 @@ namespace Eegeo
                 void SetupProfile(float profileData[]);
                 float Distort(float r, float k1, float k2);
                 float DistortInv(float radius, float k1, float k2);
-                void SolveLeastSquares(double **matA, double vecY[], int numSamples, const int numCoefficients, double vecX[]);
-                void GetLeftEyeVisibleScreenRect(float undistortedFrustum[], float *rect);
-                void GetLeftEyeVisibleTanAngles(float* result);
-                void GetLeftEyeNoLensTanAngles(float* result);
+                void SolveLeastSquares(double **ppMatA, double vecY[], int numSamples, const int numCoefficients, double vecX[]);
+                void GetLeftEyeVisibleScreenRect(float undistortedFrustum[], float *pRect);
+                void GetLeftEyeVisibleTanAngles(float* pResult);
+                void GetLeftEyeNoLensTanAngles(float* pResult);
                 float GetVerticalLensOffset();
                 Eegeo::v2 GetScreenMeshCenter(float width, float height);
                 VRDevice GetDevice();

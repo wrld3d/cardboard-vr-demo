@@ -8,17 +8,17 @@ namespace Eegeo
     {
         namespace JumpPoints
         {
-            JumpPointsModule::JumpPointsModule(IUIRenderableFilter& p_UIRenderableFilter
-                                               , IUIQuadFactory& p_IUIQuadFactory
-                                               , IUIInteractionObservable& p_IUIInteractionObservable
-                                               , IUICameraProvider& p_UICameraProvider
+            JumpPointsModule::JumpPointsModule(IUIRenderableFilter& uiRenderableFilter
+                                               , IUIQuadFactory& uiQuadFactory
+                                               , IUIInteractionObservable& uiInteractionObservable
+                                               , IUICameraProvider& uiCameraProvider
                                                )
             {
-                m_pViewFactory = new JumpPointViewFactory(p_UIRenderableFilter
-                                                          , p_IUIQuadFactory
-                                                          , p_UICameraProvider);
+                m_pViewFactory = new JumpPointViewFactory(uiRenderableFilter
+                                                          , uiQuadFactory
+                                                          , uiCameraProvider);
                 m_pRepository = new JumpPointRepository();
-                m_pController = new JumpPointController(*m_pRepository, *m_pViewFactory, p_IUIInteractionObservable);
+                m_pController = new JumpPointController(*m_pRepository, *m_pViewFactory, uiInteractionObservable);
             }
             
             JumpPointsModule::~JumpPointsModule()

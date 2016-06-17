@@ -20,11 +20,11 @@ namespace Eegeo
             
             virtual ~IUIRenderable(){};
             
-            virtual bool GetItemShouldRender(){ return m_ShouldRender; }
-            virtual void SetItemShouldRender(bool shouldRender){ m_ShouldRender = shouldRender; }
+            virtual bool GetItemShouldRender(){ return m_shouldRender; }
+            virtual void SetItemShouldRender(bool shouldRender){ m_shouldRender = shouldRender; }
             
         private:
-            bool m_ShouldRender;
+            bool m_shouldRender;
         };
     }
 }

@@ -39,7 +39,7 @@ namespace Eegeo
                 const Eegeo::Rendering::TMaterialId GetId() const { return m_id; }
                 const Eegeo::Rendering::Shader& GetShader() const;
                 void SetState(Eegeo::Rendering::GLState& glState) const;
-                void SetStatePerRenderable(const Rendering::RenderableBase* renderableBase, Rendering::GLState& glState)  const;
+                void SetStatePerRenderable(const Rendering::RenderableBase* pRenderableBase, Rendering::GLState& glState)  const;
                 
                 bool isRenderingEnded(){ return m_isRenderingEnded; }
                 void setIsRenderingEnded(bool isRenderingEnded){ m_isRenderingEnded = isRenderingEnded; }

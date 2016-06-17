@@ -60,7 +60,7 @@ namespace Eegeo
             return orientation;
         }
         
-        void GetMaterialForQuadFromTexture(Eegeo::Modules::Core::RenderingModule& p_RenderingModule, Eegeo::Helpers::ITextureFileLoader& textureFileLoader, const std::string& fileName, Helpers::GLHelpers::TextureInfo& out_textureInfo, Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* out_material, Eegeo::Rendering::Shaders::TexturedUniformColoredShader* out_shader)
+        void GetMaterialForQuadFromTexture(Eegeo::Modules::Core::RenderingModule& renderingModule, Eegeo::Helpers::ITextureFileLoader& textureFileLoader, const std::string& fileName, Helpers::GLHelpers::TextureInfo& out_textureInfo, Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* out_pMaterial, Eegeo::Rendering::Shaders::TexturedUniformColoredShader* out_pShader)
         {
             out_textureInfo.textureId = 0;
             out_textureInfo.width = 0;
@@ -72,16 +72,16 @@ namespace Eegeo
             if (!success)
                 return;
             
-            Eegeo::Rendering::Shaders::TexturedUniformColoredShader* m_Shader = Eegeo::Rendering::Shaders::TexturedUniformColoredShader::Create(p_RenderingModule.GetShaderIdGenerator().GetNextId());
-            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* material = new (Eegeo::Rendering::Materials::TexturedUniformColoredMaterial) (
-                                                                                                                                                       p_RenderingModule.GetMaterialIdGenerator().GetNextId(),
+            Eegeo::Rendering::Shaders::TexturedUniformColoredShader* pShader = Eegeo::Rendering::Shaders::TexturedUniformColoredShader::Create(renderingModule.GetShaderIdGenerator().GetNextId());
+            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* pMaterial = new (Eegeo::Rendering::Materials::TexturedUniformColoredMaterial) (
+                                                                                                                                                       renderingModule.GetMaterialIdGenerator().GetNextId(),
                                                                                                                                                        "UIRectMaterial",
-                                                                                                                                                       *m_Shader,
+                                                                                                                                                       *pShader,
                                                                                                                                                        out_textureInfo.textureId,
                                                                                                                                                        Eegeo::v4::One());
             
-            out_material = material;
-            out_shader = m_Shader;
+            out_pMaterial = pMaterial;
+            out_pShader = pShader;
         }
         
         void CalculateUV(const v2& textureItemsSize, const int& spriteId, v2& out_uvMin, v2& out_uvMax)

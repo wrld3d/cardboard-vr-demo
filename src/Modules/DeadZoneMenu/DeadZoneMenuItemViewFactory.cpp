@@ -11,18 +11,18 @@ namespace Eegeo
         namespace DeadZoneMenu
         {
             
-            DeadZoneMenuItemViewFactory::DeadZoneMenuItemViewFactory(IUIRenderableFilter& p_UIRenderableFilter
-                                                                     , IUIQuadFactory& p_IUIQuadFactory
-                                                                     , IUICameraProvider& p_UICameraProvider
+            DeadZoneMenuItemViewFactory::DeadZoneMenuItemViewFactory(IUIRenderableFilter& uiRenderableFilter
+                                                                     , IUIQuadFactory& uiQuadFactory
+                                                                     , IUICameraProvider& uiCameraProvider
                                                                      , std::string& spriteFileName
                                                                      , int numberOfTilesAlong1Axis)
-            : m_UIRenderableFilter(p_UIRenderableFilter)
-            , m_IUIQuadFactory(p_IUIQuadFactory)
-            , m_UICameraProvider(p_UICameraProvider)
-            , m_NumberOfTilesAlong1Axis(numberOfTilesAlong1Axis)
+            : m_uiRenderableFilter(uiRenderableFilter)
+            , m_uiQuadFactory(uiQuadFactory)
+            , m_uiCameraProvider(uiCameraProvider)
+            , m_numberOfTilesAlong1Axis(numberOfTilesAlong1Axis)
             {
-                m_SpriteFileName = std::string(spriteFileName);
-                p_ItemDimension = Eegeo::v2(50,50);
+                m_spriteFileName = std::string(spriteFileName);
+                m_itemDimension = Eegeo::v2(50,50);
                 m_pIconsTexturePageLayout = Eegeo_NEW(Eegeo::Rendering::RegularTexturePageLayout)(numberOfTilesAlong1Axis);
             }
             
@@ -35,16 +35,16 @@ namespace Eegeo
             {
                 
                 Eegeo::Geometry::Bounds2D bounds = m_pIconsTexturePageLayout->GetTileUVBounds(menuItemModel.GetSpriteId());
-                DeadZoneMenuItemView* menuItemView = Eegeo_NEW(DeadZoneMenuItemView)(menuItemModel
-                                                                          , m_UIRenderableFilter
-                                                                        , m_IUIQuadFactory.CreateUIQuad( m_SpriteFileName.c_str()
-                                                                                                        , p_ItemDimension
+                DeadZoneMenuItemView* pMenuItemView = Eegeo_NEW(DeadZoneMenuItemView)(menuItemModel
+                                                                          , m_uiRenderableFilter
+                                                                        , m_uiQuadFactory.CreateUIQuad( m_spriteFileName.c_str()
+                                                                                                        , m_itemDimension
                                                                                                         , bounds.min
                                                                                                         , bounds.max)
-                                                                                     , m_UICameraProvider
-                                                                                     , p_ItemDimension
+                                                                                     , m_uiCameraProvider
+                                                                                     , m_itemDimension
                                                                         );
-                return menuItemView;
+                return pMenuItemView;
             }
             
         }

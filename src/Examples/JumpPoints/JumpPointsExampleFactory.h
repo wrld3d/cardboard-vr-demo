@@ -14,9 +14,9 @@ namespace Examples
 {
 class JumpPointsExampleFactory : public IExampleFactory
 {
-    Eegeo::UI::IUIQuadFactory& m_UIQuadFactory;
-    Eegeo::UI::IUIInteractionObservable& m_UIInteractionObservable;
-    Eegeo::UI::IUICameraProvider& m_UICameraProvider;
+    Eegeo::UI::IUIQuadFactory& m_uiQuadFactory;
+    Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
+    Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
     
     
     Eegeo::EegeoWorld& m_world;
@@ -28,8 +28,8 @@ public:
                              DefaultCameraControllerFactory& defaultCameraControllerFactory,
                              const IScreenPropertiesProvider& screenPropertiesProvider,
                              Eegeo::UI::IUIQuadFactory& quadFactory,
-                             Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
-                             Eegeo::UI::IUICameraProvider& uICameraProvider);
+                             Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
+                             Eegeo::UI::IUICameraProvider& uiCameraProvider);
 
 	std::string ExampleName() const;
 

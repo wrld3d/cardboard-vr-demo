@@ -10,12 +10,12 @@ namespace Eegeo
         namespace JumpPoints
         {
             
-            JumpPointViewFactory::JumpPointViewFactory(IUIRenderableFilter& p_UIRenderableFilter
-                                                       , IUIQuadFactory& p_IUIQuadFactory
-                                                       , IUICameraProvider& p_UICameraProvider)
-            : m_UIRenderableFilter(p_UIRenderableFilter)
-            , m_IUIQuadFactory(p_IUIQuadFactory)
-            , m_UICameraProvider(p_UICameraProvider)
+            JumpPointViewFactory::JumpPointViewFactory(IUIRenderableFilter& uiRenderableFilter
+                                                       , IUIQuadFactory& uiQuadFactory
+                                                       , IUICameraProvider& uiCameraProvider)
+            : m_uiRenderableFilter(uiRenderableFilter)
+            , m_uiQuadFactory(uiQuadFactory)
+            , m_uiCameraProvider(uiCameraProvider)
             {
                 
             }
@@ -27,17 +27,17 @@ namespace Eegeo
             
             JumpPointView* JumpPointViewFactory::CreateViewForJumpPoint(JumpPoint& jumpPointModel)
             {
-                JumpPointView* jumpPointView = Eegeo_NEW(JumpPointView)(jumpPointModel
-                                                                        , m_UIRenderableFilter
-                                                                        , m_IUIQuadFactory.CreateUIQuad(jumpPointModel.GetFileName()
+                JumpPointView* pJumpPointView = Eegeo_NEW(JumpPointView)(jumpPointModel
+                                                                        , m_uiRenderableFilter
+                                                                        , m_uiQuadFactory.CreateUIQuad(jumpPointModel.GetFileName()
                                                                         , jumpPointModel.GetDimensions()
                                                                         , jumpPointModel.GetUVMin()
                                                                         , jumpPointModel.GetUVMax()
                                                                         , jumpPointModel.GetEcefPosition()
                                                                         , jumpPointModel.GetColor())
-                                                                        , m_UICameraProvider
+                                                                        , m_uiCameraProvider
                                                                         );
-                return jumpPointView;
+                return pJumpPointView;
             }
             
         }

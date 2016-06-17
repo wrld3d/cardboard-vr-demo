@@ -15,14 +15,14 @@ namespace Eegeo
             m_renderables.clear();
         }
         
-        void UIRenderableFilter::RegisterRenderable(IUIRenderable* p_UIItemToRender)
+        void UIRenderableFilter::RegisterRenderable(IUIRenderable* pUIItemToRender)
         {
-            m_renderables.push_back(p_UIItemToRender);
+            m_renderables.push_back(pUIItemToRender);
         }
         
-        void UIRenderableFilter::UnRegisterRenderable(IUIRenderable* p_UIItemToRender)
+        void UIRenderableFilter::UnRegisterRenderable(IUIRenderable* pUIItemToRender)
         {
-            std::vector<IUIRenderable*>::iterator position = std::find(m_renderables.begin(), m_renderables.end(), p_UIItemToRender);
+            std::vector<IUIRenderable*>::iterator position = std::find(m_renderables.begin(), m_renderables.end(), pUIItemToRender);
             if (position != m_renderables.end())
                 m_renderables.erase(position);
         }

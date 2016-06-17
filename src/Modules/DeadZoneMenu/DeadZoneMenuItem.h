@@ -37,7 +37,7 @@ namespace Eegeo
                  */
                 DeadZoneMenuItem(const TDeadZoneMenuItemId id
                           , const TDeadZoneMenuItemSpriteId spriteId
-                          , Eegeo::Helpers::ICallback0& p_OnClickedEvent
+                          , Eegeo::Helpers::ICallback0& onClickedEvent
                           , const void* pUserData = NULL);
                 
                 /*! Get the unique identifier for the DeadZoneMenuItem.
@@ -60,7 +60,7 @@ namespace Eegeo
                 
             private:
                 TDeadZoneMenuItemId m_id;
-                TDeadZoneMenuItemSpriteId m_SpriteId;
+                TDeadZoneMenuItemSpriteId m_spriteId;
                 const void* const m_pUserData;
                 Eegeo::Helpers::ICallback0& m_OnClickedEvent;
             };

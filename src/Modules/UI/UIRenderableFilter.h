@@ -20,8 +20,8 @@ namespace Eegeo
             virtual ~UIRenderableFilter();
             
             // IUIRenderableFilter interface
-            virtual void RegisterRenderable(IUIRenderable* p_UIItemToRender);
-            virtual void UnRegisterRenderable(IUIRenderable* p_UIItemToRender);
+            virtual void RegisterRenderable(IUIRenderable* pUIItemToRender);
+            virtual void UnRegisterRenderable(IUIRenderable* pUIItemToRender);
             
             // IRenderableFilter interface
             void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);

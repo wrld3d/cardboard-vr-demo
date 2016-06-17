@@ -12,11 +12,11 @@ namespace Examples
                                                        DefaultCameraControllerFactory& defaultCameraControllerFactory,
                                                        const IScreenPropertiesProvider& screenPropertiesProvider,
                                                        Eegeo::UI::IUIQuadFactory& quadFactory,
-                                                       Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
-                                                       Eegeo::UI::IUICameraProvider& uICameraProvider)
-	: m_UIQuadFactory(quadFactory)
-    , m_UIInteractionObservable(uIInteractionObservable)
-    , m_UICameraProvider(uICameraProvider)
+                                                       Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
+                                                       Eegeo::UI::IUICameraProvider& uiCameraProvider)
+	: m_uiQuadFactory(quadFactory)
+    , m_uiInteractionObservable(uiInteractionObservable)
+    , m_uiCameraProvider(uiCameraProvider)
     , m_world(world)
     , m_screenPropertiesProvider(screenPropertiesProvider)
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
@@ -34,9 +34,9 @@ IExample* JumpPointsExampleFactory::CreateExample() const
                                            mapModule.GetResourceCeilingProvider(),
                                            m_defaultCameraControllerFactory.Create(),
                                            initialScreenProperties,
-                                           m_UIQuadFactory,
-                                           m_UIInteractionObservable,
-                                           m_UICameraProvider
+                                           m_uiQuadFactory,
+                                           m_uiInteractionObservable,
+                                           m_uiCameraProvider
                                            );
 }
 

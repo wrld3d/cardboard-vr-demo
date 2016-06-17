@@ -23,12 +23,12 @@ namespace Eegeo
                 /*! Register an observer to receive notifications when the collection's contents are modified.
                  * \param observerToAdd The observer to register.
                  */
-                virtual void AddDeadZoneMenuObserver(IDeadZoneMenuItemObserver* observerToAdd) = 0;
+                virtual void AddDeadZoneMenuObserver(IDeadZoneMenuItemObserver* pObserverToAdd) = 0;
                 
                 /*! De-register an observer from receiving notifications when the collection's contents are modified.
                  * \param observerToRemove The observer to de-register.
                  */
-                virtual void RemoveDeadZoneMenuObserver(IDeadZoneMenuItemObserver* observerToRemove) = 0;
+                virtual void RemoveDeadZoneMenuObserver(IDeadZoneMenuItemObserver* pObserverToRemove) = 0;
                 virtual ~IDeadZoneMenuItemObservable() {};
             };
         }

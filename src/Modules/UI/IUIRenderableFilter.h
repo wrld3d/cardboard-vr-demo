@@ -11,8 +11,8 @@ namespace Eegeo
         class IUIRenderableFilter
         {
         public:
-            virtual void RegisterRenderable(IUIRenderable* p_UIItemToRender) = 0;
-            virtual void UnRegisterRenderable(IUIRenderable* p_UIItemToRender) = 0;
+            virtual void RegisterRenderable(IUIRenderable* pUIItemToRender) = 0;
+            virtual void UnRegisterRenderable(IUIRenderable* pUIItemToRender) = 0;
             virtual ~IUIRenderableFilter() {}
         };
         

@@ -41,8 +41,8 @@ namespace Eegeo
                 Eegeo::Rendering::VertexLayouts::VertexLayout* m_pPositionUvVertexLayout;
                 Eegeo::Rendering::ScreenProperties m_screenProperties;
                 
-                VRCardboardDeviceProfile* m_cardboardProfile;
-                bool m_MeshUpdateRequried;
+                VRCardboardDeviceProfile* m_pCardboardProfile;
+                bool m_meshUpdateRequried;
                 
                 void HandleScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
                 
@@ -54,13 +54,13 @@ namespace Eegeo
                                        Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
                                        Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
                                        Eegeo::Rendering::RenderableFilters& renderableFilters,
-                                       Eegeo::Rendering::GlBufferPool& m_glBufferPool);
+                                       Eegeo::Rendering::GlBufferPool& glBufferPool);
                 virtual ~VRDistortionModule();
                 void Initialize();
                 void Suspend();
                 
                 void UpdateCardboardProfile(float cardboardProfile[]);
-                VRCardboardDeviceProfile& GetCardboardProfile() { return *m_cardboardProfile; }
+                VRCardboardDeviceProfile& GetCardboardProfile() { return *m_pCardboardProfile; }
                 
                 void BeginRendering();
                 void RegisterRenderable();

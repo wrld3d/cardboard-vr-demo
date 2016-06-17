@@ -19,12 +19,12 @@ namespace Eegeo
             DeadZoneMenuItemRepository::~DeadZoneMenuItemRepository()
             {
                 m_observers.clear();
-                m_DeadZoneMenuItem.clear();
+                m_deadZoneMenuItem.clear();
             }
             
             void DeadZoneMenuItemRepository::AddDeadZoneMenuItem(DeadZoneMenuItem* pDeadZoneMenuItemToAdd)
             {
-                m_DeadZoneMenuItem.push_back(pDeadZoneMenuItemToAdd);
+                m_deadZoneMenuItem.push_back(pDeadZoneMenuItemToAdd);
                 
                 for (int i = 0; i < m_observers.size(); i++) {
                     m_observers[i]->OnDeadZoneMenuItemAdded(*pDeadZoneMenuItemToAdd);
@@ -33,9 +33,9 @@ namespace Eegeo
             
             void DeadZoneMenuItemRepository::RemoveDeadZoneMenuItem(DeadZoneMenuItem* pDeadZoneMenuItemToRemove)
             {
-                std::vector<DeadZoneMenuItem*>::iterator position = std::find(m_DeadZoneMenuItem.begin(), m_DeadZoneMenuItem.end(), pDeadZoneMenuItemToRemove);
-                if (position != m_DeadZoneMenuItem.end()) {
-                    m_DeadZoneMenuItem.erase(position);
+                std::vector<DeadZoneMenuItem*>::iterator position = std::find(m_deadZoneMenuItem.begin(), m_deadZoneMenuItem.end(), pDeadZoneMenuItemToRemove);
+                if (position != m_deadZoneMenuItem.end()) {
+                    m_deadZoneMenuItem.erase(position);
                     
                     for (int i = 0; i < m_observers.size(); i++) {
                         m_observers[i]->OnDeadZoneMenuItemRemoved(*pDeadZoneMenuItemToRemove);
@@ -45,33 +45,33 @@ namespace Eegeo
             
             int DeadZoneMenuItemRepository::GetNumOfDeadZoneMenuItems() const
             {
-                return m_DeadZoneMenuItem.size();
+                return m_deadZoneMenuItem.size();
             }
             
-            DeadZoneMenuItem* DeadZoneMenuItemRepository::GetDeadZoneMenuItemAtIndex(int DeadZoneMenuItemIndex) const
+            DeadZoneMenuItem* DeadZoneMenuItemRepository::GetDeadZoneMenuItemAtIndex(int deadZoneMenuItemIndex) const
             {
-                return m_DeadZoneMenuItem[DeadZoneMenuItemIndex];
+                return m_deadZoneMenuItem[deadZoneMenuItemIndex];
             }
             
             DeadZoneMenuItem* DeadZoneMenuItemRepository::GetDeadZoneMenuItemById(TDeadZoneMenuItemId id) const
             {
                 for (int i=0; i<GetNumOfDeadZoneMenuItems(); i++) {
-                    if (m_DeadZoneMenuItem[i]->GetId() == id) {
-                        return m_DeadZoneMenuItem[i];
+                    if (m_deadZoneMenuItem[i]->GetId() == id) {
+                        return m_deadZoneMenuItem[i];
                     }
                 }
                 
                 return NULL;
             }
             
-            void DeadZoneMenuItemRepository::AddDeadZoneMenuObserver(IDeadZoneMenuItemObserver* observerToAdd)
+            void DeadZoneMenuItemRepository::AddDeadZoneMenuObserver(IDeadZoneMenuItemObserver* pObserverToAdd)
             {
-                m_observers.push_back(observerToAdd);
+                m_observers.push_back(pObserverToAdd);
             }
             
-            void DeadZoneMenuItemRepository::RemoveDeadZoneMenuObserver(IDeadZoneMenuItemObserver* observerToRemove)
+            void DeadZoneMenuItemRepository::RemoveDeadZoneMenuObserver(IDeadZoneMenuItemObserver* pObserverToRemove)
             {
-                std::vector<IDeadZoneMenuItemObserver*>::iterator position = std::find(m_observers.begin(), m_observers.end(), observerToRemove);
+                std::vector<IDeadZoneMenuItemObserver*>::iterator position = std::find(m_observers.begin(), m_observers.end(), pObserverToRemove);
                 if (position != m_observers.end())
                     m_observers.erase(position);
             }
@@ -79,7 +79,7 @@ namespace Eegeo
             bool DeadZoneMenuItemRepository::ContainsDeadZoneMenuItem(const DeadZoneMenuItem* pDeadZoneMenuItemToCheck) const
             {
                 for (int i=0; i<GetNumOfDeadZoneMenuItems(); i++) {
-                    if (m_DeadZoneMenuItem[i] == pDeadZoneMenuItemToCheck) {
+                    if (m_deadZoneMenuItem[i] == pDeadZoneMenuItemToCheck) {
                         return true;
                     }
                 }

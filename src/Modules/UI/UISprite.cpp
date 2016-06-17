@@ -17,17 +17,17 @@ namespace Eegeo
     namespace UI
     {
         
-        UISprite::UISprite(IUIRenderableFilter& p_UIRenderableFilter
-                           , UIQuad* quad
+        UISprite::UISprite(IUIRenderableFilter& uiRenderableFilter
+                           , UIQuad* pQuad
                            , const Eegeo::v2& size
                            , const Eegeo::dv3& ecefPosition
                            , const Eegeo::v3& scale
                            , const Eegeo::v4& color)
-        : m_Quad(quad)
-        , m_UIRenderableFilter(p_UIRenderableFilter){
+        : m_pQuad(pQuad)
+        , m_UIRenderableFilter(uiRenderableFilter){
             m_Size = size;
             
-            m_UIRenderableFilter.RegisterRenderable(m_Quad);
+            m_UIRenderableFilter.RegisterRenderable(m_pQuad);
             SetEcefPosition(ecefPosition);
             SetScale(scale);
             SetColor(color);
@@ -35,8 +35,8 @@ namespace Eegeo
         
         UISprite::~UISprite()
         {
-            m_UIRenderableFilter.UnRegisterRenderable(m_Quad);
-            delete m_Quad;
+            m_UIRenderableFilter.UnRegisterRenderable(m_pQuad);
+            delete m_pQuad;
         }
         
         void UISprite::Update(float dt)
@@ -45,12 +45,12 @@ namespace Eegeo
         
         void UISprite::SetEcefPosition(const Eegeo::dv3& position)
         {
-            m_Quad->SetEcefPosition(position);
+            m_pQuad->SetEcefPosition(position);
         }
         
         Eegeo::dv3 UISprite::GetEcefPosition()
         {
-            return m_Quad->GetEcefPosition();
+            return m_pQuad->GetEcefPosition();
         }
         
         void UISprite::SetSize(const Eegeo::v2& size)
@@ -65,22 +65,22 @@ namespace Eegeo
         
         void UISprite::SetColor(const Eegeo::v4& color)
         {
-            m_Quad->SetColor(color);
+            m_pQuad->SetColor(color);
         }
         
         Eegeo::v4 UISprite::GetColor()
         {
-            return m_Quad->GetColor();
+            return m_pQuad->GetColor();
         }
         
         void UISprite::SetScale(const Eegeo::v3& scale)
         {
-            m_Quad->SetScale(scale);
+            m_pQuad->SetScale(scale);
         }
         
         Eegeo::v3 UISprite::GetScale()
         {
-            return m_Quad->GetScale();
+            return m_pQuad->GetScale();
         }
         
         

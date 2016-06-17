@@ -26,9 +26,9 @@ namespace Eegeo
             {
             public:
                 JumpPointView(JumpPoint& jumpPoint
-                              , IUIRenderableFilter& p_UIRenderableFilter
-                              , UIQuad* quad
-                              , IUICameraProvider& p_UICameraProvider);
+                              , IUIRenderableFilter& uiRenderableFilter
+                              , UIQuad* pQuad
+                              , IUICameraProvider& uiCameraProvider);
 
                 virtual ~JumpPointView(){}
                 
@@ -43,9 +43,9 @@ namespace Eegeo
                 void MoveCameraToJumpPoint();
                 
             private:
-                JumpPoint& m_JumpPoint;
-                IUICameraProvider& m_UICameraProvider;
-                Eegeo::Helpers::TCallback0<JumpPointView> m_JumpPointClickCallback;
+                JumpPoint& m_jumpPoint;
+                IUICameraProvider& m_uiCameraProvider;
+                Eegeo::Helpers::TCallback0<JumpPointView> m_jumpPointClickCallback;
             };
         }
     }

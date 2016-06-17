@@ -25,9 +25,9 @@ namespace Eegeo
             {
             public:
                 DeadZoneMenuItemView(DeadZoneMenuItem& deadZoneMenuItem
-                                     , IUIRenderableFilter& p_UIRenderableFilter
-                                     , UIQuad* quad
-                                     , IUICameraProvider& p_UICameraProvider
+                                     , IUIRenderableFilter& uiRenderableFilter
+                                     , UIQuad* pQuad
+                                     , IUICameraProvider& uiCameraProvider
                                      , Eegeo::v2& dimension);
                 
                 /*! Retrieve the DeadZoneMenuItem model that the view represents.
@@ -35,12 +35,12 @@ namespace Eegeo
                  */
                 DeadZoneMenuItem& GetDeadZoneMenuItem() const
                 {
-                    return m_DeadZoneMenuItem;
+                    return m_deadZoneMenuItem;
                 }
                 
             private:
-                DeadZoneMenuItem& m_DeadZoneMenuItem;
-                IUICameraProvider& m_UICameraProvider;
+                DeadZoneMenuItem& m_deadZoneMenuItem;
+                IUICameraProvider& m_uiCameraProvider;
             };
         }
     }

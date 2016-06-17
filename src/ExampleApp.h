@@ -31,7 +31,7 @@ class ExampleApp : private Eegeo::NonCopyable
 {
 private:
     
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule* m_DeadZoneMenuModule;
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule* m_pDeadZoneMenuModule;
     Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
 	Eegeo::EegeoWorld* m_pWorld;
@@ -40,19 +40,19 @@ private:
     Examples::ScreenPropertiesProvider m_screenPropertiesProvider;
     Eegeo::Streaming::CameraFrustumStreamingVolume* m_pStreamingVolume;
     
-    Eegeo::VR::Distortion::VRDistortionModule* m_VRDistortion;
-    Eegeo::Skybox::SkyboxModule *m_VRSkybox;
-    Eegeo::UI::UIImageButton *m_UIButton;
+    Eegeo::VR::Distortion::VRDistortionModule* m_pVRDistortion;
+    Eegeo::Skybox::SkyboxModule *m_pVRSkybox;
+    Eegeo::UI::UIImageButton *m_pUIButton;
 
-    Eegeo::UI::UIInteractionController *m_UIInteractionController;
-    Eegeo::UI::UIRenderableFilter *m_UIRenderableFilter;
-    Eegeo::UIGaze::UIGazeView* m_UIGazeView;
+    Eegeo::UI::UIInteractionController *m_pUIInteractionController;
+    Eegeo::UI::UIRenderableFilter *m_pUIRenderableFilter;
+    Eegeo::UIGaze::UIGazeView* m_pUIGazeView;
     
-    Eegeo::UI::IUIQuadFactory* m_QuadFactory;
+    Eegeo::UI::IUIQuadFactory* m_pQuadFactory;
     
     
     Eegeo::Helpers::IdentityProvider m_identityProvider;
-    InteriorsExplorer::InteriorsExplorerModule* m_interiorExplorerModule;
+    InteriorsExplorer::InteriorsExplorerModule* m_pInteriorExplorerModule;
     
     bool m_night;
     float m_foggingFar;
@@ -69,7 +69,7 @@ private:
     
     void UpdateLoadingScreen(float dt);
     
-    Eegeo::Helpers::TCallback0<ExampleApp> m_ClickCallback;
+    Eegeo::Helpers::TCallback0<ExampleApp> m_clickCallback;
 
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,

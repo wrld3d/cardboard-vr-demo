@@ -35,10 +35,10 @@ namespace Eegeo
                  */
                 JumpPoint(const TJumpPointId id
                           , const Space::LatLongAltitude& latLongAlt
-                          , const std::string& p_FileName
-                          , const Eegeo::v2& p_Dimension
-                          , const Eegeo::v2& p_uvMin = Eegeo::v2::Zero()
-                          , const Eegeo::v2& p_uvMax = Eegeo::v2::One()
+                          , const std::string& fileName
+                          , const Eegeo::v2& dimension
+                          , const Eegeo::v2& uvMin = Eegeo::v2::Zero()
+                          , const Eegeo::v2& uvMax = Eegeo::v2::One()
                           , const void* pUserData = NULL);
                 
                 /*! Get the unique identifier for the JumpPoint.
@@ -84,12 +84,12 @@ namespace Eegeo
             private:
                 TJumpPointId m_id;
                 Space::LatLongAltitude m_latLongAlt;
-                dv3 m_EcefPosition;
+                dv3 m_ecefPosition;
                 const void* const m_pUserData;
                 
                 v4 m_color;
-                const std::string m_FileName;
-                const Eegeo::v2 m_Dimension;
+                const std::string m_fileName;
+                const Eegeo::v2 m_dimension;
                 const Eegeo::v2 m_uvMin;
                 const Eegeo::v2 m_uvMax;
             };

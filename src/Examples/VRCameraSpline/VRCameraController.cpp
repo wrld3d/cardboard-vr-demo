@@ -89,7 +89,7 @@ namespace Eegeo
             float near, far;
             GetNearFarPlaneDistances(near,far);
             if(!std::isnan(factor)){
-                m_VRCameraPositionSpline.setSlowDownFactor(1.f - factor);
+                m_vrCameraPositionSpline.setSlowDownFactor(1.f - factor);
                 m_renderCamera->SetOrientationMatrix(orientationMatrix);
                 m_renderCamera->SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
                 m_renderCamera->SetProjection(0.7f, near*m_nearMultiplier, far);
@@ -123,17 +123,17 @@ namespace Eegeo
             
             m_time += dt;
             
-            if(m_VRCameraPositionSpline.IsStopPoint())
+            if(m_vrCameraPositionSpline.IsStopPoint())
             {
-                m_VRCameraPositionSpline.Update(dt);
-                m_VRCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
+                m_vrCameraPositionSpline.Update(dt);
+                m_vrCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
                 m_stopTimeElapsed += dt;
                 if(m_stopTimeElapsed>=m_stopTime)
                 {
 //                    m_pHeadTracker.ResetTracker();
                     m_stopTimeElapsed = 0.0f;
-                    m_VRCameraPositionSpline.NextSpline();
-                    m_VRCameraPositionSpline.Start();
+                    m_vrCameraPositionSpline.NextSpline();
+                    m_vrCameraPositionSpline.Start();
                 }
             }
             else if(IsFalling())
@@ -149,12 +149,12 @@ namespace Eegeo
             else
             {
                 m_splineEndPauseTimeElapsed += dt;
-                if(m_splineEndPauseTimeElapsed > m_splineEndPauseTime || m_VRCameraPositionSpline.GetCurrentSplineID()!=2)
+                if(m_splineEndPauseTimeElapsed > m_splineEndPauseTime || m_vrCameraPositionSpline.GetCurrentSplineID()!=2)
                 {
 //                    m_pHeadTracker.ResetTracker();
                     m_splineEndPauseTimeElapsed = 0.0f;
-                    m_VRCameraPositionSpline.NextSpline();
-                    m_VRCameraPositionSpline.Start();
+                    m_vrCameraPositionSpline.NextSpline();
+                    m_vrCameraPositionSpline.Start();
                 }
 //                Move(dt);
             }

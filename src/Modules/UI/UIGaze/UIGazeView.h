@@ -20,8 +20,8 @@ namespace Eegeo
     {
         class UIGazeView 
         {
-            UI::UIAnimatedSprite* m_GazeProgress;
-            UI::UISprite* m_Pointer;
+            UI::UIAnimatedSprite* m_pGazeProgress;
+            UI::UISprite* m_pPointer;
             
             void Init(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter);
             

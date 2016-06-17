@@ -33,14 +33,14 @@ namespace Eegeo
                 
                 DeadZoneMenuItem* GetDeadZoneMenuItemById(TDeadZoneMenuItemId id) const;
                 
-                virtual void AddDeadZoneMenuObserver(IDeadZoneMenuItemObserver* observerToAdd);
+                virtual void AddDeadZoneMenuObserver(IDeadZoneMenuItemObserver* pObserverToAdd);
                 
-                virtual void RemoveDeadZoneMenuObserver(IDeadZoneMenuItemObserver* observerToRemove);
+                virtual void RemoveDeadZoneMenuObserver(IDeadZoneMenuItemObserver* pObserverToRemove);
                 
             private:
                 
                 typedef std::vector<DeadZoneMenuItem*> TDeadZoneMenuItems;
-                TDeadZoneMenuItems m_DeadZoneMenuItem;
+                TDeadZoneMenuItems m_deadZoneMenuItem;
                 
                 typedef std::vector<IDeadZoneMenuItemObserver*> TDeadZoneMenuItemObservers;
                 TDeadZoneMenuItemObservers m_observers;
