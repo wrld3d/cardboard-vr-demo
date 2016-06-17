@@ -236,13 +236,13 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     std::string menuTextureFileName("mesh_example/PinIconTexturePage.png");
     m_pDeadZoneMenuModule = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, menuTextureFileName, 4);
     
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* pMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 0, m_clickCallback);
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* pMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 1, m_clickCallback);
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* pMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 2, m_clickCallback);
+    m_pMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 0, m_clickCallback);
+    m_pMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 1, m_clickCallback);
+    m_pMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 2, m_clickCallback);
     
-    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(pMenuItem1);
-    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(pMenuItem2);
-    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(pMenuItem3);
+    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem1);
+    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem2);
+    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem3);
     
 //    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController);
@@ -259,6 +259,12 @@ ExampleApp::~ExampleApp()
     {
         Eegeo_DELETE m_pLoadingScreen;
     }
+    
+    Eegeo_DELETE m_pDeadZoneMenuModule;
+    Eegeo_DELETE m_pMenuItem1;
+    Eegeo_DELETE m_pMenuItem2;
+    Eegeo_DELETE m_pMenuItem3;
+    
     
     Eegeo_DELETE m_pQuadFactory;
     Eegeo_DELETE m_pUIGazeView;

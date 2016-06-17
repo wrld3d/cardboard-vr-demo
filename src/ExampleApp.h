@@ -32,6 +32,13 @@ class ExampleApp : private Eegeo::NonCopyable
 private:
     
     Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule* m_pDeadZoneMenuModule;
+    
+    
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pMenuItem1;
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pMenuItem2;
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pMenuItem3;
+    
+    
     Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
 	Eegeo::EegeoWorld* m_pWorld;
