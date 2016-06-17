@@ -30,7 +30,7 @@ namespace Eegeo
             virtual void OnMaterialChanged(const Eegeo::Rendering::Materials::IMaterial* pMaterial, Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool);
             
             void SetOrientationEcef(const Eegeo::m33& orientationEcef) { m_orientationEcef = orientationEcef.ToM44(); }
-            void SetColor(const Eegeo::v4& color) { m_color = color; }
+            void SetColor(const Eegeo::v4 color) { m_color = color; }
             void SetDepthTest(bool enabled) { m_depthTest = enabled; }
             void SetAlphaBlend(bool enabled) { m_alphaBlend = enabled; }
             
@@ -38,8 +38,8 @@ namespace Eegeo
             bool IsDepthTest() const { return m_depthTest; }
             bool IsAlphaBlend() const { return m_alphaBlend; }
             
-            Eegeo::v3 GetScale() { return m_scale; }
-            void SetScale(Eegeo::v3 p_scale) { m_scale = p_scale; }
+            const Eegeo::v3& GetScale() { return m_scale; }
+            void SetScale(const Eegeo::v3& scale) { m_scale = scale; }
             
         private:
             Eegeo::Rendering::Mesh& m_mesh;

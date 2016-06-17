@@ -22,7 +22,8 @@ namespace Eegeo
         {
             Eegeo::v2 dimension = Eegeo::v2(0.25f,0.25f)*7.f;
             m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(uiRenderableFilter,
-                                                                    quadFactory.CreateUIQuad("mesh_example/gaze_loader.png", dimension),
+                                                                    quadFactory,
+                                                                    "mesh_example/gaze_loader.png",
                                                                     49.f/2.f,
                                                                     Eegeo::v2(7,7),
                                                                     0,

@@ -59,15 +59,12 @@ namespace Eegeo
                    );
             
             virtual ~UIQuad();
-            inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){
-                m_Renderable->SetEcefPosition(ecefPosition);
-            }
+            inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){ m_Renderable->SetEcefPosition(ecefPosition); }
             inline const dv3& GetEcefPosition() const { return m_Renderable->GetEcefPosition(); }
-            inline Eegeo::v3 GetScale() { return m_Renderable->GetScale(); }
-            inline void SetScale(Eegeo::v3 p_scale) { m_Renderable->SetScale(p_scale); }
+            inline const Eegeo::v3& GetScale() { return m_Renderable->GetScale(); }
+            inline void SetScale(const Eegeo::v3& p_scale) { m_Renderable->SetScale(p_scale); }
             inline void SetColor(const Eegeo::v4& color) { m_Renderable->SetColor(color); }
-            
-            void UpdateUVs(Eegeo::v2& min, Eegeo::v2& max);
+            inline const Eegeo::v4& GetColor() { return m_Renderable->GetColor(); }
 
             // IUIRenderable interface
             virtual Eegeo::Rendering::RenderableBase& GetUpdatedRenderable(const Eegeo::Rendering::RenderContext& renderContext);

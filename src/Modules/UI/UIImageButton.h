@@ -29,12 +29,10 @@ namespace Eegeo
             UIImageButton(IUIRenderableFilter& p_UIRenderableFilter
                           , UIQuad* quad
                           , Eegeo::Helpers::ICallback0& onClickedEvent
-                          , Eegeo::v2 size = Eegeo::v2::One()
-                          , Eegeo::dv3 ecefPosition = Eegeo::dv3::Zero()
-                          , Eegeo::v3 scale = Eegeo::v3::One()
-                          , Eegeo::v4 color = Eegeo::v4::One()
-                          , int spriteId = 0
-                          , Eegeo::v2 spriteGridSize = Eegeo::v2::One()
+                          , const Eegeo::v2& size = Eegeo::v2::One()
+                          , const Eegeo::dv3& ecefPosition = Eegeo::dv3::Zero()
+                          , const Eegeo::v3& scale = Eegeo::v3::One()
+                          , const Eegeo::v4& color = Eegeo::v4::One()
                           );
             
             virtual ~UIImageButton();

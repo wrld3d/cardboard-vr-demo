@@ -19,25 +19,18 @@ namespace Eegeo
         
         UISprite::UISprite(IUIRenderableFilter& p_UIRenderableFilter
                            , UIQuad* quad
-                           , Eegeo::v2 size
-                           , Eegeo::dv3 ecefPosition
-                           , Eegeo::v3 scale
-                           , Eegeo::v4 color
-                           , int spriteId
-                           , Eegeo::v2 spriteGridSize)
+                           , const Eegeo::v2& size
+                           , const Eegeo::dv3& ecefPosition
+                           , const Eegeo::v3& scale
+                           , const Eegeo::v4& color)
         : m_Quad(quad)
         , m_UIRenderableFilter(p_UIRenderableFilter){
-          
-            m_EcefPosition = ecefPosition;
-            m_Scale = scale;
             m_Size = size;
-            m_Color = color;
-            m_SpriteId = spriteId;
-            m_SpriteGridSize = Eegeo::v2(spriteGridSize);
-            
-            UpdateUVs();
             
             m_UIRenderableFilter.RegisterRenderable(m_Quad);
+            SetEcefPosition(ecefPosition);
+            SetScale(scale);
+            SetColor(color);
         }
         
         UISprite::~UISprite()
@@ -50,100 +43,44 @@ namespace Eegeo
         {
         }
         
-        void UISprite::SetEcefPosition(Eegeo::dv3 position)
+        void UISprite::SetEcefPosition(const Eegeo::dv3& position)
         {
-            m_EcefPosition = Eegeo::dv3(position);
-            m_Quad->SetEcefPosition(m_EcefPosition);
+            m_Quad->SetEcefPosition(position);
         }
         
-        const Eegeo::dv3& UISprite::GetEcefPosition()
+        Eegeo::dv3 UISprite::GetEcefPosition()
         {
-            return m_EcefPosition;
+            return m_Quad->GetEcefPosition();
         }
         
-        void UISprite::SetSize(Eegeo::v2 size)
+        void UISprite::SetSize(const Eegeo::v2& size)
         {
             m_Size = Eegeo::v2(size);
         }
         
-        const Eegeo::v2& UISprite::GetSize()
+        Eegeo::v2 UISprite::GetSize()
         {
             return m_Size;
         }
         
-        void UISprite::SetColor(Eegeo::v4 color)
+        void UISprite::SetColor(const Eegeo::v4& color)
         {
-            m_Color = Eegeo::v4(color);
-            m_Quad->SetColor(m_Color);
+            m_Quad->SetColor(color);
         }
         
-        const Eegeo::v4& UISprite::GetColor()
+        Eegeo::v4 UISprite::GetColor()
         {
-            return m_Color;
+            return m_Quad->GetColor();
         }
         
-        void UISprite::SetScale(Eegeo::v3 scale)
+        void UISprite::SetScale(const Eegeo::v3& scale)
         {
-            m_Scale = Eegeo::v3(scale);
-            m_Quad->SetScale(m_Scale);
+            m_Quad->SetScale(scale);
         }
         
-        const Eegeo::v3& UISprite::GetScale()
+        Eegeo::v3 UISprite::GetScale()
         {
-            return m_Scale;
-        }
-        
-        void UISprite::UpdateUVs(){
-            
-            int x = m_SpriteId % ((int) m_SpriteGridSize.GetX());
-            int y = m_SpriteId / ((int) m_SpriteGridSize.GetY());
-            float xSize = 1.f/m_SpriteGridSize.GetX();
-            float ySize = 1.f/m_SpriteGridSize.GetY();
-            
-            m_MinUV = Eegeo::v2(x*xSize, y*ySize);
-            m_MaxUV = Eegeo::v2((x+1)*xSize, (y+1)*ySize);
-        }
-        
-        void UISprite::SetSpriteId(int spriteId)
-        {
-            m_SpriteId = spriteId;
-            UpdateUVs();
-            m_Quad->UpdateUVs(m_MinUV, m_MaxUV);
-            m_Quad->SetScale(m_Scale);
-            m_Quad->SetColor(m_Color);
-            m_Quad->SetEcefPosition(m_EcefPosition);
-            
-            
-        }
-        
-        int UISprite::GetSpriteId()
-        {
-            return m_SpriteId;
-        }
-        
-        void UISprite::SetNextSprite()
-        {
-            int spriteId = GetSpriteId()+1;
-            if(spriteId > GetMaxSpriteId())
-            {
-                spriteId = 0;
-            }
-            SetSpriteId(spriteId);
-        }
-        
-        void UISprite::SetPreviousSprite()
-        {
-            int spriteId = GetSpriteId()-1;
-            if(spriteId < 0)
-            {
-                spriteId = GetMaxSpriteId();
-            }
-            SetSpriteId(spriteId);
-        }
-        
-        int UISprite::GetMaxSpriteId()
-        {
-            return ((int)(m_SpriteGridSize.GetX()*m_SpriteGridSize.GetY()))-1;
+            return m_Quad->GetScale();
         }
         
         

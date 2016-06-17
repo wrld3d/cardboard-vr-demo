@@ -142,15 +142,5 @@ namespace Eegeo
             
             return *m_Renderable;
         }
-        
-        void UIQuad::UpdateUVs(Eegeo::v2& min, Eegeo::v2& max)
-        {
-            Eegeo_DELETE m_RenderableMesh;
-            Eegeo_DELETE m_Renderable;
-            m_RenderableMesh = CreateUnlitQuadMesh(m_Dimension, min, max, *CreatePositionUvVertexLayout(), m_GlBufferPool);
-            m_Renderable = CreateUIMeshRenderable(*m_RenderableMesh, m_Material, m_VertexBindingPool, m_EcefPosition, m_RenderLayer);
-            
-            
-        }
     }
 }
