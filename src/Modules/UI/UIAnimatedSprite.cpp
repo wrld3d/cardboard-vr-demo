@@ -23,13 +23,14 @@ namespace Eegeo
                          , const Eegeo::v2& size
                          , const Eegeo::dv3& ecefPosition
                          , const Eegeo::v3& scale
-                         , const Eegeo::v4& color)
+                         , const Eegeo::v4& color
+                         , const Eegeo::Rendering::LayerIds::Values renderLayer)
         : m_frameRate(frameRate)
         , m_timeElapsed(0)
         , m_currentFrame(0)
         {
             m_frames.reserve(spriteGridSize.GetX() * spriteGridSize.GetY());
-            CreateFrames(uiRenderableFilter, uiQuadFactory, assetPath, spriteGridSize, size, ecefPosition, scale, color);
+            CreateFrames(uiRenderableFilter, uiQuadFactory, assetPath, spriteGridSize, size, ecefPosition, scale, color, renderLayer);
         }
         
         UIAnimatedSprite::~UIAnimatedSprite()
@@ -45,7 +46,8 @@ namespace Eegeo
                                             , const Eegeo::v2& size
                                             , const Eegeo::dv3& ecefPosition
                                             , const Eegeo::v3& scale
-                                            , const Eegeo::v4& color)
+                                            , const Eegeo::v4& color
+                                            , const Eegeo::Rendering::LayerIds::Values renderLayer)
         {
             int count = (int) (spriteGridSize.GetX() * spriteGridSize.GetY());
             
@@ -55,7 +57,11 @@ namespace Eegeo
                 Eegeo::UI::CalculateUV(spriteGridSize, i, outMin, outMax);
                 
                 UISprite* pFrame = Eegeo_NEW(UISprite)( uiRenderableFilter
-                                                     , uiQuadFactory.CreateUIQuad(assetPath, size, outMin, outMax)
+                                                     , uiQuadFactory.CreateUIQuad(assetPath
+                                                                                  , size
+                                                                                  , outMin
+                                                                                  , outMax
+                                                                                  , renderLayer)
                                                      , size
                                                      , ecefPosition
                                                      , scale

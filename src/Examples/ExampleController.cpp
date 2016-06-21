@@ -84,6 +84,19 @@ void ExampleController::UpdateSelectedExample()
 	}
 }
  
+void ExampleController::ActivateExample(std::string selectedExampleName)
+{
+    for(int i = 0; i < m_factories.size(); ++ i)
+    {
+        if(m_factories[i]->ExampleName() == selectedExampleName && i != m_currentExampleFactoryIndex)
+        {
+            m_currentExampleFactoryIndex = i;
+            RefreshExample();
+            return;
+        }
+    }
+}
+    
     
 void ExampleController::ActivatePrevious()
 {

@@ -47,19 +47,6 @@ namespace Examples
     
     JumpPointsExample::~JumpPointsExample()
     {
-        Eegeo_DELETE m_pSplineCameraController;
-        
-        if(m_pJumpPointsModule!=NULL)
-            Eegeo_DELETE m_pJumpPointsModule;
-        if(m_pJumpPoint1!=NULL)
-            Eegeo_DELETE m_pJumpPoint1;
-        if(m_pJumpPoint2!=NULL)
-            Eegeo_DELETE m_pJumpPoint2;
-        if(m_pJumpPoint3!=NULL)
-            Eegeo_DELETE m_pJumpPoint3;
-        
-        m_renderableFilters.RemoveRenderableFilter(*m_pUIRenderableFilter);
-        Eegeo_DELETE m_pUIRenderableFilter;
     }
     
     void JumpPointsExample::Start()
@@ -101,15 +88,29 @@ namespace Examples
                                                             );
         
         m_pJumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(*m_pUIRenderableFilter,
-                                                                         m_uiQuadFactory,
-                                                                         m_uiInteractionObservable,
-                                                                         m_uiCameraProvider);
+                                                                          m_uiQuadFactory,
+                                                                          m_uiInteractionObservable,
+                                                                          m_uiCameraProvider);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pJumpPoint1);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pJumpPoint2);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pJumpPoint3);
     }
     
-    void JumpPointsExample::Suspend(){}
+    void JumpPointsExample::Suspend(){
+        m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pJumpPoint1);
+        m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pJumpPoint2);
+        m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pJumpPoint3);
+
+        Eegeo_DELETE m_pJumpPoint1;
+        Eegeo_DELETE m_pJumpPoint2;
+        Eegeo_DELETE m_pJumpPoint3;
+        Eegeo_DELETE m_pJumpPointsModule;
+
+        Eegeo_DELETE m_pSplineCameraController;
+        
+        m_renderableFilters.RemoveRenderableFilter(*m_pUIRenderableFilter);
+        Eegeo_DELETE m_pUIRenderableFilter;
+    }
     
     void JumpPointsExample::UpdateCardboardProfile(float cardboardProfile[])
     {
@@ -122,8 +123,8 @@ namespace Examples
         
     }
     
-    void JumpPointsExample::Update(float dt) {
-    
+    void JumpPointsExample::Update(float dt)
+    {
         m_pJumpPointsModule->Update(dt);
     }
     

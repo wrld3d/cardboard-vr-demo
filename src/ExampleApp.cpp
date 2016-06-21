@@ -132,7 +132,9 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_startClearColor(0.f/255.f,24.f/255.f,72.f/255.f)
     , m_destClearColor(135.f/255.0f, 206.f/255.0f, 235.f/255.0f)
     , m_screenPropertiesProvider(screenProperties)
-    , m_clickCallback(this, &ExampleApp::ToggleNight)
+    , m_toggleDayNightClickedCallback(this, &ExampleApp::ToggleNight)
+    , m_splineExampleButtonClickedCallback(this, &ExampleApp::LoadSplineExample)
+    , m_jumpPointExampleButtonClickedCallback(this, &ExampleApp::LoadJumpPointExample)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -208,10 +210,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                       );
     m_pVRSkybox->Start();
     
-    Eegeo::dv3 quadPosition = Eegeo::Space::LatLongAltitude::FromDegrees(56.459435, -2.977200, 250).ToECEF();
-    Eegeo::v2 dimension = Eegeo::v2(50,50);
     Eegeo::v2 size(4,4);
-    
     Eegeo::v2 outMin;
     Eegeo::v2 outMax;
     Eegeo::UI::CalculateUV(size, 1, outMin, outMax);
@@ -220,33 +219,24 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     renderingModule.GetRenderableFilters().AddRenderableFilter(*m_pUIRenderableFilter);
     
     m_pQuadFactory = Eegeo_NEW(Eegeo::UI::UIQuadFactory)(renderingModule, m_pWorld->GetPlatformAbstractionModule().GetTextureFileLoader());
-    
-    m_pUIButton = Eegeo_NEW(Eegeo::UI::UIImageButton)(*m_pUIRenderableFilter,
-                                                     m_pQuadFactory->CreateUIQuad("mesh_example/PinIconTexturePage.png", dimension, outMin, outMax),
-                                                     m_clickCallback,
-                                                     dimension);
-    m_pUIButton->SetEcefPosition(quadPosition);
-    
+
     m_pUIGazeView = new Eegeo::UIGaze::UIGazeView(*m_pQuadFactory, *m_pUIRenderableFilter);
     
     m_pUIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*m_pExampleController, *m_pUIGazeView);
-    m_pUIInteractionController->RegisterInteractableItem(m_pUIButton);
-    
     
     std::string menuTextureFileName("mesh_example/PinIconTexturePage.png");
     m_pDeadZoneMenuModule = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, menuTextureFileName, 4);
     
-    m_pMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 0, m_clickCallback);
-    m_pMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 1, m_clickCallback);
-    m_pMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 2, m_clickCallback);
+    m_pMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 0, m_jumpPointExampleButtonClickedCallback);
+    m_pMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 1, m_toggleDayNightClickedCallback);
+    m_pMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 2, m_splineExampleButtonClickedCallback);
     
     m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem1);
     m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem2);
     m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem3);
     
-//    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_interiorExplorerModule, headTracker);
+    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_pInteriorExplorerModule, headTracker);
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController);
-
     
     m_pUIGazeView->HideView();
     
@@ -268,7 +258,6 @@ ExampleApp::~ExampleApp()
     
     Eegeo_DELETE m_pQuadFactory;
     Eegeo_DELETE m_pUIGazeView;
-    Eegeo_DELETE m_pUIButton;
     
     Eegeo_DELETE m_pVRSkybox;
     Eegeo_DELETE m_pVRDistortion;
@@ -340,13 +329,11 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     Eegeo::v2 center = m_pVRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
     m_pUIInteractionController->Event_ScreenInteractionMoved(center);
-    
     m_pInteriorExplorerModule ->Update(dt);
     
     UpdateNightTParam(dt);
     UpdateFogging();
     UpdateLoadingScreen(dt);
-    m_pUIButton->Update(dt);
 }
 
 void ExampleApp::Draw (float dt, float headTansform[]){
@@ -462,6 +449,21 @@ void ExampleApp::ToggleNight()
         }
         m_nightTParam = 0.f;
     }
+}
+
+void ExampleApp::LoadNextExample()
+{
+    m_pExampleController->ActivateNext();
+}
+
+void ExampleApp::LoadSplineExample()
+{
+    m_pExampleController->ActivateExample("VRCameraSplineExample");
+}
+
+void ExampleApp::LoadJumpPointExample()
+{
+    m_pExampleController->ActivateExample("JumpPointsExample");
 }
 
 void ExampleApp::UpdateCardboardProfile(float cardboardProfile[])

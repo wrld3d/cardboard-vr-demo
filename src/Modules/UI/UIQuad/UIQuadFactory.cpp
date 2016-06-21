@@ -44,11 +44,9 @@ namespace Eegeo
                              const Eegeo::v2& dimension,
                              const Eegeo::v2& uvMin,
                              const Eegeo::v2& uvMax,
-                             const Eegeo::dv3& ecefPosition,
-                             const Eegeo::v4& initialColor,
                              const Eegeo::Rendering::LayerIds::Values renderLayer){
             Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* pMaterial = GetMaterialForAsset(assetPath);
-            return new UIQuad(assetPath, *pMaterial, m_vertexBindingPool, m_glBufferPool, dimension, uvMin, uvMax, ecefPosition, initialColor, renderLayer);
+            return new UIQuad(assetPath, *pMaterial, m_vertexBindingPool, m_glBufferPool, dimension, uvMin, uvMax, Eegeo::dv3::Zero(), Eegeo::v4::One(), renderLayer);
         }
         
         Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* UIQuadFactory::GetMaterialForAsset(const std::string& assetPath)

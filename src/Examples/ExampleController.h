@@ -54,6 +54,8 @@ namespace Examples
         
         void UpdateSelectedExample();
         
+        void ActivateExample(std::string selectedExampleName);
+        
         void ActivatePrevious();
         
         void ActivateNext();

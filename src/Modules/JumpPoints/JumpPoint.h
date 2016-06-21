@@ -56,10 +56,18 @@ namespace Eegeo
                  */
                 const dv3& GetEcefPosition() const;
                 
+                /*! Set the ECEF position of the JumpPoint.
+                 */
+                void SetEcefPosition(dv3 ecefPosition);
+                
                 /*! Get the color tint of the JumpPoint. The X,Y,Z, and W components refer to Red, Green, Blue and Alpha values between 0 and 1.
                  * \return The color vector applied to the JumpPoint.
                  */
                 const v4& GetColor() const;
+                
+                /*! Set the color tint of the JumpPoint. The X,Y,Z, and W components refer to Red, Green, Blue and Alpha values between 0 and 1.
+                 */
+                void SetColor(v4 color);
                 
                 /*! Get the File name of the JumpPoint icon.
                  * \return The JumpPoint's icon file name.

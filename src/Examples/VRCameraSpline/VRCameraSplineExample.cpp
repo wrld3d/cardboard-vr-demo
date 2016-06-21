@@ -59,7 +59,7 @@ namespace Examples
     
     void VRCameraSplineExample::EarlyUpdate(float dt)
     {
-        //m_pSplineCameraController->Update(dt);
+        m_pSplineCameraController->Update(dt);
         
             if (m_pSplineCameraController->GetVRCameraPositionSpline().IsInteriorSpline()) {
                 m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);

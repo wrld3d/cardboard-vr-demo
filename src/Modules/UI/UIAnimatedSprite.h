@@ -36,7 +36,7 @@ namespace Eegeo
                              , const Eegeo::dv3& ecefPosition = Eegeo::dv3::Zero()
                              , const Eegeo::v3& scale = Eegeo::v3::One()
                              , const Eegeo::v4& color = Eegeo::v4::One()
-                             );
+                             , const Eegeo::Rendering::LayerIds::Values renderLayer = Eegeo::Rendering::LayerIds::Values::AfterWorld);
         
             
             virtual ~UIAnimatedSprite();
@@ -48,7 +48,8 @@ namespace Eegeo
                               , const Eegeo::v2& size
                               , const Eegeo::dv3& ecefPosition
                               , const Eegeo::v3& scale
-                              , const Eegeo::v4& color);
+                              , const Eegeo::v4& color
+                              , const Eegeo::Rendering::LayerIds::Values renderLayer);
             void Reset();
             
             virtual void Update(float dt);

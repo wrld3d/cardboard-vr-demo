@@ -32,9 +32,7 @@ namespace Eegeo
                                                                         , m_uiQuadFactory.CreateUIQuad(jumpPointModel.GetFileName()
                                                                         , jumpPointModel.GetDimensions()
                                                                         , jumpPointModel.GetUVMin()
-                                                                        , jumpPointModel.GetUVMax()
-                                                                        , jumpPointModel.GetEcefPosition()
-                                                                        , jumpPointModel.GetColor())
+                                                                        , jumpPointModel.GetUVMax())
                                                                         , m_uiCameraProvider
                                                                         );
                 return pJumpPointView;

@@ -49,7 +49,6 @@ private:
     
     Eegeo::VR::Distortion::VRDistortionModule* m_pVRDistortion;
     Eegeo::Skybox::SkyboxModule *m_pVRSkybox;
-    Eegeo::UI::UIImageButton *m_pUIButton;
 
     Eegeo::UI::UIInteractionController *m_pUIInteractionController;
     Eegeo::UI::UIRenderableFilter *m_pUIRenderableFilter;
@@ -76,8 +75,9 @@ private:
     
     void UpdateLoadingScreen(float dt);
     
-    Eegeo::Helpers::TCallback0<ExampleApp> m_clickCallback;
-
+    Eegeo::Helpers::TCallback0<ExampleApp> m_toggleDayNightClickedCallback;
+    Eegeo::Helpers::TCallback0<ExampleApp> m_splineExampleButtonClickedCallback;
+    Eegeo::Helpers::TCallback0<ExampleApp> m_jumpPointExampleButtonClickedCallback;
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
                Eegeo::Config::DeviceSpec deviceSpecs,
@@ -106,6 +106,9 @@ public:
     void ToggleNight();
     void UpdateFogging();
     
+    void LoadNextExample();
+    void LoadSplineExample();
+    void LoadJumpPointExample();
     
     void UpdateCardboardProfile(float cardboardProfile[]);
     void MagnetTriggered();

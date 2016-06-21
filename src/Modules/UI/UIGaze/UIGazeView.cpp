@@ -22,12 +22,16 @@ namespace Eegeo
         {
             Eegeo::v2 dimension = Eegeo::v2(0.25f,0.25f)*7.f;
             m_pGazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(uiRenderableFilter,
-                                                                    quadFactory,
-                                                                    "mesh_example/gaze_loader.png",
-                                                                    49.f/2.f,
-                                                                    Eegeo::v2(7,7),
-                                                                    0,
-                                                                    dimension);
+                                                                     quadFactory,
+                                                                     "mesh_example/gaze_loader.png",
+                                                                     49.f/2.f,
+                                                                     Eegeo::v2(7,7),
+                                                                     0,
+                                                                     dimension,
+                                                                     Eegeo::dv3::Zero(),
+                                                                     Eegeo::v3::One(),
+                                                                     Eegeo::v4::One(),
+                                                                     Eegeo::Rendering::LayerIds::Values::AfterAll);
             
             dimension = Eegeo::v2(0.075f,0.075f)*3.f;
             m_pPointer = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter,
@@ -35,8 +39,6 @@ namespace Eegeo
                                                                                 dimension,
                                                                                 Eegeo::v2::Zero(),
                                                                                 Eegeo::v2::One(),
-                                                                                Eegeo::v3::One(),
-                                                                                Eegeo::v4::One(),
                                                                                 Eegeo::Rendering::LayerIds::Values::AfterAll),
                                                        dimension);
         }

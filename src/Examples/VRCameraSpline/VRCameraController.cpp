@@ -50,7 +50,6 @@ namespace Eegeo
         
         void VRCameraController::UpdateFromPose(const Eegeo::m33& orientation, float eyeDistance)
         {
-            m_ecefPosition = m_renderCamera->GetEcefLocation();
             m33 orientationMatrix;
             m33::Mul(orientationMatrix, m_orientation, orientation);
             
@@ -69,11 +68,6 @@ namespace Eegeo
             float rAngle = Math::Rad2Deg(Math::ACos(v3::Dot(rA, rB) / (rA.Length() * rB.Length())));
             float uAngle = Math::Rad2Deg(Math::ACos(v3::Dot(uA, uB) / (uA.Length() * uB.Length())));
             float fAngle = Math::Rad2Deg(Math::ACos(v3::Dot(fA, fB) / (fA.Length() * fB.Length())));
-            
-            float lookDownFactor = 1.0f;
-            
-//            if(fAngle>85.f)
-//                lookDownFactor = fAngle/175.f;
             
             float factor = 1.0f;
             if(uAngle<100.f && fAngle<100.f){
@@ -130,7 +124,7 @@ namespace Eegeo
                 m_stopTimeElapsed += dt;
                 if(m_stopTimeElapsed>=m_stopTime)
                 {
-//                    m_pHeadTracker.ResetTracker();
+                    m_pHeadTracker.ResetTracker();
                     m_stopTimeElapsed = 0.0f;
                     m_vrCameraPositionSpline.NextSpline();
                     m_vrCameraPositionSpline.Start();
@@ -142,8 +136,8 @@ namespace Eegeo
             }
             else if (IsFollowingSpline())
             {
-//                m_VRCameraPositionSpline.Update(dt);
-//                m_VRCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
+                m_vrCameraPositionSpline.Update(dt);
+                m_vrCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
                 
             }
             else
@@ -151,12 +145,11 @@ namespace Eegeo
                 m_splineEndPauseTimeElapsed += dt;
                 if(m_splineEndPauseTimeElapsed > m_splineEndPauseTime || m_vrCameraPositionSpline.GetCurrentSplineID()!=2)
                 {
-//                    m_pHeadTracker.ResetTracker();
+                    m_pHeadTracker.ResetTracker();
                     m_splineEndPauseTimeElapsed = 0.0f;
                     m_vrCameraPositionSpline.NextSpline();
                     m_vrCameraPositionSpline.Start();
                 }
-//                Move(dt);
             }
         }
         

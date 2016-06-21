@@ -49,9 +49,19 @@ namespace Eegeo
                 return m_ecefPosition;
             }
             
+            void JumpPoint::SetEcefPosition(dv3 ecefPosition)
+            {
+                m_ecefPosition = ecefPosition;
+            }
+            
             const v4& JumpPoint::GetColor() const
             {
                 return m_color;
+            }
+            
+            void JumpPoint::SetColor(v4 color)
+            {
+                m_color = color;
             }
             
             const std::string& JumpPoint::GetFileName() const
