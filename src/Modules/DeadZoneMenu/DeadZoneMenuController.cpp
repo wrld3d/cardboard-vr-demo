@@ -15,7 +15,7 @@ namespace Eegeo
             : m_deadZoneMenuItemRepository(deadZoneMenuItemObservable)
             , m_viewFactory(viewFactory)
             , m_pIUIInteractionObservable(uiInteractionObservable)
-            , m_UICameraProvider(uiCameraProvider)
+            , m_uiCameraProvider(uiCameraProvider)
             {
                 
                 m_isMenuShown = false;
@@ -76,10 +76,10 @@ namespace Eegeo
                 if(m_viewsByModel.size()%2==0)
                     halfCount-=0.5f;
                 
-                Eegeo::dv3 center = m_UICameraProvider.GetRenderCameraForUI().GetEcefLocation();
+                Eegeo::dv3 center = m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation();
                 
-                Eegeo::v3 top(m_UICameraProvider.GetOrientation().GetRow(1));
-                Eegeo::v3 forward(m_UICameraProvider.GetOrientation().GetRow(2));
+                Eegeo::v3 top(m_uiCameraProvider.GetOrientation().GetRow(1));
+                Eegeo::v3 forward(m_uiCameraProvider.GetOrientation().GetRow(2));
                 
                 Eegeo::v3 vA = center.ToSingle();
                 Eegeo::v3 vB = forward;
@@ -137,9 +137,21 @@ namespace Eegeo
 //                        pView->SetEcefPosition(position);
 //                        halfCount-=1;
                     }
+                    
+                    m_lastCameraPosition = center;
                 }
                 
-                
+                if(m_isMenuShown)
+                {
+                    Eegeo::dv3 offset = m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation() - m_lastCameraPosition;
+                    m_lastCameraPosition = m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation();
+                    
+                    for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
+                    {
+                        DeadZoneMenuItemView& view = *(it->second);
+                        view.SetEcefPosition(view.GetEcefPosition() + offset);
+                    }
+                }
             }
             
             

@@ -49,7 +49,10 @@ namespace Examples
         m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla);
     }
     
-    void VRCameraSplineExample::Suspend(){}
+    void VRCameraSplineExample::Suspend()
+    {
+        m_interiorsExplorerModule.GetInteriorVisibilityUpdater().SetInteriorShouldDisplay(false);
+    }
     
     void VRCameraSplineExample::UpdateCardboardProfile(float cardboardProfile[])
     {
