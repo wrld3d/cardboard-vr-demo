@@ -367,6 +367,7 @@ void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld&
                                               cameraState.ProjectionMatrix(),
                                               m_screenPropertiesProvider.GetScreenProperties());
     
+    
     Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
     Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
     m_pUIGazeView->Update(dt);
@@ -391,6 +392,7 @@ void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld
                                                cameraState.ViewMatrix(),
                                                cameraState.ProjectionMatrix(),
                                                m_screenPropertiesProvider.GetScreenProperties());
+    
     Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
     Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
     m_pUIGazeView->Update(dt);

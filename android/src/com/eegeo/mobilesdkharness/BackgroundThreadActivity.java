@@ -215,11 +215,13 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onDestroy()
 	{
 		super.onDestroy();
+		m_headTracker.stopTracking();
+		m_headTracker = null;
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
 			{
-				m_headTracker.stopTracking();
+				
 				m_threadedRunner.stop();
 				NativeJniCalls.destroyNativeCode();
 				m_threadedRunner.destroyed();
@@ -343,13 +345,17 @@ public class BackgroundThreadActivity extends MainActivity
 						
 						if(deltaSeconds > m_frameThrottleDelaySeconds)
 						{
-							
 							if(m_running)
 							{
 								float[] tempHeadTransform = new float[16];
 								m_headTracker.getLastHeadView(tempHeadTransform, 0);
-								smoothHeadTransform = exponentialSmoothing(tempHeadTransform, smoothHeadTransform, deltaSeconds * HEAD_TRANSFORM_SMOOTHING_SPEED);
-								NativeJniCalls.updateNativeCode(deltaSeconds, smoothHeadTransform);
+								if(!Float.isNaN(tempHeadTransform[0])){
+									smoothHeadTransform = exponentialSmoothing(tempHeadTransform, smoothHeadTransform, deltaSeconds * HEAD_TRANSFORM_SMOOTHING_SPEED);
+									NativeJniCalls.updateNativeCode(deltaSeconds, smoothHeadTransform);	
+								}else{
+									System.out.println("Fixing NaN");
+									ResetTracker();
+								}
 							}
 							else
 							{

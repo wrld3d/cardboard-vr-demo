@@ -124,17 +124,6 @@ namespace Eegeo
                         pView->SetEcefPosition(position);
                         halfCount-=1;
                         
-                        
-//                        might need this code to replace logic above
-//                        float theta = Math::Deg2Rad(degreeDelta*halfCount);
-//                        Eegeo::dv3 k = center.Norm();
-//                        Eegeo::dv3 v = forward;
-//                        
-//                        Eegeo::dv3 vRot = v*cos(theta) + dv3::Cross(k, v)*sin(theta) + k*dv3::Dot(k, v)*(1-cos(theta));
-//                        
-//                        Eegeo::dv3 position(center + (vRot.ToSingle()*positionMultiplier));
-//                        pView->SetEcefPosition(position);
-//                        halfCount-=1;
                     }
                     
                     m_lastCameraPosition = center;
