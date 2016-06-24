@@ -235,7 +235,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem2);
     m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem3);
     
-    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_pInteriorExplorerModule, headTracker);
+    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_pInteriorExplorerModule, headTracker, m_pDeadZoneMenuModule->GetRepository());
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController);
     
     m_pUIGazeView->HideView();

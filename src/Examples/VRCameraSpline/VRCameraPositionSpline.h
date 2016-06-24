@@ -18,7 +18,7 @@ namespace Eegeo
             , m_playing(false)
             , m_time(0.0)
             , m_slowDownFactor(0.0f)
-            , m_currentSpline(0)
+            , m_currentSpline(2)
             {
                 SetSpline(m_currentSpline);
             }
@@ -47,12 +47,9 @@ namespace Eegeo
             void Clear();
             
             void NextSpline();
-            
+            void SetSpline(int splineId);
             void GetCurrentCameraPosition(dv3& interpolatedPositionEcef, m33& interpolatedOrientation) const;
         private:
-            void SetSpline(int splineId);
-            
-            
             Geometry::CatmullRomSpline m_positionSpline;
             Geometry::CatmullRomSpline m_forwardSpline;
             Geometry::CatmullRomSpline m_upSpline;

@@ -109,6 +109,8 @@ namespace Eegeo
             
             m33& GetOrientation();
             
+            void PlaySpline(int splineID);
+            
         private:
             bool CanAcceptUserInput() const;
             

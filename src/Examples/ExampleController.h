@@ -18,6 +18,7 @@
 #include "Modules/UI/UIInteraction/IUIInteractionObservable.h"
 #include "Modules/UI/IUICameraProvider.h"
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
+#include "Modules/DeadZoneMenu/IDeadZoneMenuItemObservable.h"
 #include <vector>
 #include <string>
 
@@ -113,9 +114,10 @@ namespace Examples
         
         template <typename TExampleFactory>
         void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider, const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                                                       Examples::IVRHeadTracker& headTracker)
+                                                       Examples::IVRHeadTracker& headTracker,
+                                                       Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository)
         {
-            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, headTracker, screenPropertiesProvider, interiorsExplorerModule)));
+            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, headTracker, screenPropertiesProvider, interiorsExplorerModule, deadZoneRepository)));
         }
         
         template <typename TExampleFactory>

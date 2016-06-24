@@ -121,7 +121,7 @@ namespace Eegeo
         void VRCameraPositionSpline::SetSpline(int splineId)
         {
             Clear();
-            
+            m_currentSpline = splineId;
             float p = 10.0f;
             m33 orientation;
             Eegeo::Space::EcefTangentBasis basis;

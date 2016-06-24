@@ -11,6 +11,9 @@
 #include "GlobeCamera.h"
 #include "IInteriorsExplorerModule.h"
 #include "IVRHeadTracker.h"
+#include "Modules/DeadZoneMenu/DeadZoneMenuItemRepository.h"
+#include "Modules/DeadZoneMenu/DeadZoneMenuItem.h"
+#include "ICallback.h"
 
 namespace Examples
 {
@@ -22,15 +25,19 @@ class VRCameraSplineExample : public IExample, Eegeo::NonCopyable
 private:
 	
     float m_eyeDistance;
-//    bool firstCall;
-//    Eegeo::m33 reverseMatrix;
     Eegeo::EegeoWorld& m_world;
     
-    Eegeo::Geometry::CatmullRomSpline* m_pPositionSpline;
-	Eegeo::Geometry::CatmullRomSpline* m_pTargetSpline;
     Eegeo::VR::VRCameraController* m_pSplineCameraController;
     const InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneRepository;
     
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pSFSplineButton;
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pNYSplineButton;
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pWPSplineButton;
+    
+    Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onSFSplineSelectedCallback;
+    Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onNYSplineSelectedCallback;
+    Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onWestPortSplineSelectedCallback;
 public:
     
     VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
@@ -38,7 +45,8 @@ public:
                           Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                           IVRHeadTracker& headTracker,
                           const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
-                          const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);
+                          const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                          Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository);
     
     virtual ~VRCameraSplineExample();
     
@@ -71,6 +79,10 @@ public:
     virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
 
     void NotifyViewNeedsLayout() {}
+    
+    void OnWestPortSplineSelected();
+    void OnSFSplineSelected();
+    void OnNYSplineSelected();
     
     void Event_TouchRotate 			(const AppInterface::RotateData& data) { }
     void Event_TouchRotate_Start	(const AppInterface::RotateData& data) { }

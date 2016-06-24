@@ -126,7 +126,6 @@ namespace Eegeo
                 {
                     m_pHeadTracker.ResetTracker();
                     m_stopTimeElapsed = 0.0f;
-                    m_vrCameraPositionSpline.NextSpline();
                     m_vrCameraPositionSpline.Start();
                 }
             }
@@ -147,10 +146,17 @@ namespace Eegeo
                 {
                     m_pHeadTracker.ResetTracker();
                     m_splineEndPauseTimeElapsed = 0.0f;
-                    m_vrCameraPositionSpline.NextSpline();
                     m_vrCameraPositionSpline.Start();
                 }
             }
+        }
+        
+        void VRCameraController::PlaySpline(int splineID)
+        {
+            m_pHeadTracker.ResetTracker();
+            m_vrCameraPositionSpline.SetSpline(splineID);
+            m_vrCameraPositionSpline.Start();
+            m_splineEndPauseTimeElapsed = 0.0f;
         }
         
         bool VRCameraController::CanAcceptUserInput() const

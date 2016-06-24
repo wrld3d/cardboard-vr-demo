@@ -22,15 +22,19 @@
 namespace Examples
 {
     VRCameraSplineExample::VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
-                                                   Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
-                                                   Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
-                                                IVRHeadTracker& headTracker,
-                                             const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
-                                             const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule)
+                                                 Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
+                                                 Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
+                                                 IVRHeadTracker& headTracker,
+                                                 const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
+                                                 const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                                                 Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository)
     : m_world(eegeoWorld),
-      m_interiorsExplorerModule(interiorsExplorerModule)
+      m_interiorsExplorerModule(interiorsExplorerModule),
+      m_deadZoneRepository(deadZoneRepository),
+      m_onSFSplineSelectedCallback(this, &VRCameraSplineExample::OnSFSplineSelected),
+      m_onNYSplineSelectedCallback(this, &VRCameraSplineExample::OnNYSplineSelected),
+      m_onWestPortSplineSelectedCallback(this, &VRCameraSplineExample::OnWestPortSplineSelected)
     {
-        
         NotifyScreenPropertiesChanged(initialScreenProperties);
         Eegeo::m44 projectionMatrix = Eegeo::m44(pCameraController->GetRenderCamera().GetProjectionMatrix());
         m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight(), headTracker);
@@ -47,6 +51,14 @@ namespace Examples
         
         Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250);
         m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla);
+        
+        m_pSFSplineButton = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 3, m_onSFSplineSelectedCallback);
+        m_pNYSplineButton = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(11, 4, m_onNYSplineSelectedCallback);
+        m_pWPSplineButton = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(12, 5, m_onWestPortSplineSelectedCallback);
+
+        m_deadZoneRepository.AddDeadZoneMenuItem(m_pSFSplineButton);
+        m_deadZoneRepository.AddDeadZoneMenuItem(m_pNYSplineButton);
+        m_deadZoneRepository.AddDeadZoneMenuItem(m_pWPSplineButton);
     }
     
     void VRCameraSplineExample::Suspend()
@@ -56,6 +68,14 @@ namespace Examples
             visiblityUpdater.SetInteriorShouldDisplay(false);
             visiblityUpdater.UpdateVisiblityImmediately();
         }
+        
+        m_deadZoneRepository.RemoveDeadZoneMenuItem(m_pSFSplineButton);
+        m_deadZoneRepository.RemoveDeadZoneMenuItem(m_pNYSplineButton);
+        m_deadZoneRepository.RemoveDeadZoneMenuItem(m_pWPSplineButton);
+        
+        Eegeo_DELETE m_pSFSplineButton;
+        Eegeo_DELETE m_pNYSplineButton;
+        Eegeo_DELETE m_pWPSplineButton;
     }
     
     void VRCameraSplineExample::UpdateCardboardProfile(float cardboardProfile[])
@@ -142,5 +162,20 @@ namespace Examples
     Eegeo::Camera::CameraState VRCameraSplineExample::GetCurrentCameraState() const
     {
         return m_pSplineCameraController->GetCameraState();
+    }
+    
+    void VRCameraSplineExample::OnWestPortSplineSelected()
+    {
+        m_pSplineCameraController->PlaySpline(4);
+    }
+    
+    void VRCameraSplineExample::OnSFSplineSelected()
+    {
+        m_pSplineCameraController->PlaySpline(2);
+    }
+    
+    void VRCameraSplineExample::OnNYSplineSelected()
+    {
+        m_pSplineCameraController->PlaySpline(9);
     }
 }

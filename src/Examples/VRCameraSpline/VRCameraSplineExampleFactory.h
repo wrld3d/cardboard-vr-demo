@@ -8,6 +8,7 @@
 #include "ScreenPropertiesProvider.h"
 #include "IInteriorsExplorerModule.h"
 #include "IVRHeadTracker.h"
+#include "Modules/DeadZoneMenu/DeadZoneMenuItemRepository.h"
 
 namespace Examples
 {
@@ -17,15 +18,16 @@ namespace Examples
         const IScreenPropertiesProvider& m_screenPropertiesProvider;
         DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
         const InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
-        
+        Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneRepository;
         IVRHeadTracker& m_headTracker;
         
     public:
-        VRCameraSplineExampleFactory(Eegeo::EegeoWorld& world,
+        VRCameraSplineExampleFactory( Eegeo::EegeoWorld& world,
                                       DefaultCameraControllerFactory& defaultCameraControllerFactory,
                                       IVRHeadTracker& headTracker,
                                       const IScreenPropertiesProvider& screenPropertiesProvider,
-                                      const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);
+                                      const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                                      Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository);
         
         std::string ExampleName() const;
         
