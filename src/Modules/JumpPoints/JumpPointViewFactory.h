@@ -9,6 +9,7 @@
 #include "Bounds.h"
 #include "JumpPointView.h"
 #include "IUIQuadFactory.h"
+#include "IInteriorsExplorerModule.h"
 
 namespace Eegeo
 {
@@ -21,7 +22,8 @@ namespace Eegeo
             public:
                 JumpPointViewFactory(IUIRenderableFilter& p_UIRenderableFilter
                                      , IUIQuadFactory& p_IUIQuadFactory
-                                     , IUICameraProvider& p_UICameraProvider);
+                                     , IUICameraProvider& p_UICameraProvider
+                                     , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);
                 
                 ~JumpPointViewFactory();
                 
@@ -31,6 +33,7 @@ namespace Eegeo
                 IUICameraProvider& m_uiCameraProvider;
                 IUIQuadFactory& m_uiQuadFactory;
                 IUIRenderableFilter& m_uiRenderableFilter;
+                InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
             };
         }
     }

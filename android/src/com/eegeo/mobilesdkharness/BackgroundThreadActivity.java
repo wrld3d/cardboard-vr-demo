@@ -151,9 +151,7 @@ public class BackgroundThreadActivity extends MainActivity
 	
 	public void ResetTracker(){
 
-		m_headTracker.stopTracking();
 		m_headTracker.resetTracker();
-		m_headTracker.startTracking();
 		
 	}
 	

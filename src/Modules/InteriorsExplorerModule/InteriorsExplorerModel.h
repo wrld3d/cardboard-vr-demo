@@ -8,7 +8,7 @@
 #include "InteriorId.h"
 #include "InteriorsExplorer.h"
 
-    namespace InteriorsExplorer
+namespace InteriorsExplorer
 {
     class InteriorsExplorerModel : private Eegeo::NonCopyable
     {

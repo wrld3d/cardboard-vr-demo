@@ -12,11 +12,13 @@ namespace Eegeo
                                                , IUIQuadFactory& uiQuadFactory
                                                , IUIInteractionObservable& uiInteractionObservable
                                                , IUICameraProvider& uiCameraProvider
+                                               , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
                                                )
             {
                 m_pViewFactory = new JumpPointViewFactory(uiRenderableFilter
                                                           , uiQuadFactory
-                                                          , uiCameraProvider);
+                                                          , uiCameraProvider
+                                                          , interiorsExplorerModule);
                 m_pRepository = new JumpPointRepository();
                 m_pController = new JumpPointController(*m_pRepository, *m_pViewFactory, uiInteractionObservable);
             }

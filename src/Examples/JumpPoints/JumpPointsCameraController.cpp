@@ -15,8 +15,6 @@ namespace Eegeo
 {
     namespace VR
     {
-        const float GravityAcceleration = 15.0f;
-        const float TerminalVelocity = 500.f;
         
         Eegeo::dv3 JumpPointsCameraController::GetEcefInterestPoint() const
         {
@@ -95,6 +93,11 @@ namespace Eegeo
         {
             m_time += dt;
            
+        }
+        
+        void JumpPointsCameraController::SetCameraOrientation(const Eegeo::m33& orientation)
+        {
+            m_orientation = orientation;
         }
         
         void JumpPointsCameraController::GetNearFarPlaneDistances(float& out_near, float& out_far)

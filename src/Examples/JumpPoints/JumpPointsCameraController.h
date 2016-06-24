@@ -16,8 +16,6 @@ namespace Eegeo
     namespace VR
     {
         
-        
-        
         class JumpPointsCameraController : public Eegeo::Location::IInterestPointProvider, protected Eegeo::NonCopyable
         {
             
@@ -52,7 +50,7 @@ namespace Eegeo
             Eegeo::Camera::RenderCamera& GetCamera() { return *m_pRenderCamera; }
             const dv3& GetCameraPosition() const { return m_ecefPosition; }
             const m33& GetCameraOrientation() const { return m_orientation; }
-            
+            void SetCameraOrientation(const m33& orientation);
             void SetNearMultiplier(float nearMultiplier) { m_nearMultiplier = nearMultiplier; }
             
             const v3 GetRight() const { return m_orientation.GetRow(0); }

@@ -9,6 +9,7 @@
 #include "JumpPoints.h"
 #include "../UI/UIImageButton.h"
 #include "../UI/IUICameraProvider.h"
+#include "IInteriorsExplorerModule.h"
 
 namespace Eegeo
 {
@@ -28,7 +29,8 @@ namespace Eegeo
                 JumpPointView(JumpPoint& jumpPoint
                               , IUIRenderableFilter& uiRenderableFilter
                               , UIQuad* pQuad
-                              , IUICameraProvider& uiCameraProvider);
+                              , IUICameraProvider& uiCameraProvider
+                              , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);
 
                 virtual ~JumpPointView(){}
                 
@@ -45,6 +47,7 @@ namespace Eegeo
             private:
                 JumpPoint& m_jumpPoint;
                 IUICameraProvider& m_uiCameraProvider;
+                InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
                 Eegeo::Helpers::TCallback0<JumpPointView> m_jumpPointClickCallback;
             };
         }

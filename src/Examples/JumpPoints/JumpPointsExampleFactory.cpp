@@ -13,35 +13,44 @@ namespace Examples
                                                        const IScreenPropertiesProvider& screenPropertiesProvider,
                                                        Eegeo::UI::IUIQuadFactory& quadFactory,
                                                        Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
-                                                       Eegeo::UI::IUICameraProvider& uiCameraProvider)
-	: m_uiQuadFactory(quadFactory)
+                                                       Eegeo::UI::IUICameraProvider& uiCameraProvider,
+                                                       InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                                                       Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
+                                                       IVRHeadTracker& headTracker)
+    : m_uiQuadFactory(quadFactory)
     , m_uiInteractionObservable(uiInteractionObservable)
     , m_uiCameraProvider(uiCameraProvider)
     , m_world(world)
     , m_screenPropertiesProvider(screenPropertiesProvider)
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
-{
-
-}
-
-IExample* JumpPointsExampleFactory::CreateExample() const
-{
+    , m_interiorsExplorerModule(interiorsExplorerModule)
+    , m_deadZoneMenuRepository(deadZoneMenuRepository)
+    , m_headTracker(headTracker)
+    {
+        
+    }
     
-    Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
-    const Eegeo::Rendering::ScreenProperties& initialScreenProperties = m_screenPropertiesProvider.GetScreenProperties();
+    IExample* JumpPointsExampleFactory::CreateExample() const
+    {
+        
+        Eegeo::Modules::Map::MapModule& mapModule = m_world.GetMapModule();
+        const Eegeo::Rendering::ScreenProperties& initialScreenProperties = m_screenPropertiesProvider.GetScreenProperties();
+        
+        return new Examples::JumpPointsExample(m_world,
+                                               mapModule.GetResourceCeilingProvider(),
+                                               m_defaultCameraControllerFactory.Create(),
+                                               initialScreenProperties,
+                                               m_uiQuadFactory,
+                                               m_uiInteractionObservable,
+                                               m_uiCameraProvider,
+                                               m_interiorsExplorerModule,
+                                               m_deadZoneMenuRepository,
+                                               m_headTracker
+                                               );
+    }
     
-    return new Examples::JumpPointsExample(m_world,
-                                           mapModule.GetResourceCeilingProvider(),
-                                           m_defaultCameraControllerFactory.Create(),
-                                           initialScreenProperties,
-                                           m_uiQuadFactory,
-                                           m_uiInteractionObservable,
-                                           m_uiCameraProvider
-                                           );
-}
-
-std::string JumpPointsExampleFactory::ExampleName() const
-{
-	return Examples::JumpPointsExample::GetName();
-}
+    std::string JumpPointsExampleFactory::ExampleName() const
+    {
+        return Examples::JumpPointsExample::GetName();
+    }
 }

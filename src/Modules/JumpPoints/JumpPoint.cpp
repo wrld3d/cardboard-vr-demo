@@ -21,6 +21,7 @@ namespace Eegeo
                                  , const Eegeo::v2& dimension
                                  , const Eegeo::v2& uvMin
                                  , const Eegeo::v2& uvMax
+                                 , const bool isInInterior
                                  , const void* pUserData)
             : m_id(id)
             , m_latLongAlt(latLongAlt)
@@ -29,6 +30,8 @@ namespace Eegeo
             , m_dimension(dimension)
             , m_uvMin(uvMin)
             , m_uvMax(uvMax)
+            , m_isInInterior(isInInterior)
+            , m_interiorFloor(0)
             , m_pUserData(pUserData)
             {
                 m_color = Eegeo::v4::One();
@@ -82,6 +85,21 @@ namespace Eegeo
             const v2& JumpPoint::GetUVMax() const
             {
                 return m_uvMax;
+            }
+            
+            const bool JumpPoint::GetIsInInterior() const
+            {
+                return m_isInInterior;
+            }
+            
+            const int JumpPoint::GetInteriorFloor() const
+            {
+                return m_interiorFloor;
+            }
+            
+            void JumpPoint::SetInteriorFloor(int floor)
+            {
+                m_interiorFloor = floor;
             }
         }
     }

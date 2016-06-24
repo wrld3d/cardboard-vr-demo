@@ -29,6 +29,7 @@ namespace Eegeo
                                  , IUIQuadFactory& uiQuadFactory
                                  , IUIInteractionObservable& uiInteractionObservable
                                  , IUICameraProvider& uiCameraProvider
+                                 , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
                                  );
                 
                 ~JumpPointsModule();

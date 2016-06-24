@@ -124,9 +124,12 @@ namespace Examples
         void RegisterJumpPointVRExample(const IScreenPropertiesProvider& screenPropertiesProvider,
                                                        Eegeo::UI::IUIQuadFactory& quadFactory,
                                                        Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
-                                                       Eegeo::UI::IUICameraProvider& uICameraProvider)
+                                                       Eegeo::UI::IUICameraProvider& uICameraProvider,
+                                                       InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                                                       Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
+                                                       IVRHeadTracker& headTracker)
         {
-            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, quadFactory, uIInteractionObservable, uICameraProvider)));
+            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, quadFactory, uIInteractionObservable, uICameraProvider, interiorsExplorerModule, deadZoneMenuRepository, headTracker)));
         }
         
         

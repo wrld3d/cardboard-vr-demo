@@ -30,6 +30,7 @@ namespace Eegeo
                  * \param p_Dimension The dimensions of the Jump Point.
                  * \param p_uvMin The min uvs of the Jump Point sprite.
                  * \param p_uvMax The max uvs of the Jump Point sprite.
+                 * \param isInInterior The Jump Point exists in interior or not.
                  * \param pUserData An optional piece of application user data to be attached to the Jump Point. N.B. It is the application's responsibility to manage the lifetime of any user data it attaches to Jump Point objects.
                  * \return A Jump Point object
                  */
@@ -39,6 +40,7 @@ namespace Eegeo
                           , const Eegeo::v2& dimension
                           , const Eegeo::v2& uvMin = Eegeo::v2::Zero()
                           , const Eegeo::v2& uvMax = Eegeo::v2::One()
+                          , const bool isInInterior = false
                           , const void* pUserData = NULL);
                 
                 /*! Get the unique identifier for the JumpPoint.
@@ -89,6 +91,20 @@ namespace Eegeo
                  */
                 const v2& GetUVMax() const;
                 
+                /*! Get is JumpPoint is in interior.
+                 * \return The if JumpPoint's is in interior.
+                 */
+                const bool GetIsInInterior() const;
+                
+                /*! Get the interior floor for jump point.
+                 * \return The interior floor.
+                 */
+                const int GetInteriorFloor() const;
+                
+                /*! Set the interior floor for jump point.
+                 */
+                void SetInteriorFloor(int floor);
+                
             private:
                 TJumpPointId m_id;
                 Space::LatLongAltitude m_latLongAlt;
@@ -100,6 +116,8 @@ namespace Eegeo
                 const Eegeo::v2 m_dimension;
                 const Eegeo::v2 m_uvMin;
                 const Eegeo::v2 m_uvMax;
+                const bool m_isInInterior;
+                int m_interiorFloor;
             };
         }
     }

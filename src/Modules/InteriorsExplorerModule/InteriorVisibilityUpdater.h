@@ -18,8 +18,8 @@
         ~InteriorVisibilityUpdater();
         
         void SetInteriorShouldDisplay(bool shouldDisplay);
-        bool GetInteriorShouldDisplay() { return m_interiorShouldDisplay; }
-        
+        bool GetInteriorShouldDisplay() const { return m_interiorShouldDisplay; }
+        bool GetInteriorHasLoaded() const;
         void Update(float dt);
         void UpdateVisiblityImmediately();
     private:

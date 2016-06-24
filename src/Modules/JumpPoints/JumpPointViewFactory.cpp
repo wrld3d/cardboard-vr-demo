@@ -12,10 +12,12 @@ namespace Eegeo
             
             JumpPointViewFactory::JumpPointViewFactory(IUIRenderableFilter& uiRenderableFilter
                                                        , IUIQuadFactory& uiQuadFactory
-                                                       , IUICameraProvider& uiCameraProvider)
+                                                       , IUICameraProvider& uiCameraProvider
+                                                       , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule)
             : m_uiRenderableFilter(uiRenderableFilter)
             , m_uiQuadFactory(uiQuadFactory)
             , m_uiCameraProvider(uiCameraProvider)
+            , m_interiorsExplorerModule(interiorsExplorerModule)
             {
                 
             }
@@ -34,6 +36,7 @@ namespace Eegeo
                                                                         , jumpPointModel.GetUVMin()
                                                                         , jumpPointModel.GetUVMax())
                                                                         , m_uiCameraProvider
+                                                                        , m_interiorsExplorerModule
                                                                         );
                 return pJumpPointView;
             }

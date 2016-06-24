@@ -22,14 +22,19 @@ class JumpPointsExampleFactory : public IExampleFactory
     Eegeo::EegeoWorld& m_world;
     const IScreenPropertiesProvider& m_screenPropertiesProvider;
     DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
-    
+    InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneMenuRepository;
+    IVRHeadTracker& m_headTracker;
 public:
     JumpPointsExampleFactory(Eegeo::EegeoWorld& world,
                              DefaultCameraControllerFactory& defaultCameraControllerFactory,
                              const IScreenPropertiesProvider& screenPropertiesProvider,
                              Eegeo::UI::IUIQuadFactory& quadFactory,
                              Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
-                             Eegeo::UI::IUICameraProvider& uiCameraProvider);
+                             Eegeo::UI::IUICameraProvider& uiCameraProvider,
+                             InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                             Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
+                             IVRHeadTracker& headTracker);
 
 	std::string ExampleName() const;
 
