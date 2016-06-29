@@ -50,6 +50,7 @@ namespace Eegeo
         
         void VRCameraController::UpdateFromPose(const Eegeo::m33& orientation, float eyeDistance)
         {
+            m_headTrackerOrientation = orientation;
             m33 orientationMatrix;
             m33::Mul(orientationMatrix, m_orientation, orientation);
             

@@ -119,9 +119,19 @@ namespace Examples
     }
     
     
-    Eegeo::m33& VRCameraSplineExample::getCurrentCameraOrientation()
+    const Eegeo::m33& VRCameraSplineExample::getCurrentCameraOrientation()
     {
         return m_pSplineCameraController->GetOrientation();
+    }
+    
+    const Eegeo::m33& VRCameraSplineExample::GetBaseOrientation()
+    {
+        return m_pSplineCameraController->GetCameraOrientation();
+    }
+    
+    const Eegeo::m33& VRCameraSplineExample::GetHeadTrackerOrientation()
+    {
+        return m_pSplineCameraController->GetHeadTrackerOrientation();
     }
     
     Eegeo::Camera::RenderCamera& VRCameraSplineExample::GetRenderCamera(){

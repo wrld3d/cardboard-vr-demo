@@ -186,8 +186,19 @@ void ExampleController::DestroyCurrentExample()
 		m_pCurrentExample = NULL;
 	}
 }
-    Eegeo::m33& ExampleController::GetOrientation(){
+    const Eegeo::m33& ExampleController::GetOrientation()
+    {
         return m_pCurrentExample->getCurrentCameraOrientation();
+    }
+    
+    const Eegeo::m33& ExampleController::GetBaseOrientation()
+    {
+        return m_pCurrentExample->GetBaseOrientation();
+    }
+    
+    const Eegeo::m33& ExampleController::GetHeadTrackerOrientation()
+    {
+        return m_pCurrentExample->GetHeadTrackerOrientation();
     }
     
     Eegeo::Camera::RenderCamera& ExampleController::GetRenderCamera(){

@@ -188,9 +188,19 @@ namespace Examples
     }
     
     
-    Eegeo::m33& JumpPointsExample::getCurrentCameraOrientation()
+    const Eegeo::m33& JumpPointsExample::getCurrentCameraOrientation()
     {
         return m_pSplineCameraController->GetOrientation();
+    }
+    
+    const Eegeo::m33& JumpPointsExample::GetBaseOrientation()
+    {
+        return m_pSplineCameraController->GetCameraOrientation();
+    }
+    
+    const Eegeo::m33& JumpPointsExample::GetHeadTrackerOrientation()
+    {
+        return m_pSplineCameraController->GetHeadTrackerOrientation();
     }
     
     Eegeo::Camera::RenderCamera& JumpPointsExample::GetRenderCamera(){

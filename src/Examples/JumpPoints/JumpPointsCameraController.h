@@ -33,11 +33,9 @@ namespace Eegeo
                 m_pRenderCamera = new Camera::RenderCamera();
                 m_orientation.Identity();
                 m_currentOrientation.Identity();
-                
+                m_headTrackerOrientation.Identity();
                 m_pRenderCamera->SetViewport(0,0,screenWidth, screenHeight);
                 m_pRenderCamera->SetProjection(0.7, 0.1, 4000);
-                
-
             }
             
             ~JumpPointsCameraController() {
@@ -50,6 +48,7 @@ namespace Eegeo
             Eegeo::Camera::RenderCamera& GetCamera() { return *m_pRenderCamera; }
             const dv3& GetCameraPosition() const { return m_ecefPosition; }
             const m33& GetCameraOrientation() const { return m_orientation; }
+            const Eegeo::m33& GetHeadTrackerOrientation() { return m_headTrackerOrientation; };
             void SetCameraOrientation(const m33& orientation);
             void SetNearMultiplier(float nearMultiplier) { m_nearMultiplier = nearMultiplier; }
             
@@ -99,6 +98,7 @@ namespace Eegeo
             dv3 m_ecefPosition;
             m33 m_orientation;
             m33 m_currentOrientation;
+            m33 m_headTrackerOrientation;
             float m_nearMultiplier;
 
         };

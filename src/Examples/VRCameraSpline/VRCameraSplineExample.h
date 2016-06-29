@@ -67,7 +67,9 @@ public:
 	void Draw() {}
 	void Suspend();
     
-    Eegeo::m33& getCurrentCameraOrientation();
+    const Eegeo::m33& getCurrentCameraOrientation();
+    const Eegeo::m33& GetBaseOrientation();
+    const Eegeo::m33& GetHeadTrackerOrientation();
     
     void UpdateCardboardProfile(float cardboardProfile[]);
     

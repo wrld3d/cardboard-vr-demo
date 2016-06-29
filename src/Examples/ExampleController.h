@@ -73,7 +73,9 @@ namespace Examples
         
         void RegisterExample(IExampleFactory* pFactory);
         
-        Eegeo::m33& GetOrientation();
+        const Eegeo::m33& GetOrientation();
+        const Eegeo::m33& GetBaseOrientation();
+        const Eegeo::m33& GetHeadTrackerOrientation();
         
         Eegeo::Camera::RenderCamera& GetRenderCamera();
         

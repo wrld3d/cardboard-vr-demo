@@ -70,7 +70,8 @@ namespace Eegeo
             
             void DeadZoneMenuController::PositionItems()
             {
-                
+                m33 headTrackedOrientation;
+                m33::Mul(headTrackedOrientation, m_uiCameraProvider.GetBaseOrientation(), m_cachedHeadTracker);
                 
                 float halfCount = m_viewsByModel.size()/2;
                 if(m_viewsByModel.size()%2==0)
@@ -78,11 +79,11 @@ namespace Eegeo
                 
                 Eegeo::dv3 center = m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation();
                 
-                Eegeo::v3 top(m_uiCameraProvider.GetOrientation().GetRow(1));
-                Eegeo::v3 forward(m_uiCameraProvider.GetOrientation().GetRow(2));
+                Eegeo::v3 top(headTrackedOrientation.GetRow(1));
+                Eegeo::v3 forward(headTrackedOrientation.GetRow(2));
                 
                 Eegeo::v3 vA = center.ToSingle();
-                Eegeo::v3 vB = forward;
+                Eegeo::v3 vB = m_uiCameraProvider.GetOrientation().GetRow(2);
                 float angle = Eegeo::Math::Rad2Deg(Eegeo::Math::ACos(Eegeo::v3::Dot(vA, vB)/(vA.Length()*vB.Length())));
                 
                 float marginAngle = 150;
@@ -100,6 +101,7 @@ namespace Eegeo
                 {
                     m_isMenuShown = true;
                     shouldUpdatePosition = true;
+                    m_cachedHeadTracker = m_uiCameraProvider.GetHeadTrackerOrientation();
                 }
                 else if(m_isMenuShown && angle<marginAngle)
                 {
@@ -107,7 +109,7 @@ namespace Eegeo
                     shouldUpdatePosition = true;
                 }
                 
-                if(shouldUpdatePosition)
+                if(shouldUpdatePosition || m_isMenuShown)
                 {
                     for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
                     {
@@ -127,18 +129,6 @@ namespace Eegeo
                     }
                     
                     m_lastCameraPosition = center;
-                }
-                
-                if(m_isMenuShown)
-                {
-                    Eegeo::dv3 offset = m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation() - m_lastCameraPosition;
-                    m_lastCameraPosition = m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation();
-                    
-                    for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
-                    {
-                        DeadZoneMenuItemView& view = *(it->second);
-                        view.SetEcefPosition(view.GetEcefPosition() + offset);
-                    }
                 }
             }
             

@@ -45,6 +45,7 @@ namespace Eegeo
                 IUICameraProvider& m_uiCameraProvider;
                 Eegeo::dv3 m_cachedCenter;
                 Eegeo::dv3 m_cameraLastPosition;
+                Eegeo::m33 m_cachedHeadTracker;
                 bool m_isMenuShown;
                 typedef std::map<DeadZoneMenuItem*, DeadZoneMenuItemView*> TViewsByModel;
                 dv3 m_lastCameraPosition;

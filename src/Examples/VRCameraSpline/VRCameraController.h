@@ -56,7 +56,7 @@ namespace Eegeo
                 m_renderCamera = new Camera::RenderCamera();
                 m_orientation.Identity();
                 m_currentOrientation.Identity();
-                
+                m_headTrackerOrientation.Identity();
                 m_renderCamera->SetViewport(0,0,screenWidth, screenHeight);
                 m_renderCamera->SetProjection(0.7, 0.1, 4000);
                 
@@ -75,7 +75,7 @@ namespace Eegeo
             const bool IsFollowingSpline() const { return m_vrCameraPositionSpline.IsPlaying(); }
             const dv3& GetCameraPosition() const { return m_ecefPosition; }
             const m33& GetCameraOrientation() const { return m_orientation; }
-            
+            const Eegeo::m33& GetHeadTrackerOrientation() { return m_headTrackerOrientation; };
             void SetNearMultiplier(float p_nearMultiplier) { m_nearMultiplier = p_nearMultiplier; }
             
             const v3 GetRight() const { return m_orientation.GetRow(0); }
@@ -147,6 +147,7 @@ namespace Eegeo
             dv3 m_ecefPosition;
             m33 m_orientation;
             m33 m_currentOrientation;
+            m33 m_headTrackerOrientation;
             float m_nearMultiplier;
 
         };

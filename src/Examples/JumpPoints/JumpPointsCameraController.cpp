@@ -47,6 +47,7 @@ namespace Eegeo
         
         void JumpPointsCameraController::UpdateFromPose(const Eegeo::m33& orientation, float eyeDistance)
         {
+            m_headTrackerOrientation = orientation;
             m_ecefPosition = m_pRenderCamera->GetEcefLocation();
             m33 orientationMatrix;
             m33::Mul(orientationMatrix, m_orientation, orientation);
