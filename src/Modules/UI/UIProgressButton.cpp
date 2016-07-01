@@ -33,6 +33,7 @@ namespace Eegeo
         UIProgressButton::~UIProgressButton()
         {
             Eegeo_DELETE m_pGazeProgress;
+            Eegeo_DELETE m_pSprite;
         }
         
         void UIProgressButton::Init(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter, const std::string& assetPath, const std::string& progressTileMapPath, const Eegeo::v2& size, const Eegeo::dv3& ecefPosition, const Eegeo::v3& scale, const Eegeo::v4& color, const Eegeo::v2& uvMin, const Eegeo::v2& uvMax)

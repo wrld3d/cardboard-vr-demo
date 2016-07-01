@@ -169,6 +169,9 @@ namespace Examples
         
         Eegeo_DELETE m_pSplineCameraController;
         
+        m_uiInteractionObservable.UnRegisterInteractableItem(m_progressButton);
+        Eegeo_DELETE m_progressButton;
+        
         m_renderableFilters.RemoveRenderableFilter(*m_pUIRenderableFilter);
         Eegeo_DELETE m_pUIRenderableFilter;
     }
