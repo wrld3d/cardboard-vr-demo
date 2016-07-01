@@ -1,13 +1,6 @@
-//
-//  UIQuadFactory.h
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 6/1/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-#ifndef UIQuadFactory_h
-#define UIQuadFactory_h
+#pragma once
 
 #include "IUIQuadFactory.h"
 
@@ -57,4 +50,3 @@ namespace Eegeo
 
 
 
-#endif /* UIQuadFactory_h */

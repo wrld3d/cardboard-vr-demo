@@ -1,10 +1,4 @@
-//
-//  UIGeometryHelpers.h
-//  SDKSamplesApp
-//
-//  Created by Ali on 5/13/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #pragma once
 

@@ -1,10 +1,4 @@
-//
-//  UIImageButton.cpp
-//  SDKSamplesApp
-//
-//  Created by Ali on 5/16/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include "CameraHelpers.h"
 #include "IntersectionTests.h"

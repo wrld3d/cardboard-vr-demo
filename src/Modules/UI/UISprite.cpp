@@ -1,10 +1,4 @@
-//
-//  UISprite.cpp
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 5/24/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include "UISprite.h"
 

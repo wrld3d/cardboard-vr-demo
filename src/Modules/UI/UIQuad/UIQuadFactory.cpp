@@ -1,10 +1,4 @@
-//
-//  UIQuadFactory.cpp
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 6/1/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include "UIQuadFactory.h"
 #include "ShaderIdGenerator.h"

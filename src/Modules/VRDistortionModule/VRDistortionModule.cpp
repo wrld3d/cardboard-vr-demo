@@ -1,9 +1,4 @@
-//
-//  VRDistortionModule
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 3/21/16.
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include <vector>
 #include "Mesh.h"
@@ -17,7 +12,6 @@
 #include "RenderableFilters.h"
 #include "VertexBindingPool.h"
 #include "ScreenProperties.h"
-//#include "GeometryHelpers.h"
 #include "LayerIds.h"
 #include "VRDistortionMeshHelper.h"
 #include "VRDistortionShader.h"
@@ -218,7 +212,6 @@ namespace Eegeo
             {
                 m_renderableFilters.RemoveRenderableFilter(*m_pVRDistortionRenderer);
                 if(!m_pVRDistortionMaterial->isRenderingEnded()){
-//                    EXAMPLE_LOG("SKIPPED RENDERING FRAME!!!");
                     m_pRenderTexture->EndRendering();
                 }
             }

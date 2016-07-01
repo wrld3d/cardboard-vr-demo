@@ -1,14 +1,6 @@
-//
-//  Distortion
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 3/21/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-
-#ifndef ExampleApp_RenderToTextureExampleIncludes_h
-#define ExampleApp_RenderToTextureExampleIncludes_h
+#pragma once
 
 namespace Eegeo
 {
@@ -24,5 +16,3 @@ namespace Eegeo
         }
     }
 }
-
-#endif

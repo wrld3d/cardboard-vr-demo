@@ -52,7 +52,7 @@ namespace Examples
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
         Eegeo::m44 projectionMatrix = Eegeo::m44(pCameraController->GetRenderCamera().GetProjectionMatrix());
-        m_pSplineCameraController = new Eegeo::VR::JumpPointsCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
+        m_pSplineCameraController = Eegeo_NEW(Eegeo::VR::JumpPointsCameraController)(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
         
@@ -79,7 +79,7 @@ namespace Examples
         Eegeo::UI::CalculateUV(size, 0, outMin, outMax);
         dimension = Eegeo::v2(50,50);
         
-        m_pWPJumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1,
+        m_pWPJumpPoint1 = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(1,
                                                                Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250),
                                                                "mesh_example/PinIconTexturePage.png",
                                                                dimension,
@@ -87,7 +87,7 @@ namespace Examples
                                                                outMax
                                                                );
         
-        m_pWPJumpPoint2 = new Eegeo::UI::JumpPoints::JumpPoint(2,
+        m_pWPJumpPoint2 = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(2,
                                                                Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250),
                                                                "mesh_example/PinIconTexturePage.png",
                                                                dimension,
@@ -95,7 +95,7 @@ namespace Examples
                                                                outMax
                                                                );
         
-        m_pWPJumpPoint3 = new Eegeo::UI::JumpPoints::JumpPoint(3,
+        m_pWPJumpPoint3 = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(3,
                                                                Eegeo::Space::LatLongAltitude::FromDegrees(56.451235, -2.976600, 250),
                                                                "mesh_example/PinIconTexturePage.png",
                                                                dimension,
@@ -103,7 +103,7 @@ namespace Examples
                                                                outMax
                                                                );
         
-        m_pJumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(*m_pUIRenderableFilter,
+        m_pJumpPointsModule = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPointsModule)(*m_pUIRenderableFilter,
                                                                           m_uiQuadFactory,
                                                                           m_uiInteractionObservable,
                                                                           m_uiCameraProvider,
@@ -112,13 +112,13 @@ namespace Examples
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint2);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint3);
         
-        m_pSPButton1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 3, m_onSP1SelectedCallback);
-        m_pSPButton2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 4, m_onSP2SelectedCallback);
-        m_pSPButton3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 5, m_onSP3SelectedCallback);
-        m_pSPButton4 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 6, m_onSP4SelectedCallback);
-        m_pSPButton5 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 7, m_onSP5SelectedCallback);
-        m_pSPButton6 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 8, m_onSP6SelectedCallback);
-        m_pSPButton7 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 9, m_onSP7SelectedCallback);
+        m_pSPButton1 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 3, m_onSP1SelectedCallback);
+        m_pSPButton2 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 4, m_onSP2SelectedCallback);
+        m_pSPButton3 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 5, m_onSP3SelectedCallback);
+        m_pSPButton4 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 6, m_onSP4SelectedCallback);
+        m_pSPButton5 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 7, m_onSP5SelectedCallback);
+        m_pSPButton6 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 8, m_onSP6SelectedCallback);
+        m_pSPButton7 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 9, m_onSP7SelectedCallback);
         
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton1);
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton2);
@@ -127,6 +127,18 @@ namespace Examples
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton5);
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton6);
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton7);
+        
+        m_progressButton = Eegeo_NEW(Eegeo::UI::UIProgressButton)( *m_pUIRenderableFilter
+                                                            , m_uiQuadFactory
+                                                            , "mesh_example/PinIconTexturePage.png"
+                                                            , "mesh_example/gaze_loader.png"
+                                                            , m_onSP1SelectedCallback
+                                                            , dimension
+                                                            , Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 350).ToECEF()
+                                                            , Eegeo::v3::One(), Eegeo::v4::One()
+                                                            , outMin, outMax
+                                                            );
+        m_uiInteractionObservable.RegisterInteractableItem(m_progressButton);
     }
     
     void JumpPointsExample::Suspend(){
@@ -180,6 +192,8 @@ namespace Examples
         {
             m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
         }
+        
+        m_progressButton->Update(dt);
     }
     
     

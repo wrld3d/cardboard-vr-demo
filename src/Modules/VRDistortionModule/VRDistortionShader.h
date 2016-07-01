@@ -1,13 +1,6 @@
-//
-//  VRDistortionMaterial
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 3/21/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-#ifndef __ExampleApp__VRDistortionShader__
-#define __ExampleApp__VRDistortionShader__
+#pragma once
 
 #include "Shader.h"
 #include "Rendering.h"
@@ -37,4 +30,3 @@ namespace Eegeo
     }
 }
 
-#endif /* defined(__ExampleApp__VRDistortionShader__) */

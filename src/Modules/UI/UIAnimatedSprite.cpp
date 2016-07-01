@@ -77,13 +77,14 @@ namespace Eegeo
         void UIAnimatedSprite::Reset()
         {
             m_timeElapsed = 0.0f;
+            m_currentFrame = 0;
         }
         
         void UIAnimatedSprite::Update(float dt)
         {
             m_timeElapsed += dt;
             if(m_timeElapsed>(1.0f/m_frameRate)) {
-                Reset();
+                m_timeElapsed = 0.0f;
                 LoadNextFrame();
             }
             

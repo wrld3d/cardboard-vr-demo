@@ -1,11 +1,4 @@
-
-//
-//  UIGeometryHelpers.cpp
-//  SDKSamplesApp
-//
-//  Created by Ali on 5/13/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include "UIGeometryHelpers.h"
 #include "TexturedUniformColoredMaterial.h"
@@ -25,8 +18,6 @@ namespace Eegeo
             out_triangleIndices.clear();
             out_vertices.reserve(pointsPerFace*faces);
             out_triangleIndices.reserve(faces*3*2);
-            
-            Eegeo::v3 faceNormal = Eegeo::v3(1.f, 0.f, 0.f);
             
             Eegeo::v3 points[4] =
             {

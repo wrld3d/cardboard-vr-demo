@@ -93,12 +93,8 @@ namespace Examples
                 
                 InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
                 
-//                if (!visiblityUpdater.GetInteriorShouldDisplay())
-                {
-                    
-                    m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
-                    visiblityUpdater.SetInteriorShouldDisplay(true);
-                }
+                m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
+                visiblityUpdater.SetInteriorShouldDisplay(true);
             }
             else {
                 m_pSplineCameraController->SetNearMultiplier(EXTERIOR_NEAR_MULTIPLIER);
@@ -115,7 +111,6 @@ namespace Examples
     
     void VRCameraSplineExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
     {
-//        m_pSplineCameraController->UpdateScreenProperties(screenProperties);
     }
     
     

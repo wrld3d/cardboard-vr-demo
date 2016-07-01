@@ -1,13 +1,6 @@
-//
-//  SkyboxModule.h
-//  SDKSamplesApp
-//
-//  Created by Ali on 4/6/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-#ifndef SkyboxModule_h
-#define SkyboxModule_h
+#pragma once
 
 #include "ColorShader.h"
 #include "ColorMaterial.h"
@@ -53,4 +46,4 @@ namespace Eegeo
     }
 }
 
-#endif /* SkyboxModule_h */
+

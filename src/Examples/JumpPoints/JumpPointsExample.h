@@ -13,6 +13,7 @@
 #include "Modules/UI/IUICameraProvider.h"
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
 #include "Modules/UI/UIRenderableFilter.h"
+#include "Modules/UI/UIProgressButton.h"
 
 #include "Modules/JumpPoints/JumpPoint.h"
 #include "Modules/JumpPoints/JumpPointsModule.h"
@@ -52,6 +53,8 @@ namespace Examples
         void MoveCameraToStopPoint(const Eegeo::dv3& cameraPoint, const Eegeo::dv3& cameraLookat);
         void MoveCameraToStopPoint(const Eegeo::dv3 &cameraPoint, float cameraHeading);
         bool m_isInInterior;
+        
+        Eegeo::UI::UIProgressButton* m_progressButton;
     public:
         
         JumpPointsExample(Eegeo::EegeoWorld& eegeoWorld,

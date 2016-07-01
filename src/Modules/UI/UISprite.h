@@ -1,13 +1,6 @@
-//
-//  UISprite.hpp
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 5/24/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-#ifndef UISprite_h
-#define UISprite_h
+#pragma once
 
 #include "UIQuad/UIQuad.h"
 #include "IUIRenderableFilter.h"
@@ -57,5 +50,3 @@ namespace Eegeo
         
     }
 }
-
-#endif /* UISprite_h */

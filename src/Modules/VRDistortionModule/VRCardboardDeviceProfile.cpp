@@ -1,10 +1,4 @@
-//
-//  CardboardDeviceProfile.cpp
-//  SDKSamplesApp
-//
-//  Created by Ali on 3/31/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include "VRCardboardDeviceProfile.h"
 #include "Logger.h"

@@ -1,10 +1,4 @@
-//
-//  UIQuad.cpp
-//  SDKSamplesApp
-//
-//  Created by Ali on 4/6/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include "UIQuad.h"
 #include "RenderingModule.h"

@@ -1,13 +1,6 @@
-//
-//  UIGazeView.hpp
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 5/25/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-#ifndef UIGazeView_h
-#define UIGazeView_h
+#pragma once
 
 #include "../UIQuad/UIQuadFactory.h"
 #include "../UIAnimatedSprite.h"
@@ -20,7 +13,6 @@ namespace Eegeo
     {
         class UIGazeView 
         {
-            UI::UIAnimatedSprite* m_pGazeProgress;
             UI::UISprite* m_pPointer;
             
             void Init(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter);
@@ -41,4 +33,4 @@ namespace Eegeo
         };
     }
 }
-#endif /* UIGazeView_h */
+

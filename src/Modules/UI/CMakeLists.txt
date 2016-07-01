@@ -7,6 +7,8 @@ set(currsources
   ../src/Modules/UI/UISprite.h
   ../src/Modules/UI/UIImageButton.cpp
   ../src/Modules/UI/UIImageButton.h
+  ../src/Modules/UI/UIProgressButton.cpp
+  ../src/Modules/UI/UIProgressButton.h
   ../src/Modules/UI/IUICameraProvider.h
   ../src/Modules/UI/UIAnimatedSprite.h
   ../src/Modules/UI/UIAnimatedSprite.cpp
