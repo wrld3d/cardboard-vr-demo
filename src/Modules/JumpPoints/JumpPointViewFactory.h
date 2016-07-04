@@ -23,7 +23,8 @@ namespace Eegeo
                 JumpPointViewFactory(IUIRenderableFilter& p_UIRenderableFilter
                                      , IUIQuadFactory& p_IUIQuadFactory
                                      , IUICameraProvider& p_UICameraProvider
-                                     , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);
+                                     , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
+                                     , const UIProgressBarConfig& progressBarConfig);
                 
                 ~JumpPointViewFactory();
                 
@@ -34,6 +35,7 @@ namespace Eegeo
                 IUIQuadFactory& m_uiQuadFactory;
                 IUIRenderableFilter& m_uiRenderableFilter;
                 InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
+                const UIProgressBarConfig& m_progressBarConfig;
             };
         }
     }

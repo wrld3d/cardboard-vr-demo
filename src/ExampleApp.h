@@ -21,7 +21,7 @@
 #include "Modules/UI/UIInteraction/UIInteractionController.h"
 #include "Modules/UI/IUICameraProvider.h"
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
-
+#include "Modules/UI/UIProgressBarConfig.h"
 #include "Modules/DeadZoneMenu/DeadZoneMenu.h"
 
 #include "Logger.h"
@@ -55,7 +55,7 @@ private:
     Eegeo::UIGaze::UIGazeView* m_pUIGazeView;
     
     Eegeo::UI::IUIQuadFactory* m_pQuadFactory;
-    
+    Eegeo::UI::UIProgressBarConfig m_progressBarConfig;
     
     Eegeo::Helpers::IdentityProvider m_identityProvider;
     InteriorsExplorer::InteriorsExplorerModule* m_pInteriorExplorerModule;

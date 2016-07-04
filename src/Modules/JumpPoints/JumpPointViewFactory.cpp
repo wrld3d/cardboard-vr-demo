@@ -13,11 +13,13 @@ namespace Eegeo
             JumpPointViewFactory::JumpPointViewFactory(IUIRenderableFilter& uiRenderableFilter
                                                        , IUIQuadFactory& uiQuadFactory
                                                        , IUICameraProvider& uiCameraProvider
-                                                       , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule)
+                                                       , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
+                                                       , const UIProgressBarConfig& progressBarConfig)
             : m_uiRenderableFilter(uiRenderableFilter)
             , m_uiQuadFactory(uiQuadFactory)
             , m_uiCameraProvider(uiCameraProvider)
             , m_interiorsExplorerModule(interiorsExplorerModule)
+            , m_progressBarConfig(progressBarConfig)
             {
                 
             }
@@ -31,10 +33,8 @@ namespace Eegeo
             {
                 JumpPointView* pJumpPointView = Eegeo_NEW(JumpPointView)(jumpPointModel
                                                                         , m_uiRenderableFilter
-                                                                        , m_uiQuadFactory.CreateUIQuad(jumpPointModel.GetFileName()
-                                                                        , jumpPointModel.GetDimensions()
-                                                                        , jumpPointModel.GetUVMin()
-                                                                        , jumpPointModel.GetUVMax())
+                                                                        , m_uiQuadFactory
+                                                                        , m_progressBarConfig
                                                                         , m_uiCameraProvider
                                                                         , m_interiorsExplorerModule
                                                                         );

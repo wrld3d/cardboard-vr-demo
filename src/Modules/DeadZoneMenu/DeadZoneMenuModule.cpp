@@ -12,11 +12,12 @@ namespace Eegeo
                                                    , IUIQuadFactory& uiQuadFactory
                                                    , IUIInteractionObservable& uiInteractionObservable
                                                    , IUICameraProvider& uiCameraProvider
-                                                   , std::string& spriteFileName
+                                                   , const std::string& spriteFileName
+                                                   , const UIProgressBarConfig& progressBarConfig
                                                    , int numberOfTilesAlong1Axis
                                                    )
             {
-                m_pViewFactory = new DeadZoneMenuItemViewFactory(uiRenderableFilter, uiQuadFactory, uiCameraProvider, spriteFileName, numberOfTilesAlong1Axis);
+                m_pViewFactory = new DeadZoneMenuItemViewFactory(uiRenderableFilter, uiQuadFactory, spriteFileName, progressBarConfig, numberOfTilesAlong1Axis);
                 m_pRepository = new DeadZoneMenuItemRepository();
                 m_pController = new DeadZoneMenuController(*m_pRepository, *m_pViewFactory, uiInteractionObservable, uiCameraProvider);
             }

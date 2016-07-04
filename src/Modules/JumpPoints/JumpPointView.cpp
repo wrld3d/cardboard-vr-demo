@@ -12,7 +12,8 @@ namespace Eegeo
         {
             JumpPointView::JumpPointView(JumpPoint& jumpPoint
                                          , IUIRenderableFilter& uiRenderableFilter
-                                         , UIQuad* pQuad
+                                         , Eegeo::UI::IUIQuadFactory& quadFactory
+                                         , const UIProgressBarConfig& progressBarConfig
                                          , IUICameraProvider& uiCameraProvider
                                          , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
                                          )
@@ -20,11 +21,18 @@ namespace Eegeo
             , m_uiCameraProvider(uiCameraProvider)
             , m_interiorsExplorerModule(interiorsExplorerModule)
             , m_jumpPointClickCallback(this, &JumpPointView::MoveCameraToJumpPoint)
-            , UIImageButton(uiRenderableFilter
-                            , pQuad
+            , UIProgressButton(uiRenderableFilter
+                            , quadFactory
+                            , jumpPoint.GetFileName()
+                            , progressBarConfig
                             , m_jumpPointClickCallback
                             , jumpPoint.GetDimensions()
-                            , jumpPoint.GetEcefPosition())
+                            , jumpPoint.GetEcefPosition()
+                            , Eegeo::v3::One()
+                            , jumpPoint.GetColor()
+                            , jumpPoint.GetUVMin()
+                            , jumpPoint.GetUVMax()
+                            )
             {}
             
             void JumpPointView::MoveCameraToJumpPoint()

@@ -16,7 +16,7 @@ namespace Eegeo
         UIProgressButton::UIProgressButton(IUIRenderableFilter& uiRenderableFilter
                                      , Eegeo::UI::IUIQuadFactory& quadFactory
                                      , const std::string& assetPath
-                                     , const std::string& progressTileMapPath
+                                     , const UIProgressBarConfig& progressBarConfig
                                      , Eegeo::Helpers::ICallback0& onClickedEvent
                                      , const Eegeo::v2& size
                                      , const Eegeo::dv3& ecefPosition
@@ -27,7 +27,7 @@ namespace Eegeo
         : m_onClickedEvent(onClickedEvent)
         {
             m_radius = (size.x > size.y ? size.x : size.y)/2.0f;
-            Init(quadFactory, uiRenderableFilter, assetPath, progressTileMapPath, size, ecefPosition, scale, color, uvMin, uvMax);
+            Init(quadFactory, uiRenderableFilter, assetPath, progressBarConfig, size, ecefPosition, scale, color, uvMin, uvMax);
         }
         
         UIProgressButton::~UIProgressButton()
@@ -36,7 +36,7 @@ namespace Eegeo
             Eegeo_DELETE m_pSprite;
         }
         
-        void UIProgressButton::Init(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter, const std::string& assetPath, const std::string& progressTileMapPath, const Eegeo::v2& size, const Eegeo::dv3& ecefPosition, const Eegeo::v3& scale, const Eegeo::v4& color, const Eegeo::v2& uvMin, const Eegeo::v2& uvMax)
+        void UIProgressButton::Init(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter, const std::string& assetPath, const UIProgressBarConfig& progressBarConfig, const Eegeo::v2& size, const Eegeo::dv3& ecefPosition, const Eegeo::v3& scale, const Eegeo::v4& color, const Eegeo::v2& uvMin, const Eegeo::v2& uvMax)
         {
             m_pSprite = Eegeo_NEW(UISprite)(uiRenderableFilter
                                             , quadFactory.CreateUIQuad(assetPath, size, uvMin, uvMax)
@@ -48,15 +48,15 @@ namespace Eegeo
             
             m_pGazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(uiRenderableFilter,
                                                                      quadFactory,
-                                                                     progressTileMapPath,
-                                                                     49.f/2.f,
-                                                                     Eegeo::v2(7,7),
-                                                                     0,
+                                                                     progressBarConfig.textureFilename,
+                                                                     progressBarConfig.frameRate,
+                                                                     progressBarConfig.spriteGridSize,
+                                                                     progressBarConfig.spriteId,
                                                                      size,
                                                                      ecefPosition,
-                                                                     Eegeo::v3::Zero(),
-                                                                     Eegeo::v4::One(),
-                                                                     Eegeo::Rendering::LayerIds::Values::AfterAll);
+                                                                     progressBarConfig.scale,
+                                                                     progressBarConfig.color,
+                                                                     progressBarConfig.renderLayer);
         }
         
         bool UIProgressButton::IsCollidingWithPoint(const Eegeo::v2& screenPoint, IUICameraProvider& cameraProvider)

@@ -7,9 +7,10 @@
 #include "VectorMath.h"
 #include "Bounds.h"
 #include "JumpPoints.h"
-#include "../UI/UIImageButton.h"
+#include "../UI/UIProgressButton.h"
 #include "../UI/IUICameraProvider.h"
 #include "IInteriorsExplorerModule.h"
+#include "UIQuad/IUIQuadFactory.h"
 
 namespace Eegeo
 {
@@ -23,12 +24,13 @@ namespace Eegeo
              *  This class deals with the concerns of displaying a JumpPoint.
              *
              */
-            class JumpPointView : public UIImageButton
+            class JumpPointView : public Eegeo::UI::UIProgressButton
             {
             public:
                 JumpPointView(JumpPoint& jumpPoint
                               , IUIRenderableFilter& uiRenderableFilter
-                              , UIQuad* pQuad
+                              , Eegeo::UI::IUIQuadFactory& quadFactory
+                              , const UIProgressBarConfig& progressBarConfig
                               , IUICameraProvider& uiCameraProvider
                               , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);
 

@@ -224,8 +224,15 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_pUIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*m_pExampleController, *m_pUIGazeView);
     
+    m_progressBarConfig.textureFilename = "mesh_example/gaze_loader.png";
+    m_progressBarConfig.frameRate = 49.f/2.f;
+    m_progressBarConfig.spriteGridSize = Eegeo::v2(7,7);
+    m_progressBarConfig.spriteId = 0;
+    m_progressBarConfig.color = Eegeo::v4::One();
+    m_progressBarConfig.renderLayer = Eegeo::Rendering::LayerIds::Values::AfterAll;
+    
     std::string menuTextureFileName("mesh_example/PinIconTexturePage.png");
-    m_pDeadZoneMenuModule = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, menuTextureFileName, 4);
+    m_pDeadZoneMenuModule = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, menuTextureFileName, m_progressBarConfig, 4);
     
     m_pMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 0, m_jumpPointExampleButtonClickedCallback);
     m_pMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 1, m_toggleDayNightClickedCallback);

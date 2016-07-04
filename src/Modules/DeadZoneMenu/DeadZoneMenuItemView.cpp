@@ -12,16 +12,25 @@ namespace Eegeo
             
             DeadZoneMenuItemView::DeadZoneMenuItemView(DeadZoneMenuItem& deadZoneMenuItem
                                                        , IUIRenderableFilter& uiRenderableFilter
-                                                       , UIQuad* pQuad
-                                                       , IUICameraProvider& uiCameraProvider
+                                                       , Eegeo::UI::IUIQuadFactory& quadFactory
+                                                       , const std::string& assetPath
+                                                       , const UIProgressBarConfig& progressBarConfig
                                                        , Eegeo::v2& dimension
+                                                       , Eegeo::v2& uvMin
+                                                       , Eegeo::v2& uvMax
                                                        )
             : m_deadZoneMenuItem(deadZoneMenuItem)
-            , m_uiCameraProvider(uiCameraProvider)
-            , UIImageButton(uiRenderableFilter
-                            , pQuad
+            , UIProgressButton(uiRenderableFilter
+                            , quadFactory
+                            , assetPath
+                            , progressBarConfig
                             , deadZoneMenuItem.GetCallback()
-                            , dimension)
+                            , dimension
+                            , Eegeo::v3::One()
+                            , Eegeo::v3::One()
+                            , Eegeo::v4::One()
+                            , uvMin
+                            , uvMax)
             {}
             
         }

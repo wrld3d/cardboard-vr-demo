@@ -29,7 +29,8 @@ namespace Eegeo
                                    , IUIQuadFactory& uiQuadFactory
                                    , IUIInteractionObservable& uiInteractionObservable
                                    , IUICameraProvider& uiCameraProvider
-                                   , std::string& spriteFileName
+                                   , const std::string& spriteFileName
+                                   , const UIProgressBarConfig& progressBarConfig
                                    , int numberOfTilesAlong1Axis
                                    );
                 

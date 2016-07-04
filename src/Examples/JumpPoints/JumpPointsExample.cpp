@@ -66,6 +66,12 @@ namespace Examples
     
     void JumpPointsExample::Start()
     {
+        m_progressBarConfig.textureFilename = "mesh_example/gaze_loader.png";
+        m_progressBarConfig.frameRate = 49.f/2.f;
+        m_progressBarConfig.spriteGridSize = Eegeo::v2(7,7);
+        m_progressBarConfig.spriteId = 0;
+        m_progressBarConfig.color = Eegeo::v4::One();
+        m_progressBarConfig.renderLayer = Eegeo::Rendering::LayerIds::Values::AfterAll;
         
         Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250);
         m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla);
@@ -107,7 +113,8 @@ namespace Examples
                                                                           m_uiQuadFactory,
                                                                           m_uiInteractionObservable,
                                                                           m_uiCameraProvider,
-                                                                          m_interiorsExplorerModule);
+                                                                          m_interiorsExplorerModule,
+                                                                          m_progressBarConfig);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint1);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint2);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint3);
@@ -127,18 +134,6 @@ namespace Examples
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton5);
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton6);
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton7);
-        
-        m_progressButton = Eegeo_NEW(Eegeo::UI::UIProgressButton)( *m_pUIRenderableFilter
-                                                            , m_uiQuadFactory
-                                                            , "mesh_example/PinIconTexturePage.png"
-                                                            , "mesh_example/gaze_loader.png"
-                                                            , m_onSP1SelectedCallback
-                                                            , dimension
-                                                            , Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 350).ToECEF()
-                                                            , Eegeo::v3::One(), Eegeo::v4::One()
-                                                            , outMin, outMax
-                                                            );
-        m_uiInteractionObservable.RegisterInteractableItem(m_progressButton);
     }
     
     void JumpPointsExample::Suspend(){
@@ -169,9 +164,6 @@ namespace Examples
         
         Eegeo_DELETE m_pSplineCameraController;
         
-        m_uiInteractionObservable.UnRegisterInteractableItem(m_progressButton);
-        Eegeo_DELETE m_progressButton;
-        
         m_renderableFilters.RemoveRenderableFilter(*m_pUIRenderableFilter);
         Eegeo_DELETE m_pUIRenderableFilter;
     }
@@ -195,8 +187,6 @@ namespace Examples
         {
             m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
         }
-        
-        m_progressButton->Update(dt);
     }
     
     

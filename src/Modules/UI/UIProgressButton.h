@@ -8,6 +8,7 @@
 #include "IUICameraProvider.h"
 #include "UIInteraction/IUIInteractableItem.h"
 #include "UIAnimatedSprite.h"
+#include "UIProgressBarConfig.h"
 
 namespace Eegeo
 {
@@ -25,7 +26,7 @@ namespace Eegeo
             UIProgressButton(IUIRenderableFilter& uiRenderableFilter
                           , Eegeo::UI::IUIQuadFactory& quadFactory
                           , const std::string& assetPath
-                          , const std::string& progressTileMapPath
+                          , const UIProgressBarConfig& progressBarConfig
                           , Eegeo::Helpers::ICallback0& onClickedEvent
                           , const Eegeo::v2& size = Eegeo::v2::One()
                           , const Eegeo::dv3& ecefPosition = Eegeo::dv3::Zero()
@@ -37,7 +38,7 @@ namespace Eegeo
             
             virtual ~UIProgressButton();
             
-            void Init(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter, const std::string& assetPath, const std::string& progressTileMapPath, const Eegeo::v2& size, const Eegeo::dv3& ecefPosition, const Eegeo::v3& scale, const Eegeo::v4& color, const Eegeo::v2& uvMin, const Eegeo::v2& uvMax);
+            void Init(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter, const std::string& assetPath, const UIProgressBarConfig& progressBarConfig, const Eegeo::v2& size, const Eegeo::dv3& ecefPosition, const Eegeo::v3& scale, const Eegeo::v4& color, const Eegeo::v2& uvMin, const Eegeo::v2& uvMax);
             virtual void Update(float dt);
             virtual bool IsCollidingWithPoint(const Eegeo::v2& screenPoint, IUICameraProvider& cameraProvider);
             

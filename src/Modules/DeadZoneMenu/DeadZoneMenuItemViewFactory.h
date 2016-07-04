@@ -21,8 +21,8 @@ namespace Eegeo
             public:
                 DeadZoneMenuItemViewFactory(IUIRenderableFilter& uiRenderableFilter
                                             , IUIQuadFactory& uiQuadFactory
-                                            , IUICameraProvider& uiCameraProvider
-                                            , std::string& spriteFileName
+                                            , const std::string& spriteFileName
+                                            , const UIProgressBarConfig& progressBarConfig
                                             , int numberOfTilesAlong1Axis
                                             );
                 
@@ -32,10 +32,9 @@ namespace Eegeo
                 
             private:
                 IUIRenderableFilter& m_uiRenderableFilter;
-                IUICameraProvider& m_uiCameraProvider;
                 IUIQuadFactory& m_uiQuadFactory;
                 std::string m_spriteFileName;
-                int m_numberOfTilesAlong1Axis;
+                const UIProgressBarConfig& m_progressBarConfig;
                 Eegeo::v2 m_itemDimension;
                 Eegeo::Rendering::ITexturePageLayout* m_pIconsTexturePageLayout;
             };

@@ -13,12 +13,14 @@ namespace Eegeo
                                                , IUIInteractionObservable& uiInteractionObservable
                                                , IUICameraProvider& uiCameraProvider
                                                , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
+                                               , const UIProgressBarConfig& progressBarConfig
                                                )
             {
                 m_pViewFactory = new JumpPointViewFactory(uiRenderableFilter
                                                           , uiQuadFactory
                                                           , uiCameraProvider
-                                                          , interiorsExplorerModule);
+                                                          , interiorsExplorerModule
+                                                          , progressBarConfig);
                 m_pRepository = new JumpPointRepository();
                 m_pController = new JumpPointController(*m_pRepository, *m_pViewFactory, uiInteractionObservable);
             }

@@ -6,8 +6,9 @@
 #include "VectorMath.h"
 #include "Bounds.h"
 #include "DeadZoneMenu.h"
-#include "../UI/UIImageButton.h"
+#include "../UI/UIProgressButton.h"
 #include "../UI/IUICameraProvider.h"
+#include "UIQuad/IUIQuadFactory.h"
 
 namespace Eegeo
 {
@@ -21,14 +22,17 @@ namespace Eegeo
              *  This class deals with the concerns of displaying a DeadZoneMenuItem.
              *
              */
-            class DeadZoneMenuItemView : protected Eegeo::NonCopyable , public UIImageButton
+            class DeadZoneMenuItemView : protected Eegeo::NonCopyable , public UIProgressButton
             {
             public:
                 DeadZoneMenuItemView(DeadZoneMenuItem& deadZoneMenuItem
                                      , IUIRenderableFilter& uiRenderableFilter
-                                     , UIQuad* pQuad
-                                     , IUICameraProvider& uiCameraProvider
-                                     , Eegeo::v2& dimension);
+                                     , Eegeo::UI::IUIQuadFactory& quadFactory
+                                     , const std::string& assetPath
+                                     , const UIProgressBarConfig& progressBarConfig
+                                     , Eegeo::v2& dimension
+                                     , Eegeo::v2& uvMin
+                                     , Eegeo::v2& uvMax);
                 
                 /*! Retrieve the DeadZoneMenuItem model that the view represents.
                  * \return The view's DeadZoneMenuItem model.
@@ -40,7 +44,6 @@ namespace Eegeo
                 
             private:
                 DeadZoneMenuItem& m_deadZoneMenuItem;
-                IUICameraProvider& m_uiCameraProvider;
             };
         }
     }

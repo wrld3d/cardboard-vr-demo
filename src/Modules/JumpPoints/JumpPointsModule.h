@@ -30,6 +30,7 @@ namespace Eegeo
                                  , IUIInteractionObservable& uiInteractionObservable
                                  , IUICameraProvider& uiCameraProvider
                                  , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
+                                 , const UIProgressBarConfig& progressBarConfig
                                  );
                 
                 ~JumpPointsModule();
