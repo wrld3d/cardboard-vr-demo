@@ -43,10 +43,10 @@ namespace Eegeo
                 IDeadZoneMenuItemViewFactory& m_viewFactory;
                 IUIInteractionObservable& m_pIUIInteractionObservable;
                 IUICameraProvider& m_UICameraProvider;
-                
+                Eegeo::dv3 m_cachedCenter;
                 bool m_isMenuShown;
                 typedef std::map<DeadZoneMenuItem*, DeadZoneMenuItemView*> TViewsByModel;
-                
+                dv3 m_lastCameraPosition;
                 TViewsByModel m_viewsByModel;
                 
                 DeadZoneMenuItemView* GetViewForModel(const DeadZoneMenuItem& di) const;

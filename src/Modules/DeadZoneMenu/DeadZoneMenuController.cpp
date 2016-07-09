@@ -72,23 +72,26 @@ namespace Eegeo
             {
                 
                 
-                float halfCount =  m_viewsByModel.size()/2;
+                float halfCount = m_viewsByModel.size()/2;
                 if(m_viewsByModel.size()%2==0)
                     halfCount-=0.5f;
                 
                 Eegeo::dv3 center = m_UICameraProvider.GetRenderCameraForUI().GetEcefLocation();
                 
-                Eegeo::v3 right(m_UICameraProvider.GetOrientation().GetRow(0));
                 Eegeo::v3 top(m_UICameraProvider.GetOrientation().GetRow(1));
                 Eegeo::v3 forward(m_UICameraProvider.GetOrientation().GetRow(2));
                 
                 Eegeo::v3 vA = center.ToSingle();
                 Eegeo::v3 vB = forward;
                 float angle = Eegeo::Math::Rad2Deg(Eegeo::Math::ACos(Eegeo::v3::Dot(vA, vB)/(vA.Length()*vB.Length())));
+                
                 float marginAngle = 150;
                 
-                int positionMultiplier = 550;
-                if(angle<marginAngle)
+                int positionMultiplier = 400;
+                int radius = 210;
+                int degreeDelta = 20;
+                
+                if(angle>marginAngle)
                     positionMultiplier *= -1;
                 
                 bool shouldUpdatePosition = false;
@@ -106,15 +109,36 @@ namespace Eegeo
                 
                 if(shouldUpdatePosition)
                 {
-                    
                     for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
                     {
                         DeadZoneMenuItemView* pView = it->second;
-                        Eegeo::dv3 position(center + (forward*positionMultiplier) + (right*(-50*halfCount)) + (top*-35));
+                        
+                        
+//                        might need this code to replace logic below this block
+                        float theta = Math::Deg2Rad(180 + (degreeDelta*halfCount));
+                        Eegeo::dv3 k = forward;
+                        Eegeo::dv3 v = ((forward*positionMultiplier + top*radius)).Norm()-forward;
+                        
+                        Eegeo::dv3 vRot = v*Eegeo::Math::Cos(theta) + dv3::Cross(k, v)*Eegeo::Math::Sin(theta) + k*Eegeo::dv3::Dot(k, v)*(1-Eegeo::Math::Cos(theta));
+                        
+                        Eegeo::dv3 position(center + (vRot.ToSingle()*positionMultiplier) - (top*(35+radius)));
                         pView->SetEcefPosition(position);
-                        halfCount--;
+                        halfCount-=1;
+                        
+                        
+                        
+//                        float theta = Math::Deg2Rad(degreeDelta*halfCount);
+//                        Eegeo::dv3 k = center.Norm();
+//                        Eegeo::dv3 v = forward;
+//                        
+//                        Eegeo::dv3 vRot = v*cos(theta) + dv3::Cross(k, v)*sin(theta) + k*dv3::Dot(k, v)*(1-cos(theta));
+//                        
+//                        Eegeo::dv3 position(center + (vRot.ToSingle()*positionMultiplier));
+//                        pView->SetEcefPosition(position);
+//                        halfCount-=1;
                     }
                 }
+                
                 
             }
             
