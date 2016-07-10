@@ -51,7 +51,11 @@ namespace Examples
     
     void VRCameraSplineExample::Suspend()
     {
-        m_interiorsExplorerModule.GetInteriorVisibilityUpdater().SetInteriorShouldDisplay(false);
+        InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
+        if (visiblityUpdater.GetInteriorShouldDisplay()) {
+            visiblityUpdater.SetInteriorShouldDisplay(false);
+            visiblityUpdater.UpdateVisiblityImmediately();
+        }
     }
     
     void VRCameraSplineExample::UpdateCardboardProfile(float cardboardProfile[])

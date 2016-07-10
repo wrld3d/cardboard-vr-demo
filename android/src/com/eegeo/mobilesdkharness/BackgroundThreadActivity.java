@@ -221,10 +221,10 @@ public class BackgroundThreadActivity extends MainActivity
 		{
 			public void run()
 			{
+				m_headTracker.stopTracking();
 				m_threadedRunner.stop();
 				NativeJniCalls.destroyNativeCode();
 				m_threadedRunner.destroyed();
-				android.os.Process.killProcess(android.os.Process.myPid());
 			}
 		});
 

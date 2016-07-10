@@ -60,8 +60,11 @@ namespace Eegeo
             
             float near, far;
             GetNearFarPlaneDistances(near,far);
+            
+            dv3 targetPos(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z);
+            
             m_pRenderCamera->SetOrientationMatrix(orientationMatrix);
-            m_pRenderCamera->SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
+            m_pRenderCamera->SetEcefLocation(targetPos);
             m_pRenderCamera->SetProjection(0.7f, near*m_nearMultiplier, far);
             
             

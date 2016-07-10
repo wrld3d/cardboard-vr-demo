@@ -264,11 +264,11 @@ ExampleApp::~ExampleApp()
     
     Eegeo_DELETE m_pStreamingVolume;
     Eegeo_DELETE m_pCameraControllerFactory;
-    Eegeo_DELETE m_pInteriorExplorerModule;
     Eegeo_DELETE m_pCameraTouchController;
     Eegeo_DELETE m_pExampleController;
     
     Eegeo_DELETE m_pUIInteractionController;
+    Eegeo_DELETE m_pInteriorExplorerModule;
     
     m_pWorld->GetRenderingModule().GetRenderableFilters().RemoveRenderableFilter(*m_pUIRenderableFilter);
     Eegeo_DELETE m_pUIRenderableFilter;
@@ -289,6 +289,7 @@ void ExampleApp::OnResume()
 
 void ExampleApp::Update (float dt, float headTansform[])
 {
+    
     
     const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
@@ -322,14 +323,16 @@ void ExampleApp::Update (float dt, float headTansform[])
     eegeoWorld.Update(updateParameters);
     
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
+    {
         m_pExampleController->Update(dt);
     
-    m_pDeadZoneMenuModule->Update(dt);
-    m_pUIInteractionController->Update(dt);
+        m_pDeadZoneMenuModule->Update(dt);
+        m_pUIInteractionController->Update(dt);
     
-    Eegeo::v2 center = m_pVRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
-    m_pUIInteractionController->Event_ScreenInteractionMoved(center);
-    m_pInteriorExplorerModule ->Update(dt);
+        Eegeo::v2 center = m_pVRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
+        m_pUIInteractionController->Event_ScreenInteractionMoved(center);
+        m_pInteriorExplorerModule ->Update(dt);
+    }
     
     UpdateNightTParam(dt);
     UpdateFogging();

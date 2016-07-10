@@ -114,7 +114,6 @@ namespace Eegeo
                         DeadZoneMenuItemView* pView = it->second;
                         
                         
-//                        might need this code to replace logic below this block
                         float theta = Math::Deg2Rad(180 + (degreeDelta*halfCount));
                         Eegeo::dv3 k = forward;
                         Eegeo::dv3 v = ((forward*positionMultiplier + top*radius)).Norm()-forward;
@@ -126,7 +125,7 @@ namespace Eegeo
                         halfCount-=1;
                         
                         
-                        
+//                        might need this code to replace logic above
 //                        float theta = Math::Deg2Rad(degreeDelta*halfCount);
 //                        Eegeo::dv3 k = center.Norm();
 //                        Eegeo::dv3 v = forward;
