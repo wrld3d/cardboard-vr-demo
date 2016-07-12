@@ -274,15 +274,7 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint1Selected()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        if (visibilityUpdater.GetInteriorShouldDisplay())
-        {
-            visibilityUpdater.SetInteriorShouldDisplay(false);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = false;
+        hideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(37.795185, -122.402780, 305).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(37.791775, -122.402423, 305).ToECEF();
         
@@ -291,45 +283,21 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint2Selected()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        if (visibilityUpdater.GetInteriorShouldDisplay())
-        {
-            visibilityUpdater.SetInteriorShouldDisplay(false);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = false;
+        hideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(37.7955670, -122.3806140, 250).ToECEF();
         MoveCameraToStopPoint(cameraPoint, 246.88382);
     }
     
     void JumpPointsExample::OnStopPoint3Selected()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        if (visibilityUpdater.GetInteriorShouldDisplay())
-        {
-            visibilityUpdater.SetInteriorShouldDisplay(false);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = false;
+        hideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.456870, -2.957510, 304).ToECEF();
         MoveCameraToStopPoint(cameraPoint, 294.33133);
     }
     
     void JumpPointsExample::OnStopPoint4Selected()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        if (visibilityUpdater.GetInteriorShouldDisplay())
-        {
-            visibilityUpdater.SetInteriorShouldDisplay(false);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = false;
+        hideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(40.699799, -74.021058, 380).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(40.702531, -74.015483, 380).ToECEF();
         
@@ -338,15 +306,7 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint5Selected()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        if (visibilityUpdater.GetInteriorShouldDisplay())
-        {
-            visibilityUpdater.SetInteriorShouldDisplay(false);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = false;
+        hideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(40.763647, -73.973468, 25).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(40.764722, -73.972690, 25).ToECEF();
         
@@ -355,16 +315,7 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint6Selected()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
-        
-        if (!visibilityUpdater.GetInteriorShouldDisplay()) {
-            visibilityUpdater.SetInteriorShouldDisplay(true);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = true;
+        showInteriors(2);
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459928, -2.978063, 28.5).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(56.459921, -2.978145, 28.5).ToECEF();
             
@@ -374,20 +325,38 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint7Selected()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
-        
-        if (!visibilityUpdater.GetInteriorShouldDisplay()) {
-            visibilityUpdater.SetInteriorShouldDisplay(true);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = true;
+        showInteriors(2);
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459908, -2.978208, 28.5).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(56.460026, -2.978270, 28.5).ToECEF();
             
         MoveCameraToStopPoint(cameraPoint, cameraLookat);
         
+    }
+    
+    void JumpPointsExample::showInteriors(int floorNumber)
+    {
+        
+        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
+        
+        m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(floorNumber);
+        
+        if (!visibilityUpdater.GetInteriorShouldDisplay()) {
+            visibilityUpdater.SetInteriorShouldDisplay(true);
+            visibilityUpdater.UpdateVisiblityImmediately();
+        }
+        m_isInInterior = true;
+    }
+    
+    void JumpPointsExample::hideInteriors()
+    {
+        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
+        
+        if (visibilityUpdater.GetInteriorShouldDisplay())
+        {
+            visibilityUpdater.SetInteriorShouldDisplay(false);
+            visibilityUpdater.UpdateVisiblityImmediately();
+        }
+        
+        m_isInInterior = false;
     }
 }

@@ -126,6 +126,9 @@ namespace Examples
         void OnStopPoint5Selected();
         void OnStopPoint6Selected();
         void OnStopPoint7Selected();
+        
+        void showInteriors(int floorNumber);
+        void hideInteriors();
     };
 }
 
