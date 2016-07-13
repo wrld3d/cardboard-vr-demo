@@ -18,9 +18,10 @@ namespace Eegeo
                 
             public:
                 Dv3PropertyAnimation(IDv3Animateable& dv3Animateable,
-                                     Eegeo::dv3& startValue,
-                                     Eegeo::dv3& endValue,
-                                     float time);
+                                     const Eegeo::dv3& startValue,
+                                     const Eegeo::dv3& endValue,
+                                     float time,
+                                     float (*pEaseFunction)(float, float, float));
                 ~Dv3PropertyAnimation();
                 virtual void Update(float dt);
                 
@@ -29,13 +30,15 @@ namespace Eegeo
                 
             private:
                 IDv3Animateable& m_dv3Animateable;
-                Eegeo::dv3& m_startValue;
-                Eegeo::dv3& m_endValue;
+                const Eegeo::dv3& m_startValue;
+                const Eegeo::dv3& m_endValue;
                 Eegeo::dv3 m_direction;
                 float m_time;
                 
                 Eegeo::dv3 m_currentValue;
                 float m_timePassed;
+                
+                float (*m_pEaseFunction)(float start, float end, float val);
                 
             };
         }

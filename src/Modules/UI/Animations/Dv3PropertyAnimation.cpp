@@ -11,9 +11,10 @@ namespace Eegeo
         {
             
             Dv3PropertyAnimation::Dv3PropertyAnimation(IDv3Animateable& dv3Animateable,
-                                                       Eegeo::dv3& startValue,
-                                                       Eegeo::dv3& endValue,
-                                                       float time)
+                                                       const Eegeo::dv3& startValue,
+                                                       const Eegeo::dv3& endValue,
+                                                       float time,
+                                                       float (*pEaseFunction)(float, float, float))
             :m_dv3Animateable(dv3Animateable)
             ,m_startValue(startValue)
             ,m_endValue(endValue)
@@ -39,8 +40,8 @@ namespace Eegeo
             {
                 m_timePassed+=dt;
                 m_timePassed = m_time;
-                Eegeo::dv3 delta = m_direction*getProgress();
-                m_dv3Animateable.onDv3Updated(delta);
+                Eegeo::dv3 pos = Eegeo::dv3::Lerp(m_startValue, m_endValue, m_pEaseFunction(0, 1, getProgress()));
+                m_dv3Animateable.onDv3Updated(pos);
             }
             
         }
