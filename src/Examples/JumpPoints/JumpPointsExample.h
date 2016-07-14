@@ -38,7 +38,12 @@ namespace Examples
         Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
         
         Eegeo::VR::JumpPointsCameraController* m_pSplineCameraController;
+        
         Eegeo::UI::JumpPoints::JumpPoint *m_pWPJumpPoint1, *m_pWPJumpPoint2, *m_pWPJumpPoint3;
+        Eegeo::UI::JumpPoints::JumpPoint *m_pWPJumpPointDiscoveryShip;
+        Eegeo::UI::JumpPoints::JumpPoint *m_pWPJumpPointOvergate;
+        Eegeo::UI::JumpPoints::JumpPoint *m_pWPJumpPointMaisonHotel;
+        
         Eegeo::UI::JumpPoints::JumpPointsModule* m_pJumpPointsModule;
         
         Eegeo::Rendering::RenderableFilters& m_renderableFilters;
@@ -47,7 +52,9 @@ namespace Examples
         Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneMenuRepository;
         IVRHeadTracker& m_headTracker;
         Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem *m_pSPButton1, *m_pSPButton2, *m_pSPButton3, *m_pSPButton4, *m_pSPButton5, *m_pSPButton6, *m_pSPButton7;
+        Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem *m_pSPStartPosition;
         Eegeo::Helpers::TCallback0<JumpPointsExample> m_onSP1SelectedCallback, m_onSP2SelectedCallback, m_onSP3SelectedCallback, m_onSP4SelectedCallback, m_onSP5SelectedCallback, m_onSP6SelectedCallback, m_onSP7SelectedCallback;
+        Eegeo::Helpers::TCallback0<JumpPointsExample> m_onSPStartSelectedCallback;
         
         void MoveCameraToStopPoint(const Eegeo::dv3& cameraPoint, const Eegeo::dv3& cameraLookat);
         void MoveCameraToStopPoint(const Eegeo::dv3 &cameraPoint, float cameraHeading);
@@ -124,6 +131,11 @@ namespace Examples
         void OnStopPoint5Selected();
         void OnStopPoint6Selected();
         void OnStopPoint7Selected();
+        
+        void OnStopPointStartSelected();
+        
+        void ShowInteriors(int floorNumber);
+        void HideInteriors();
     };
 }
 

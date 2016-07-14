@@ -88,12 +88,9 @@ namespace Eegeo
                 
                 float marginAngle = 150;
                 
-                int positionMultiplier = 400;
+                int positionMultiplier = -400;
                 int radius = 210;
                 int degreeDelta = 20;
-                
-                if(angle>marginAngle)
-                    positionMultiplier *= -1;
                 
                 bool shouldUpdatePosition = false;
                 
@@ -102,10 +99,16 @@ namespace Eegeo
                     m_isMenuShown = true;
                     shouldUpdatePosition = true;
                     m_cachedHeadTracker = m_uiCameraProvider.GetHeadTrackerOrientation();
+                    m_cachedCenter = center;
                 }
-                else if(m_isMenuShown && angle<marginAngle)
+                else if(m_isMenuShown && angle<=marginAngle)
                 {
                     m_isMenuShown = false;
+                    shouldUpdatePosition = true;
+                }
+                
+                if ((m_cachedCenter - center).LengthSq() > 1) {
+                    m_cachedCenter = center;
                     shouldUpdatePosition = true;
                 }
                 
@@ -115,7 +118,13 @@ namespace Eegeo
                     {
                         DeadZoneMenuItemView* pView = it->second;
                         
+                        if(!m_isMenuShown)
+                        {
+                            pView->SetItemShouldRender(false);
+                            continue;
+                        }
                         
+                        pView->SetItemShouldRender(true);
                         float theta = Math::Deg2Rad(180 + (degreeDelta*halfCount));
                         Eegeo::dv3 k = forward;
                         Eegeo::dv3 v = ((forward*positionMultiplier + top*radius)).Norm()-forward;

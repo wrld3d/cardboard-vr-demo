@@ -47,12 +47,13 @@ namespace Examples
     , m_onSP5SelectedCallback(this, &JumpPointsExample::OnStopPoint5Selected)
     , m_onSP6SelectedCallback(this, &JumpPointsExample::OnStopPoint6Selected)
     , m_onSP7SelectedCallback(this, &JumpPointsExample::OnStopPoint7Selected)
+    , m_onSPStartSelectedCallback(this, &JumpPointsExample::OnStopPointStartSelected)
     , m_isInInterior(false)
     {
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
         Eegeo::m44 projectionMatrix = Eegeo::m44(pCameraController->GetRenderCamera().GetProjectionMatrix());
-        m_pSplineCameraController = new Eegeo::VR::JumpPointsCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
+        m_pSplineCameraController = Eegeo_NEW(Eegeo::VR::JumpPointsCameraController)(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight());
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
         
@@ -79,7 +80,7 @@ namespace Examples
         Eegeo::UI::CalculateUV(size, 0, outMin, outMax);
         dimension = Eegeo::v2(50,50);
         
-        m_pWPJumpPoint1 = new Eegeo::UI::JumpPoints::JumpPoint(1,
+        m_pWPJumpPoint1 = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(1,
                                                                Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250),
                                                                "mesh_example/PinIconTexturePage.png",
                                                                dimension,
@@ -87,7 +88,7 @@ namespace Examples
                                                                outMax
                                                                );
         
-        m_pWPJumpPoint2 = new Eegeo::UI::JumpPoints::JumpPoint(2,
+        m_pWPJumpPoint2 = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(2,
                                                                Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250),
                                                                "mesh_example/PinIconTexturePage.png",
                                                                dimension,
@@ -95,7 +96,7 @@ namespace Examples
                                                                outMax
                                                                );
         
-        m_pWPJumpPoint3 = new Eegeo::UI::JumpPoints::JumpPoint(3,
+        m_pWPJumpPoint3 = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(3,
                                                                Eegeo::Space::LatLongAltitude::FromDegrees(56.451235, -2.976600, 250),
                                                                "mesh_example/PinIconTexturePage.png",
                                                                dimension,
@@ -103,7 +104,31 @@ namespace Examples
                                                                outMax
                                                                );
         
-        m_pJumpPointsModule = new Eegeo::UI::JumpPoints::JumpPointsModule(*m_pUIRenderableFilter,
+        m_pWPJumpPointDiscoveryShip = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(3,
+                                                               Eegeo::Space::LatLongAltitude::FromDegrees(56.4577389,-2.9707447, 30),
+                                                               "mesh_example/PinIconTexturePage.png",
+                                                               dimension / 3.0f,
+                                                               outMin,
+                                                               outMax
+                                                               );
+        
+        m_pWPJumpPointOvergate = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(3,
+                                                               Eegeo::Space::LatLongAltitude::FromDegrees(56.4580413,-2.9711524, 70),
+                                                               "mesh_example/PinIconTexturePage.png",
+                                                               dimension / 3.0f,
+                                                               outMin,
+                                                               outMax
+                                                               );
+        
+        m_pWPJumpPointMaisonHotel = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(3,
+                                                               Eegeo::Space::LatLongAltitude::FromDegrees(56.457795, -2.969532, 190),
+                                                               "mesh_example/PinIconTexturePage.png",
+                                                               dimension / 1.5f,
+                                                               outMin,
+                                                               outMax
+                                                               );
+        
+        m_pJumpPointsModule = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPointsModule)(*m_pUIRenderableFilter,
                                                                           m_uiQuadFactory,
                                                                           m_uiInteractionObservable,
                                                                           m_uiCameraProvider,
@@ -112,13 +137,21 @@ namespace Examples
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint2);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint3);
         
-        m_pSPButton1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 3, m_onSP1SelectedCallback);
-        m_pSPButton2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 4, m_onSP2SelectedCallback);
-        m_pSPButton3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 5, m_onSP3SelectedCallback);
-        m_pSPButton4 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 6, m_onSP4SelectedCallback);
-        m_pSPButton5 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 7, m_onSP5SelectedCallback);
-        m_pSPButton6 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 8, m_onSP6SelectedCallback);
-        m_pSPButton7 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 9, m_onSP7SelectedCallback);
+        m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPointDiscoveryShip);
+        m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPointOvergate);
+        m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPointMaisonHotel);
+        
+        m_pSPButton1 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 3, m_onSP1SelectedCallback);
+        m_pSPButton2 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(11, 4, m_onSP2SelectedCallback);
+        m_pSPButton3 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(12, 5, m_onSP3SelectedCallback);
+        m_pSPButton4 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(13, 6, m_onSP4SelectedCallback);
+        m_pSPButton5 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(14, 7, m_onSP5SelectedCallback);
+        m_pSPButton6 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(15, 8, m_onSP6SelectedCallback);
+        m_pSPButton7 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(16, 9, m_onSP7SelectedCallback);
+        
+        m_pSPStartPosition = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(17, 13, m_onSPStartSelectedCallback);
+        
+        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPStartPosition);
         
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton1);
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton2);
@@ -134,9 +167,18 @@ namespace Examples
         m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pWPJumpPoint2);
         m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pWPJumpPoint3);
         
+        m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pWPJumpPointDiscoveryShip);
+        m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pWPJumpPointOvergate);
+        m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pWPJumpPointMaisonHotel);
+        
         Eegeo_DELETE m_pWPJumpPoint1;
         Eegeo_DELETE m_pWPJumpPoint2;
         Eegeo_DELETE m_pWPJumpPoint3;
+        
+        Eegeo_DELETE m_pWPJumpPointDiscoveryShip;
+        Eegeo_DELETE m_pWPJumpPointOvergate;
+        Eegeo_DELETE m_pWPJumpPointMaisonHotel;
+        
         Eegeo_DELETE m_pJumpPointsModule;
         
         m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton1);
@@ -147,6 +189,8 @@ namespace Examples
         m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton6);
         m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton7);
         
+        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPStartPosition);
+        
         Eegeo_DELETE m_pSPButton1;
         Eegeo_DELETE m_pSPButton2;
         Eegeo_DELETE m_pSPButton3;
@@ -154,6 +198,8 @@ namespace Examples
         Eegeo_DELETE m_pSPButton5;
         Eegeo_DELETE m_pSPButton6;
         Eegeo_DELETE m_pSPButton7;
+        
+        Eegeo_DELETE m_pSPStartPosition;
         
         Eegeo_DELETE m_pSplineCameraController;
         
@@ -265,17 +311,19 @@ namespace Examples
         m_headTracker.ResetTracker();
     }
     
+    void JumpPointsExample::OnStopPointStartSelected()
+    {
+        HideInteriors();
+        Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250).ToECEF();
+        Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(40.763647, -73.973468, 25).ToECEF();
+        
+        MoveCameraToStopPoint(cameraPoint, cameraLookat);
+    }
+
+    
     void JumpPointsExample::OnStopPoint1Selected()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        if (visibilityUpdater.GetInteriorShouldDisplay())
-        {
-            visibilityUpdater.SetInteriorShouldDisplay(false);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = false;
+        HideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(37.795185, -122.402780, 305).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(37.791775, -122.402423, 305).ToECEF();
         
@@ -284,45 +332,21 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint2Selected()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        if (visibilityUpdater.GetInteriorShouldDisplay())
-        {
-            visibilityUpdater.SetInteriorShouldDisplay(false);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = false;
+        HideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(37.7955670, -122.3806140, 250).ToECEF();
         MoveCameraToStopPoint(cameraPoint, 246.88382);
     }
     
     void JumpPointsExample::OnStopPoint3Selected()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        if (visibilityUpdater.GetInteriorShouldDisplay())
-        {
-            visibilityUpdater.SetInteriorShouldDisplay(false);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = false;
+        HideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.456870, -2.957510, 304).ToECEF();
         MoveCameraToStopPoint(cameraPoint, 294.33133);
     }
     
     void JumpPointsExample::OnStopPoint4Selected()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        if (visibilityUpdater.GetInteriorShouldDisplay())
-        {
-            visibilityUpdater.SetInteriorShouldDisplay(false);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = false;
+        HideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(40.699799, -74.021058, 380).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(40.702531, -74.015483, 380).ToECEF();
         
@@ -331,6 +355,49 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint5Selected()
     {
+        HideInteriors();
+        Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(40.763647, -73.973468, 25).ToECEF();
+        Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(40.764722, -73.972690, 25).ToECEF();
+        
+        MoveCameraToStopPoint(cameraPoint, cameraLookat);
+    }
+    
+    void JumpPointsExample::OnStopPoint6Selected()
+    {
+        ShowInteriors(2);
+        Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459928, -2.978063, 28.5).ToECEF();
+        Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(56.459921, -2.978145, 28.5).ToECEF();
+        
+        MoveCameraToStopPoint(cameraPoint, cameraLookat);
+        
+    }
+    
+    void JumpPointsExample::OnStopPoint7Selected()
+    {
+        ShowInteriors(2);
+        Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459908, -2.978208, 28.5).ToECEF();
+        Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(56.460026, -2.978270, 28.5).ToECEF();
+        
+        MoveCameraToStopPoint(cameraPoint, cameraLookat);
+        
+    }
+    
+    void JumpPointsExample::ShowInteriors(int floorNumber)
+    {
+        
+        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
+        
+        m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(floorNumber);
+        
+        if (!visibilityUpdater.GetInteriorShouldDisplay()) {
+            visibilityUpdater.SetInteriorShouldDisplay(true);
+            visibilityUpdater.UpdateVisiblityImmediately();
+        }
+        m_isInInterior = true;
+    }
+    
+    void JumpPointsExample::HideInteriors()
+    {
         InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
         
         if (visibilityUpdater.GetInteriorShouldDisplay())
@@ -340,47 +407,5 @@ namespace Examples
         }
         
         m_isInInterior = false;
-        Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(40.763647, -73.973468, 25).ToECEF();
-        Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(40.764722, -73.972690, 25).ToECEF();
-        
-        MoveCameraToStopPoint(cameraPoint, cameraLookat);
-    }
-    
-    void JumpPointsExample::OnStopPoint6Selected()
-    {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
-        
-        if (!visibilityUpdater.GetInteriorShouldDisplay()) {
-            visibilityUpdater.SetInteriorShouldDisplay(true);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = true;
-        Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459928, -2.978063, 28.5).ToECEF();
-        Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(56.459921, -2.978145, 28.5).ToECEF();
-            
-        MoveCameraToStopPoint(cameraPoint, cameraLookat);
-        
-    }
-    
-    void JumpPointsExample::OnStopPoint7Selected()
-    {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
-        
-        if (!visibilityUpdater.GetInteriorShouldDisplay()) {
-            visibilityUpdater.SetInteriorShouldDisplay(true);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
-        m_isInInterior = true;
-        Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459908, -2.978208, 28.5).ToECEF();
-        Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(56.460026, -2.978270, 28.5).ToECEF();
-            
-        MoveCameraToStopPoint(cameraPoint, cameraLookat);
-        
     }
 }
