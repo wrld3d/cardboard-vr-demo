@@ -81,6 +81,7 @@
 #include "Modules/UI/UIInteraction/UIInteractionController.h"
 #include "Modules/VRDistortionModule/VRCardboardDeviceProfile.h"
 
+#include "Modules/UI/Animations/AnimationsController.h"
 #include "Logger.h"
 namespace
 {
@@ -177,6 +178,8 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                     cameraControllerOrientationDegrees,
                                                                     cameraControllerDistanceFromInterestPointMeters);
     
+    m_pAnimationController = Eegeo_NEW(Eegeo::UI::Animations::AnimationsController());
+    
     m_pLoadingScreen = CreateLoadingScreen(screenProperties, eegeoWorld.GetRenderingModule(), eegeoWorld.GetPlatformAbstractionModule());
     
     Eegeo::Modules::Map::Layers::InteriorsPresentationModule& interiorsPresentationModule = mapModule.GetInteriorsPresentationModule();
@@ -243,7 +246,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem3);
     
     m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_pInteriorExplorerModule, headTracker, m_pDeadZoneMenuModule->GetRepository());
-    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), headTracker);
+    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, headTracker);
     
     m_pUIGazeView->HideView();
     
@@ -279,6 +282,7 @@ ExampleApp::~ExampleApp()
     
     m_pWorld->GetRenderingModule().GetRenderableFilters().RemoveRenderableFilter(*m_pUIRenderableFilter);
     Eegeo_DELETE m_pUIRenderableFilter;
+    Eegeo_DELETE m_pAnimationController;
 }
 
 void ExampleApp::OnPause()
@@ -331,6 +335,7 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
     {
+        m_pAnimationController->Update(dt);
         m_pExampleController->Update(dt);
     
         m_pDeadZoneMenuModule->Update(dt);

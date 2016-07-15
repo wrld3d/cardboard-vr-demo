@@ -4,6 +4,10 @@
 #include "JumpPointView.h"
 #include "InteriorVisibilityUpdater.h"
 #include "InteriorsExplorerModel.h"
+#include "../UI/Animations/AnimationsController.h"
+#include "../UI/Animations/IDv3Animateable.h"
+#include "../UI/Animations/Dv3PropertyAnimation.h"
+#include "../UI/Animations/AnimationEase.h"
 namespace Eegeo
 {
     namespace UI
@@ -16,11 +20,15 @@ namespace Eegeo
                                          , const UIProgressBarConfig& progressBarConfig
                                          , IUICameraProvider& uiCameraProvider
                                          , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
+                                         , Animations::AnimationsController& animationsController
+                                         , Animations::IDv3Animateable& animateableCamera
                                          )
             : m_jumpPoint(jumpPoint)
             , m_uiCameraProvider(uiCameraProvider)
             , m_interiorsExplorerModule(interiorsExplorerModule)
             , m_jumpPointClickCallback(this, &JumpPointView::MoveCameraToJumpPoint)
+            , m_animationsController(animationsController)
+            , m_animateableCamera(animateableCamera)
             , UIProgressButton(uiRenderableFilter
                             , quadFactory
                             , jumpPoint.GetFileName()
@@ -33,10 +41,33 @@ namespace Eegeo
                             , jumpPoint.GetUVMin()
                             , jumpPoint.GetUVMax()
                             )
-            {}
+            {
+                m_isCameraAnimating = false;
+            }
+            
+            
+            
+            void JumpPointView::OnAnimationAdded(Animations::IAnimation& animation)
+            {
+                m_isCameraAnimating = true;
+            }
+            
+            void JumpPointView::OnAnimationProgress(Animations::IAnimation& animation)
+            {
+            }
+            
+            void JumpPointView::OnAnimationRemoved(Animations::IAnimation& animation)
+            {
+                m_isCameraAnimating = false;
+            }
+            
             
             void JumpPointView::MoveCameraToJumpPoint()
             {
+                
+                if(m_isCameraAnimating)
+                    return;
+                
                 InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
                 
                 if (m_jumpPoint.GetIsInInterior())
@@ -45,8 +76,8 @@ namespace Eegeo
                     if (visibilityUpdater.GetInteriorHasLoaded()) {
                         visibilityUpdater.SetInteriorShouldDisplay(true);
                         visibilityUpdater.UpdateVisiblityImmediately();
-                        m_uiCameraProvider.GetRenderCameraForUI().SetEcefLocation(m_jumpPoint.GetEcefPosition());
-                    }
+                        m_animationsController.AddAnimation(Eegeo_NEW(Animations::Dv3PropertyAnimation(m_animateableCamera, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), m_jumpPoint.GetEcefPosition(), 5.f, &AnimationEase::EaseInOutExpo)));
+                }
                 }
                 else
                 {
@@ -56,7 +87,7 @@ namespace Eegeo
                         visibilityUpdater.UpdateVisiblityImmediately();
                     }
                     
-                    m_uiCameraProvider.GetRenderCameraForUI().SetEcefLocation(m_jumpPoint.GetEcefPosition());
+                    m_animationsController.AddAnimation(Eegeo_NEW(Animations::Dv3PropertyAnimation(m_animateableCamera, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), m_jumpPoint.GetEcefPosition(), 5.f, &AnimationEase::EaseInOutExpo)));
                 }
             }
             

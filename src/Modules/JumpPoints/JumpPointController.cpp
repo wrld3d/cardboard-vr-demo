@@ -2,6 +2,8 @@
 
 #include "JumpPointController.h"
 #include "JumpPoint.h"
+#include "../UI/Animations/AnimationsController.h"
+#include "../UI/Animations/IAnimationObserver.h"
 
 namespace Eegeo
 {
@@ -10,10 +12,14 @@ namespace Eegeo
         namespace JumpPoints
         {
             
-            JumpPointController::JumpPointController(IJumpPointObservable& jumpPointObservable, IJumpPointViewFactory& viewFactory, IUIInteractionObservable& uiInteractionObservable)
+            JumpPointController::JumpPointController(IJumpPointObservable& jumpPointObservable
+                                                     , IJumpPointViewFactory& viewFactory
+                                                     , IUIInteractionObservable& uiInteractionObservable
+                                                     , Animations::AnimationsController& animationsController)
             : m_jumppointRepository(jumpPointObservable)
             , m_viewFactory(viewFactory)
             , m_uiInteractionObservable(uiInteractionObservable)
+            , m_animationsController(animationsController)
             {
                 m_jumppointRepository.AddJumpPointObserver(this);
             }
@@ -43,6 +49,7 @@ namespace Eegeo
                 JumpPointView* pView = m_viewFactory.CreateViewForJumpPoint(jumpPoint);
                 m_viewsByModel[&jumpPoint] = pView;
                 m_uiInteractionObservable.RegisterInteractableItem(pView);
+                m_animationsController.AddAnimationsObserver(pView);
             }
             
             void JumpPointController::OnJumpPointRemoved(JumpPoint& jumpPoint)
@@ -52,6 +59,7 @@ namespace Eegeo
                 
                 m_viewsByModel.erase(&jumpPoint);
                 m_uiInteractionObservable.UnRegisterInteractableItem(pView);
+                m_animationsController.RemoveAnimationsObserver(pView);
                 
                 Eegeo_DELETE(pView);
             }

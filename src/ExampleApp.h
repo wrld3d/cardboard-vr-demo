@@ -24,6 +24,8 @@
 #include "Modules/UI/UIProgressBarConfig.h"
 #include "Modules/DeadZoneMenu/DeadZoneMenu.h"
 
+#include "Modules/UI/Animations/AnimationsController.h"
+
 #include "Logger.h"
 #include "ICallback.h"
 
@@ -53,6 +55,8 @@ private:
     Eegeo::UI::UIInteractionController *m_pUIInteractionController;
     Eegeo::UI::UIRenderableFilter *m_pUIRenderableFilter;
     Eegeo::UIGaze::UIGazeView* m_pUIGazeView;
+    
+    Eegeo::UI::Animations::AnimationsController* m_pAnimationController;
     
     Eegeo::UI::IUIQuadFactory* m_pQuadFactory;
     Eegeo::UI::UIProgressBarConfig m_progressBarConfig;

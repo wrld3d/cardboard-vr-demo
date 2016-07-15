@@ -90,6 +90,11 @@ namespace Eegeo
             m_pRenderCamera->SetEcefLocation(m_ecefPosition);
         }
         
+        void JumpPointsCameraController::OnDv3Updated(Eegeo::dv3& delta)
+        {
+            m_pRenderCamera->SetEcefLocation(delta);
+        }
+        
         void JumpPointsCameraController::Update(float dt)
         {
             m_time += dt;

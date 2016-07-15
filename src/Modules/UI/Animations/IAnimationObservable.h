@@ -16,7 +16,9 @@ namespace Eegeo
             public:
                 virtual void AddAnimationsObserver(IAnimationObserver* pObserverToAdd) = 0;
                 virtual void RemoveAnimationsObserver(IAnimationObserver* pObserverToRemove) = 0;
-                virtual ~IAnimationObservable() {};
+                virtual void AddAnimation(IAnimation* pAnimationToAdd) = 0;
+                virtual void RemoveAnimation(IAnimation* pAnimationToRemove) = 0;
+                virtual ~IAnimationObservable() {}
             };
         }
     }

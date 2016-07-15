@@ -15,11 +15,11 @@ namespace Eegeo
                 
             public:
                 
-                virtual void OnAnimationAdded(IAnimation& deadZoneMenuItem) = 0;
-                virtual void OnAnimationProgress(IAnimation& deadZoneMenuItem) = 0;
-                virtual void OnAnimationRemoved(IAnimation& deadZoneMenuItem) = 0;
+                virtual void OnAnimationAdded(IAnimation& animation) = 0;
+                virtual void OnAnimationProgress(IAnimation& animation) = 0;
+                virtual void OnAnimationRemoved(IAnimation& animation) = 0;
                 
-                virtual ~IAnimationObserver() {};
+                virtual ~IAnimationObserver() {}
             };
         }
     }

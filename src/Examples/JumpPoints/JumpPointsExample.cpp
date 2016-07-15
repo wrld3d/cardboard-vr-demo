@@ -14,7 +14,8 @@
 #include "InteriorsExplorerModel.h"
 #include "IVRHeadTracker.h"
 #include "CameraHelpers.h"
-
+#include "Modules/UI/Animations/AnimationsController.h"
+#include "Modules/UI/Animations/IDv3Animateable.h"
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
 
@@ -31,6 +32,7 @@ namespace Examples
                                          Eegeo::UI::IUICameraProvider& uiCameraProvider,
                                          InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                          Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
+                                         Eegeo::UI::Animations::AnimationsController& animationsController,
                                          IVRHeadTracker& headTracker)
     : m_world(eegeoWorld)
     , m_uiQuadFactory(quadFactory)
@@ -39,6 +41,7 @@ namespace Examples
     , m_renderableFilters(eegeoWorld.GetRenderingModule().GetRenderableFilters())
     , m_interiorsExplorerModule(interiorsExplorerModule)
     , m_deadZoneMenuRepository(deadZoneMenuRepository)
+    , m_animationsController(animationsController)
     , m_headTracker(headTracker)
     , m_onSP1SelectedCallback(this, &JumpPointsExample::OnStopPoint1Selected)
     , m_onSP2SelectedCallback(this, &JumpPointsExample::OnStopPoint2Selected)
@@ -114,6 +117,8 @@ namespace Examples
                                                                           m_uiInteractionObservable,
                                                                           m_uiCameraProvider,
                                                                           m_interiorsExplorerModule,
+                                                                          m_animationsController,
+                                                                          *m_pSplineCameraController,
                                                                           m_progressBarConfig);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint1);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint2);
@@ -274,7 +279,7 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint1Selected()
     {
-        hideInteriors();
+        HideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(37.795185, -122.402780, 305).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(37.791775, -122.402423, 305).ToECEF();
         
@@ -283,21 +288,21 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint2Selected()
     {
-        hideInteriors();
+        HideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(37.7955670, -122.3806140, 250).ToECEF();
         MoveCameraToStopPoint(cameraPoint, 246.88382);
     }
     
     void JumpPointsExample::OnStopPoint3Selected()
     {
-        hideInteriors();
+        HideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.456870, -2.957510, 304).ToECEF();
         MoveCameraToStopPoint(cameraPoint, 294.33133);
     }
     
     void JumpPointsExample::OnStopPoint4Selected()
     {
-        hideInteriors();
+        HideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(40.699799, -74.021058, 380).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(40.702531, -74.015483, 380).ToECEF();
         
@@ -306,7 +311,7 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint5Selected()
     {
-        hideInteriors();
+        HideInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(40.763647, -73.973468, 25).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(40.764722, -73.972690, 25).ToECEF();
         
@@ -315,7 +320,7 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint6Selected()
     {
-        showInteriors(2);
+        ShowInteriors(2);
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459928, -2.978063, 28.5).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(56.459921, -2.978145, 28.5).ToECEF();
             
@@ -325,7 +330,7 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint7Selected()
     {
-        showInteriors(2);
+        ShowInteriors(2);
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459908, -2.978208, 28.5).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(56.460026, -2.978270, 28.5).ToECEF();
             
@@ -333,7 +338,7 @@ namespace Examples
         
     }
     
-    void JumpPointsExample::showInteriors(int floorNumber)
+    void JumpPointsExample::ShowInteriors(int floorNumber)
     {
         
         InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
@@ -347,7 +352,7 @@ namespace Examples
         m_isInInterior = true;
     }
     
-    void JumpPointsExample::hideInteriors()
+    void JumpPointsExample::HideInteriors()
     {
         InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
         

@@ -11,12 +11,14 @@
 #include "CameraState.h"
 #include "IVRHeadTracker.h"
 
+#include "Modules/UI/Animations/IDv3Animateable.h"
+
 namespace Eegeo
 {
     namespace VR
     {
         
-        class JumpPointsCameraController : public Eegeo::Location::IInterestPointProvider, protected Eegeo::NonCopyable
+        class JumpPointsCameraController : public Eegeo::Location::IInterestPointProvider, public Eegeo::UI::Animations::IDv3Animateable, protected Eegeo::NonCopyable
         {
             
         public:
@@ -63,7 +65,10 @@ namespace Eegeo
             void SetStartLatLongAltitude(const Eegeo::Space::LatLongAltitude& eyePos);
             
             void GetNearFarPlaneDistances(float& out_near, float& out_far);
-                        
+            
+            // on animation update
+            virtual void OnDv3Updated(Eegeo::dv3& delta);
+            
             void Update(float dt);
             
             void RotateHorizontal(float angle);

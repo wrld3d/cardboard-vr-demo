@@ -2,6 +2,7 @@
 
 #include "JumpPointsExampleFactory.h"
 #include "JumpPointsExample.h"
+#include "Modules/UI/Animations/AnimationsController.h"
 
 
 namespace Examples
@@ -16,11 +17,13 @@ namespace Examples
                                                        Eegeo::UI::IUICameraProvider& uiCameraProvider,
                                                        InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                        Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
+                                                       Eegeo::UI::Animations::AnimationsController& animationsController,
                                                        IVRHeadTracker& headTracker)
     : m_uiQuadFactory(quadFactory)
     , m_uiInteractionObservable(uiInteractionObservable)
     , m_uiCameraProvider(uiCameraProvider)
     , m_world(world)
+    , m_animationsController(animationsController)
     , m_screenPropertiesProvider(screenPropertiesProvider)
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_interiorsExplorerModule(interiorsExplorerModule)
@@ -45,6 +48,7 @@ namespace Examples
                                                m_uiCameraProvider,
                                                m_interiorsExplorerModule,
                                                m_deadZoneMenuRepository,
+                                               m_animationsController,
                                                m_headTracker
                                                );
     }

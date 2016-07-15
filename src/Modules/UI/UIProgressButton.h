@@ -59,6 +59,10 @@ namespace Eegeo
             
             void SetScale(const Eegeo::v3& scale);
             Eegeo::v3 GetScale();
+            
+            bool GetItemShouldRender(){ return m_pSprite->GetItemShouldRender(); }
+            void SetItemShouldRender(bool shouldRender){ m_pSprite->SetItemShouldRender(shouldRender); }
+            
         };
         
     }

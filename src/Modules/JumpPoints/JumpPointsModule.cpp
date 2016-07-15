@@ -1,6 +1,7 @@
 // Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
 #include "JumpPointsModule.h"
+#include "../UI/Animations/AnimationsController.h"
 
 namespace Eegeo
 {
@@ -13,16 +14,21 @@ namespace Eegeo
                                                , IUIInteractionObservable& uiInteractionObservable
                                                , IUICameraProvider& uiCameraProvider
                                                , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
+                                               , Animations::AnimationsController& animationsController
+                                               , Animations::IDv3Animateable& animateableCamera
                                                , const UIProgressBarConfig& progressBarConfig
                                                )
             {
-                m_pViewFactory = new JumpPointViewFactory(uiRenderableFilter
-                                                          , uiQuadFactory
-                                                          , uiCameraProvider
-                                                          , interiorsExplorerModule
-                                                          , progressBarConfig);
-                m_pRepository = new JumpPointRepository();
-                m_pController = new JumpPointController(*m_pRepository, *m_pViewFactory, uiInteractionObservable);
+                m_pViewFactory = Eegeo_NEW(JumpPointViewFactory(uiRenderableFilter
+                                                                , uiQuadFactory
+                                                                , uiCameraProvider
+                                                                , interiorsExplorerModule
+                                                                , animationsController
+                                                                , animateableCamera
+                                                                , progressBarConfig));
+                
+                m_pRepository = Eegeo_NEW(JumpPointRepository());
+                m_pController = Eegeo_NEW(JumpPointController(*m_pRepository, *m_pViewFactory, uiInteractionObservable, animationsController));
             }
             
             JumpPointsModule::~JumpPointsModule()

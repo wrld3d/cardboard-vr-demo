@@ -13,7 +13,7 @@ namespace Eegeo
             class IDv3Animateable
             {
             public:
-                virtual void onDv3Updated(Eegeo::dv3& delta) = 0;
+                virtual void OnDv3Updated(Eegeo::dv3& delta) = 0;
             };
         }
     }

@@ -61,6 +61,10 @@ namespace Eegeo
         
         bool UIProgressButton::IsCollidingWithPoint(const Eegeo::v2& screenPoint, IUICameraProvider& cameraProvider)
         {
+            
+            if(!m_pSprite->GetItemShouldRender())
+                return false;
+            
             Eegeo::Camera::RenderCamera& renderCamera = cameraProvider.GetRenderCameraForUI();
             
             if (renderCamera.GetEcefLocation().SquareDistanceTo(m_pSprite->GetEcefPosition()) < (GetItemRadius() * GetItemRadius())) {

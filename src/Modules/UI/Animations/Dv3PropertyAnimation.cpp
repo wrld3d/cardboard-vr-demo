@@ -2,6 +2,8 @@
 
 #include "Dv3PropertyAnimation.h"
 #include "IDv3Animateable.h"
+#include "AnimationEase.h"
+#include "Logger.h"
 
 namespace Eegeo
 {
@@ -19,6 +21,7 @@ namespace Eegeo
             ,m_startValue(startValue)
             ,m_endValue(endValue)
             ,m_time(time)
+            ,m_pEaseFunction(pEaseFunction)
             ,m_timePassed(0)
             {
                 m_direction = (m_endValue - m_startValue).Norm();
@@ -33,15 +36,19 @@ namespace Eegeo
             
             float Dv3PropertyAnimation::getProgress()
             {
-                return (int)(m_timePassed/m_time);
+                return (m_timePassed/m_time)*getMaxProgress();
+            }
+            
+            float Dv3PropertyAnimation::getMaxProgress()
+            {
+                return 1.f;
             }
             
             void Dv3PropertyAnimation::Update(float dt)
             {
                 m_timePassed+=dt;
-                m_timePassed = m_time;
-                Eegeo::dv3 pos = Eegeo::dv3::Lerp(m_startValue, m_endValue, m_pEaseFunction(0, 1, getProgress()));
-                m_dv3Animateable.onDv3Updated(pos);
+                Eegeo::dv3 pos = Eegeo::dv3::Lerp(m_startValue, m_endValue, m_pEaseFunction(0, 1, (getProgress()/getMaxProgress())));
+                m_dv3Animateable.OnDv3Updated(pos);
             }
             
         }

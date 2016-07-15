@@ -22,6 +22,8 @@
 #include "Modules/DeadZoneMenu/DeadZoneMenuItemRepository.h"
 #include "Modules/DeadZoneMenu/DeadZoneMenuItem.h"
 
+#include "Modules/UI/Animations/AnimationsController.h"
+
 namespace Examples
 {
     /*!
@@ -41,6 +43,8 @@ namespace Examples
         Eegeo::VR::JumpPointsCameraController* m_pSplineCameraController;
         Eegeo::UI::JumpPoints::JumpPoint *m_pWPJumpPoint1, *m_pWPJumpPoint2, *m_pWPJumpPoint3;
         Eegeo::UI::JumpPoints::JumpPointsModule* m_pJumpPointsModule;
+        
+        Eegeo::UI::Animations::AnimationsController& m_animationsController;
         
         Eegeo::Rendering::RenderableFilters& m_renderableFilters;
         Eegeo::UI::UIRenderableFilter* m_pUIRenderableFilter;
@@ -65,6 +69,7 @@ namespace Examples
                           Eegeo::UI::IUICameraProvider& uiCameraProvider,
                           InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                           Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
+                          Eegeo::UI::Animations::AnimationsController& animationsController,
                           IVRHeadTracker& headTracker);
         
         virtual ~JumpPointsExample();
@@ -127,8 +132,8 @@ namespace Examples
         void OnStopPoint6Selected();
         void OnStopPoint7Selected();
         
-        void showInteriors(int floorNumber);
-        void hideInteriors();
+        void ShowInteriors(int floorNumber);
+        void HideInteriors();
     };
 }
 

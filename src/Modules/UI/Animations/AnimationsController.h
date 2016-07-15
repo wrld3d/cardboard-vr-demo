@@ -26,12 +26,17 @@ namespace Eegeo
                 
                 virtual void AddAnimationsObserver(IAnimationObserver* pObserverToAdd);
                 virtual void RemoveAnimationsObserver(IAnimationObserver* pObserverToRemove);
+                virtual void AddAnimation(IAnimation* pAnimationToAdd);
+                virtual void RemoveAnimation(IAnimation* pAnimationToRemove);
                 
                 
             private:
                 
-                std::vector<IAnimationObserver*> m_animationObservables;
-                std::vector<IAnimation*> m_animations;
+                typedef std::vector<IAnimationObserver*> TAnimationObserver;
+                TAnimationObserver m_animationObservers;
+                
+                typedef std::vector<IAnimation*> TAnimation;
+                TAnimation m_animations;
                 
             };
         }

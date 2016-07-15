@@ -25,13 +25,14 @@ namespace Eegeo
                 ~Dv3PropertyAnimation();
                 virtual void Update(float dt);
                 
-                bool isComplete();
-                float getProgress();
+                virtual bool isComplete();
+                virtual float getProgress();
+                virtual float getMaxProgress();
                 
             private:
                 IDv3Animateable& m_dv3Animateable;
-                const Eegeo::dv3& m_startValue;
-                const Eegeo::dv3& m_endValue;
+                const Eegeo::dv3 m_startValue;
+                const Eegeo::dv3 m_endValue;
                 Eegeo::dv3 m_direction;
                 float m_time;
                 

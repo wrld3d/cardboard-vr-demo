@@ -8,6 +8,8 @@
 #include "JumpPointController.h"
 #include "JumpPointRepository.h"
 #include "JumpPointViewFactory.h"
+#include "../UI/Animations/AnimationsController.h"
+#include "../UI/Animations/IDv3Animateable.h"
 
 namespace Eegeo
 {
@@ -30,6 +32,8 @@ namespace Eegeo
                                  , IUIInteractionObservable& uiInteractionObservable
                                  , IUICameraProvider& uiCameraProvider
                                  , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
+                                 , Animations::AnimationsController& animationsController
+                                 , Animations::IDv3Animateable& animateableCamera
                                  , const UIProgressBarConfig& progressBarConfig
                                  );
                 
