@@ -22,6 +22,7 @@ namespace Eegeo
                                          , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
                                          , Animations::AnimationsController& animationsController
                                          , Animations::IDv3Animateable& animateableCamera
+                                         , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected
                                          )
             : m_jumpPoint(jumpPoint)
             , m_uiCameraProvider(uiCameraProvider)
@@ -29,6 +30,7 @@ namespace Eegeo
             , m_jumpPointClickCallback(this, &JumpPointView::MoveCameraToJumpPoint)
             , m_animationsController(animationsController)
             , m_animateableCamera(animateableCamera)
+            , m_onJumpPointSelected(onJumpPointSelected)
             , UIProgressButton(uiRenderableFilter
                             , quadFactory
                             , jumpPoint.GetFileName()
@@ -73,11 +75,12 @@ namespace Eegeo
                 if (m_jumpPoint.GetIsInInterior())
                 {
                     m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(m_jumpPoint.GetInteriorFloor());
-                    if (visibilityUpdater.GetInteriorHasLoaded()) {
+                    if (visibilityUpdater.GetInteriorHasLoaded())
+                    {
                         visibilityUpdater.SetInteriorShouldDisplay(true);
                         visibilityUpdater.UpdateVisiblityImmediately();
                         m_animationsController.AddAnimation(Eegeo_NEW(Animations::Dv3PropertyAnimation(m_animateableCamera, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), m_jumpPoint.GetEcefPosition(), 5.f, &AnimationEase::EaseInOutExpo)));
-                }
+                    }
                 }
                 else
                 {
@@ -89,6 +92,8 @@ namespace Eegeo
                     
                     m_animationsController.AddAnimation(Eegeo_NEW(Animations::Dv3PropertyAnimation(m_animateableCamera, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), m_jumpPoint.GetEcefPosition(), 5.f, &AnimationEase::EaseInOutExpo)));
                 }
+                
+                m_onJumpPointSelected(m_jumpPoint);
             }
             
         }

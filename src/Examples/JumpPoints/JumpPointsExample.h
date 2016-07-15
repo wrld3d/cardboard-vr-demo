@@ -53,7 +53,12 @@ namespace Examples
         IVRHeadTracker& m_headTracker;
         Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem *m_pSPButton1, *m_pSPButton2, *m_pSPButton3, *m_pSPButton4, *m_pSPButton5, *m_pSPButton6, *m_pSPButton7;
         Eegeo::Helpers::TCallback0<JumpPointsExample> m_onSP1SelectedCallback, m_onSP2SelectedCallback, m_onSP3SelectedCallback, m_onSP4SelectedCallback, m_onSP5SelectedCallback, m_onSP6SelectedCallback, m_onSP7SelectedCallback;
+        Eegeo::Helpers::TCallback0<JumpPointsExample> m_onWestPortEntryButtonCallback;
+        
+        Eegeo::Helpers::TCallback1<JumpPointsExample, Eegeo::UI::JumpPoints::JumpPoint&> m_onJumpPointSelected;
         Eegeo::UI::UIProgressBarConfig m_progressBarConfig;
+        Eegeo::UI::UIProgressButton *m_pWestPortInteriorButton;
+        
         void MoveCameraToStopPoint(const Eegeo::dv3& cameraPoint, const Eegeo::dv3& cameraLookat);
         void MoveCameraToStopPoint(const Eegeo::dv3 &cameraPoint, float cameraHeading);
         bool m_isInInterior;
@@ -134,6 +139,9 @@ namespace Examples
         
         void ShowInteriors(int floorNumber);
         void HideInteriors();
+        
+        void OnWestportInteriorButtonSelected();
+        void OnJumpPointSelected(Eegeo::UI::JumpPoints::JumpPoint& jumpPoint);
     };
 }
 

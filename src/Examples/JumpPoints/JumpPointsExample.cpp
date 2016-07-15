@@ -16,6 +16,9 @@
 #include "CameraHelpers.h"
 #include "Modules/UI/Animations/AnimationsController.h"
 #include "Modules/UI/Animations/IDv3Animateable.h"
+#include "Modules/UI/Animations/Dv3PropertyAnimation.h"
+#include "Modules/UI/Animations/AnimationEase.h"
+
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
 
@@ -50,6 +53,8 @@ namespace Examples
     , m_onSP5SelectedCallback(this, &JumpPointsExample::OnStopPoint5Selected)
     , m_onSP6SelectedCallback(this, &JumpPointsExample::OnStopPoint6Selected)
     , m_onSP7SelectedCallback(this, &JumpPointsExample::OnStopPoint7Selected)
+    , m_onWestPortEntryButtonCallback(this, &JumpPointsExample::OnWestportInteriorButtonSelected)
+    , m_onJumpPointSelected(this, &JumpPointsExample::OnJumpPointSelected)
     , m_isInInterior(false)
     {
         
@@ -119,7 +124,8 @@ namespace Examples
                                                                           m_interiorsExplorerModule,
                                                                           m_animationsController,
                                                                           *m_pSplineCameraController,
-                                                                          m_progressBarConfig);
+                                                                          m_progressBarConfig,
+                                                                          m_onJumpPointSelected);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint1);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint2);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint3);
@@ -139,9 +145,27 @@ namespace Examples
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton5);
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton6);
         m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton7);
+        
+        Eegeo::UI::CalculateUV(size, 14, outMin, outMax);
+        m_pWestPortInteriorButton = Eegeo_NEW(Eegeo::UI::UIProgressButton)(*m_pUIRenderableFilter,
+                                                                           m_uiQuadFactory,
+                                                                           "mesh_example/PinIconTexturePage.png",
+                                                                           m_progressBarConfig,
+                                                                           m_onWestPortEntryButtonCallback,
+                                                                           dimension / 2.0f,
+                                                                           Eegeo::Space::LatLongAltitude::FromDegrees(56.459928, -2.978063, 28.5).ToECEF(),
+                                                                           Eegeo::v3::One(),
+                                                                           Eegeo::v4::One(),
+                                                                           outMin,
+                                                                           outMax);
+        
+        m_uiInteractionObservable.RegisterInteractableItem(m_pWestPortInteriorButton);
     }
     
     void JumpPointsExample::Suspend(){
+        m_uiInteractionObservable.UnRegisterInteractableItem(m_pWestPortInteriorButton);
+        Eegeo_DELETE m_pWestPortInteriorButton;
+        
         m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pWPJumpPoint1);
         m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pWPJumpPoint2);
         m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pWPJumpPoint3);
@@ -192,6 +216,8 @@ namespace Examples
         {
             m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
         }
+        
+        m_pWestPortInteriorButton->Update(dt);
     }
     
     
@@ -338,6 +364,15 @@ namespace Examples
         
     }
     
+    void JumpPointsExample::OnWestportInteriorButtonSelected()
+    {
+        ShowInteriors(2);
+        
+        Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459928, -2.978063, 50).ToECEF();
+        
+        m_animationsController.AddAnimation(Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 2.f, &Eegeo::UI::AnimationEase::EaseInOutExpo));
+    }
+    
     void JumpPointsExample::ShowInteriors(int floorNumber)
     {
         
@@ -350,6 +385,8 @@ namespace Examples
             visibilityUpdater.UpdateVisiblityImmediately();
         }
         m_isInInterior = true;
+        
+        m_pWestPortInteriorButton->SetItemShouldRender(false);
     }
     
     void JumpPointsExample::HideInteriors()
@@ -363,5 +400,15 @@ namespace Examples
         }
         
         m_isInInterior = false;
+        
+        m_pWestPortInteriorButton->SetItemShouldRender(true);
+    }
+    
+    void JumpPointsExample::OnJumpPointSelected(Eegeo::UI::JumpPoints::JumpPoint& jumpPoint)
+    {
+        if (!jumpPoint.GetIsInInterior())
+        {
+            m_pWestPortInteriorButton->SetItemShouldRender(true);
+        }
     }
 }

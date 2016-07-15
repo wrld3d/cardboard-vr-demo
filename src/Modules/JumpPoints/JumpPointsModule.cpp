@@ -17,18 +17,20 @@ namespace Eegeo
                                                , Animations::AnimationsController& animationsController
                                                , Animations::IDv3Animateable& animateableCamera
                                                , const UIProgressBarConfig& progressBarConfig
+                                               , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected
                                                )
             {
-                m_pViewFactory = Eegeo_NEW(JumpPointViewFactory(uiRenderableFilter
+                m_pViewFactory = Eegeo_NEW(JumpPointViewFactory)(uiRenderableFilter
                                                                 , uiQuadFactory
                                                                 , uiCameraProvider
                                                                 , interiorsExplorerModule
                                                                 , animationsController
                                                                 , animateableCamera
-                                                                , progressBarConfig));
+                                                                , progressBarConfig
+                                                                , onJumpPointSelected);
                 
-                m_pRepository = Eegeo_NEW(JumpPointRepository());
-                m_pController = Eegeo_NEW(JumpPointController(*m_pRepository, *m_pViewFactory, uiInteractionObservable, animationsController));
+                m_pRepository = Eegeo_NEW(JumpPointRepository)();
+                m_pController = Eegeo_NEW(JumpPointController)(*m_pRepository, *m_pViewFactory, uiInteractionObservable, animationsController);
             }
             
             JumpPointsModule::~JumpPointsModule()

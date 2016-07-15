@@ -38,7 +38,8 @@ namespace Eegeo
                               , IUICameraProvider& uiCameraProvider
                               , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
                               , Animations::AnimationsController& animationsController
-                              , Animations::IDv3Animateable& animateableCamera);
+                              , Animations::IDv3Animateable& animateableCamera
+                              , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected);
 
                 virtual ~JumpPointView(){}
                 
@@ -64,7 +65,7 @@ namespace Eegeo
                 Eegeo::Helpers::TCallback0<JumpPointView> m_jumpPointClickCallback;
                 Animations::AnimationsController& m_animationsController;
                 Animations::IDv3Animateable& m_animateableCamera;
-                
+                Eegeo::Helpers::ICallback1<JumpPoint&>& m_onJumpPointSelected;
                 bool m_isCameraAnimating;
                 
             };

@@ -35,6 +35,7 @@ namespace Eegeo
                                  , Animations::AnimationsController& animationsController
                                  , Animations::IDv3Animateable& animateableCamera
                                  , const UIProgressBarConfig& progressBarConfig
+                                 , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected
                                  );
                 
                 ~JumpPointsModule();

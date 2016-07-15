@@ -16,7 +16,8 @@ namespace Eegeo
                                                        , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
                                                        , Animations::AnimationsController& animationsController
                                                        , Animations::IDv3Animateable& animateableCamera
-                                                       , const UIProgressBarConfig& progressBarConfig)
+                                                       , const UIProgressBarConfig& progressBarConfig
+                                                       , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected)
             : m_uiRenderableFilter(uiRenderableFilter)
             , m_uiQuadFactory(uiQuadFactory)
             , m_uiCameraProvider(uiCameraProvider)
@@ -24,6 +25,7 @@ namespace Eegeo
             , m_animationsController(animationsController)
             , m_animateableCamera(animateableCamera)
             , m_progressBarConfig(progressBarConfig)
+            , m_onJumpPointSelected(onJumpPointSelected)
             {
                 
             }
@@ -43,6 +45,7 @@ namespace Eegeo
                                                                         , m_interiorsExplorerModule
                                                                         , m_animationsController
                                                                         , m_animateableCamera
+                                                                        , m_onJumpPointSelected
                                                                         );
                 return pJumpPointView;
             }
