@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "IAnimation.h"
 
 namespace Eegeo
 {

@@ -371,7 +371,10 @@ namespace Examples
         
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459928, -2.978063, 50).ToECEF();
         
-        m_animationsController.AddAnimation(Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 2.f, &Eegeo::UI::AnimationEase::EaseInOutExpo));
+        m_animationsController.RemoveAnimationsForTag(0);
+        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, NULL, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 2.f, &Eegeo::UI::AnimationEase::EaseInOutExpo);
+        animation->SetTag(0);
+        m_animationsController.AddAnimation(animation);
     }
     
     void JumpPointsExample::ShowInteriors(int floorNumber)

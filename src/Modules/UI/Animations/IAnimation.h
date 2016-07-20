@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "Animations.h"
+
 namespace Eegeo
 {
     namespace UI
@@ -11,11 +13,21 @@ namespace Eegeo
             class IAnimation
             {
                 
+            private:
+                int m_tag;
+                IAnimationObserver* m_pAnimationObserver;
+                
             public:
+                
+                void SetAnimationObserver(IAnimationObserver* animationObserver){m_pAnimationObserver = animationObserver;}
+                IAnimationObserver* GetAnimationObserver(){return m_pAnimationObserver;}
+                
+                void SetTag(int tag){m_tag = tag;}
+                int GetTag(){return m_tag;}
+                
                 virtual void Update(float dt) = 0;
-                virtual bool isComplete() = 0;
-                virtual float getProgress() = 0;
-                virtual float getMaxProgress() = 0;
+                virtual bool IsComplete() = 0;
+                virtual float GetProgress() = 0;
                 
                 virtual ~IAnimation(){}
                 

@@ -6,7 +6,7 @@
 #include "Types.h"
 #include "IAnimation.h"
 #include "IAnimationObserver.h"
-#include "IAnimationObservable.h"
+#include "IAnimationsObservable.h"
 
 
 namespace Eegeo
@@ -15,7 +15,7 @@ namespace Eegeo
     {
         namespace Animations
         {
-            class AnimationsController : protected Eegeo::NonCopyable, public IAnimationObservable
+            class AnimationsController : protected Eegeo::NonCopyable, public IAnimationsObservable
             {
             public:
                 AnimationsController();
@@ -24,16 +24,13 @@ namespace Eegeo
                 
                 void Update(float deltaTime);
                 
-                virtual void AddAnimationsObserver(IAnimationObserver* pObserverToAdd);
-                virtual void RemoveAnimationsObserver(IAnimationObserver* pObserverToRemove);
                 virtual void AddAnimation(IAnimation* pAnimationToAdd);
                 virtual void RemoveAnimation(IAnimation* pAnimationToRemove);
+                virtual void RemoveAnimationsForTag(int tag);
+                virtual void ClearAllAnimations();
                 
                 
             private:
-                
-                typedef std::vector<IAnimationObserver*> TAnimationObserver;
-                TAnimationObserver m_animationObservers;
                 
                 typedef std::vector<IAnimation*> TAnimation;
                 TAnimation m_animations;

@@ -2,10 +2,6 @@
 
 #pragma once
 
-#include "Types.h"
-#include "IDv3Animateable.h"
-#include "IAnimation.h"
-
 namespace Eegeo
 {
     namespace UI

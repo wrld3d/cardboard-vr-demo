@@ -3,22 +3,20 @@
 #pragma once
 
 
-#include "IAnimationObserver.h"
-
 namespace Eegeo
 {
     namespace UI
     {
         namespace Animations
         {
-            class IAnimationObservable
+            class IAnimationsObservable
             {
             public:
-                virtual void AddAnimationsObserver(IAnimationObserver* pObserverToAdd) = 0;
-                virtual void RemoveAnimationsObserver(IAnimationObserver* pObserverToRemove) = 0;
                 virtual void AddAnimation(IAnimation* pAnimationToAdd) = 0;
                 virtual void RemoveAnimation(IAnimation* pAnimationToRemove) = 0;
-                virtual ~IAnimationObservable() {}
+                virtual void RemoveAnimationsForTag(int tag) = 0;
+                virtual void ClearAllAnimations() = 0;
+                virtual ~IAnimationsObservable() {}
             };
         }
     }

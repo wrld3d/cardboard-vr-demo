@@ -79,7 +79,11 @@ namespace Eegeo
                     {
                         visibilityUpdater.SetInteriorShouldDisplay(true);
                         visibilityUpdater.UpdateVisiblityImmediately();
-                        m_animationsController.AddAnimation(Eegeo_NEW(Animations::Dv3PropertyAnimation(m_animateableCamera, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), m_jumpPoint.GetEcefPosition(), 5.f, &AnimationEase::EaseInOutExpo)));
+                        
+                        m_animationsController.RemoveAnimationsForTag(0);
+                        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Animations::Dv3PropertyAnimation)(m_animateableCamera, NULL,m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), m_jumpPoint.GetEcefPosition(), 5.f, &AnimationEase::EaseInOutCubic);
+                        animation->SetTag(0);
+                        m_animationsController.AddAnimation(animation);
                     }
                 }
                 else
@@ -90,7 +94,10 @@ namespace Eegeo
                         visibilityUpdater.UpdateVisiblityImmediately();
                     }
                     
-                    m_animationsController.AddAnimation(Eegeo_NEW(Animations::Dv3PropertyAnimation(m_animateableCamera, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), m_jumpPoint.GetEcefPosition(), 5.f, &AnimationEase::EaseInOutExpo)));
+                    m_animationsController.RemoveAnimationsForTag(0);
+                    Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Animations::Dv3PropertyAnimation)(m_animateableCamera, NULL,m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), m_jumpPoint.GetEcefPosition(), 5.f, &AnimationEase::EaseInOutCubic);
+                    animation->SetTag(0);
+                    m_animationsController.AddAnimation(animation);
                 }
                 
                 m_onJumpPointSelected(m_jumpPoint);

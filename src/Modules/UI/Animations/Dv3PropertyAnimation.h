@@ -4,8 +4,8 @@
 
 #include "Types.h"
 #include "VectorMath.h"
+#include "Animations.h"
 #include "IAnimation.h"
-#include "IDv3Animateable.h"
 
 namespace Eegeo
 {
@@ -18,6 +18,7 @@ namespace Eegeo
                 
             public:
                 Dv3PropertyAnimation(IDv3Animateable& dv3Animateable,
+                                     IAnimationObserver* animationObserver,
                                      const Eegeo::dv3& startValue,
                                      const Eegeo::dv3& endValue,
                                      float time,
@@ -25,11 +26,11 @@ namespace Eegeo
                 ~Dv3PropertyAnimation();
                 virtual void Update(float dt);
                 
-                virtual bool isComplete();
-                virtual float getProgress();
-                virtual float getMaxProgress();
+                virtual bool IsComplete();
+                virtual float GetProgress();
                 
             private:
+                IAnimationObserver* m_animationObserver;
                 IDv3Animateable& m_dv3Animateable;
                 const Eegeo::dv3 m_startValue;
                 const Eegeo::dv3 m_endValue;

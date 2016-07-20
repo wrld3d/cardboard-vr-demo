@@ -49,7 +49,6 @@ namespace Eegeo
                 JumpPointView* pView = m_viewFactory.CreateViewForJumpPoint(jumpPoint);
                 m_viewsByModel[&jumpPoint] = pView;
                 m_uiInteractionObservable.RegisterInteractableItem(pView);
-                m_animationsController.AddAnimationsObserver(pView);
             }
             
             void JumpPointController::OnJumpPointRemoved(JumpPoint& jumpPoint)
@@ -59,7 +58,6 @@ namespace Eegeo
                 
                 m_viewsByModel.erase(&jumpPoint);
                 m_uiInteractionObservable.UnRegisterInteractableItem(pView);
-                m_animationsController.RemoveAnimationsObserver(pView);
                 
                 Eegeo_DELETE(pView);
             }
