@@ -67,7 +67,7 @@ JNIEXPORT long JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_createNati
 	g_nativeState.assetManagerGlobalRef = jenv->NewGlobalRef(assetManager);
 	g_nativeState.assetManager = AAssetManager_fromJava(jenv, g_nativeState.assetManagerGlobalRef);
 
-	g_pAppRunner = Eegeo_NEW(AppRunner)(ApiKey, &g_nativeState);
+	g_pAppRunner = Eegeo_NEW(AppRunner)(&g_nativeState);
 
 	return ((long)g_pAppRunner);
 }

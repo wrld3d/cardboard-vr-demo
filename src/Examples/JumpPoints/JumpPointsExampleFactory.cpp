@@ -18,7 +18,8 @@ namespace Examples
                                                        InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                        Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                                        Eegeo::UI::Animations::AnimationsController& animationsController,
-                                                       IVRHeadTracker& headTracker)
+                                                       IVRHeadTracker& headTracker,
+                                                       Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
     : m_uiQuadFactory(quadFactory)
     , m_uiInteractionObservable(uiInteractionObservable)
     , m_uiCameraProvider(uiCameraProvider)
@@ -29,6 +30,7 @@ namespace Examples
     , m_interiorsExplorerModule(interiorsExplorerModule)
     , m_deadZoneMenuRepository(deadZoneMenuRepository)
     , m_headTracker(headTracker)
+    , m_appConfig(appConfig)
     {
         
     }
@@ -49,7 +51,8 @@ namespace Examples
                                                m_interiorsExplorerModule,
                                                m_deadZoneMenuRepository,
                                                m_animationsController,
-                                               m_headTracker
+                                               m_headTracker,
+                                               m_appConfig
                                                );
     }
     

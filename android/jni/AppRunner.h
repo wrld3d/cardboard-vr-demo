@@ -12,7 +12,6 @@ class AppRunner : Eegeo::NonCopyable
 {
 public:
 	AppRunner(
-	    const std::string& apiKey,
 	    AndroidNativeState* pNativeState
 	);
 	~AppRunner();
@@ -28,7 +27,6 @@ public:
     void MagnetTriggered();
     
 private:
-	const std::string& m_apiKey;
 	AndroidNativeState* m_pNativeState;
 
 	GlDisplayService m_displayService;

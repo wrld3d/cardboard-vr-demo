@@ -75,7 +75,8 @@ namespace Examples
                           InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                           Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                           Eegeo::UI::Animations::AnimationsController& animationsController,
-                          IVRHeadTracker& headTracker);
+                          IVRHeadTracker& headTracker,
+                          const Examples::ApplicationConfig::ApplicationConfiguration& appConfig);
         
         virtual ~JumpPointsExample();
         

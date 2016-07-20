@@ -7,11 +7,9 @@
 
 AppRunner::AppRunner
 (
-    const std::string& apiKey,
     AndroidNativeState* pNativeState
 )
-	: m_apiKey(apiKey)
-	, m_pNativeState(pNativeState)
+	: m_pNativeState(pNativeState)
 	, m_pAppHost(NULL)
 	, m_isPaused(false)
 {
@@ -36,7 +34,6 @@ void AppRunner::CreateAppHost()
 	{
 		m_pAppHost = Eegeo_NEW(AppHost)
 		             (
-		                 m_apiKey,
 		                 *m_pNativeState,
 		                 m_displayService.GetDisplayWidth(),
 		                 m_displayService.GetDisplayHeight(),

@@ -22,6 +22,7 @@
 #include "Modules/UI/Animations/AnimationsController.h"
 #include <vector>
 #include <string>
+#include "ApplicationConfiguration.h"
 
 namespace Examples
 {
@@ -125,15 +126,16 @@ namespace Examples
         
         template <typename TExampleFactory>
         void RegisterJumpPointVRExample(const IScreenPropertiesProvider& screenPropertiesProvider,
-                                                       Eegeo::UI::IUIQuadFactory& quadFactory,
-                                                       Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
-                                                       Eegeo::UI::IUICameraProvider& uICameraProvider,
+                                                Eegeo::UI::IUIQuadFactory& quadFactory,
+                                                Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
+                                                Eegeo::UI::IUICameraProvider& uICameraProvider,
                                         		InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                         		Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                         		Eegeo::UI::Animations::AnimationsController& animationsController,
-                                                       IVRHeadTracker& headTracker)
+                                                IVRHeadTracker& headTracker,
+                                                Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
         {
-            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, quadFactory, uIInteractionObservable, uICameraProvider, interiorsExplorerModule, deadZoneMenuRepository,animationsController, headTracker)));
+            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, quadFactory, uIInteractionObservable, uICameraProvider, interiorsExplorerModule, deadZoneMenuRepository,animationsController, headTracker, appConfig)));
         }
         
         

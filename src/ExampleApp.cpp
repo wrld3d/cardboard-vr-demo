@@ -120,7 +120,8 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                        Examples::IVRHeadTracker& headTracker,
                        const Eegeo::Rendering::ScreenProperties& screenProperties,
                        Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
-                       Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule)
+                       Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule,
+                       Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
 	: m_pCameraControllerFactory(NULL)
 	, m_pCameraTouchController(NULL)
 	, m_pWorld(pWorld)
@@ -246,7 +247,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem3);
     
     m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_pInteriorExplorerModule, headTracker, m_pDeadZoneMenuModule->GetRepository());
-    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, headTracker);
+    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, headTracker, appConfig);
     
     m_pUIGazeView->HideView();
     

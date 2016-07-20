@@ -11,6 +11,8 @@
 #include "ScreenPropertiesProvider.h"
 #include "Modules/UI/Animations/AnimationsController.h"
 
+#include "ApplicationConfiguration.h"
+
 namespace Examples
 {
 class JumpPointsExampleFactory : public IExampleFactory
@@ -18,7 +20,7 @@ class JumpPointsExampleFactory : public IExampleFactory
     Eegeo::UI::IUIQuadFactory& m_uiQuadFactory;
     Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
     Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
-    
+    Examples::ApplicationConfig::ApplicationConfiguration m_appConfig;
     
     Eegeo::EegeoWorld& m_world;
     const IScreenPropertiesProvider& m_screenPropertiesProvider;
@@ -39,7 +41,8 @@ public:
                              InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                              Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                              Eegeo::UI::Animations::AnimationsController& animationsController,
-                             IVRHeadTracker& headTracker);
+                             IVRHeadTracker& headTracker,
+                             Examples::ApplicationConfig::ApplicationConfiguration& appConfig);
 
 	std::string ExampleName() const;
 

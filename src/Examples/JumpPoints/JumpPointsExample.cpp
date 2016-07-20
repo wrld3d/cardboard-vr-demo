@@ -36,7 +36,8 @@ namespace Examples
                                          InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                          Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                          Eegeo::UI::Animations::AnimationsController& animationsController,
-                                         IVRHeadTracker& headTracker)
+                                         IVRHeadTracker& headTracker,
+                                         const Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
     : m_world(eegeoWorld)
     , m_uiQuadFactory(quadFactory)
     , m_uiInteractionObservable(uiInteractionObservable)

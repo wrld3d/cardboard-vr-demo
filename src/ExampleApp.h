@@ -23,7 +23,7 @@
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
 #include "Modules/UI/UIProgressBarConfig.h"
 #include "Modules/DeadZoneMenu/DeadZoneMenu.h"
-
+#include "ApplicationConfiguration.h"
 #include "Modules/UI/Animations/AnimationsController.h"
 
 #include "Logger.h"
@@ -89,7 +89,8 @@ public:
                Examples::IVRHeadTracker& headTracker,
                const Eegeo::Rendering::ScreenProperties& screenProperties,
                Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule,
-               Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule);
+               Eegeo::Modules::BuildingFootprintsModule& buildingFootprintsModule,
+               Examples::ApplicationConfig::ApplicationConfiguration& appConfig);
 
 	~ExampleApp();
 

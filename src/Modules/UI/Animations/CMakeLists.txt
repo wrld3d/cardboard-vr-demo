@@ -3,8 +3,6 @@ set(headers ${headers} ../src/Modules/UI/Animations/
 set(currsources
 ../src/Modules/UI/Animations/AnimationsController.cpp
 ../src/Modules/UI/Animations/AnimationsController.h
-../src/Modules/UI/Animations/AnimationsFactory.cpp
-../src/Modules/UI/Animations/AnimationsFactory.h
 ../src/Modules/UI/Animations/IAnimation.h
 ../src/Modules/UI/Animations/IAnimationObservable.h
 ../src/Modules/UI/Animations/IAnimationObserver.h
