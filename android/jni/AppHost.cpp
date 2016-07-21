@@ -138,6 +138,7 @@ AppHost::AppHost(
 																							   display,
 																							   resourceBuildShareContext,
 																							   shareSurface,
+																							   appConfig.EegeoApiKey(),
 																							   customApplicationAssetDirectories);
 
 	Eegeo::EffectHandler::Initialise();
