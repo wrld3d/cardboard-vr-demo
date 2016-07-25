@@ -21,7 +21,7 @@ namespace InteriorsExplorer
          *  This class deals with the concerns of displaying a InteriorMenuItem.
          *
          */
-        class InteriorMenuItemView : protected Eegeo::NonCopyable , public InteriorMenuUIButton, public Eegeo::UI::IUIInteractableItem
+        class InteriorMenuItemView : protected Eegeo::NonCopyable , public InteriorMenuUIButton
         {
         public:
             InteriorMenuItemView(InteriorMenuItem& InteriorMenuItem

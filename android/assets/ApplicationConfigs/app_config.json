@@ -1,0 +1,9 @@
+{
+    "Name": "Eegeo Cardboard",
+    "StartLocationLatitude": 56.45989,
+    "StartLocationLongitude": -2.97751,
+    "StartLocationAltitude": 2.7,
+    "StartLocationDistance": 500.0,
+    "StartLocationOrientationDegrees": 0.0,
+    "EegeoApiKey":"INSERT_API_KEY_HERE"
+}

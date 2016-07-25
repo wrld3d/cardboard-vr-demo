@@ -15,7 +15,7 @@ namespace InteriorsExplorer
 {
     namespace InteriorMenu
     {
-        class InteriorMenuUIButton
+        class InteriorMenuUIButton : public Eegeo::UI::IUIInteractableItem
         {
         protected:
             Eegeo::UI::UISprite* m_pSprite;
