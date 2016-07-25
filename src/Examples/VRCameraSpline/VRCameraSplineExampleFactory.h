@@ -17,7 +17,7 @@ namespace Examples
         Eegeo::EegeoWorld& m_world;
         const IScreenPropertiesProvider& m_screenPropertiesProvider;
         DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
-        const InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
+        InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
         Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneRepository;
         IVRHeadTracker& m_headTracker;
         
@@ -26,7 +26,7 @@ namespace Examples
                                       DefaultCameraControllerFactory& defaultCameraControllerFactory,
                                       IVRHeadTracker& headTracker,
                                       const IScreenPropertiesProvider& screenPropertiesProvider,
-                                      const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                                      InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                       Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository);
         
         std::string ExampleName() const;

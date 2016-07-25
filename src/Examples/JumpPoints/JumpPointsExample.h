@@ -138,7 +138,7 @@ namespace Examples
         void OnStopPoint6Selected();
         void OnStopPoint7Selected();
         
-        void ShowInteriors(int floorNumber);
+        void ShowInteriors();
         void HideInteriors();
         
         void OnWestportInteriorButtonSelected();

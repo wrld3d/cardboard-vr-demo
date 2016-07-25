@@ -185,10 +185,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     Eegeo::Modules::Map::Layers::InteriorsPresentationModule& interiorsPresentationModule = mapModule.GetInteriorsPresentationModule();
     
-    m_pInteriorExplorerModule = Eegeo_NEW(InteriorsExplorer::InteriorsExplorerModule)(
-                            interiorsPresentationModule.GetInteriorInteractionModel(),
-                            interiorsPresentationModule.GetInteriorSelectionModel(),
-                            interiorsPresentationModule.GetInteriorTransitionModel());
     
     m_pExampleController = new Examples::ExampleController(*m_pWorld,
                                                            view,
@@ -236,15 +232,27 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_progressBarConfig.renderLayer = Eegeo::Rendering::LayerIds::Values::AfterAll;
     
     std::string menuTextureFileName("mesh_example/PinIconTexturePage.png");
+    
+    
+    m_pInteriorExplorerModule = Eegeo_NEW(InteriorsExplorer::InteriorsExplorerModule)(
+                                                                                      *m_pUIRenderableFilter,
+                                                                                      *m_pQuadFactory, *
+                                                                                      m_pUIInteractionController,
+                                                                                      *m_pExampleController,
+                                                                                      m_progressBarConfig,
+                                                                                      interiorsPresentationModule.GetInteriorInteractionModel(),
+                                                                                      interiorsPresentationModule.GetInteriorSelectionModel(),
+                                                                                      interiorsPresentationModule.GetInteriorTransitionModel());
+    
     m_pDeadZoneMenuModule = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, menuTextureFileName, m_progressBarConfig, 4);
     
     m_pMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 0, m_jumpPointExampleButtonClickedCallback);
     m_pMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 1, m_toggleDayNightClickedCallback);
     m_pMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 2, m_splineExampleButtonClickedCallback);
     
-    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem1);
-    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem2);
-    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem3);
+//    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem1);
+//    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem2);
+//    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem3);
     
     m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_pInteriorExplorerModule, headTracker, m_pDeadZoneMenuModule->GetRepository());
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, headTracker, appConfig);
@@ -278,8 +286,8 @@ ExampleApp::~ExampleApp()
     Eegeo_DELETE m_pCameraTouchController;
     Eegeo_DELETE m_pExampleController;
     
-    Eegeo_DELETE m_pUIInteractionController;
     Eegeo_DELETE m_pInteriorExplorerModule;
+    Eegeo_DELETE m_pUIInteractionController;
     
     m_pWorld->GetRenderingModule().GetRenderableFilters().RemoveRenderableFilter(*m_pUIRenderableFilter);
     Eegeo_DELETE m_pUIRenderableFilter;

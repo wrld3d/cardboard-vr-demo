@@ -28,11 +28,6 @@ namespace InteriorsExplorer
             return;
         }
         
-        if (m_interiorInteractionModel.GetSelectedFloorIndex() == floor)
-        {
-            // Workaround: to completely load model.
-//            return;
-        }
         
         m_interiorInteractionModel.SetSelectedFloorIndex(floor);
         

@@ -139,13 +139,13 @@ namespace Examples
         m_pSPButton6 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 8, m_onSP6SelectedCallback);
         m_pSPButton7 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 9, m_onSP7SelectedCallback);
         
-        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton1);
-        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton2);
-        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton3);
-        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton4);
-        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton5);
-        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton6);
-        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton7);
+//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton1);
+//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton2);
+//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton3);
+//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton4);
+//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton5);
+//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton6);
+//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton7);
         
         Eegeo::UI::CalculateUV(size, 14, outMin, outMax);
         m_pWestPortInteriorButton = Eegeo_NEW(Eegeo::UI::UIProgressButton)(*m_pUIRenderableFilter,
@@ -212,11 +212,11 @@ namespace Examples
     void JumpPointsExample::Update(float dt)
     {
         m_pJumpPointsModule->Update(dt);
-        
-        if (m_isInInterior)
-        {
-            m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
-        }
+//TODO:
+//        if (m_isInInterior)
+//        {
+//            m_interiorsExplorerModule.SelectFloor(6);
+//        }
         
         m_pWestPortInteriorButton->Update(dt);
     }
@@ -347,7 +347,7 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint6Selected()
     {
-        ShowInteriors(2);
+        ShowInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459928, -2.978063, 28.5).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(56.459921, -2.978145, 28.5).ToECEF();
             
@@ -357,7 +357,7 @@ namespace Examples
     
     void JumpPointsExample::OnStopPoint7Selected()
     {
-        ShowInteriors(2);
+        ShowInteriors();
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459908, -2.978208, 28.5).ToECEF();
         Eegeo::dv3 cameraLookat = Eegeo::Space::LatLongAltitude::FromDegrees(56.460026, -2.978270, 28.5).ToECEF();
             
@@ -367,7 +367,7 @@ namespace Examples
     
     void JumpPointsExample::OnWestportInteriorButtonSelected()
     {
-        ShowInteriors(2);
+        ShowInteriors();
         
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459928, -2.978063, 50).ToECEF();
         
@@ -377,34 +377,17 @@ namespace Examples
         m_animationsController.AddAnimation(animation);
     }
     
-    void JumpPointsExample::ShowInteriors(int floorNumber)
+    void JumpPointsExample::ShowInteriors()
     {
-        
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(floorNumber);
-        
-        if (!visibilityUpdater.GetInteriorShouldDisplay()) {
-            visibilityUpdater.SetInteriorShouldDisplay(true);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
         m_isInInterior = true;
-        
+        m_interiorsExplorerModule.ShowInteriors();
         m_pWestPortInteriorButton->SetItemShouldRender(false);
     }
     
     void JumpPointsExample::HideInteriors()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        
-        if (visibilityUpdater.GetInteriorShouldDisplay())
-        {
-            visibilityUpdater.SetInteriorShouldDisplay(false);
-            visibilityUpdater.UpdateVisiblityImmediately();
-        }
-        
         m_isInInterior = false;
-        
+        m_interiorsExplorerModule.ShowInteriors();
         m_pWestPortInteriorButton->SetItemShouldRender(true);
     }
     

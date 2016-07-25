@@ -14,7 +14,7 @@ namespace Examples
                                                                DefaultCameraControllerFactory&defaultCameraControllerFactory,
                                                                IVRHeadTracker& headTracker,
                                                                const IScreenPropertiesProvider& screenPropertiesProvider,
-                                                               const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                                                               InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                                Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository)
     : m_world(world)
     , m_headTracker(headTracker)

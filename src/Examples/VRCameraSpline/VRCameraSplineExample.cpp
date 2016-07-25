@@ -11,7 +11,8 @@
 #include "EarthConstants.h"
 #include "ScreenProperties.h"
 #include "InteriorVisibilityUpdater.h"
-#include "InteriorsExplorerModel.h"
+#include "InteriorsExplorerModule.h"
+#include "IInteriorsExplorerModule.h"
 #include "IVRHeadTracker.h"
 
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
@@ -26,7 +27,7 @@ namespace Examples
                                                  Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                                  IVRHeadTracker& headTracker,
                                                  const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
-                                                 const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                                                 InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                  Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository)
     : m_world(eegeoWorld),
       m_interiorsExplorerModule(interiorsExplorerModule),
@@ -63,11 +64,7 @@ namespace Examples
     
     void VRCameraSplineExample::Suspend()
     {
-        InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-        if (visiblityUpdater.GetInteriorShouldDisplay()) {
-            visiblityUpdater.SetInteriorShouldDisplay(false);
-            visiblityUpdater.UpdateVisiblityImmediately();
-        }
+        m_interiorsExplorerModule.HideInteriors();
         
         m_deadZoneRepository.RemoveDeadZoneMenuItem(m_pSFSplineButton);
         m_deadZoneRepository.RemoveDeadZoneMenuItem(m_pNYSplineButton);
@@ -91,20 +88,12 @@ namespace Examples
             if (m_pSplineCameraController->GetVRCameraPositionSpline().IsInteriorSpline()) {
                 m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
                 
-                InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-                
-                m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(2);
-                visiblityUpdater.SetInteriorShouldDisplay(true);
+                m_interiorsExplorerModule.ShowInteriors();
+                m_interiorsExplorerModule.SelectFloor(2);
             }
             else {
                 m_pSplineCameraController->SetNearMultiplier(EXTERIOR_NEAR_MULTIPLIER);
-                
-                InteriorsExplorer::InteriorVisibilityUpdater& visiblityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-                
-                if (visiblityUpdater.GetInteriorShouldDisplay()) {
-                    visiblityUpdater.SetInteriorShouldDisplay(false);
-                    visiblityUpdater.UpdateVisiblityImmediately();
-                }
+                m_interiorsExplorerModule.HideInteriors();
             }
         
     }

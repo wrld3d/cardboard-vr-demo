@@ -117,7 +117,7 @@ namespace Examples
         
         
         template <typename TExampleFactory>
-        void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider, const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+        void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider, InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                        Examples::IVRHeadTracker& headTracker,
                                                        Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository)
         {

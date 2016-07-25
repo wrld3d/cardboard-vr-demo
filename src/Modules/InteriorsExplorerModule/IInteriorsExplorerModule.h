@@ -13,11 +13,13 @@
         public:
             virtual ~IInteriorsExplorerModule() { }
             
-            virtual InteriorVisibilityUpdater& GetInteriorVisibilityUpdater() const = 0;
+            virtual bool InteriorLoaded() = 0;
             
+            virtual void SelectFloor(int floor) = 0;
             virtual void Update(float dt) const = 0;
             
-            virtual InteriorsExplorerModel& GetInteriorsExplorerModel() const = 0;
+            virtual void ShowInteriors() = 0;
+            virtual void HideInteriors() = 0;
             
             
         };

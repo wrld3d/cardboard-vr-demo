@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include "Interiors.h"
 #include "Types.h"
 #include "GlobeCamera.h"
@@ -9,6 +11,8 @@
 #include "IIdentity.h"
 #include "InteriorsExplorer.h"
 #include "IInteriorsExplorerModule.h"
+#include "InteriorMenu/InteriorMenuModule.h"
+#include "ICallback.h"
 
 namespace InteriorsExplorer
 {
@@ -16,25 +20,40 @@ namespace InteriorsExplorer
     {
     public:
         
-        InteriorsExplorerModule(
-                                Eegeo::Resources::Interiors::InteriorInteractionModel& interiorInteractionModel,
-                                Eegeo::Resources::Interiors::InteriorSelectionModel& interiorSelectionModel,
-                                Eegeo::Resources::Interiors::InteriorTransitionModel& interiorTransitionModel);
+        InteriorsExplorerModule(  Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
+                                , Eegeo::UI::IUIQuadFactory& uiQuadFactory
+                                , Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
+                                , Eegeo::UI::IUICameraProvider& uiCameraProvider
+                                , const Eegeo::UI::UIProgressBarConfig& progressBarConfig
+                                , Eegeo::Resources::Interiors::InteriorInteractionModel& interiorInteractionModel
+                                , Eegeo::Resources::Interiors::InteriorSelectionModel& interiorSelectionModel
+                                , Eegeo::Resources::Interiors::InteriorTransitionModel& interiorTransitionModel);
         
         ~InteriorsExplorerModule();
         
-        InteriorsExplorerModel& GetInteriorsExplorerModel() const;
-        InteriorVisibilityUpdater& GetInteriorVisibilityUpdater() const;
         
         void Update(float dt) const;
         
-        void SwitchToInterior();
-        bool InteriorLoaded();
-        
+        virtual bool InteriorLoaded();
+        virtual void SelectFloor(int floor);
+        virtual void ShowInteriors();
+        virtual void HideInteriors();
         void ToggleInteriorDisplay();
+        
+        
+        void OnMenuItemGazed(InteriorMenu::InteriorMenuItem& menuItem);
+        
         
     private:
         
+        int floorId;
+        
+        Eegeo::Helpers::TCallback1<InteriorsExplorerModule, InteriorMenu::InteriorMenuItem&> m_interiorMenuItemGazeCallback;
+        
+        typedef std::vector<InteriorMenu::InteriorMenuItem*> TInteriorMenuItems;
+        TInteriorMenuItems  m_pInteriorMenuItems;
+        
+        InteriorMenu::InteriorMenuModule* m_pInteriorMenuModule;
         InteriorsExplorerModel* m_pModel;
         InteriorVisibilityUpdater* m_pVisibilityUpdater;
         Eegeo::Resources::Interiors::InteriorInteractionModel& m_interiorInteractionModel;

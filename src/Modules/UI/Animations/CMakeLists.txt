@@ -8,7 +8,6 @@ set(currsources
 ../src/Modules/UI/Animations/IAnimationsObservable.h
 ../src/Modules/UI/Animations/IAnimationObserver.h
 ../src/Modules/UI/Animations/IAnimationsFactory.h
-../src/Modules/UI/Animations/IEase.h
 ../src/Modules/UI/Animations/IDv3Animateable.h
 ../src/Modules/UI/Animations/Dv3PropertyAnimation.cpp
 ../src/Modules/UI/Animations/Dv3PropertyAnimation.h

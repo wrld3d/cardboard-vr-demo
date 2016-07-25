@@ -70,15 +70,14 @@ namespace Eegeo
                 if(m_isCameraAnimating)
                     return;
                 
-                InteriorsExplorer::InteriorVisibilityUpdater& visibilityUpdater = m_interiorsExplorerModule.GetInteriorVisibilityUpdater();
-                
                 if (m_jumpPoint.GetIsInInterior())
                 {
-                    m_interiorsExplorerModule.GetInteriorsExplorerModel().SelectFloor(m_jumpPoint.GetInteriorFloor());
-                    if (visibilityUpdater.GetInteriorHasLoaded())
+                    
+                    m_interiorsExplorerModule.SelectFloor(m_jumpPoint.GetInteriorFloor());
+                    
+                    if (m_interiorsExplorerModule.InteriorLoaded())
                     {
-                        visibilityUpdater.SetInteriorShouldDisplay(true);
-                        visibilityUpdater.UpdateVisiblityImmediately();
+                        m_interiorsExplorerModule.ShowInteriors();
                         
                         m_animationsController.RemoveAnimationsForTag(0);
                         Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Animations::Dv3PropertyAnimation)(m_animateableCamera, NULL,m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), m_jumpPoint.GetEcefPosition(), 5.f, &AnimationEase::EaseInOutCubic);
@@ -88,10 +87,9 @@ namespace Eegeo
                 }
                 else
                 {
-                    if (visibilityUpdater.GetInteriorShouldDisplay())
+                    if (m_interiorsExplorerModule.InteriorLoaded())
                     {
-                        visibilityUpdater.SetInteriorShouldDisplay(false);
-                        visibilityUpdater.UpdateVisiblityImmediately();
+                        m_interiorsExplorerModule.HideInteriors();
                     }
                     
                     m_animationsController.RemoveAnimationsForTag(0);

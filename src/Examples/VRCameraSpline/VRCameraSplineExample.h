@@ -28,7 +28,7 @@ private:
     Eegeo::EegeoWorld& m_world;
     
     Eegeo::VR::VRCameraController* m_pSplineCameraController;
-    const InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
+    InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
     Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneRepository;
     
     Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pSFSplineButton;
@@ -45,7 +45,7 @@ public:
                           Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                           IVRHeadTracker& headTracker,
                           const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
-                          const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                          InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                           Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository);
     
     virtual ~VRCameraSplineExample();
