@@ -42,11 +42,14 @@ PinsExample::PinsExample(
 	int spriteWidthInMetres = 64;
 	int spriteHeightInMetres = 64;
 
+	m_pPinViewFactory = Eegeo_NEW(Eegeo::Pins::PinViewFactory)(spriteWidthInMetres, spriteHeightInMetres);
+    
 	// N.B. The implementation for PinModule is given in PinModule.h as a guide for Apps that
 	// require an alternate configuration of the various Pin related components.
 	m_pPinsModule = Eegeo_NEW(Eegeo::Pins::PinsModule)(
 	                    m_pinIconsTexture.textureId,
 	                    *m_pPinIconsTexturePageLayout,
+	                    m_pPinViewFactory,
 	                    glBufferPool,
 	                    shaderIdGenerator,
 	                    materialIdGenerator,
@@ -54,8 +57,6 @@ PinsExample::PinsExample(
 	                    vertexLayoutPool,
 	                    renderableFilters,
 	                    terrainHeightProvider,
-	                    spriteWidthInMetres,
-	                    spriteHeightInMetres,
 	                    Eegeo::Rendering::LayerIds::PlaceNames,
 	                    environmentFlatteningService,
                         initialScreenProperties,
@@ -72,6 +73,7 @@ PinsExample::~PinsExample()
 	// However, responsibility for managing the lifetime of any user data on those Pins is the responsbility
 	// of the App.
 	Eegeo_DELETE(m_pPinsModule);
+	Eegeo_DELETE(m_pPinViewFactory);
 
 	// Delete the icon texture and its layout.
 	Eegeo_DELETE m_pPinIconsTexturePageLayout;

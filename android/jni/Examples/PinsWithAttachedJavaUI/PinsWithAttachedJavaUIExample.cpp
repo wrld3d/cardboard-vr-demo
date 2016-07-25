@@ -46,9 +46,12 @@ PinsWithAttachedJavaUIExample::PinsWithAttachedJavaUIExample(
 	int spriteWidthInMetres = 64;
 	int spriteHeightInMetres = 64;
 
+	m_pPinViewFactory = Eegeo_NEW(Eegeo::Pins::PinViewFactory)(spriteWidthInMetres, spriteHeightInMetres);
+
 	m_pPinsModule = Eegeo_NEW(Eegeo::Pins::PinsModule)(
 	                    m_pinIconsTexture.textureId,
 	                    *m_pPinIconsTexturePageLayout,
+	                    m_pPinViewFactory,
 	                    glBufferPool,
 	                    shaderIdGenerator,
 	                    materialIdGenerator,
@@ -56,8 +59,6 @@ PinsWithAttachedJavaUIExample::PinsWithAttachedJavaUIExample(
 	                    vertexLayoutPool,
 	                    renderableFilters,
 	                    terrainHeightProvider,
-	                    spriteWidthInMetres,
-	                    spriteHeightInMetres,
 	                    Eegeo::Rendering::LayerIds::PlaceNames,
 	                    environmentFlatteningService,
 	                    screenProperties,
@@ -69,6 +70,7 @@ PinsWithAttachedJavaUIExample::PinsWithAttachedJavaUIExample(
 PinsWithAttachedJavaUIExample::~PinsWithAttachedJavaUIExample()
 {
 	Eegeo_DELETE(m_pPinsModule);
+	Eegeo_DELETE(m_pPinViewFactory);
 
 	// Delete the icon texture and its layout.
 	Eegeo_DELETE m_pPinIconsTexturePageLayout;

@@ -8,7 +8,7 @@
 #include "Rendering.h"
 #include "Camera.h"
 #include "ITextureFileLoader.h"
-
+#include "PinViewFactory.h"
 #include "PinsModule.h"
 #include <string>
 
@@ -27,7 +27,7 @@ private:
 	Eegeo::Rendering::ITexturePageLayout* m_pPinIconsTexturePageLayout;
 	Eegeo::Helpers::GLHelpers::TextureInfo m_pinIconsTexture;
 	Eegeo::Pins::PinsModule* m_pPinsModule;
-    
+	Eegeo::Pins::PinViewFactory *m_pPinViewFactory;
     
 	std::string m_pin0UserData;
 	std::string m_pin1UserData;
