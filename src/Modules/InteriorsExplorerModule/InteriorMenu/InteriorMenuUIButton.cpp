@@ -24,6 +24,7 @@ namespace InteriorsExplorer
                                      , const Eegeo::v2& uvMin
                                      , const Eegeo::v2& uvMax)
         {
+            m_scale = scale;
             m_radius = (size.x > size.y ? size.x : size.y)/2.0f;
             Init(quadFactory, uiRenderableFilter, assetPath, progressBarConfig, size, ecefPosition, scale, color, uvMin, uvMax);
         }
@@ -36,6 +37,7 @@ namespace InteriorsExplorer
         
         void InteriorMenuUIButton::Init(Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter, const std::string& assetPath, const Eegeo::UI::UIProgressBarConfig& progressBarConfig, const Eegeo::v2& size, const Eegeo::dv3& ecefPosition, const Eegeo::v3& scale, const Eegeo::v4& color, const Eegeo::v2& uvMin, const Eegeo::v2& uvMax)
         {
+            m_isFocused = false;
             m_pSprite = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter
                                             , quadFactory.CreateUIQuad(assetPath, size, uvMin, uvMax)
                                             , size
@@ -66,12 +68,21 @@ namespace InteriorsExplorer
         
         void InteriorMenuUIButton::OnFocusGained()
         {
-            m_pGazeProgress->Reset();
-            m_pGazeProgress->SetScale(m_pSprite->GetScale() * PROGRESS_SCALE_MULTIPLIER);
+            if(m_isItemSelected)
+            {
+                m_pGazeProgress->SetScale(Eegeo::v3::Zero());
+            }
+            else
+            {
+                m_pGazeProgress->Reset();
+                m_pGazeProgress->SetScale(m_pSprite->GetScale() * PROGRESS_SCALE_MULTIPLIER);
+                m_isFocused = true;
+            }
         }
         
         void InteriorMenuUIButton::OnFocusLost()
         {
+            m_isFocused = false;
             m_pGazeProgress->SetScale(Eegeo::v3::Zero());
         }
         
@@ -104,13 +115,38 @@ namespace InteriorsExplorer
         
         void InteriorMenuUIButton::SetScale(const Eegeo::v3& scale)
         {
-            m_pSprite->SetScale(scale);
-            m_pGazeProgress->SetScale(scale * PROGRESS_SCALE_MULTIPLIER);
+            m_scale = scale;
+            m_pSprite->SetScale(m_scale);
+            m_pGazeProgress->SetScale(m_scale * PROGRESS_SCALE_MULTIPLIER);
         }
         
         Eegeo::v3 InteriorMenuUIButton::GetScale()
         {
             return m_pSprite->GetScale();
+        }
+        
+        void InteriorMenuUIButton::SetItemSelected()
+        {
+            m_isItemSelected = true;
+            
+            float scale = 1.1f;
+            m_scale = Eegeo::v3(scale, scale, scale);
+            m_pSprite->SetScale(m_scale);
+            m_pGazeProgress->SetScale(Eegeo::v3::Zero());
+            
+        }
+        
+        void InteriorMenuUIButton::SetItemUnselected()
+        {
+            m_isItemSelected = false;
+            float scale = 1.f;
+            m_scale = Eegeo::v3(scale, scale, scale);
+            
+            m_pSprite->SetScale(m_scale);
+            if(m_isFocused)
+                m_pGazeProgress->SetScale(m_scale * PROGRESS_SCALE_MULTIPLIER);
+            else
+                m_pGazeProgress->SetScale(Eegeo::v3::Zero());
         }
         
     }

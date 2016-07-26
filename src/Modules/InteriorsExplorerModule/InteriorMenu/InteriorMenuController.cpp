@@ -51,11 +51,28 @@ namespace InteriorsExplorer
             {
                 InteriorMenuItemView* pView = it->second;
                 pView->SetItemShouldRender(m_menuItemsShouldRender & m_isMenuShown);
+                pView->Update(deltaTime);
             }
+            
+        }
+        
+        void InteriorMenuController::SetSelectedFloorId(int floorId)
+        {
+            
+            m_floorId = floorId;
+            
             for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
             {
                 InteriorMenuItemView* pView = it->second;
-                pView->Update(deltaTime);
+                if(pView->GetInteriorMenuItem().GetId()==m_floorId)
+                {
+                    pView->SetItemSelected();
+                }
+                else
+                {
+                    pView->SetItemUnselected();
+                }
+                
             }
         }
         

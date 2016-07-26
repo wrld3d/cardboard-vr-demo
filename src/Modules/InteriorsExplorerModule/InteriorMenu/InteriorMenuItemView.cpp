@@ -54,7 +54,6 @@ namespace InteriorsExplorer
         
         void InteriorMenuItemView::OnItemClicked()
         {
-            EXAMPLE_LOG("item clicked: %d", m_InteriorMenuItem.GetId());
             m_InteriorMenuItem.GetCallback()(m_InteriorMenuItem);
         }
         

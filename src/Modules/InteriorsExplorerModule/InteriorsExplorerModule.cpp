@@ -10,6 +10,7 @@
 #include "InteriorSelectionModel.h"
 #include "InteriorInteractionModel.h"
 #include "InteriorMenu/InteriorMenuModule.h"
+#include "InteriorMenu/InteriorMenuController.h"
 #include "InteriorMenu/InteriorMenuItem.h"
 #include "Logger.h"
 
@@ -72,14 +73,14 @@ namespace InteriorsExplorer
     
     void InteriorsExplorerModule::OnMenuItemGazed(InteriorMenu::InteriorMenuItem& menuItem)
     {
-        floorId = menuItem.GetId();
-        m_interiorInteractionModel.SetSelectedFloorIndex(floorId);
+        SelectFloor(menuItem.GetId());
     }
     
     void InteriorsExplorerModule::SelectFloor(int floor)
     {
         floorId = floor;
-        m_interiorInteractionModel.SetSelectedFloorIndex(floor);
+        m_interiorInteractionModel.SetSelectedFloorIndex(floorId);
+        m_pInteriorMenuModule->GetController().SetSelectedFloorId(floorId);
     }
         
     bool InteriorsExplorerModule::InteriorLoaded()

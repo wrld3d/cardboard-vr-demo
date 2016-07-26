@@ -22,6 +22,9 @@ namespace InteriorsExplorer
             Eegeo::UI::UIAnimatedSprite* m_pGazeProgress;
             
             float m_radius;
+            bool m_isFocused;
+            bool m_isItemSelected;
+            Eegeo::v3 m_scale;
             
         public:
             InteriorMenuUIButton(Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
@@ -57,6 +60,9 @@ namespace InteriorsExplorer
             
             void SetScale(const Eegeo::v3& scale);
             Eegeo::v3 GetScale();
+            
+            void SetItemSelected();
+            void SetItemUnselected();
             
             bool GetItemShouldRender(){ return m_pSprite->GetItemShouldRender(); }
             void SetItemShouldRender(bool shouldRender){ m_pSprite->SetItemShouldRender(shouldRender); }

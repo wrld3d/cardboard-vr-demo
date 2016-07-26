@@ -38,6 +38,8 @@ namespace InteriorsExplorer
             
             void SetMenuItemsShouldRender(bool menuItemsShouldRender);
             
+            void SetSelectedFloorId(int floorId);
+            
         protected:
             void PositionItems();
             
@@ -49,6 +51,8 @@ namespace InteriorsExplorer
             Eegeo::dv3 m_cachedCenter;
             Eegeo::dv3 m_cameraLastPosition;
             Eegeo::m33 m_cachedHeadTracker;
+            
+            int m_floorId;
             bool m_isMenuShown;
             bool m_menuItemsShouldRender;
             typedef std::map<InteriorMenuItem*, InteriorMenuItemView*> TViewsByModel;

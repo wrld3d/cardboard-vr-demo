@@ -176,13 +176,13 @@ namespace Examples
         Eegeo_DELETE m_pWPJumpPoint3;
         Eegeo_DELETE m_pJumpPointsModule;
         
-        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton1);
-        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton2);
-        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton3);
-        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton4);
-        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton5);
-        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton6);
-        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton7);
+//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton1);
+//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton2);
+//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton3);
+//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton4);
+//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton5);
+//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton6);
+//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton7);
         
         Eegeo_DELETE m_pSPButton1;
         Eegeo_DELETE m_pSPButton2;
@@ -369,7 +369,7 @@ namespace Examples
     {
         ShowInteriors();
         
-        Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459928, -2.978063, 50).ToECEF();
+        Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 75).ToECEF();
         
         m_animationsController.RemoveAnimationsForTag(0);
         Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, NULL, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 2.f, &Eegeo::UI::AnimationEase::EaseInOutExpo);
