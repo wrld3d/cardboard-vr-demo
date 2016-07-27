@@ -29,6 +29,10 @@
 
 namespace Examples
 {
+    void DeleteJumpPoint(Eegeo::UI::JumpPoints::JumpPoint* pJumpPoint)
+    {
+        Eegeo_DELETE pJumpPoint;
+    }
 
     Eegeo::UI::JumpPoints::JumpPoint* GetJumpPointFromConfigData(const ApplicationConfig::JumpPointConfigData& jumpPointData, const std::string& spriteSheetPath, const Eegeo::v2& spriteSheetSize, bool isInInterior)
     {
@@ -161,9 +165,27 @@ namespace Examples
         }
         
         Eegeo_DELETE m_pJumpPointSwitcher;
-
         m_uiInteractionObservable.UnRegisterInteractableItem(m_pWestPortInteriorButton);
         Eegeo_DELETE m_pWestPortInteriorButton;
+
+        for (TInteriorJumpPointsData::const_iterator itInterior = m_interiorJumpPoints.begin(); itInterior != m_interiorJumpPoints.end(); ++itInterior)
+        {
+            const TInteriorFloorJumpPointsData& jpFloorData = itInterior->second;
+
+            for (TInteriorFloorJumpPointsData::const_iterator itFloorData = jpFloorData.begin(); itFloorData != jpFloorData.end(); ++itFloorData)
+            {
+                std::for_each(itFloorData->second.begin(), itFloorData->second.end(), DeleteJumpPoint);
+            }
+        }
+        m_interiorJumpPoints.clear();
+
+        for (TExteriorJumpPointsData::const_iterator itExterior = m_exteriorJumpPoints.begin(); itExterior != m_exteriorJumpPoints.end(); ++itExterior)
+        {
+            const TJumpPointsDataVector& jpVector = itExterior->second;
+            std::for_each(jpVector.begin(), jpVector.end(), DeleteJumpPoint);
+        }
+
+        m_exteriorJumpPoints.clear();
 
         Eegeo_DELETE m_pJumpPointsModule;
         
@@ -210,25 +232,42 @@ namespace Examples
 
         for (itJumpPoints = interiorJumpPoints.begin(); itJumpPoints != interiorJumpPoints.end(); ++itJumpPoints)
         {
-            TInteriorFloorJumpPointsData* pData = Eegeo_NEW(TInteriorFloorJumpPointsData)();
+            TInteriorFloorJumpPointsData floorData;
 
             const ApplicationConfig::TInteriorFloorJumpPoints& floorJumpPointsConfigData = (itJumpPoints->second);
 
             for (ApplicationConfig::TInteriorFloorJumpPoints::const_iterator itFloorJPs = floorJumpPointsConfigData.begin(); itFloorJPs != floorJumpPointsConfigData.end(); ++itFloorJPs)
             {
-                TJumpPointsDataVector* pDataVector = Eegeo_NEW(TJumpPointsDataVector)();
+                TJumpPointsDataVector dataVector;
 
                 const ApplicationConfig::TJumpPointVector& jumpPointConfigVector = itFloorJPs->second;
 
                 for (ApplicationConfig::TJumpPointVector::const_iterator it = jumpPointConfigVector.begin(); it != jumpPointConfigVector.end(); ++it)
                 {
-                    pDataVector->push_back(GetJumpPointFromConfigData(**it, "mesh_example/PinIconTexturePage.png", Eegeo::v2(4,4), true));
+                    dataVector.push_back(GetJumpPointFromConfigData(*it, m_appConfig.JumpPointsSpriteSheet(), m_appConfig.JumpPointsSpriteSheetSize(), true));
                 }
 
-                (*pData)[itFloorJPs->first] = pDataVector;
+                floorData[itFloorJPs->first] = dataVector;
             }
 
-            m_interiorJumpPoints[itJumpPoints->first] = pData;
+            m_interiorJumpPoints[itJumpPoints->first] = floorData;
+        }
+    }
+
+    void JumpPointsExample::LoadExteriorJumpPoints(const ApplicationConfig::TExteriorJumpPoints &exteriorJumpPoints)
+    {
+        for (ApplicationConfig::TExteriorJumpPoints::const_iterator itLocationJPs = exteriorJumpPoints.begin(); itLocationJPs != exteriorJumpPoints.end(); ++itLocationJPs)
+        {
+            TJumpPointsDataVector dataVector;
+
+            const ApplicationConfig::TJumpPointVector& jumpPointConfigVector = itLocationJPs->second;
+
+            for (ApplicationConfig::TJumpPointVector::const_iterator it = jumpPointConfigVector.begin(); it != jumpPointConfigVector.end(); ++it)
+            {
+                dataVector.push_back(GetJumpPointFromConfigData(*it, m_appConfig.JumpPointsSpriteSheet(), m_appConfig.JumpPointsSpriteSheetSize(), false));
+            }
+
+            m_exteriorJumpPoints[itLocationJPs->first] = dataVector;
         }
     }
     

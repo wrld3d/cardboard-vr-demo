@@ -13,6 +13,11 @@ namespace Examples
             , m_eegeoApiKey("")
             , m_interestLocation(0.0, 0.0, 0.0)
             , m_orientationDegrees(0.f)
+            , m_productVersion("")
+            , m_buildNumber("")
+            , m_combinedVersionString("")
+            , m_jumpPointsSpriteSheet("")
+            , m_jumpPointsSpriteSheetSize(Eegeo::v2::Zero())
             {
 
             }
@@ -59,6 +64,18 @@ namespace Examples
                 return *this;
             }
 
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetJumpPointSpriteSheet(const std::string& spriteSheet)
+            {
+                m_jumpPointsSpriteSheet = spriteSheet;
+                return *this;
+            }
+
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetJumpPointSpriteSheetSize(const Eegeo::v2& spriteSheetSize)
+            {
+                m_jumpPointsSpriteSheetSize = spriteSheetSize;
+                return *this;
+            }
+
             IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::AddExteriorLocation(const std::string& locationName)
             {
                 m_exteriorLocations.push_back(locationName);
@@ -86,6 +103,8 @@ namespace Examples
                                                 m_productVersion,
                                                 m_buildNumber,
                                                 m_combinedVersionString,
+                                                m_jumpPointsSpriteSheet,
+                                                m_jumpPointsSpriteSheetSize,
                                                 m_exteriorLocations,
                                                 m_exteriorJumpPoints,
                                                 m_interiorJumpPoints);

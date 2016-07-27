@@ -14,9 +14,9 @@
 namespace Examples
 {
     typedef std::vector<Eegeo::UI::JumpPoints::JumpPoint*> TJumpPointsDataVector;
-    typedef std::map<std::string,TJumpPointsDataVector*> TExteriorJumpPointsData;
-    typedef std::map<int,TJumpPointsDataVector*> TInteriorFloorJumpPointsData;
-    typedef std::map<std::string,TInteriorFloorJumpPointsData*> TInteriorJumpPointsData;
+    typedef std::map<std::string,TJumpPointsDataVector> TExteriorJumpPointsData;
+    typedef std::map<int,TJumpPointsDataVector> TInteriorFloorJumpPointsData;
+    typedef std::map<std::string,TInteriorFloorJumpPointsData> TInteriorJumpPointsData;
 
     class JumpPointsSwitcher: private Eegeo::NonCopyable
     {

@@ -12,7 +12,7 @@ namespace Examples
         class JumpPointConfigData;
         class ApplicationConfiguration;
 
-        typedef std::vector<JumpPointConfigData*> TJumpPointVector;
+        typedef std::vector<JumpPointConfigData> TJumpPointVector;
         typedef std::map<std::string,TJumpPointVector> TExteriorJumpPoints;
         typedef std::map<int,TJumpPointVector> TInteriorFloorJumpPoints;
         typedef std::map<std::string,TInteriorFloorJumpPoints> TInteriorJumpPoints;

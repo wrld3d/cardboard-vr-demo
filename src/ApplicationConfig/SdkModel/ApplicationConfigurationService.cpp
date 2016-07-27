@@ -36,6 +36,8 @@ namespace Examples
                                                 m_productVersion,
                                                 m_buildNumber,
                                                 combinedVersionString,
+                                                parsedConfig.JumpPointsSpriteSheet(),
+                                                parsedConfig.JumpPointsSpriteSheetSize(),
                                                 parsedConfig.GetLocations(),
                                                 parsedConfig.GetExteriorJumpPoints(),
                                                 parsedConfig.GetInteriorJumpPoints()

@@ -7,38 +7,120 @@
    "EegeoApiKey":"INSERT_API_KEY_HERE",
    "JumpPointsData":{
       "SpriteSheet":"mesh_example/PinIconTexturePage.png",
+      "SpriteSheetWidth":4,
+      "SpriteSheetHeight":4,
       "Interior":{
          "westport_house":{
-            "FloorCount":5,
+            "FloorCount":7,
             "Floor0":[
-
-            ],
-            "Floor1":[
-		{
+               {
                   "id":0,
-                  "lat":56.459928,
-                  "lon":-2.978063,
-                  "alt":28.5,
+                  "lat":56.460245,
+                  "lon":-2.978540,
+                  "alt":19,
                   "icon_id":0,
-                  "size":1
+                  "size":2
                },
                {
                   "id":1,
-                  "lat":56.459908,
-                  "lon":-2.978208,
-                  "alt":28.5,
+                  "lat":56.460195,
+                  "lon":-2.978075,
+                  "alt":19,
                   "icon_id":0,
-                  "size":1
+                  "size":2
+               },
+               {
+                  "id":2,
+                  "lat":56.460001,
+                  "lon":-2.978295,
+                  "alt":19,
+                  "icon_id":0,
+                  "size":2
+               }
+            ],
+            "Floor1":[
+               {
+                  "id":0,
+                  "lat":56.460213,
+                  "lon":-2.978163,
+                  "alt":24,
+                  "icon_id":0,
+                  "size":2
+               },
+               {
+                  "id":1,
+                  "lat":56.459972,
+                  "lon":-2.978224,
+                  "alt":24,
+                  "icon_id":0,
+                  "size":2
                }
             ],
             "Floor2":[
-
+               {
+                  "id":0,
+                  "lat":56.460201,
+                  "lon":-2.978178,
+                  "alt":28.5,
+                  "icon_id":0,
+                  "size":2
+               },
+               {
+                  "id":1,
+                  "lat":56.459898,
+                  "lon":-2.978474,
+                  "alt":28.5,
+                  "icon_id":0,
+                  "size":2
+               },
+               {
+                  "id":2,
+                  "lat":56.459940,
+                  "lon":-2.978237,
+                  "alt":28.5,
+                  "icon_id":0,
+                  "size":2
+               }
             ],
             "Floor3":[
-
+               {
+                  "id":0,
+                  "lat":56.459964,
+                  "lon":-2.978115,
+                  "alt":34,
+                  "icon_id":0,
+                  "size":2
+               }
             ],
             "Floor4":[
-
+               {
+                  "id":0,
+                  "lat":56.459919,
+                  "lon":-2.978150,
+                  "alt":39,
+                  "icon_id":0,
+                  "size":2
+               }
+            ],
+            "Floor5":[
+               {
+                  "id":0,
+                  "lat":56.459920,
+                  "lon":-2.978052,
+                  "alt":44,
+                  "icon_id":0,
+                  "size":2
+               }
+            ],
+            "Floor6":[
+               {
+                  "id":0,
+                  "lat":56.459948,
+                  "lon":-2.978092,
+                  "alt":47,
+                  "icon_id":0,
+                  "size":2
+               }
             ]
          }
       },
@@ -47,7 +129,7 @@
             "InteriorPOIs":[
                {
                   "id":"westport_house",
-                  "floors":5,
+                  "floors":7,
                   "poi_lat":56.459928,
                   "poi_lon":-2.978063,
                   "poi_alt":28.5,

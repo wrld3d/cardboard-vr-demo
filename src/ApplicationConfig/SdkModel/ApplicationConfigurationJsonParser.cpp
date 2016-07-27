@@ -30,13 +30,13 @@ namespace Examples
                     Eegeo_ASSERT(exteriorJumpPoint.HasMember("alt"));
                     Eegeo_ASSERT(exteriorJumpPoint.HasMember("icon_id"));
                     Eegeo_ASSERT(exteriorJumpPoint.HasMember("size"));
-                    JumpPointConfigData *pJPData = Eegeo_NEW(JumpPointConfigData)(exteriorJumpPoint["id"].GetInt(),
-                                                                      Eegeo::Space::LatLongAltitude::FromDegrees(exteriorJumpPoint["lat"].GetDouble(),
-                                                                                                                 exteriorJumpPoint["lon"].GetDouble(),
-                                                                                                                 exteriorJumpPoint["alt"].GetDouble()),
-                                                                      exteriorJumpPoint["icon_id"].GetInt(),
-                                                                      exteriorJumpPoint["size"].GetDouble());
-                    outJumpPointVector.push_back(pJPData);
+                    JumpPointConfigData jpData(exteriorJumpPoint["id"].GetInt(),
+                                               Eegeo::Space::LatLongAltitude::FromDegrees(exteriorJumpPoint["lat"].GetDouble(),
+                                                                                          exteriorJumpPoint["lon"].GetDouble(),
+                                                                                          exteriorJumpPoint["alt"].GetDouble()),
+                                               exteriorJumpPoint["icon_id"].GetInt(),
+                                               exteriorJumpPoint["size"].GetDouble());
+                    outJumpPointVector.push_back(jpData);
                 }
             }
 
@@ -53,31 +53,33 @@ namespace Examples
 
                     const std::string& floorKey = ss.str();
 
-                    Eegeo_ASSERT(interiorData.HasMember(floorKey.c_str()));
-                    const TGenericValue& interiorFloorData = interiorData[floorKey.c_str()];
-
-                    TJumpPointVector floorJumpPointData;
-
-                    for (rapidjson::Value::ConstValueIterator itr = interiorFloorData.Begin(); itr != interiorFloorData.End(); ++itr)
+                    if (interiorData.HasMember(floorKey.c_str()))
                     {
-                        const TGenericValue& interiorJumpPoint = *itr;
+                        const TGenericValue& interiorFloorData = interiorData[floorKey.c_str()];
 
-                        Eegeo_ASSERT(interiorJumpPoint.HasMember("id"));
-                        Eegeo_ASSERT(interiorJumpPoint.HasMember("lat"));
-                        Eegeo_ASSERT(interiorJumpPoint.HasMember("lon"));
-                        Eegeo_ASSERT(interiorJumpPoint.HasMember("alt"));
-                        Eegeo_ASSERT(interiorJumpPoint.HasMember("icon_id"));
-                        Eegeo_ASSERT(interiorJumpPoint.HasMember("size"));
-                        JumpPointConfigData *pJPData = Eegeo_NEW(JumpPointConfigData)(interiorJumpPoint["id"].GetInt(),
-                                                                              Eegeo::Space::LatLongAltitude::FromDegrees(interiorJumpPoint["lat"].GetDouble(),
-                                                                                                                         interiorJumpPoint["lon"].GetDouble(),
-                                                                                                                         interiorJumpPoint["alt"].GetDouble()),
-                                                                              interiorJumpPoint["icon_id"].GetInt(),
-                                                                              interiorJumpPoint["size"].GetDouble());
-                        floorJumpPointData.push_back(pJPData);
+                        TJumpPointVector floorJumpPointData;
+
+                        for (rapidjson::Value::ConstValueIterator itr = interiorFloorData.Begin(); itr != interiorFloorData.End(); ++itr)
+                        {
+                            const TGenericValue& interiorJumpPoint = *itr;
+
+                            Eegeo_ASSERT(interiorJumpPoint.HasMember("id"));
+                            Eegeo_ASSERT(interiorJumpPoint.HasMember("lat"));
+                            Eegeo_ASSERT(interiorJumpPoint.HasMember("lon"));
+                            Eegeo_ASSERT(interiorJumpPoint.HasMember("alt"));
+                            Eegeo_ASSERT(interiorJumpPoint.HasMember("icon_id"));
+                            Eegeo_ASSERT(interiorJumpPoint.HasMember("size"));
+                            JumpPointConfigData jpData(interiorJumpPoint["id"].GetInt(),
+                                                       Eegeo::Space::LatLongAltitude::FromDegrees(interiorJumpPoint["lat"].GetDouble(),
+                                                                                                  interiorJumpPoint["lon"].GetDouble(),
+                                                                                                  interiorJumpPoint["alt"].GetDouble()),
+                                                       interiorJumpPoint["icon_id"].GetInt(),
+                                                       interiorJumpPoint["size"].GetDouble());
+                            floorJumpPointData.push_back(jpData);
+                        }
+                        
+                        outInteriorFloorJumpPoints[i] = floorJumpPointData;
                     }
-
-                    outInteriorFloorJumpPoints[i] = floorJumpPointData;
                 }
             }
 
@@ -111,6 +113,13 @@ namespace Examples
 
                 Eegeo_ASSERT(document.HasMember("JumpPointsData"));
                 const TGenericValue& jumpPointsData = document["JumpPointsData"];
+
+                Eegeo_ASSERT(jumpPointsData.HasMember("SpriteSheet"));
+                m_builder.SetJumpPointSpriteSheet(jumpPointsData["SpriteSheet"].GetString());
+
+                Eegeo_ASSERT(jumpPointsData.HasMember("SpriteSheetWidth"));
+                Eegeo_ASSERT(jumpPointsData.HasMember("SpriteSheetHeight"));
+                m_builder.SetJumpPointSpriteSheetSize(Eegeo::v2(jumpPointsData["SpriteSheetWidth"].GetDouble(),jumpPointsData["SpriteSheetHeight"].GetDouble()));
 
                 Eegeo_ASSERT(jumpPointsData.HasMember("Exterior"));
                 const TGenericValue& exteriourJumpPointsData = jumpPointsData["Exterior"];

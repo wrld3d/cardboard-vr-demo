@@ -31,6 +31,10 @@ namespace Examples
 
                 virtual IApplicationConfigurationBuilder& SetCombinedVersionString(const std::string& combinedVersionString) = 0;
 
+                virtual IApplicationConfigurationBuilder& SetJumpPointSpriteSheet(const std::string& spriteSheet) = 0;
+
+                virtual IApplicationConfigurationBuilder& SetJumpPointSpriteSheetSize(const Eegeo::v2& spriteSheetSize) = 0;
+
                 virtual IApplicationConfigurationBuilder& AddExteriorLocation(const std::string& locationName) = 0;
 
                 virtual IApplicationConfigurationBuilder& AddExteriorJumpPoints(const std::string& locationName, const TJumpPointVector& jumpPoints) = 0;

@@ -14,6 +14,7 @@ namespace Examples
     , m_exteriorJumpPoints(exteriorJumpPoints)
     , m_interiorJumpPoints(interiorJumpPoints)
     , m_interiorVisibilityChangedCallback(this, &JumpPointsSwitcher::MapStateChanged)
+    , m_isInInterior(false)
     {
         m_interiorsExplorerModule.RegisterVisibilityChangedCallback(m_interiorVisibilityChangedCallback);
     }
@@ -37,7 +38,12 @@ namespace Examples
         if (m_currentLocation != location)
         {
             m_currentLocation = location;
-            MapStateChanged();
+            TExteriorJumpPointsData::const_iterator it = m_exteriorJumpPoints.find(m_currentLocation);
+
+            if (it != m_exteriorJumpPoints.end())
+            {
+                SwitchJumpPoints(m_exteriorJumpPoints.at(m_currentLocation));
+            }
         }
     }
 
@@ -51,20 +57,23 @@ namespace Examples
         
         if (m_interiorsExplorerModule.IsInteriorVisible())
         {
-
             if (!m_isInInterior || m_interiorsExplorerModule.GetSelectedFloor() != m_currentSelectedFloor)
             {
                 const std::string& interiorID = m_interiorsExplorerModule.GetSelectedInteriorID();
                 TInteriorJumpPointsData::const_iterator itInterior = m_interiorJumpPoints.find(interiorID);
                 if (itInterior != m_interiorJumpPoints.end())
                 {
-                    TInteriorFloorJumpPointsData* pCurrnetInteriorData = itInterior->second;
+                    const TInteriorFloorJumpPointsData& currnetInteriorData = itInterior->second;
                     m_currentSelectedFloor = m_interiorsExplorerModule.GetSelectedFloor();
-                    TInteriorFloorJumpPointsData::iterator itFloorData = pCurrnetInteriorData->find(m_currentSelectedFloor);
+                    TInteriorFloorJumpPointsData::const_iterator itFloorData = currnetInteriorData.find(m_currentSelectedFloor);
 
-                    if (itFloorData != pCurrnetInteriorData->end())
+                    if (itFloorData != currnetInteriorData.end())
                     {
-                        SwitchJumpPoints(*(itFloorData->second));
+                        SwitchJumpPoints(itFloorData->second);
+                    }
+                    else
+                    {
+                        m_jumpPointRepository.RemoveAllJumpPoints();
                     }
                 }
 
@@ -75,7 +84,13 @@ namespace Examples
         {
             if (m_isInInterior)
             {
-                SwitchJumpPoints(*(m_exteriorJumpPoints.at(m_currentLocation)));
+                TExteriorJumpPointsData::const_iterator it = m_exteriorJumpPoints.find(m_currentLocation);
+
+                if (it != m_exteriorJumpPoints.end())
+                {
+                    SwitchJumpPoints(m_exteriorJumpPoints.at(m_currentLocation));
+                }
+
                 m_isInInterior = false;
             }
         }
