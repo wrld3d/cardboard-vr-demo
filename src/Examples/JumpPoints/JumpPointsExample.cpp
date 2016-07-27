@@ -76,6 +76,7 @@ namespace Examples
     , m_onSP6SelectedCallback(this, &JumpPointsExample::OnStopPoint6Selected)
     , m_onSP7SelectedCallback(this, &JumpPointsExample::OnStopPoint7Selected)
     , m_onWestPortEntryButtonCallback(this, &JumpPointsExample::OnWestportInteriorButtonSelected)
+    , m_onInteriorFloorChanged(this, &JumpPointsExample::OnInteriorFloorChanged)
     , m_onJumpPointSelected(this, &JumpPointsExample::OnJumpPointSelected)
     , m_isInInterior(false)
     {
@@ -125,6 +126,7 @@ namespace Examples
                                                                           m_onJumpPointSelected);
         
         LoadInteriorJumpPoints(m_appConfig.GetInteriorJumpPoints());
+        m_interiorsExplorerModule.RegisterVisibilityChangedCallback(m_onInteriorFloorChanged);
 
         m_pJumpPointSwitcher = Eegeo_NEW(JumpPointsSwitcher)(m_pJumpPointsModule->GetRepository(), m_interiorsExplorerModule, m_exteriorJumpPoints, m_interiorJumpPoints);
 
@@ -370,7 +372,7 @@ namespace Examples
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 75).ToECEF();
         
         m_animationsController.RemoveAnimationsForTag(0);
-        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, NULL, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 2.f, &Eegeo::UI::AnimationEase::EaseInOutExpo);
+        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 2.f, &Eegeo::UI::AnimationEase::EaseInOutExpo);
         animation->SetTag(0);
         m_animationsController.AddAnimation(animation);
     }
@@ -385,7 +387,7 @@ namespace Examples
     void JumpPointsExample::HideInteriors()
     {
         m_isInInterior = false;
-        m_interiorsExplorerModule.ShowInteriors();
+        m_interiorsExplorerModule.HideInteriors();
         m_pWestPortInteriorButton->SetItemShouldRender(true);
     }
     
@@ -413,4 +415,13 @@ namespace Examples
         animation->SetTag(0);
         m_animationsController.AddAnimation(animation);
     }
+    
+    void JumpPointsExample::OnInteriorFloorChanged()
+    {
+        if(m_interiorsExplorerModule.GetSelectedFloor()<0){
+            m_isInInterior = false;
+            m_pWestPortInteriorButton->SetItemShouldRender(true);
+        }
+    }
+    
 }

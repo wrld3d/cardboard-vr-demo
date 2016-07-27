@@ -44,15 +44,17 @@ namespace InteriorsExplorer
         m_pInteriorMenuModule = Eegeo_NEW(InteriorMenu::InteriorMenuModule)(uiRenderableFilter, uiQuadFactory, uiInteractionObservable,uiCameraProvider, menuTextureFileName, progressBarConfig, 4);
         m_pInteriorMenuModule->SetMenuShouldDisplay(m_pVisibilityUpdater->GetInteriorShouldDisplay());
         
-        for (int lop=0; lop<7; lop++)
+        for (int lop=-1; lop<7; lop++)
         {
             int iconId = lop+3;
-            if(lop==0)
+            if(lop==-1)
                 iconId = 15;
             InteriorMenu::InteriorMenuItem* menuItem =  Eegeo_NEW(InteriorMenu::InteriorMenuItem)(lop, iconId, m_interiorMenuItemGazeCallback);
             m_pInteriorMenuModule->GetRepository().AddInteriorMenuItem(menuItem);
             m_pInteriorMenuItems.push_back(menuItem);
         }
+        
+        SelectFloor(floorId);
         
     }
     
@@ -74,19 +76,24 @@ namespace InteriorsExplorer
     
     void InteriorsExplorerModule::OnMenuItemGazed(InteriorMenu::InteriorMenuItem& menuItem)
     {
-        SelectFloor(menuItem.GetId());
+        floorId = menuItem.GetId();
+        if(menuItem.GetId()<0)
+            HideInteriors();
+        else
+            SelectFloor(floorId);
     }
     
     void InteriorsExplorerModule::SelectFloor(int floor)
     {
-        floorId = floor;
-        m_interiorInteractionModel.SetSelectedFloorIndex(floorId);
-        m_pInteriorMenuModule->GetController().SetSelectedFloorId(floorId);
+        if(floorId>=0){
+            m_interiorInteractionModel.SetSelectedFloorIndex(floorId);
+            m_pInteriorMenuModule->GetController().SetSelectedFloorId(floorId);
+        }
     }
 
     int InteriorsExplorerModule::GetSelectedFloor() const
     {
-        return m_interiorInteractionModel.GetSelectedFloorIndex();
+        return floorId;
     }
 
     void InteriorsExplorerModule::SelectInterior(std::string interiorID)
@@ -107,11 +114,14 @@ namespace InteriorsExplorer
     
     void InteriorsExplorerModule::Update(float dt) const
     {
-        m_pInteriorMenuModule->Update(dt);
-        if(m_interiorInteractionModel.HasInteriorModel())
+        if(floorId>=0)
         {
-            m_interiorInteractionModel.SetSelectedFloorIndex(floorId);
-            m_pVisibilityUpdater->Update(dt);
+            m_pInteriorMenuModule->Update(dt);
+            if(m_interiorInteractionModel.HasInteriorModel())
+            {
+                m_interiorInteractionModel.SetSelectedFloorIndex(floorId);
+                m_pVisibilityUpdater->Update(dt);
+            }
         }
     }
     

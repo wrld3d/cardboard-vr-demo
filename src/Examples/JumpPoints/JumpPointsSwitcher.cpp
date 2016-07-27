@@ -43,6 +43,12 @@ namespace Examples
 
     void JumpPointsSwitcher::MapStateChanged()
     {
+        if(m_interiorsExplorerModule.GetSelectedFloor()<0)
+        {
+            m_jumpPointRepository.RemoveAllJumpPoints();
+            return;
+        }
+        
         if (m_interiorsExplorerModule.IsInteriorVisible())
         {
 

@@ -73,6 +73,8 @@ namespace Examples
         Eegeo::UI::UIProgressButton *m_pWestPortInteriorButton;
 
         JumpPointsSwitcher* m_pJumpPointSwitcher;
+        Eegeo::Helpers::TCallback0<JumpPointsExample> m_onInteriorFloorChanged;
+        void OnInteriorFloorChanged();
 
         void LoadInteriorJumpPoints(const ApplicationConfig::TInteriorJumpPoints& interiorJumpPoints);
         void LoadExteriorJumpPoints(const ApplicationConfig::TExteriorJumpPoints& exteriorJumpPoints);
