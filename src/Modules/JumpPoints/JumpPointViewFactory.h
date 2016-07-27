@@ -10,8 +10,6 @@
 #include "JumpPointView.h"
 #include "IUIQuadFactory.h"
 #include "IInteriorsExplorerModule.h"
-#include "../UI/Animations/AnimationsController.h"
-#include "../UI/Animations/IDv3Animateable.h"
 
 namespace Eegeo
 {
@@ -25,9 +23,6 @@ namespace Eegeo
                 JumpPointViewFactory(IUIRenderableFilter& p_UIRenderableFilter
                                      , IUIQuadFactory& p_IUIQuadFactory
                                      , IUICameraProvider& p_UICameraProvider
-                                     , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
-                                     , Animations::AnimationsController& animationsController
-                                     , Animations::IDv3Animateable& animateableCamera
                                      , const UIProgressBarConfig& progressBarConfig
                                      , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected);
                 
@@ -39,10 +34,7 @@ namespace Eegeo
                 IUICameraProvider& m_uiCameraProvider;
                 IUIQuadFactory& m_uiQuadFactory;
                 IUIRenderableFilter& m_uiRenderableFilter;
-                InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
                 const UIProgressBarConfig& m_progressBarConfig;
-                Animations::AnimationsController& m_animationsController;
-                Animations::IDv3Animateable& m_animateableCamera;
                 Eegeo::Helpers::ICallback1<JumpPoint&>& m_onJumpPointSelected;
             };
         }

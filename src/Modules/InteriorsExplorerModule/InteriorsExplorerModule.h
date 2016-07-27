@@ -3,6 +3,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
 #include "Interiors.h"
 #include "Types.h"
@@ -40,15 +41,11 @@ namespace InteriorsExplorer
         virtual void HideInteriors();
         void ToggleInteriorDisplay();
         
-        
         void OnMenuItemGazed(InteriorMenu::InteriorMenuItem& menuItem);
-        
         
     private:
         
         int floorId;
-        
-        Eegeo::Helpers::TCallback1<InteriorsExplorerModule, InteriorMenu::InteriorMenuItem&> m_interiorMenuItemGazeCallback;
         
         typedef std::vector<InteriorMenu::InteriorMenuItem*> TInteriorMenuItems;
         TInteriorMenuItems  m_pInteriorMenuItems;
@@ -57,5 +54,8 @@ namespace InteriorsExplorer
         InteriorsExplorerModel* m_pModel;
         InteriorVisibilityUpdater* m_pVisibilityUpdater;
         Eegeo::Resources::Interiors::InteriorInteractionModel& m_interiorInteractionModel;
+        
+        Eegeo::Helpers::TCallback1<InteriorsExplorerModule, InteriorMenu::InteriorMenuItem&> m_interiorMenuItemGazeCallback;
+        
     };
 }

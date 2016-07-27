@@ -2,8 +2,6 @@
 
 #include "JumpPointController.h"
 #include "JumpPoint.h"
-#include "../UI/Animations/AnimationsController.h"
-#include "../UI/Animations/IAnimationObserver.h"
 
 namespace Eegeo
 {
@@ -14,12 +12,10 @@ namespace Eegeo
             
             JumpPointController::JumpPointController(IJumpPointObservable& jumpPointObservable
                                                      , IJumpPointViewFactory& viewFactory
-                                                     , IUIInteractionObservable& uiInteractionObservable
-                                                     , Animations::AnimationsController& animationsController)
+                                                     , IUIInteractionObservable& uiInteractionObservable)
             : m_jumppointRepository(jumpPointObservable)
             , m_viewFactory(viewFactory)
             , m_uiInteractionObservable(uiInteractionObservable)
-            , m_animationsController(animationsController)
             {
                 m_jumppointRepository.AddJumpPointObserver(this);
             }

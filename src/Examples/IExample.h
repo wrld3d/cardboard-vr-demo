@@ -8,6 +8,7 @@
 #include "Rendering.h"
 #include "RenderCamera.h"
 #include "CameraState.h"
+#include "../Modules/UI/Animations/IDv3Animateable.h"
 #include <string>
 
 namespace Examples

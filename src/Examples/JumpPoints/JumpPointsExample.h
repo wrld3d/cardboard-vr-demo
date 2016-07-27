@@ -23,13 +23,17 @@
 #include "Modules/DeadZoneMenu/DeadZoneMenuItem.h"
 
 #include "Modules/UI/Animations/AnimationsController.h"
+#include "Modules/UI/Animations/IDv3Animateable.h"
+#include "Modules/UI/Animations/IAnimationObserver.h"
+
+#include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
 
 namespace Examples
 {
     /*!
      *  JumpPointsExample demonstrates a camera controller that can animate the camera along a spline
      */
-    class JumpPointsExample : public IExample, Eegeo::NonCopyable
+    class JumpPointsExample : public IExample, Eegeo::NonCopyable, public Eegeo::UI::Animations::IAnimationObserver
     {
     private:
         
@@ -40,11 +44,17 @@ namespace Examples
         Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
         Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
         
+        InteriorsExplorer::InteriorsExplorerModule* m_pInteriorExplorerModule;
+        
         Eegeo::VR::JumpPointsCameraController* m_pSplineCameraController;
         Eegeo::UI::JumpPoints::JumpPoint *m_pWPJumpPoint1, *m_pWPJumpPoint2, *m_pWPJumpPoint3;
         Eegeo::UI::JumpPoints::JumpPointsModule* m_pJumpPointsModule;
         
         Eegeo::UI::Animations::AnimationsController& m_animationsController;
+        
+//       Map for jumppoints lists for each floor
+        typedef std::map<int, std::vector<Eegeo::UI::JumpPoints::JumpPoint*>> TInteriorJumpPoints;
+        TInteriorJumpPoints m_interiorJumpPoints;
         
         Eegeo::Rendering::RenderableFilters& m_renderableFilters;
         Eegeo::UI::UIRenderableFilter* m_pUIRenderableFilter;
@@ -62,6 +72,7 @@ namespace Examples
         void MoveCameraToStopPoint(const Eegeo::dv3& cameraPoint, const Eegeo::dv3& cameraLookat);
         void MoveCameraToStopPoint(const Eegeo::dv3 &cameraPoint, float cameraHeading);
         bool m_isInInterior;
+        bool m_isCameraAnimating;
         
     public:
         
@@ -109,6 +120,10 @@ namespace Examples
         virtual Eegeo::Camera::CameraState GetCurrentCameraState() const;
         
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
+        
+        virtual void OnAnimationAdded(Eegeo::UI::Animations::IAnimation& animation);
+        virtual void OnAnimationProgress(Eegeo::UI::Animations::IAnimation& animation);
+        virtual void OnAnimationRemoved(Eegeo::UI::Animations::IAnimation& animation);
         
         void NotifyViewNeedsLayout() {}
         

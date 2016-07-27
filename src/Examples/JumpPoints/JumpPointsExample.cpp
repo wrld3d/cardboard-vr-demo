@@ -18,6 +18,7 @@
 #include "Modules/UI/Animations/IDv3Animateable.h"
 #include "Modules/UI/Animations/Dv3PropertyAnimation.h"
 #include "Modules/UI/Animations/AnimationEase.h"
+#include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
 
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
@@ -75,6 +76,8 @@ namespace Examples
     
     void JumpPointsExample::Start()
     {
+        m_isCameraAnimating = false;
+        
         m_progressBarConfig.textureFilename = "mesh_example/gaze_loader.png";
         m_progressBarConfig.frameRate = 49.f/2.f;
         m_progressBarConfig.spriteGridSize = Eegeo::v2(7,7);
@@ -122,11 +125,9 @@ namespace Examples
                                                                           m_uiQuadFactory,
                                                                           m_uiInteractionObservable,
                                                                           m_uiCameraProvider,
-                                                                          m_interiorsExplorerModule,
-                                                                          m_animationsController,
-                                                                          *m_pSplineCameraController,
                                                                           m_progressBarConfig,
                                                                           m_onJumpPointSelected);
+        
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint1);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint2);
         m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint3);
@@ -391,11 +392,55 @@ namespace Examples
         m_pWestPortInteriorButton->SetItemShouldRender(true);
     }
     
+    void JumpPointsExample::OnAnimationProgress(Eegeo::UI::Animations::IAnimation& animation){}
+    void JumpPointsExample::OnAnimationAdded(Eegeo::UI::Animations::IAnimation& animation)
+    {
+        m_isCameraAnimating = true;
+    }
+    
+    void JumpPointsExample::OnAnimationRemoved(Eegeo::UI::Animations::IAnimation& animation)
+    {
+        m_isCameraAnimating = false;
+    }
+    
     void JumpPointsExample::OnJumpPointSelected(Eegeo::UI::JumpPoints::JumpPoint& jumpPoint)
     {
+        
+        if(m_isCameraAnimating)
+            return;
+        
         if (!jumpPoint.GetIsInInterior())
         {
             m_pWestPortInteriorButton->SetItemShouldRender(true);
         }
+        
+        if (jumpPoint.GetIsInInterior())
+        {
+            
+            m_interiorsExplorerModule.SelectFloor(jumpPoint.GetInteriorFloor());
+            if (m_interiorsExplorerModule.InteriorLoaded())
+            {
+                m_interiorsExplorerModule.ShowInteriors();
+                
+                m_animationsController.RemoveAnimationsForTag(0);
+                Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this,m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), jumpPoint.GetEcefPosition(), 5.f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
+                animation->SetTag(0);
+                m_animationsController.AddAnimation(animation);
+            }
+        }
+        else
+        {
+            if (m_interiorsExplorerModule.InteriorLoaded())
+            {
+                m_interiorsExplorerModule.HideInteriors();
+            }
+            
+            m_animationsController.RemoveAnimationsForTag(0);
+            Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this,m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), jumpPoint.GetEcefPosition(), 5.f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
+            animation->SetTag(0);
+            m_animationsController.AddAnimation(animation);
+        }
+        
+        
     }
 }

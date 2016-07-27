@@ -10,7 +10,6 @@
 #include <map>
 #include <algorithm>
 #include "IUIInteractionObservable.h"
-#include "../UI/Animations/AnimationsController.h"
 
 namespace Eegeo
 {
@@ -27,8 +26,7 @@ namespace Eegeo
             public:
                 JumpPointController(IJumpPointObservable& jumpPointObservable
                                     , IJumpPointViewFactory& viewFactory
-                                    , IUIInteractionObservable& uiInteractionObservable
-                                    , Animations::AnimationsController& animationsController);
+                                    , IUIInteractionObservable& uiInteractionObservable);
                 
                 ~JumpPointController();
                 
@@ -45,7 +43,6 @@ namespace Eegeo
                 IJumpPointObservable& m_jumppointRepository;
                 IJumpPointViewFactory& m_viewFactory;
                 IUIInteractionObservable& m_uiInteractionObservable;
-                Animations::AnimationsController& m_animationsController;
                 
                 typedef std::map<JumpPoint*, JumpPointView*> TViewsByModel;
                 

@@ -13,17 +13,11 @@ namespace Eegeo
             JumpPointViewFactory::JumpPointViewFactory(IUIRenderableFilter& uiRenderableFilter
                                                        , IUIQuadFactory& uiQuadFactory
                                                        , IUICameraProvider& uiCameraProvider
-                                                       , InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule
-                                                       , Animations::AnimationsController& animationsController
-                                                       , Animations::IDv3Animateable& animateableCamera
                                                        , const UIProgressBarConfig& progressBarConfig
                                                        , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected)
             : m_uiRenderableFilter(uiRenderableFilter)
             , m_uiQuadFactory(uiQuadFactory)
             , m_uiCameraProvider(uiCameraProvider)
-            , m_interiorsExplorerModule(interiorsExplorerModule)
-            , m_animationsController(animationsController)
-            , m_animateableCamera(animateableCamera)
             , m_progressBarConfig(progressBarConfig)
             , m_onJumpPointSelected(onJumpPointSelected)
             {
@@ -42,9 +36,6 @@ namespace Eegeo
                                                                         , m_uiQuadFactory
                                                                         , m_progressBarConfig
                                                                         , m_uiCameraProvider
-                                                                        , m_interiorsExplorerModule
-                                                                        , m_animationsController
-                                                                        , m_animateableCamera
                                                                         , m_onJumpPointSelected
                                                                         );
                 return pJumpPointView;
