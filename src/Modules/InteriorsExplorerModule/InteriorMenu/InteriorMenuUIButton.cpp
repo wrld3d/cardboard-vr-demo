@@ -129,7 +129,7 @@ namespace InteriorsExplorer
         {
             m_isItemSelected = true;
             
-            float scale = 1.1f;
+            float scale = 1.23f;
             m_scale = Eegeo::v3(scale, scale, scale);
             m_pSprite->SetScale(m_scale);
             m_pGazeProgress->SetScale(Eegeo::v3::Zero());
