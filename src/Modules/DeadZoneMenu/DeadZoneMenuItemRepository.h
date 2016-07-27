@@ -27,7 +27,7 @@ namespace Eegeo
                 
                 void RemoveDeadZoneMenuItem(DeadZoneMenuItem* pDeadZoneMenuItemToRemove);
                 
-                int GetNumOfDeadZoneMenuItems() const;
+                size_t GetNumOfDeadZoneMenuItems() const;
                 
                 DeadZoneMenuItem* GetDeadZoneMenuItemAtIndex(int deadZoneMenuItemIndex) const;
                 

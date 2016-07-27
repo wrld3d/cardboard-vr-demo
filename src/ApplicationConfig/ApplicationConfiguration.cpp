@@ -9,19 +9,24 @@ namespace Examples
         ApplicationConfiguration::ApplicationConfiguration(const std::string& name,
                                                            const std::string& eegeoApiKey,
                                                            const Eegeo::Space::LatLongAltitude& interestLocation,
-                                                           float distanceToInterestMetres,
                                                            float orientationDegrees,
                                                            const std::string& productVersion,
                                                            const std::string& buildNumber,
-                                                           const std::string& combinedVersionString)
+                                                           const std::string& combinedVersionString,
+                                                           const std::vector<std::string>& exteriorLocations,
+                                                           const TExteriorJumpPoints& exteriorJumpPoints,
+                                                           const TInteriorJumpPoints& interiorJumpPoints
+                                                           )
         : m_name(name)
         , m_eegeoApiKey(eegeoApiKey)
         , m_interestLocation(interestLocation)
-        , m_distanceToInterestMetres(distanceToInterestMetres)
         , m_orientationDegrees(orientationDegrees)
         , m_productVersion(productVersion)
         , m_buildNumber(buildNumber)
         , m_combinedVersionString(combinedVersionString)
+        , m_exteriorLocations(exteriorLocations)
+        , m_exteriorJumpPoints(exteriorJumpPoints)
+        , m_interiorJumpPoints(interiorJumpPoints)
         {
             
         }
@@ -39,11 +44,6 @@ namespace Examples
         const Eegeo::Space::LatLongAltitude& ApplicationConfiguration::InterestLocation() const
         {
             return m_interestLocation;
-        }
-        
-        float ApplicationConfiguration::DistanceToInterestMetres() const
-        {
-            return m_distanceToInterestMetres;
         }
         
         float ApplicationConfiguration::OrientationDegrees() const
@@ -64,6 +64,21 @@ namespace Examples
         const std::string& ApplicationConfiguration::CombinedVersionString() const
         {
             return m_combinedVersionString;
+        }
+
+        const std::vector<std::string>& ApplicationConfiguration::GetLocations() const
+        {
+            return m_exteriorLocations;
+        }
+
+        const TExteriorJumpPoints& ApplicationConfiguration::GetExteriorJumpPoints() const
+        {
+            return m_exteriorJumpPoints;
+        }
+
+        const TInteriorJumpPoints& ApplicationConfiguration::GetInteriorJumpPoints() const
+        {
+            return m_interiorJumpPoints;
         }
     }
 }

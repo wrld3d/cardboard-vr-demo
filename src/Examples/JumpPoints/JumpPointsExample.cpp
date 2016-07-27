@@ -20,6 +20,8 @@
 #include "Modules/UI/Animations/AnimationEase.h"
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
 
+#include "JumpPointConfigData.h"
+
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
 
@@ -27,6 +29,23 @@
 
 namespace Examples
 {
+
+    Eegeo::UI::JumpPoints::JumpPoint* GetJumpPointFromConfigData(const ApplicationConfig::JumpPointConfigData& jumpPointData, const std::string& spriteSheetPath, const Eegeo::v2& spriteSheetSize, bool isInInterior)
+    {
+        Eegeo::v2 outMin;
+        Eegeo::v2 outMax;
+        Eegeo::UI::CalculateUV(spriteSheetSize, jumpPointData.GetIconID(), outMin, outMax);
+
+        return Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(jumpPointData.GetID(),
+                                                           jumpPointData.GetJumpPointLocation(),
+                                                           spriteSheetPath,
+                                                           Eegeo::v2(jumpPointData.GetSize(),jumpPointData.GetSize()),
+                                                           outMin,
+                                                           outMax,
+                                                           isInInterior
+                                                           );
+    }
+
     JumpPointsExample::JumpPointsExample(Eegeo::EegeoWorld& eegeoWorld,
                                          Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
                                          Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
@@ -48,6 +67,7 @@ namespace Examples
     , m_deadZoneMenuRepository(deadZoneMenuRepository)
     , m_animationsController(animationsController)
     , m_headTracker(headTracker)
+    , m_appConfig(appConfig)
     , m_onSP1SelectedCallback(this, &JumpPointsExample::OnStopPoint1Selected)
     , m_onSP2SelectedCallback(this, &JumpPointsExample::OnStopPoint2Selected)
     , m_onSP3SelectedCallback(this, &JumpPointsExample::OnStopPoint3Selected)
@@ -88,7 +108,7 @@ namespace Examples
         Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250);
         m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla);
         m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
-        
+
         Eegeo::v2 dimension = Eegeo::v2(50,50);
         Eegeo::v2 size(4,4);
         
@@ -97,30 +117,6 @@ namespace Examples
         Eegeo::UI::CalculateUV(size, 0, outMin, outMax);
         dimension = Eegeo::v2(50,50);
         
-        m_pWPJumpPoint1 = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(1,
-                                                               Eegeo::Space::LatLongAltitude::FromDegrees(56.459935, -2.974200, 250),
-                                                               "mesh_example/PinIconTexturePage.png",
-                                                               dimension,
-                                                               outMin,
-                                                               outMax
-                                                               );
-        
-        m_pWPJumpPoint2 = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(2,
-                                                               Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250),
-                                                               "mesh_example/PinIconTexturePage.png",
-                                                               dimension,
-                                                               outMin,
-                                                               outMax
-                                                               );
-        
-        m_pWPJumpPoint3 = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(3,
-                                                               Eegeo::Space::LatLongAltitude::FromDegrees(56.451235, -2.976600, 250),
-                                                               "mesh_example/PinIconTexturePage.png",
-                                                               dimension,
-                                                               outMin,
-                                                               outMax
-                                                               );
-        
         m_pJumpPointsModule = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPointsModule)(*m_pUIRenderableFilter,
                                                                           m_uiQuadFactory,
                                                                           m_uiInteractionObservable,
@@ -128,10 +124,10 @@ namespace Examples
                                                                           m_progressBarConfig,
                                                                           m_onJumpPointSelected);
         
-        m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint1);
-        m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint2);
-        m_pJumpPointsModule->GetRepository().AddJumpPoint(m_pWPJumpPoint3);
-        
+        LoadInteriorJumpPoints(m_appConfig.GetInteriorJumpPoints());
+
+        m_pJumpPointSwitcher = Eegeo_NEW(JumpPointsSwitcher)(m_pJumpPointsModule->GetRepository(), m_interiorsExplorerModule, m_exteriorJumpPoints, m_interiorJumpPoints);
+
         m_pSPButton1 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 3, m_onSP1SelectedCallback);
         m_pSPButton2 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 4, m_onSP2SelectedCallback);
         m_pSPButton3 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 5, m_onSP3SelectedCallback);
@@ -139,14 +135,6 @@ namespace Examples
         m_pSPButton5 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 7, m_onSP5SelectedCallback);
         m_pSPButton6 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 8, m_onSP6SelectedCallback);
         m_pSPButton7 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 9, m_onSP7SelectedCallback);
-        
-//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton1);
-//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton2);
-//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton3);
-//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton4);
-//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton5);
-//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton6);
-//        m_deadZoneMenuRepository.AddDeadZoneMenuItem(m_pSPButton7);
         
         Eegeo::UI::CalculateUV(size, 14, outMin, outMax);
         m_pWestPortInteriorButton = Eegeo_NEW(Eegeo::UI::UIProgressButton)(*m_pUIRenderableFilter,
@@ -165,25 +153,12 @@ namespace Examples
     }
     
     void JumpPointsExample::Suspend(){
+        Eegeo_DELETE m_pJumpPointSwitcher;
+
         m_uiInteractionObservable.UnRegisterInteractableItem(m_pWestPortInteriorButton);
         Eegeo_DELETE m_pWestPortInteriorButton;
-        
-        m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pWPJumpPoint1);
-        m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pWPJumpPoint2);
-        m_pJumpPointsModule->GetRepository().RemoveJumpPoint(m_pWPJumpPoint3);
-        
-        Eegeo_DELETE m_pWPJumpPoint1;
-        Eegeo_DELETE m_pWPJumpPoint2;
-        Eegeo_DELETE m_pWPJumpPoint3;
+
         Eegeo_DELETE m_pJumpPointsModule;
-        
-//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton1);
-//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton2);
-//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton3);
-//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton4);
-//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton5);
-//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton6);
-//        m_deadZoneMenuRepository.RemoveDeadZoneMenuItem(m_pSPButton7);
         
         Eegeo_DELETE m_pSPButton1;
         Eegeo_DELETE m_pSPButton2;
@@ -213,11 +188,6 @@ namespace Examples
     void JumpPointsExample::Update(float dt)
     {
         m_pJumpPointsModule->Update(dt);
-//TODO:
-//        if (m_isInInterior)
-//        {
-//            m_interiorsExplorerModule.SelectFloor(6);
-//        }
         
         m_pWestPortInteriorButton->Update(dt);
     }
@@ -226,7 +196,34 @@ namespace Examples
     void JumpPointsExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
     {
     }
-    
+
+    void JumpPointsExample::LoadInteriorJumpPoints(const ApplicationConfig::TInteriorJumpPoints& interiorJumpPoints)
+    {
+        ApplicationConfig::TInteriorJumpPoints::const_iterator itJumpPoints;
+
+        for (itJumpPoints = interiorJumpPoints.begin(); itJumpPoints != interiorJumpPoints.end(); ++itJumpPoints)
+        {
+            TInteriorFloorJumpPointsData* pData = Eegeo_NEW(TInteriorFloorJumpPointsData)();
+
+            const ApplicationConfig::TInteriorFloorJumpPoints& floorJumpPointsConfigData = (itJumpPoints->second);
+
+            for (ApplicationConfig::TInteriorFloorJumpPoints::const_iterator itFloorJPs = floorJumpPointsConfigData.begin(); itFloorJPs != floorJumpPointsConfigData.end(); ++itFloorJPs)
+            {
+                TJumpPointsDataVector* pDataVector = Eegeo_NEW(TJumpPointsDataVector)();
+
+                const ApplicationConfig::TJumpPointVector& jumpPointConfigVector = itFloorJPs->second;
+
+                for (ApplicationConfig::TJumpPointVector::const_iterator it = jumpPointConfigVector.begin(); it != jumpPointConfigVector.end(); ++it)
+                {
+                    pDataVector->push_back(GetJumpPointFromConfigData(**it, "mesh_example/PinIconTexturePage.png", Eegeo::v2(4,4), true));
+                }
+
+                (*pData)[itFloorJPs->first] = pDataVector;
+            }
+
+            m_interiorJumpPoints[itJumpPoints->first] = pData;
+        }
+    }
     
     const Eegeo::m33& JumpPointsExample::getCurrentCameraOrientation()
     {
@@ -408,39 +405,12 @@ namespace Examples
         
         if(m_isCameraAnimating)
             return;
-        
-        if (!jumpPoint.GetIsInInterior())
-        {
-            m_pWestPortInteriorButton->SetItemShouldRender(true);
-        }
-        
-        if (jumpPoint.GetIsInInterior())
-        {
-            
-            m_interiorsExplorerModule.SelectFloor(jumpPoint.GetInteriorFloor());
-            if (m_interiorsExplorerModule.InteriorLoaded())
-            {
-                m_interiorsExplorerModule.ShowInteriors();
-                
-                m_animationsController.RemoveAnimationsForTag(0);
-                Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this,m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), jumpPoint.GetEcefPosition(), 5.f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
-                animation->SetTag(0);
-                m_animationsController.AddAnimation(animation);
-            }
-        }
-        else
-        {
-            if (m_interiorsExplorerModule.InteriorLoaded())
-            {
-                m_interiorsExplorerModule.HideInteriors();
-            }
-            
-            m_animationsController.RemoveAnimationsForTag(0);
-            Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this,m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), jumpPoint.GetEcefPosition(), 5.f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
-            animation->SetTag(0);
-            m_animationsController.AddAnimation(animation);
-        }
-        
-        
+
+        m_pWestPortInteriorButton->SetItemShouldRender(!jumpPoint.GetIsInInterior());
+
+        m_animationsController.RemoveAnimationsForTag(0);
+        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this,m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), jumpPoint.GetEcefPosition(), 5.f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
+        animation->SetTag(0);
+        m_animationsController.AddAnimation(animation);
     }
 }

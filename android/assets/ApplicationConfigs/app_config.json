@@ -1,9 +1,87 @@
 {
-    "Name": "Eegeo Cardboard",
-    "StartLocationLatitude": 56.45989,
-    "StartLocationLongitude": -2.97751,
-    "StartLocationAltitude": 2.7,
-    "StartLocationDistance": 500.0,
-    "StartLocationOrientationDegrees": 0.0,
-    "EegeoApiKey":"INSERT_API_KEY_HERE"
+   "Name":"Eegeo Cardboard",
+   "StartLocationLatitude":56.456160,
+   "StartLocationLongitude":-2.966101,
+   "StartLocationAltitude":250,
+   "StartLocationOrientationDegrees":0.0,
+   "EegeoApiKey":"INSERT_API_KEY_HERE",
+   "JumpPointsData":{
+      "SpriteSheet":"mesh_example/PinIconTexturePage.png",
+      "Interior":{
+         "westport_house":{
+            "FloorCount":5,
+            "Floor0":[
+
+            ],
+            "Floor1":[
+		{
+                  "id":0,
+                  "lat":56.459928,
+                  "lon":-2.978063,
+                  "alt":28.5,
+                  "icon_id":0,
+                  "size":1
+               },
+               {
+                  "id":1,
+                  "lat":56.459908,
+                  "lon":-2.978208,
+                  "alt":28.5,
+                  "icon_id":0,
+                  "size":1
+               }
+            ],
+            "Floor2":[
+
+            ],
+            "Floor3":[
+
+            ],
+            "Floor4":[
+
+            ]
+         }
+      },
+      "Exterior":{
+         "Dundee":{
+            "InteriorPOIs":[
+               {
+                  "id":"westport_house",
+                  "floors":5,
+                  "poi_lat":56.459928,
+                  "poi_lon":-2.978063,
+                  "poi_alt":28.5,
+                  "icon_id":14,
+                  "size":25
+               }
+            ],
+            "JumpPoints":[
+               {
+                  "id":0,
+                  "lat":56.459935,
+                  "lon":-2.974200,
+                  "alt":250,
+                  "icon_id":0,
+                  "size":50
+               },
+               {
+                  "id":1,
+                  "lat":56.456160,
+                  "lon":-2.966101,
+                  "alt":250,
+                  "icon_id":0,
+                  "size":50
+               },
+               {
+                  "id":2,
+                  "lat":56.451235,
+                  "lon":-2.976600,
+                  "alt":250,
+                  "icon_id":0,
+                  "size":50
+               }
+            ]
+         }
+      }
+   }
 }

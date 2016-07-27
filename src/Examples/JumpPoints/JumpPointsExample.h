@@ -3,12 +3,16 @@
 #ifndef __ExampleApp__JumpPointsExample__
 #define __ExampleApp__JumpPointsExample__
 
+#include <vector>
+
 #include "JumpPointsCameraController.h"
 #include "IExample.h"
 #include "Camera.h"
 #include "Geometry.h"
 #include "Streaming.h"
 #include "GlobeCamera.h"
+#include "JumpPointsSwitcher.h"
+#include "ApplicationConfig.h"
 #include "Modules/UI/UIInteraction/UIInteractionController.h"
 #include "Modules/UI/IUICameraProvider.h"
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
@@ -39,36 +43,40 @@ namespace Examples
         
         float m_eyeDistance;
         Eegeo::EegeoWorld& m_world;
-        
         Eegeo::UI::IUIQuadFactory& m_uiQuadFactory;
         Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
         Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
         
         InteriorsExplorer::InteriorsExplorerModule* m_pInteriorExplorerModule;
         
-        Eegeo::VR::JumpPointsCameraController* m_pSplineCameraController;
-        Eegeo::UI::JumpPoints::JumpPoint *m_pWPJumpPoint1, *m_pWPJumpPoint2, *m_pWPJumpPoint3;
-        Eegeo::UI::JumpPoints::JumpPointsModule* m_pJumpPointsModule;
-        
-        Eegeo::UI::Animations::AnimationsController& m_animationsController;
-        
-//       Map for jumppoints lists for each floor
-        typedef std::map<int, std::vector<Eegeo::UI::JumpPoints::JumpPoint*>> TInteriorJumpPoints;
-        TInteriorJumpPoints m_interiorJumpPoints;
-        
         Eegeo::Rendering::RenderableFilters& m_renderableFilters;
-        Eegeo::UI::UIRenderableFilter* m_pUIRenderableFilter;
         InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
         Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneMenuRepository;
+        Eegeo::UI::Animations::AnimationsController& m_animationsController;
         IVRHeadTracker& m_headTracker;
+        const Examples::ApplicationConfig::ApplicationConfiguration& m_appConfig;
+
+        Eegeo::UI::UIRenderableFilter* m_pUIRenderableFilter;
+
         Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem *m_pSPButton1, *m_pSPButton2, *m_pSPButton3, *m_pSPButton4, *m_pSPButton5, *m_pSPButton6, *m_pSPButton7;
         Eegeo::Helpers::TCallback0<JumpPointsExample> m_onSP1SelectedCallback, m_onSP2SelectedCallback, m_onSP3SelectedCallback, m_onSP4SelectedCallback, m_onSP5SelectedCallback, m_onSP6SelectedCallback, m_onSP7SelectedCallback;
         Eegeo::Helpers::TCallback0<JumpPointsExample> m_onWestPortEntryButtonCallback;
-        
+
+        Eegeo::VR::JumpPointsCameraController* m_pSplineCameraController;
+
+        TExteriorJumpPointsData m_exteriorJumpPoints;
+        TInteriorJumpPointsData m_interiorJumpPoints;
+        Eegeo::UI::JumpPoints::JumpPointsModule* m_pJumpPointsModule;
         Eegeo::Helpers::TCallback1<JumpPointsExample, Eegeo::UI::JumpPoints::JumpPoint&> m_onJumpPointSelected;
+
         Eegeo::UI::UIProgressBarConfig m_progressBarConfig;
         Eegeo::UI::UIProgressButton *m_pWestPortInteriorButton;
-        
+
+        JumpPointsSwitcher* m_pJumpPointSwitcher;
+
+        void LoadInteriorJumpPoints(const ApplicationConfig::TInteriorJumpPoints& interiorJumpPoints);
+        void LoadExteriorJumpPoints(const ApplicationConfig::TExteriorJumpPoints& exteriorJumpPoints);
+
         void MoveCameraToStopPoint(const Eegeo::dv3& cameraPoint, const Eegeo::dv3& cameraLookat);
         void MoveCameraToStopPoint(const Eegeo::dv3 &cameraPoint, float cameraHeading);
         bool m_isInInterior;

@@ -34,12 +34,19 @@ namespace InteriorsExplorer
         
         
         void Update(float dt) const;
-        
+
+        virtual void SelectInterior(std::string);
+        virtual std::string GetSelectedInteriorID() const;
         virtual bool InteriorLoaded();
         virtual void SelectFloor(int floor);
+        virtual int GetSelectedFloor() const;
         virtual void ShowInteriors();
         virtual void HideInteriors();
+        virtual bool IsInteriorVisible();
         void ToggleInteriorDisplay();
+
+        virtual void RegisterVisibilityChangedCallback(Eegeo::Helpers::ICallback0& callback);
+        virtual void UnregisterVisibilityChangedCallback(Eegeo::Helpers::ICallback0& callback);
         
         void OnMenuItemGazed(InteriorMenu::InteriorMenuItem& menuItem);
         
@@ -47,6 +54,8 @@ namespace InteriorsExplorer
         
         int floorId;
         
+        Eegeo::Helpers::TCallback1<InteriorsExplorerModule, InteriorMenu::InteriorMenuItem&> m_interiorMenuItemGazeCallback;
+
         typedef std::vector<InteriorMenu::InteriorMenuItem*> TInteriorMenuItems;
         TInteriorMenuItems  m_pInteriorMenuItems;
         
@@ -54,8 +63,7 @@ namespace InteriorsExplorer
         InteriorsExplorerModel* m_pModel;
         InteriorVisibilityUpdater* m_pVisibilityUpdater;
         Eegeo::Resources::Interiors::InteriorInteractionModel& m_interiorInteractionModel;
-        
-        Eegeo::Helpers::TCallback1<InteriorsExplorerModule, InteriorMenu::InteriorMenuItem&> m_interiorMenuItemGazeCallback;
-        
+        Eegeo::Resources::Interiors::InteriorSelectionModel& m_interiorSelectionModel;
+        Eegeo::Resources::Interiors::InteriorTransitionModel& m_interiorTransitionModel;
     };
 }

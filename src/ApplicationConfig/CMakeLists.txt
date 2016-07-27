@@ -4,6 +4,8 @@ set(currsources
   ../src/ApplicationConfig/ApplicationConfig.h
   ../src/ApplicationConfig/ApplicationConfiguration.cpp
   ../src/ApplicationConfig/ApplicationConfiguration.h
+  ../src/ApplicationConfig/JumpPointConfigData.cpp
+  ../src/ApplicationConfig/JumpPointConfigData.h
   ../src/ApplicationConfig/CMakeLists.txt
 )
 set(sources ${sources} ${currsources})

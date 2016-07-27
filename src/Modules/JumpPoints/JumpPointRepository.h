@@ -24,8 +24,10 @@ namespace Eegeo
                 void AddJumpPoint(JumpPoint* pJumpPointToAdd);
                 
                 void RemoveJumpPoint(JumpPoint* pJumpPointToRemove);
+
+                void RemoveAllJumpPoints();
                 
-                int GetNumOfJumpPoints() const;
+                size_t GetNumOfJumpPoints() const;
                 
                 JumpPoint* GetJumpPointAtIndex(int jumpPointIndex) const;
                 

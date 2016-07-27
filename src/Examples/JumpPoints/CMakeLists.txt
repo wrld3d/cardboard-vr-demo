@@ -1,6 +1,8 @@
 set(headers ${headers} ../src/Examples/JumpPoints
 )
 set(currsources
+  ../src/Examples/JumpPoints/JumpPointsSwitcher.cpp
+  ../src/Examples/JumpPoints/JumpPointsSwitcher.h
   ../src/Examples/JumpPoints/JumpPointsExample.cpp
   ../src/Examples/JumpPoints/JumpPointsExample.h
   ../src/Examples/JumpPoints/JumpPointsExampleFactory.cpp

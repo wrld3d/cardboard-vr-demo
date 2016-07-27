@@ -43,7 +43,7 @@ namespace Eegeo
                 }
             }
             
-            int DeadZoneMenuItemRepository::GetNumOfDeadZoneMenuItems() const
+            size_t DeadZoneMenuItemRepository::GetNumOfDeadZoneMenuItems() const
             {
                 return m_deadZoneMenuItem.size();
             }

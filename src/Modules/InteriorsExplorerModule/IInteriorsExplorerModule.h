@@ -5,22 +5,30 @@
 #include "Types.h"
 #include "InteriorsExplorer.h"
 #include "GlobeCamera.h"
+#include "string"
+#include "ICallback.h"
 
-    namespace InteriorsExplorer
+namespace InteriorsExplorer
+{
+    class IInteriorsExplorerModule
     {
-        class IInteriorsExplorerModule
-        {
-        public:
-            virtual ~IInteriorsExplorerModule() { }
-            
-            virtual bool InteriorLoaded() = 0;
-            
-            virtual void SelectFloor(int floor) = 0;
-            virtual void Update(float dt) const = 0;
-            
-            virtual void ShowInteriors() = 0;
-            virtual void HideInteriors() = 0;
-            
-            
-        };
+    public:
+        virtual ~IInteriorsExplorerModule() { }
+
+        virtual bool InteriorLoaded() = 0;
+
+        virtual void SelectFloor(int floor) = 0;
+        virtual int GetSelectedFloor() const = 0;
+        virtual void Update(float dt) const = 0;
+
+        virtual void ShowInteriors() = 0;
+        virtual void HideInteriors() = 0;
+        virtual bool IsInteriorVisible() = 0;
+
+        virtual void SelectInterior(std::string interiorID) = 0;
+        virtual std::string GetSelectedInteriorID() const = 0;
+
+        virtual void RegisterVisibilityChangedCallback(Eegeo::Helpers::ICallback0& callback) = 0;
+        virtual void UnregisterVisibilityChangedCallback(Eegeo::Helpers::ICallback0& callback) = 0;
+    };
 }

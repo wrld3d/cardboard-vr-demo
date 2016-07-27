@@ -32,11 +32,14 @@ namespace Examples
                 return ApplicationConfiguration(parsedConfig.Name(),
                 								parsedConfig.EegeoApiKey(),
                                                 parsedConfig.InterestLocation(),
-                                                parsedConfig.DistanceToInterestMetres(),
                                                 parsedConfig.OrientationDegrees(),
                                                 m_productVersion,
                                                 m_buildNumber,
-                                                combinedVersionString);
+                                                combinedVersionString,
+                                                parsedConfig.GetLocations(),
+                                                parsedConfig.GetExteriorJumpPoints(),
+                                                parsedConfig.GetInteriorJumpPoints()
+                                                );
             }
         }
     }

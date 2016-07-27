@@ -9,6 +9,7 @@
 #include "InteriorVisibilityUpdater.h"
 #include "InteriorSelectionModel.h"
 #include "InteriorInteractionModel.h"
+#include "InteriorTransitionModel.h"
 #include "InteriorMenu/InteriorMenuModule.h"
 #include "InteriorMenu/InteriorMenuController.h"
 #include "InteriorMenu/InteriorMenuItem.h"
@@ -16,7 +17,6 @@
 
 namespace InteriorsExplorer
 {
-    
     InteriorsExplorerModule::InteriorsExplorerModule(  Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
                                                      , Eegeo::UI::IUIQuadFactory& uiQuadFactory
                                                      , Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
@@ -26,8 +26,9 @@ namespace InteriorsExplorer
                                                      , Eegeo::Resources::Interiors::InteriorSelectionModel& interiorSelectionModel
                                                      , Eegeo::Resources::Interiors::InteriorTransitionModel& interiorTransitionModel) :
     m_interiorInteractionModel(interiorInteractionModel),
+    m_interiorSelectionModel(interiorSelectionModel),
+    m_interiorTransitionModel(interiorTransitionModel),
     m_interiorMenuItemGazeCallback(this, &InteriorsExplorerModule::OnMenuItemGazed)
-    
     {
         floorId = 0;
         
@@ -82,7 +83,23 @@ namespace InteriorsExplorer
         m_interiorInteractionModel.SetSelectedFloorIndex(floorId);
         m_pInteriorMenuModule->GetController().SetSelectedFloorId(floorId);
     }
-        
+
+    int InteriorsExplorerModule::GetSelectedFloor() const
+    {
+        return m_interiorInteractionModel.GetSelectedFloorIndex();
+    }
+
+    void InteriorsExplorerModule::SelectInterior(std::string interiorID)
+    {
+        Eegeo::Resources::Interiors::InteriorId id(interiorID);
+        m_interiorSelectionModel.SelectInteriorId(id);
+    }
+
+    std::string InteriorsExplorerModule::GetSelectedInteriorID() const
+    {
+        return m_interiorSelectionModel.GetSelectedInteriorId().Value();
+    }
+
     bool InteriorsExplorerModule::InteriorLoaded()
     {
         return m_interiorInteractionModel.HasInteriorModel();
@@ -126,5 +143,21 @@ namespace InteriorsExplorer
         }
      
     }
-    
+
+    bool InteriorsExplorerModule::IsInteriorVisible()
+    {
+        return m_pVisibilityUpdater->GetInteriorShouldDisplay();
+    }
+
+    void InteriorsExplorerModule::RegisterVisibilityChangedCallback(Eegeo::Helpers::ICallback0& callback)
+    {
+        m_interiorTransitionModel.RegisterChangedCallback(callback);
+        m_interiorInteractionModel.RegisterInteractionStateChangedCallback(callback);
+    }
+
+    void InteriorsExplorerModule::UnregisterVisibilityChangedCallback(Eegeo::Helpers::ICallback0& callback)
+    {
+        m_interiorTransitionModel.UnregisterChangedCallback(callback);
+        m_interiorInteractionModel.UnregisterInteractionStateChangedCallback(callback);
+    }
 }
