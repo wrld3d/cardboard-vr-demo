@@ -51,6 +51,7 @@ namespace Examples
     {
         if(m_interiorsExplorerModule.GetSelectedFloor()<0)
         {
+            m_isInInterior = false;
             m_jumpPointRepository.RemoveAllJumpPoints();
             return;
         }

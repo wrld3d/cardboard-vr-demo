@@ -136,12 +136,12 @@ namespace InteriorsExplorer
     {
         if (!m_pVisibilityUpdater->GetInteriorShouldDisplay())
         {
-            m_pVisibilityUpdater->SetInteriorShouldDisplay(true);
-            m_pVisibilityUpdater->UpdateVisiblityImmediately();
-            m_pInteriorMenuModule->SetMenuShouldDisplay(true);
             floorId = 0;
             m_interiorInteractionModel.SetSelectedFloorIndex(floorId);
             m_pInteriorMenuModule->GetController().SetSelectedFloorId(floorId);
+            m_pVisibilityUpdater->SetInteriorShouldDisplay(true);
+            m_pVisibilityUpdater->UpdateVisiblityImmediately();
+            m_pInteriorMenuModule->SetMenuShouldDisplay(true);  
         }
     }
     
