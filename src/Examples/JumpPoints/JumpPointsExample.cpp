@@ -19,6 +19,7 @@
 #include "Modules/UI/Animations/Dv3PropertyAnimation.h"
 #include "Modules/UI/Animations/AnimationEase.h"
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
+#include "Modules/WorldMenu/WorldMenuModule.h"
 
 #include "JumpPointConfigData.h"
 
@@ -60,6 +61,7 @@ namespace Examples
                                          InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                          Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                          Eegeo::UI::Animations::AnimationsController& animationsController,
+                                         Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
                                          IVRHeadTracker& headTracker,
                                          const Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
     : m_world(eegeoWorld)
@@ -70,6 +72,7 @@ namespace Examples
     , m_interiorsExplorerModule(interiorsExplorerModule)
     , m_deadZoneMenuRepository(deadZoneMenuRepository)
     , m_animationsController(animationsController)
+    , m_worldMenuModule(worldMenuModule)
     , m_headTracker(headTracker)
     , m_appConfig(appConfig)
     , m_onSP1SelectedCallback(this, &JumpPointsExample::OnStopPoint1Selected)
@@ -431,6 +434,7 @@ namespace Examples
         m_isInInterior = true;
         m_interiorsExplorerModule.ShowInteriors();
         m_pWestPortInteriorButton->SetItemShouldRender(false);
+        m_worldMenuModule.SetMenuShouldDisplay(false);
     }
     
     void JumpPointsExample::HideInteriors()
@@ -477,6 +481,8 @@ namespace Examples
         if(m_interiorsExplorerModule.GetSelectedFloor()<0){
             m_isInInterior = false;
             m_pWestPortInteriorButton->SetItemShouldRender(true);
+            
+            m_worldMenuModule.SetMenuShouldDisplay(true);
             
             Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459156, -2.975320, 300).ToECEF();
             

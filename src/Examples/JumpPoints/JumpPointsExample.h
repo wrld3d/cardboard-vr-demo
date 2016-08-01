@@ -29,6 +29,7 @@
 #include "Modules/UI/Animations/AnimationsController.h"
 #include "Modules/UI/Animations/IDv3Animateable.h"
 #include "Modules/UI/Animations/IAnimationObserver.h"
+#include "Modules/WorldMenu/WorldMenuModule.h"
 
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
 
@@ -71,6 +72,7 @@ namespace Examples
 
         Eegeo::UI::UIProgressBarConfig m_progressBarConfig;
         Eegeo::UI::UIProgressButton *m_pWestPortInteriorButton;
+        Eegeo::UI::WorldMenu::WorldMenuModule& m_worldMenuModule;
 
         JumpPointsSwitcher* m_pJumpPointSwitcher;
         Eegeo::Helpers::TCallback0<JumpPointsExample> m_onInteriorFloorChanged;
@@ -96,6 +98,7 @@ namespace Examples
                           InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                           Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                           Eegeo::UI::Animations::AnimationsController& animationsController,
+                          Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
                           IVRHeadTracker& headTracker,
                           const Examples::ApplicationConfig::ApplicationConfiguration& appConfig);
         

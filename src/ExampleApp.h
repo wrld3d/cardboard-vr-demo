@@ -22,9 +22,12 @@
 #include "Modules/UI/IUICameraProvider.h"
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
 #include "Modules/UI/UIProgressBarConfig.h"
+#include "Modules/UI/Animations/AnimationsController.h"
+
+#include "Modules/WorldMenu/WorldMenu.h"
+
 #include "Modules/DeadZoneMenu/DeadZoneMenu.h"
 #include "ApplicationConfiguration.h"
-#include "Modules/UI/Animations/AnimationsController.h"
 
 #include "Logger.h"
 #include "ICallback.h"
@@ -63,6 +66,15 @@ private:
     
     Eegeo::Helpers::IdentityProvider m_identityProvider;
     InteriorsExplorer::InteriorsExplorerModule* m_pInteriorExplorerModule;
+    
+    
+    typedef std::vector<Eegeo::UI::WorldMenu::WorldMenuItem*> TWorldMenuItems;
+    TWorldMenuItems  m_pWorldMenuItems;
+    
+    Eegeo::UI::WorldMenu::WorldMenuModule* m_pWorldMenuModule;
+    Eegeo::Helpers::TCallback1<ExampleApp, Eegeo::UI::WorldMenu::WorldMenuItem&> m_worldMenuItemGazeCallback;
+    
+    void OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem);
     
     bool m_night;
     float m_foggingFar;

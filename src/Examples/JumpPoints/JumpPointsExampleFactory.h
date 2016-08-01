@@ -10,6 +10,7 @@
 #include "EegeoRootDeclarations.h"
 #include "ScreenPropertiesProvider.h"
 #include "Modules/UI/Animations/AnimationsController.h"
+#include "Modules/WorldMenu/WorldMenuModule.h"
 
 #include "ApplicationConfiguration.h"
 
@@ -27,6 +28,7 @@ class JumpPointsExampleFactory : public IExampleFactory
     DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
     InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
     Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneMenuRepository;
+    Eegeo::UI::WorldMenu::WorldMenuModule& m_worldMenuModule;
     IVRHeadTracker& m_headTracker;
     
     Eegeo::UI::Animations::AnimationsController& m_animationsController;
@@ -41,6 +43,7 @@ public:
                              InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                              Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                              Eegeo::UI::Animations::AnimationsController& animationsController,
+                             Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
                              IVRHeadTracker& headTracker,
                              Examples::ApplicationConfig::ApplicationConfiguration& appConfig);
 

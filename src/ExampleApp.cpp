@@ -73,6 +73,10 @@
 
 #include "Modules/DeadZoneMenu/DeadZoneMenuModule.h"
 
+#include "WorldMenu/WorldMenuModule.h"
+#include "WorldMenu/WorldMenuController.h"
+#include "WorldMenu/WorldMenuItem.h"
+
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
 #include "Modules/UI/UIQuad/UIQuadFactory.h"
 
@@ -137,6 +141,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_toggleDayNightClickedCallback(this, &ExampleApp::ToggleNight)
     , m_splineExampleButtonClickedCallback(this, &ExampleApp::LoadSplineExample)
     , m_jumpPointExampleButtonClickedCallback(this, &ExampleApp::LoadJumpPointExample)
+    , m_worldMenuItemGazeCallback(this, &ExampleApp::OnWorldMenuItemGazed)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -250,12 +255,33 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 1, m_toggleDayNightClickedCallback);
     m_pMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 2, m_splineExampleButtonClickedCallback);
     
-//    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem1);
-//    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem2);
-//    m_pDeadZoneMenuModule->GetRepository().AddDeadZoneMenuItem(m_pMenuItem3);
+    
+    m_pWorldMenuModule = Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuModule)(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController,*m_pExampleController, menuTextureFileName, m_progressBarConfig, 4);
+    m_pWorldMenuModule->SetMenuShouldDisplay(true);
+    
+    Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(0, 13, m_worldMenuItemGazeCallback);
+    m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
+    m_pWorldMenuItems.push_back(menuItem);
+    
+    menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(1, 4, m_worldMenuItemGazeCallback, NULL, 15);
+    m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
+    m_pWorldMenuItems.push_back(menuItem);
+    
+    menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(2, 5, m_worldMenuItemGazeCallback);
+    m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
+    m_pWorldMenuItems.push_back(menuItem);
+    
+    menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(3, 6, m_worldMenuItemGazeCallback);
+    m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
+    m_pWorldMenuItems.push_back(menuItem);
+    
+    menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(4, 1, m_worldMenuItemGazeCallback, NULL, 15);
+    m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
+    m_pWorldMenuItems.push_back(menuItem);
+    
     
     m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_pInteriorExplorerModule, headTracker, m_pDeadZoneMenuModule->GetRepository());
-    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, headTracker, appConfig);
+    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, headTracker, appConfig);
     
     m_pUIGazeView->HideView();
     
@@ -268,6 +294,15 @@ ExampleApp::~ExampleApp()
     {
         Eegeo_DELETE m_pLoadingScreen;
     }
+    while(m_pWorldMenuItems.size()>0)
+    {
+        Eegeo::UI::WorldMenu::WorldMenuItem* menuItem = *m_pWorldMenuItems.begin();
+        m_pWorldMenuModule->GetRepository().RemoveWorldMenuItem(menuItem);
+        m_pWorldMenuItems.erase(m_pWorldMenuItems.begin());
+        Eegeo_DELETE menuItem;
+    }
+    
+    Eegeo_DELETE m_pWorldMenuModule;
     
     Eegeo_DELETE m_pDeadZoneMenuModule;
     Eegeo_DELETE m_pMenuItem1;
@@ -344,6 +379,8 @@ void ExampleApp::Update (float dt, float headTansform[])
     
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
     {
+        
+        m_pWorldMenuModule->Update(dt);
         m_pAnimationController->Update(dt);
         m_pExampleController->Update(dt);
     
@@ -437,6 +474,13 @@ void ExampleApp::DrawLoadingScreen ()
     }
 }
 
+
+void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem)
+{
+    
+    
+    
+}
 
 void ExampleApp::UpdateNightTParam(float dt)
 {

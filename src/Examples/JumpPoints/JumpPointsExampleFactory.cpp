@@ -3,7 +3,7 @@
 #include "JumpPointsExampleFactory.h"
 #include "JumpPointsExample.h"
 #include "Modules/UI/Animations/AnimationsController.h"
-
+#include "Modules/WorldMenu/WorldMenuModule.h"
 
 namespace Examples
 {
@@ -18,6 +18,7 @@ namespace Examples
                                                        InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                        Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                                        Eegeo::UI::Animations::AnimationsController& animationsController,
+                                                       Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
                                                        IVRHeadTracker& headTracker,
                                                        Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
     : m_uiQuadFactory(quadFactory)
@@ -29,6 +30,7 @@ namespace Examples
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_interiorsExplorerModule(interiorsExplorerModule)
     , m_deadZoneMenuRepository(deadZoneMenuRepository)
+    , m_worldMenuModule(worldMenuModule)
     , m_headTracker(headTracker)
     , m_appConfig(appConfig)
     {
@@ -51,6 +53,7 @@ namespace Examples
                                                m_interiorsExplorerModule,
                                                m_deadZoneMenuRepository,
                                                m_animationsController,
+                                               m_worldMenuModule,
                                                m_headTracker,
                                                m_appConfig
                                                );

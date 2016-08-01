@@ -20,6 +20,7 @@
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
 #include "Modules/DeadZoneMenu/IDeadZoneMenuItemObservable.h"
 #include "Modules/UI/Animations/AnimationsController.h"
+#include "Modules/WorldMenu/WorldMenu.h"
 #include <vector>
 #include <string>
 #include "ApplicationConfiguration.h"
@@ -132,10 +133,11 @@ namespace Examples
                                         		InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                         		Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                         		Eegeo::UI::Animations::AnimationsController& animationsController,
+                                                Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
                                                 IVRHeadTracker& headTracker,
                                                 Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
         {
-            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, quadFactory, uIInteractionObservable, uICameraProvider, interiorsExplorerModule, deadZoneMenuRepository,animationsController, headTracker, appConfig)));
+            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, quadFactory, uIInteractionObservable, uICameraProvider, interiorsExplorerModule, deadZoneMenuRepository,animationsController, worldMenuModule, headTracker, appConfig)));
         }
         
         

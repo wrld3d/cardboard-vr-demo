@@ -84,7 +84,8 @@ namespace InteriorsExplorer
     
     void InteriorsExplorerModule::SelectFloor(int floor)
     {
-        if(floorId>=0){
+        if(floorId>=0)
+        {
             m_interiorInteractionModel.SetSelectedFloorIndex(floorId);
             m_pInteriorMenuModule->GetController().SetSelectedFloorId(floorId);
         }
