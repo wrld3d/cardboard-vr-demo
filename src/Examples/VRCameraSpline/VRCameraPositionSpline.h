@@ -18,7 +18,7 @@ namespace Eegeo
             , m_playing(false)
             , m_time(0.0)
             , m_slowDownFactor(0.0f)
-            , m_currentSpline(2)
+            , m_currentSpline(0)
             {
                 SetSpline(m_currentSpline);
             }

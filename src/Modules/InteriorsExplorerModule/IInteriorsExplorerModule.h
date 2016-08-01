@@ -17,6 +17,9 @@ namespace InteriorsExplorer
 
         virtual bool InteriorLoaded() = 0;
 
+        virtual void ForceEnterInterior(int floorId) = 0;
+        virtual void ForceLeaveInterior() = 0;
+        
         virtual void SelectFloor(int floor) = 0;
         virtual int GetSelectedFloor() const = 0;
         virtual void Update(float dt) const = 0;

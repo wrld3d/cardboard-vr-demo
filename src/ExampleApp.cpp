@@ -477,8 +477,36 @@ void ExampleApp::DrawLoadingScreen ()
 
 void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem)
 {
+    Eegeo::m33 orientation;
+    Eegeo::dv3 position;
     
-    
+    switch(menuItem.GetId())
+    {
+        case 0:
+        {
+            break;
+        }
+        case 1:
+        {
+            m_pExampleController->ActivateExample("JumpPointsExample");
+            break;
+        }
+        case 2:
+        {
+            m_pExampleController->ActivateExample("JumpPointsExample");
+            break;
+        }
+        case 3:
+        {
+            m_pExampleController->ActivateExample("JumpPointsExample");
+            break;
+        }
+        case 4:
+        {
+            m_pExampleController->ActivateExample("VRCameraSplineExample");
+            break;
+        }
+    }
     
 }
 

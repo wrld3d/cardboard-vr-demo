@@ -30,7 +30,7 @@ namespace InteriorsExplorer
     m_interiorTransitionModel(interiorTransitionModel),
     m_interiorMenuItemGazeCallback(this, &InteriorsExplorerModule::OnMenuItemGazed)
     {
-        floorId = 0;
+        m_floorId = 0;
         
         Eegeo::Resources::Interiors::InteriorId id(std::string("westport_house"));
         interiorSelectionModel.SelectInteriorId(id);
@@ -72,28 +72,40 @@ namespace InteriorsExplorer
         Eegeo_DELETE m_pVisibilityUpdater;
     }
     
+    void InteriorsExplorerModule::ForceEnterInterior(int floorId)
+    {
+        ShowInteriors();
+        m_floorId = floorId;
+        SelectFloor(m_floorId);
+        m_pInteriorMenuModule->SetMenuShouldDisplay(false);
+    }
+    
+    void InteriorsExplorerModule::ForceLeaveInterior()
+    {
+        HideInteriors();
+    }
     
     void InteriorsExplorerModule::OnMenuItemGazed(InteriorMenu::InteriorMenuItem& menuItem)
     {
-        floorId = menuItem.GetId();
+        m_floorId = menuItem.GetId();
         if(menuItem.GetId()<0)
             HideInteriors();
         else
-            SelectFloor(floorId);
+            SelectFloor(m_floorId);
     }
     
     void InteriorsExplorerModule::SelectFloor(int floor)
     {
-        if(floorId>=0)
+        if(m_floorId>=0)
         {
-            m_interiorInteractionModel.SetSelectedFloorIndex(floorId);
-            m_pInteriorMenuModule->GetController().SetSelectedFloorId(floorId);
+            m_interiorInteractionModel.SetSelectedFloorIndex(m_floorId);
+            m_pInteriorMenuModule->GetController().SetSelectedFloorId(m_floorId);
         }
     }
 
     int InteriorsExplorerModule::GetSelectedFloor() const
     {
-        return floorId;
+        return m_floorId;
     }
 
     void InteriorsExplorerModule::SelectInterior(std::string interiorID)
@@ -114,12 +126,12 @@ namespace InteriorsExplorer
     
     void InteriorsExplorerModule::Update(float dt) const
     {
-        if(floorId>=0)
+        if(m_floorId>=0)
         {
             m_pInteriorMenuModule->Update(dt);
             if(m_interiorInteractionModel.HasInteriorModel())
             {
-                m_interiorInteractionModel.SetSelectedFloorIndex(floorId);
+                m_interiorInteractionModel.SetSelectedFloorIndex(m_floorId);
                 m_pVisibilityUpdater->Update(dt);
             }
         }
@@ -137,9 +149,9 @@ namespace InteriorsExplorer
     {
         if (!m_pVisibilityUpdater->GetInteriorShouldDisplay())
         {
-            floorId = 0;
-            m_interiorInteractionModel.SetSelectedFloorIndex(floorId);
-            m_pInteriorMenuModule->GetController().SetSelectedFloorId(floorId);
+            m_floorId = 0;
+            m_interiorInteractionModel.SetSelectedFloorIndex(m_floorId);
+            m_pInteriorMenuModule->GetController().SetSelectedFloorId(m_floorId);
             m_pVisibilityUpdater->SetInteriorShouldDisplay(true);
             m_pVisibilityUpdater->UpdateVisiblityImmediately();
             m_pInteriorMenuModule->SetMenuShouldDisplay(true);  

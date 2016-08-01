@@ -57,18 +57,12 @@ namespace Examples
         m_pNYSplineButton = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(11, 4, m_onNYSplineSelectedCallback);
         m_pWPSplineButton = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(12, 5, m_onWestPortSplineSelectedCallback);
 
-        m_deadZoneRepository.AddDeadZoneMenuItem(m_pSFSplineButton);
-        m_deadZoneRepository.AddDeadZoneMenuItem(m_pNYSplineButton);
-        m_deadZoneRepository.AddDeadZoneMenuItem(m_pWPSplineButton);
     }
     
     void VRCameraSplineExample::Suspend()
     {
-        m_interiorsExplorerModule.HideInteriors();
+        m_interiorsExplorerModule.ForceLeaveInterior();
         
-        m_deadZoneRepository.RemoveDeadZoneMenuItem(m_pSFSplineButton);
-        m_deadZoneRepository.RemoveDeadZoneMenuItem(m_pNYSplineButton);
-        m_deadZoneRepository.RemoveDeadZoneMenuItem(m_pWPSplineButton);
         
         Eegeo_DELETE m_pSFSplineButton;
         Eegeo_DELETE m_pNYSplineButton;
@@ -88,12 +82,11 @@ namespace Examples
             if (m_pSplineCameraController->GetVRCameraPositionSpline().IsInteriorSpline()) {
                 m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
                 
-                m_interiorsExplorerModule.ShowInteriors();
-                m_interiorsExplorerModule.SelectFloor(2);
+                m_interiorsExplorerModule.ForceEnterInterior(2);
             }
             else {
                 m_pSplineCameraController->SetNearMultiplier(EXTERIOR_NEAR_MULTIPLIER);
-                m_interiorsExplorerModule.HideInteriors();
+                m_interiorsExplorerModule.ForceLeaveInterior();
             }
         
     }

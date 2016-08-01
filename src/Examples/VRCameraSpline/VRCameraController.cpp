@@ -127,6 +127,7 @@ namespace Eegeo
                 {
                     m_pHeadTracker.ResetTracker();
                     m_stopTimeElapsed = 0.0f;
+                    m_vrCameraPositionSpline.NextSpline();
                     m_vrCameraPositionSpline.Start();
                 }
             }
@@ -147,6 +148,7 @@ namespace Eegeo
                 {
                     m_pHeadTracker.ResetTracker();
                     m_splineEndPauseTimeElapsed = 0.0f;
+                    m_vrCameraPositionSpline.NextSpline();
                     m_vrCameraPositionSpline.Start();
                 }
             }

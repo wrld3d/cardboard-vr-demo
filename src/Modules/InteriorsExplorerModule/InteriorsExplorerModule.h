@@ -34,7 +34,10 @@ namespace InteriorsExplorer
         
         
         void Update(float dt) const;
-
+        
+        virtual void ForceEnterInterior(int floorId);
+        virtual void ForceLeaveInterior();
+        
         virtual void SelectInterior(std::string);
         virtual std::string GetSelectedInteriorID() const;
         virtual bool InteriorLoaded();
@@ -52,7 +55,7 @@ namespace InteriorsExplorer
         
     private:
         
-        int floorId;
+        int m_floorId;
         
         Eegeo::Helpers::TCallback1<InteriorsExplorerModule, InteriorMenu::InteriorMenuItem&> m_interiorMenuItemGazeCallback;
 
