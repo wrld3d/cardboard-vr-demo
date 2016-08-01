@@ -19,11 +19,12 @@ namespace Eegeo
                 void Use(Eegeo::Rendering::GLState& glState) const;
                 GLuint GetDiffuseSamplerId() const;
                 void SetMVP(const m44& mvp) const;
-                
+                void SetFadeMultiplier(float fadeMultiplier);
 
             private:
                 VRDistortionShader(const Eegeo::Rendering::TShaderId shaderId, const std::string& vertexCode, const std::string& fragmentCode);
                 GLuint m_diffuseTextureSamplerUniformLocation;
+                GLuint m_fadeMultiplierUniform;
             };
             
         }

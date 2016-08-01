@@ -19,6 +19,16 @@ namespace Eegeo
                 m_pMesh->UnbindVertexBuffers(glState);
                 
             }
+
+            void VRDistortionRenderable::SetFadeModifier(float fadeModifier)
+            {
+                m_fadeModifier = fadeModifier;
+            }
+
+            float VRDistortionRenderable::GetFadeModifier() const
+            {
+                return m_fadeModifier;
+            }
         }
     }
 }

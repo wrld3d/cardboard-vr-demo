@@ -27,12 +27,12 @@ namespace Eegeo
             {
                 return
                 "precision mediump float;\n"
-                "varying vec3 v_Grid;\n"
                 "varying mediump vec2 DestinationUV;\n"
                 "uniform sampler2D diffuseTex; \n"
+                "uniform float fadeMultiplier; \n"
                 "void main(void) { \n"
                 "highp vec4 colour = texture2D(diffuseTex, DestinationUV.xy); \n"
-                "gl_FragColor = colour; \n"
+                "gl_FragColor = colour * fadeMultiplier; \n"
                 "}";
             }
             
@@ -46,6 +46,7 @@ namespace Eegeo
             {
                 CompileProgram(vertexCode, fragmentCode);
                 m_diffuseTextureSamplerUniformLocation = GetUniformLocation("diffuseTex");
+                m_fadeMultiplierUniform = GetUniformLocation("fadeMultiplier");
             }
             
             GLuint VRDistortionShader::GetDiffuseSamplerId() const
@@ -60,7 +61,11 @@ namespace Eegeo
                 UseProgram(glState);
                 SetUniformTextureSampler(glState, GetDiffuseSamplerId(), m_diffuseTextureSamplerUniformLocation);
             }
-            
+
+            void VRDistortionShader::SetFadeMultiplier(float fadeMultiplier)
+            {
+                SetUniformFloat(fadeMultiplier, m_fadeMultiplierUniform);
+            }
         }
     }
 }

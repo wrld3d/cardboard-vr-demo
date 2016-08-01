@@ -6,6 +6,7 @@
 #include "Rendering.h"
 #include "VectorMath.h"
 #include "VRDistortionShader.h"
+#include "VRDistortionRenderable.h"
 
 #include "Logger.h"
 
@@ -57,7 +58,12 @@ namespace Eegeo
                 m_screenProperties = screenProperties;
             }
             
-            void VRDistortionMaterial::SetStatePerRenderable(const Rendering::RenderableBase* pRenderableBase, Rendering::GLState& glState) const{}
+            void VRDistortionMaterial::SetStatePerRenderable(const Rendering::RenderableBase* pRenderableBase, Rendering::GLState& glState) const
+            {
+                const VRDistortionRenderable* renderable = static_cast<const VRDistortionRenderable*>(pRenderableBase);
+
+                m_shader.SetFadeMultiplier(renderable->GetFadeModifier());
+            }
         }
     }
 }

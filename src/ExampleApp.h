@@ -28,6 +28,7 @@
 
 #include "Modules/DeadZoneMenu/DeadZoneMenu.h"
 #include "ApplicationConfiguration.h"
+#include "WorldMenuLoaderModel.h"
 
 #include "Logger.h"
 #include "ICallback.h"
@@ -70,6 +71,8 @@ private:
     
     typedef std::vector<Eegeo::UI::WorldMenu::WorldMenuItem*> TWorldMenuItems;
     TWorldMenuItems  m_pWorldMenuItems;
+
+    Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel* m_pWorldMenuLoaderModel;
     
     Eegeo::UI::WorldMenu::WorldMenuModule* m_pWorldMenuModule;
     Eegeo::Helpers::TCallback1<ExampleApp, Eegeo::UI::WorldMenu::WorldMenuItem&> m_worldMenuItemGazeCallback;

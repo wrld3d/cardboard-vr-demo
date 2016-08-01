@@ -14,7 +14,9 @@ namespace Examples
     , m_exteriorJumpPoints(exteriorJumpPoints)
     , m_interiorJumpPoints(interiorJumpPoints)
     , m_interiorVisibilityChangedCallback(this, &JumpPointsSwitcher::MapStateChanged)
+    , m_currentLocation("")
     , m_isInInterior(false)
+    , m_currentSelectedFloor(0)
     {
         m_interiorsExplorerModule.RegisterVisibilityChangedCallback(m_interiorVisibilityChangedCallback);
     }

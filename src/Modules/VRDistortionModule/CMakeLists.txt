@@ -6,6 +6,9 @@ set(currsources  ../src/Modules/VRDistortionModule/VRDistortionMaterial.cpp  .
   ../src/Modules/VRDistortionModule/VRCardboardDeviceProfile.h
   ../src/Modules/VRDistortionModule/VRDistortionMeshHelper.cpp
   ../src/Modules/VRDistortionModule/VRDistortionMeshHelper.h
+  ../src/Modules/VRDistortionModule/IVRDistortionTransitionModel.h
+  ../src/Modules/VRDistortionModule/VRDistortionTransitionModel.cpp
+  ../src/Modules/VRDistortionModule/VRDistortionTransitionModel.h
 )
 
 set(sources ${sources} ${currsources})

@@ -5,8 +5,9 @@
 #include "Rendering.h"
 #include "RenderTexture.h"
 #include "ScreenProperties.h"
+#include "ICallback.h"
 #include "VRDistortionIncludes.h"
-
+#include "VRDistortionTransitionModel.h"
 
 namespace Eegeo
 {
@@ -36,9 +37,13 @@ namespace Eegeo
                 
                 VRCardboardDeviceProfile* m_pCardboardProfile;
                 bool m_meshUpdateRequried;
+
+                VRDistortionTransitionModel* m_pTransitionModel;
+                Eegeo::Helpers::TCallback0<VRDistortionModule> m_visibilityParamChangedCallback;
                 
                 void HandleScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
-                
+                void UpdateMaterialFadeMultiplier();
+
             public:
                 
                 VRDistortionModule(const Eegeo::Rendering::ScreenProperties& screenProperties,
@@ -58,6 +63,8 @@ namespace Eegeo
                 void BeginRendering();
                 void RegisterRenderable();
                 void UnRegisterRenderable();
+
+                VRDistortionTransitionModel& GetTransionModel() const;
                 
                 void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
             };

@@ -23,7 +23,12 @@ namespace Eegeo
                 {}
                 
                 virtual void Render(Eegeo::Rendering::GLState& glState) const;
-                
+
+                void SetFadeModifier(float fadeModifier);
+                float GetFadeModifier() const;
+
+            private:
+                float m_fadeModifier;
             };
         }
     }

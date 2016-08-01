@@ -33,9 +33,9 @@ namespace Eegeo
                 void SetState(Eegeo::Rendering::GLState& glState) const;
                 void SetStatePerRenderable(const Rendering::RenderableBase* pRenderableBase, Rendering::GLState& glState)  const;
                 
-                bool isRenderingEnded(){ return m_isRenderingEnded; }
-                void setIsRenderingEnded(bool isRenderingEnded){ m_isRenderingEnded = isRenderingEnded; }
-                
+                bool IsRenderingEnded(){ return m_isRenderingEnded; }
+                void SetIsRenderingEnded(bool isRenderingEnded){ m_isRenderingEnded = isRenderingEnded; }
+
             private:
                 const Eegeo::Rendering::TMaterialId m_id;
                 const std::string m_name;

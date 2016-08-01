@@ -284,7 +284,9 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, headTracker, appConfig);
     
     m_pUIGazeView->HideView();
-    
+
+    m_pWorldMenuLoaderModel = Eegeo_NEW(Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel)(m_pWorldMenuModule->GetRepository(), m_pVRDistortion->GetTransionModel());
+
 }
 
 ExampleApp::~ExampleApp()
@@ -301,6 +303,8 @@ ExampleApp::~ExampleApp()
         m_pWorldMenuItems.erase(m_pWorldMenuItems.begin());
         Eegeo_DELETE menuItem;
     }
+
+    Eegeo_DELETE m_pWorldMenuLoaderModel;
     
     Eegeo_DELETE m_pWorldMenuModule;
     
@@ -390,6 +394,7 @@ void ExampleApp::Update (float dt, float headTansform[])
         Eegeo::v2 center = m_pVRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
         m_pUIInteractionController->Event_ScreenInteractionMoved(center);
         m_pInteriorExplorerModule ->Update(dt);
+        m_pWorldMenuLoaderModel->Update(dt);
     }
     
     UpdateNightTParam(dt);

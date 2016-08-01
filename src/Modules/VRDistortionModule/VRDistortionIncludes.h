@@ -8,11 +8,14 @@ namespace Eegeo
     {
         namespace Distortion
         {
+            class VRDistortionModule;
             class VRDistortionMaterial;
             class VRDistortionRenderer;
             class VRDistortionShader;
             class VRDistortionRenderable;
             class VRCardboardDeviceProfile;
+            class IVRDistortionTransitionModel;
+            class VRDistortionTransitionModel;
         }
     }
 }
