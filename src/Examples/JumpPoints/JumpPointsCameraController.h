@@ -62,9 +62,9 @@ namespace Eegeo
             void SetProjectionMatrix(Eegeo::m44& projection);
             void UpdateFromPose(const Eegeo::m33& orientation, float eyeDistance);
             void SetEcefPosition(const Eegeo::dv3& ecef);
-            void SetStartLatLongAltitude(const Eegeo::Space::LatLongAltitude& eyePos);
+            void SetStartLatLongAltitude(const Eegeo::Space::LatLongAltitude& eyePos, float heading);
             
-            void SetStartPositionAndOrientation(Eegeo::dv3& position, Eegeo::m33& orientation);
+            void SetStartPositionAndOrientation(const Eegeo::dv3& position, const Eegeo::m33& orientation);
             
             void GetNearFarPlaneDistances(float& out_near, float& out_far);
             

@@ -62,7 +62,7 @@ namespace Examples
                                          Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                          Eegeo::UI::Animations::AnimationsController& animationsController,
                                          Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
-                                         Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& getJumpPointStartPositionOrientation,
+                                         WorldMenuLoader::SdkModel::WorldMenuLoaderModel& menuLoader,
                                          IVRHeadTracker& headTracker,
                                          const Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
     : m_world(eegeoWorld)
@@ -74,6 +74,7 @@ namespace Examples
     , m_deadZoneMenuRepository(deadZoneMenuRepository)
     , m_animationsController(animationsController)
     , m_worldMenuModule(worldMenuModule)
+    , m_menuLoader(menuLoader)
     , m_headTracker(headTracker)
     , m_appConfig(appConfig)
     , m_onSP1SelectedCallback(this, &JumpPointsExample::OnStopPoint1Selected)
@@ -86,7 +87,7 @@ namespace Examples
     , m_onWestPortEntryButtonCallback(this, &JumpPointsExample::OnWestportInteriorButtonSelected)
     , m_onInteriorFloorChanged(this, &JumpPointsExample::OnInteriorFloorChanged)
     , m_onJumpPointSelected(this, &JumpPointsExample::OnJumpPointSelected)
-    , m_getJumpPointStartPositionOrientation(getJumpPointStartPositionOrientation)
+    , m_locationChangedCallback(this, &JumpPointsExample::OnLocationChanged)
     , m_isInInterior(false)
     {
         
@@ -114,17 +115,8 @@ namespace Examples
         m_progressBarConfig.spriteId = 0;
         m_progressBarConfig.color = Eegeo::v4::One();
         m_progressBarConfig.renderLayer = Eegeo::Rendering::LayerIds::Values::AfterAll;
-        
-        Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250);
-        
-        m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla);
-        m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
 
-        Eegeo::dv3 position;
-        Eegeo::m33 orientation;
-        
-        m_getJumpPointStartPositionOrientation(position, orientation);
-        m_pSplineCameraController->SetStartPositionAndOrientation(position, orientation);
+        m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
         
         Eegeo::v2 dimension = Eegeo::v2(50,50);
         Eegeo::v2 size(4,4);
@@ -142,6 +134,7 @@ namespace Examples
                                                                           m_onJumpPointSelected);
         
         LoadInteriorJumpPoints(m_appConfig.GetInteriorJumpPoints());
+        LoadExteriorJumpPoints(m_appConfig.GetExteriorJumpPoints());
 
         m_pJumpPointSwitcher = Eegeo_NEW(JumpPointsSwitcher)(m_pJumpPointsModule->GetRepository(), m_interiorsExplorerModule, m_exteriorJumpPoints, m_interiorJumpPoints);
 
@@ -167,15 +160,20 @@ namespace Examples
                                                                            outMax);
         
         m_uiInteractionObservable.RegisterInteractableItem(m_pWestPortInteriorButton);
+
+        m_menuLoader.RegisterLocationChangedCallback(m_locationChangedCallback);
+        ChangeLocation(m_menuLoader.GetCurrentSelectedLocation());
     }
     
-    void JumpPointsExample::Suspend(){
-        
+    void JumpPointsExample::Suspend()
+    {
         if(m_isInInterior)
         {
             m_interiorsExplorerModule.UnregisterVisibilityChangedCallback(m_onInteriorFloorChanged);
         }
-        
+
+        m_menuLoader.UnregisterLocationChangedCallback(m_locationChangedCallback);
+
         Eegeo_DELETE m_pJumpPointSwitcher;
         m_uiInteractionObservable.UnRegisterInteractableItem(m_pWestPortInteriorButton);
         Eegeo_DELETE m_pWestPortInteriorButton;
@@ -210,7 +208,7 @@ namespace Examples
         Eegeo_DELETE m_pSPButton7;
         
         Eegeo_DELETE m_pSplineCameraController;
-        
+
         m_renderableFilters.RemoveRenderableFilter(*m_pUIRenderableFilter);
         Eegeo_DELETE m_pUIRenderableFilter;
     }
@@ -510,6 +508,18 @@ namespace Examples
             animation->SetTag(0);
             m_animationsController.AddAnimation(animation);
         }
+    }
+
+    void JumpPointsExample::ChangeLocation(const std::string &location)
+    {
+        const ApplicationConfig::WorldLocationData& currentLocation = m_appConfig.GetLocations().at(location);
+        m_pSplineCameraController->SetStartLatLongAltitude(currentLocation.GetLocationCameraPosition(), currentLocation.GetOrientation());
+        m_pJumpPointSwitcher->SwitchLocation(location);
+    }
+
+    void JumpPointsExample::OnLocationChanged(std::string &location)
+    {
+        ChangeLocation(location);
     }
     
 }

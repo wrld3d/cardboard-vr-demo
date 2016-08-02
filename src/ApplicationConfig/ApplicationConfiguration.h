@@ -8,6 +8,7 @@
 #include "ApplicationConfig.h"
 #include "LatLongAltitude.h"
 #include "JumpPointConfigData.h"
+#include "WorldLocationData.h"
 
 namespace Examples
 {
@@ -28,9 +29,9 @@ namespace Examples
             const std::string m_jumpPointsSpriteSheet;
             const Eegeo::v2 m_jumpPointsSpriteSheetSize;
 
-            const std::vector<std::string> m_exteriorLocations;
             const TExteriorJumpPoints m_exteriorJumpPoints;
             const TInteriorJumpPoints m_interiorJumpPoints;
+            const TWorldLocations m_worldLocations;
         public:
 
             ApplicationConfiguration(const std::string& name,
@@ -42,7 +43,7 @@ namespace Examples
                                      const std::string& combinedVersionString,
                                      const std::string& jumpPointsSpriteSheet,
                                      const Eegeo::v2& jumpPointsSpriteSheetSize,
-                                     const std::vector<std::string>& exteriorLocations,
+                                     const TWorldLocations& worldLocations,
                                      const TExteriorJumpPoints& exteriorJumpPoints,
                                      const TInteriorJumpPoints& interiorJumpPoints
                                      );
@@ -65,7 +66,7 @@ namespace Examples
 
             const Eegeo::v2& JumpPointsSpriteSheetSize() const;
 
-            const std::vector<std::string>& GetLocations() const;
+            const TWorldLocations& GetLocations() const;
 
             const TExteriorJumpPoints& GetExteriorJumpPoints() const;
 

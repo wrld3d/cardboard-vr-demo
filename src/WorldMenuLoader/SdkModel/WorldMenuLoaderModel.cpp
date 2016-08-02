@@ -1,7 +1,7 @@
 // Copyright eeGeo Ltd (2012-2015), All Rights Reserved
 
 #include "WorldMenuLoaderModel.h"
-#include "Logger.h"
+#include "ApplicationConfiguration.h"
 
 #define SCREEN_FADE_TRANSITION_TIME 1.0f
 
@@ -11,17 +11,38 @@ namespace Examples
     {
         namespace SdkModel
         {
-            WorldMenuLoaderModel::WorldMenuLoaderModel( Eegeo::VR::Distortion::IVRDistortionTransitionModel& screenTransisionModel,
-                                                        Eegeo::Helpers::ICallback0& onBlackOutCallback)
-            : m_screenVisibilityChanged(this, &WorldMenuLoaderModel::OnScreenVisiblityChanged)
-            , m_onBlackOutCallback(onBlackOutCallback)
+            WorldMenuLoaderModel::WorldMenuLoaderModel(Eegeo::UI::WorldMenu::WorldMenuItemRepository& menuItemRepository,
+                                                       Eegeo::VR::Distortion::IVRDistortionTransitionModel& screenTransisionModel,
+                                                       const ApplicationConfig::ApplicationConfiguration& appConfig)
+            : m_menuItemRepository(menuItemRepository)
+            , m_worldMenuItemGazeCallback(this, &WorldMenuLoaderModel::OnWorldMenuItemGazed)
+            , m_screenVisibilityChanged(this, &WorldMenuLoaderModel::OnScreenVisiblityChanged)
             {
                 m_pScreenFader = Eegeo_NEW(WorldMenuScreenFader)(screenTransisionModel, SCREEN_FADE_TRANSITION_TIME);
                 m_pScreenFader->RegisterVisibilityChangedCallback(m_screenVisibilityChanged);
+
+                const ApplicationConfig::TWorldLocations& worldLocations = appConfig.GetLocations();
+
+                for (ApplicationConfig::TWorldLocations::const_iterator it = worldLocations.begin(); it != worldLocations.end(); ++it)
+                {
+                    const ApplicationConfig::WorldLocationData& locData = it->second;
+                    Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(locData.GetLocationID(), locData.GetIconID(), m_worldMenuItemGazeCallback, new std::string(it->first));
+                    m_menuItemRepository.AddWorldMenuItem(menuItem);
+                    m_pWorldMenuItems.push_back(menuItem);
+                }
+
+                m_selectedLocation = worldLocations.begin()->first;
             }
 
             WorldMenuLoaderModel::~WorldMenuLoaderModel()
             {
+                while(m_pWorldMenuItems.size()>0)
+                {
+                    Eegeo::UI::WorldMenu::WorldMenuItem* menuItem = *m_pWorldMenuItems.begin();
+                    m_menuItemRepository.RemoveWorldMenuItem(menuItem);
+                    m_pWorldMenuItems.erase(m_pWorldMenuItems.begin());
+                    Eegeo_DELETE menuItem;
+                }
 
                 m_pScreenFader->UnregisterVisibilityChangedCallback(m_screenVisibilityChanged);
                 Eegeo_DELETE m_pScreenFader;
@@ -32,18 +53,43 @@ namespace Examples
                 m_pScreenFader->Update(dt);
             }
 
-            void WorldMenuLoaderModel::FadeIn()
+            const std::string& WorldMenuLoaderModel::GetCurrentSelectedLocation() const
             {
-                m_pScreenFader->SetShouldFadeToBlack(true);
+                return m_selectedLocation;
+            }
+
+            void WorldMenuLoaderModel::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem &menuItem)
+            {
+                if (menuItem.GetUserData() != NULL)
+                {
+                    const std::string *str = static_cast<const std::string *>(menuItem.GetUserData());
+                    m_selectedLocation = *str;
+                    m_pScreenFader->SetShouldFadeToBlack(true);
+                }
             }
 
             void WorldMenuLoaderModel::OnScreenVisiblityChanged(WorldMenuScreenFader::VisibilityState &visbilityState)
             {
                 if (visbilityState == WorldMenuScreenFader::VisibilityState::FullyFaded)
                 {
-                    m_onBlackOutCallback();
+                    NotifyLocationChange(m_selectedLocation);
                     m_pScreenFader->SetShouldFadeToBlack(false);
                 }
+            }
+
+            void WorldMenuLoaderModel::NotifyLocationChange(std::string& location)
+            {
+                m_locationChangedCallbacks.ExecuteCallbacks(location);
+            }
+
+            void WorldMenuLoaderModel::RegisterLocationChangedCallback(Eegeo::Helpers::ICallback1<std::string&>& callback)
+            {
+                m_locationChangedCallbacks.AddCallback(callback);
+            }
+
+            void WorldMenuLoaderModel::UnregisterLocationChangedCallback(Eegeo::Helpers::ICallback1<std::string&>& callback)
+            {
+                m_locationChangedCallbacks.RemoveCallback(callback);
             }
         }
     }

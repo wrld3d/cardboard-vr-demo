@@ -54,7 +54,15 @@ namespace Examples
         if(m_interiorsExplorerModule.GetSelectedFloor()<0)
         {
             m_isInInterior = false;
-            m_jumpPointRepository.RemoveAllJumpPoints();
+            TExteriorJumpPointsData::const_iterator it = m_exteriorJumpPoints.find(m_currentLocation);
+
+            if (it != m_exteriorJumpPoints.end())
+            {
+                SwitchJumpPoints(m_exteriorJumpPoints.at(m_currentLocation));
+            }
+            else
+                m_jumpPointRepository.RemoveAllJumpPoints();
+
             return;
         }
         

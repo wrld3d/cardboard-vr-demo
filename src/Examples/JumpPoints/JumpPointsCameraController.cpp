@@ -75,15 +75,12 @@ namespace Eegeo
             m_pRenderCamera->SetEcefLocation(m_ecefPosition);
         }
         
-        void JumpPointsCameraController::SetStartLatLongAltitude(const Eegeo::Space::LatLongAltitude& eyePos)
+        void JumpPointsCameraController::SetStartLatLongAltitude(const Eegeo::Space::LatLongAltitude& eyePos, float heading)
         {
-            
-            Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250);
-            
             m_ecefPosition = eyePos.ToECEF();
             
             Space::EcefTangentBasis tangentBasis;
-            Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(m_ecefPosition, 0.f, tangentBasis);
+            Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(m_ecefPosition, heading, tangentBasis);
             
             m_orientation.SetRow(0, tangentBasis.GetRight());
             m_orientation.SetRow(1, tangentBasis.GetUp());
@@ -94,7 +91,7 @@ namespace Eegeo
         }
         
         
-        void JumpPointsCameraController::SetStartPositionAndOrientation(Eegeo::dv3& position, Eegeo::m33& orientation)
+        void JumpPointsCameraController::SetStartPositionAndOrientation(const Eegeo::dv3& position, const Eegeo::m33& orientation)
         {
             m_pRenderCamera->SetEcefLocation(position);
             m_orientation = orientation;

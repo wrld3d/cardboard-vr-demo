@@ -139,7 +139,7 @@ namespace Eegeo
                                                                               true);
                 
                 m_pVRDistortionShader = VRDistortionShader::Create(m_shaderIdGenerator.GetNextId());
-                m_pVRDistortionShader->SetFadeMultiplier(m_pTransitionModel->GetVisibilityParam());
+
                 m_pVRDistortionMaterial = Eegeo_NEW(VRDistortionMaterial)(m_materialIdGenerator.GetNextId(),
                                                                              "VRDistortionMaterial",
                                                                              *m_pVRDistortionShader,
@@ -158,6 +158,7 @@ namespace Eegeo
                                                                          pRenderableMesh);
                 
                 m_pVRDistortionRenderer = Eegeo_NEW(VRDistortionRenderer)(*m_pRenderable);
+                m_pRenderable->SetFadeModifier(m_pTransitionModel->GetVisibilityParam());
                 m_pTransitionModel->RegisterVisibilityChangedCallback(m_visibilityParamChangedCallback);
             }
             

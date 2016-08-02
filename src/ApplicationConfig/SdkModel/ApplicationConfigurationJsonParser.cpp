@@ -4,6 +4,7 @@
 #include "ApplicationConfigurationJsonParser.h"
 #include "IApplicationConfigurationBuilder.h"
 #include "MathFunc.h"
+#include "WorldLocationData.h"
 #include "Logger.h"
 #include <vector>
 #include <map>
@@ -19,24 +20,26 @@ namespace Examples
 
             void ParseJumpPoints(const TGenericValue& exteriorData, TJumpPointVector& outJumpPointVector)
             {
-                Eegeo_ASSERT(exteriorData.HasMember("JumpPoints"));
-                for (rapidjson::Value::ConstValueIterator itr = exteriorData["JumpPoints"].Begin(); itr != exteriorData["JumpPoints"].End(); ++itr)
+                if(exteriorData.HasMember("JumpPoints"))
                 {
-                    const TGenericValue& exteriorJumpPoint = *itr;
+                    for (rapidjson::Value::ConstValueIterator itr = exteriorData["JumpPoints"].Begin(); itr != exteriorData["JumpPoints"].End(); ++itr)
+                    {
+                        const TGenericValue& exteriorJumpPoint = *itr;
 
-                    Eegeo_ASSERT(exteriorJumpPoint.HasMember("id"));
-                    Eegeo_ASSERT(exteriorJumpPoint.HasMember("lat"));
-                    Eegeo_ASSERT(exteriorJumpPoint.HasMember("lon"));
-                    Eegeo_ASSERT(exteriorJumpPoint.HasMember("alt"));
-                    Eegeo_ASSERT(exteriorJumpPoint.HasMember("icon_id"));
-                    Eegeo_ASSERT(exteriorJumpPoint.HasMember("size"));
-                    JumpPointConfigData jpData(exteriorJumpPoint["id"].GetInt(),
-                                               Eegeo::Space::LatLongAltitude::FromDegrees(exteriorJumpPoint["lat"].GetDouble(),
-                                                                                          exteriorJumpPoint["lon"].GetDouble(),
-                                                                                          exteriorJumpPoint["alt"].GetDouble()),
-                                               exteriorJumpPoint["icon_id"].GetInt(),
-                                               exteriorJumpPoint["size"].GetDouble());
-                    outJumpPointVector.push_back(jpData);
+                        Eegeo_ASSERT(exteriorJumpPoint.HasMember("id"));
+                        Eegeo_ASSERT(exteriorJumpPoint.HasMember("lat"));
+                        Eegeo_ASSERT(exteriorJumpPoint.HasMember("lon"));
+                        Eegeo_ASSERT(exteriorJumpPoint.HasMember("alt"));
+                        Eegeo_ASSERT(exteriorJumpPoint.HasMember("icon_id"));
+                        Eegeo_ASSERT(exteriorJumpPoint.HasMember("size"));
+                        JumpPointConfigData jpData(exteriorJumpPoint["id"].GetInt(),
+                                                   Eegeo::Space::LatLongAltitude::FromDegrees(exteriorJumpPoint["lat"].GetDouble(),
+                                                                                              exteriorJumpPoint["lon"].GetDouble(),
+                                                                                              exteriorJumpPoint["alt"].GetDouble()),
+                                                   exteriorJumpPoint["icon_id"].GetInt(),
+                                                   exteriorJumpPoint["size"].GetDouble());
+                        outJumpPointVector.push_back(jpData);
+                    }
                 }
             }
 
@@ -124,6 +127,7 @@ namespace Examples
                 Eegeo_ASSERT(jumpPointsData.HasMember("Exterior"));
                 const TGenericValue& exteriourJumpPointsData = jumpPointsData["Exterior"];
 
+                TWorldLocations worldLocations;
                 std::map<std::string,std::vector<JumpPointConfigData>&> exteriorJumpPoints;
 
                 for (rapidjson::Value::ConstMemberIterator itr = exteriourJumpPointsData.MemberBegin();
@@ -131,11 +135,28 @@ namespace Examples
                 {
                     TJumpPointVector jumpPointsVector;
                     const std::string& locationName = itr->name.GetString();
-                    m_builder.AddExteriorLocation(locationName);
+                    const TGenericValue& locationDocument = itr->value;
 
-                    ParseJumpPoints(itr->value, jumpPointsVector);
+                    Eegeo_ASSERT(locationDocument.HasMember("LocationID"));
+                    Eegeo_ASSERT(locationDocument.HasMember("LocationIcon"));
+                    Eegeo_ASSERT(locationDocument.HasMember("StartLocationLatitude"));
+                    Eegeo_ASSERT(locationDocument.HasMember("StartLocationLongitude"));
+                    Eegeo_ASSERT(locationDocument.HasMember("StartLocationAltitude"));
+                    Eegeo_ASSERT(locationDocument.HasMember("StartLocationOrientationDegrees"));
+                    WorldLocationData locationData(locationName,
+                                                   locationDocument["LocationID"].GetInt(),
+                                                   locationDocument["LocationIcon"].GetInt(),
+                                                   Eegeo::Space::LatLongAltitude::FromDegrees(locationDocument["StartLocationLatitude"].GetDouble(),
+                                                                                              locationDocument["StartLocationLongitude"].GetDouble(),
+                                                                                              locationDocument["StartLocationAltitude"].GetDouble()),
+                                                   static_cast<float>(document["StartLocationOrientationDegrees"].GetDouble()));
+
+                    ParseJumpPoints(locationDocument, jumpPointsVector);
                     m_builder.AddExteriorJumpPoints(locationName, jumpPointsVector);
+                    worldLocations[locationName] = locationData;
                 }
+
+                m_builder.SetExteriorLocations(worldLocations);
 
                 Eegeo_ASSERT(jumpPointsData.HasMember("Interior"));
                 const TGenericValue& interiorJumpPointsData = jumpPointsData["Interior"];

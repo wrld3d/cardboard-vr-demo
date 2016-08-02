@@ -9,6 +9,7 @@ namespace Examples
 {
     namespace ApplicationConfig
     {
+        class WorldLocationData;
         class JumpPointConfigData;
         class ApplicationConfiguration;
 
@@ -16,6 +17,7 @@ namespace Examples
         typedef std::map<std::string,TJumpPointVector> TExteriorJumpPoints;
         typedef std::map<int,TJumpPointVector> TInteriorFloorJumpPoints;
         typedef std::map<std::string,TInteriorFloorJumpPoints> TInteriorJumpPoints;
+        typedef std::map<std::string, WorldLocationData> TWorldLocations;
         
         namespace SdkModel
         {

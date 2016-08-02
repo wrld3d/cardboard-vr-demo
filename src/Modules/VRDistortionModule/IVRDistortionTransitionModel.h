@@ -13,7 +13,7 @@ namespace Eegeo
     {
         namespace Distortion
         {
-            class IVRDistortionTransitionModel : private Eegeo::NonCopyable
+            class IVRDistortionTransitionModel
             {
             public:
                 virtual ~IVRDistortionTransitionModel(){}

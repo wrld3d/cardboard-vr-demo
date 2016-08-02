@@ -143,7 +143,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_jumpPointExampleButtonClickedCallback(this, &ExampleApp::LoadJumpPointExample)
     , m_worldMenuItemGazeCallback(this, &ExampleApp::OnWorldMenuItemGazed)
     , m_getJumpPointStartPositionOrientation(this, &ExampleApp::GetJumpPointStartPositionOrientation)
-    , m_fadeOutCallback(this, &ExampleApp::FadeOutCallback)
+    , m_locationChangedCallback(this, &ExampleApp::OnLocationChanged)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -264,32 +264,23 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(0, 13, m_worldMenuItemGazeCallback);
     m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
     m_pWorldMenuItems.push_back(menuItem);
-    
-    menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(1, 4, m_worldMenuItemGazeCallback, NULL, 15);
-    m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
-    m_pWorldMenuItems.push_back(menuItem);
-    
-    menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(2, 5, m_worldMenuItemGazeCallback);
-    m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
-    m_pWorldMenuItems.push_back(menuItem);
-    
-    menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(3, 6, m_worldMenuItemGazeCallback);
-    m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
-    m_pWorldMenuItems.push_back(menuItem);
-    
+
+    m_pWorldMenuLoaderModel = Eegeo_NEW(Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel)(m_pWorldMenuModule->GetRepository(), m_pVRDistortion->GetTransionModel(), appConfig);
+
+    m_pWorldMenuLoaderModel->RegisterLocationChangedCallback(m_locationChangedCallback);
+
     menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(4, 1, m_worldMenuItemGazeCallback, NULL, 15);
     m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
     m_pWorldMenuItems.push_back(menuItem);
-    
+
     m_worldMenuItemSelected = 1;
-    
+
     m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_pInteriorExplorerModule, headTracker, m_pDeadZoneMenuModule->GetRepository());
-    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, m_getJumpPointStartPositionOrientation, headTracker, appConfig);
+    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, *m_pWorldMenuLoaderModel, headTracker, appConfig);
     
     m_pUIGazeView->HideView();
 
-    
-    m_pWorldMenuLoaderModel = Eegeo_NEW(Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel)(m_pVRDistortion->GetTransionModel(), m_fadeOutCallback);
+
 
 }
 
@@ -308,16 +299,6 @@ ExampleApp::~ExampleApp()
         Eegeo_DELETE menuItem;
     }
 
-    Eegeo_DELETE m_pWorldMenuLoaderModel;
-    
-    Eegeo_DELETE m_pWorldMenuModule;
-    
-    Eegeo_DELETE m_pDeadZoneMenuModule;
-    Eegeo_DELETE m_pMenuItem1;
-    Eegeo_DELETE m_pMenuItem2;
-    Eegeo_DELETE m_pMenuItem3;
-    
-    
     Eegeo_DELETE m_pQuadFactory;
     Eegeo_DELETE m_pUIGazeView;
     
@@ -328,6 +309,16 @@ ExampleApp::~ExampleApp()
     Eegeo_DELETE m_pCameraControllerFactory;
     Eegeo_DELETE m_pCameraTouchController;
     Eegeo_DELETE m_pExampleController;
+
+    m_pWorldMenuLoaderModel->UnregisterLocationChangedCallback(m_locationChangedCallback);
+    Eegeo_DELETE m_pWorldMenuLoaderModel;
+
+    Eegeo_DELETE m_pWorldMenuModule;
+
+    Eegeo_DELETE m_pDeadZoneMenuModule;
+    Eegeo_DELETE m_pMenuItem1;
+    Eegeo_DELETE m_pMenuItem2;
+    Eegeo_DELETE m_pMenuItem3;
     
     Eegeo_DELETE m_pInteriorExplorerModule;
     Eegeo_DELETE m_pUIInteractionController;
@@ -483,6 +474,10 @@ void ExampleApp::DrawLoadingScreen ()
     }
 }
 
+void ExampleApp::OnLocationChanged(std::string &location)
+{
+    m_pExampleController->ActivateExample("JumpPointsExample");
+}
 
 void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem)
 {
@@ -490,15 +485,8 @@ void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuI
     if(menuItem.GetId()==m_worldMenuItemSelected)
         return;
     
-    m_pWorldMenuLoaderModel->FadeIn();
-    
     m_lastMenuItemSelected = m_worldMenuItemSelected;
     m_worldMenuItemSelected = menuItem.GetId();
-    
-}
-
-void ExampleApp::FadeOutCallback()
-{
     
     Eegeo::m33 orientation;
     Eegeo::dv3 position;

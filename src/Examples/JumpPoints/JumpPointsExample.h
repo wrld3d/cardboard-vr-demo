@@ -13,6 +13,7 @@
 #include "GlobeCamera.h"
 #include "JumpPointsSwitcher.h"
 #include "ApplicationConfig.h"
+#include "WorldMenuLoaderModel.h"
 #include "Modules/UI/UIInteraction/UIInteractionController.h"
 #include "Modules/UI/IUICameraProvider.h"
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
@@ -56,7 +57,7 @@ namespace Examples
         Eegeo::UI::Animations::AnimationsController& m_animationsController;
         IVRHeadTracker& m_headTracker;
         const Examples::ApplicationConfig::ApplicationConfiguration& m_appConfig;
-
+        WorldMenuLoader::SdkModel::WorldMenuLoaderModel& m_menuLoader;
         Eegeo::UI::UIRenderableFilter* m_pUIRenderableFilter;
 
         Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem *m_pSPButton1, *m_pSPButton2, *m_pSPButton3, *m_pSPButton4, *m_pSPButton5, *m_pSPButton6, *m_pSPButton7;
@@ -76,7 +77,6 @@ namespace Examples
 
         JumpPointsSwitcher* m_pJumpPointSwitcher;
         Eegeo::Helpers::TCallback0<JumpPointsExample> m_onInteriorFloorChanged;
-        Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& m_getJumpPointStartPositionOrientation;
         void OnInteriorFloorChanged();
 
         void LoadInteriorJumpPoints(const ApplicationConfig::TInteriorJumpPoints& interiorJumpPoints);
@@ -86,6 +86,9 @@ namespace Examples
         void MoveCameraToStopPoint(const Eegeo::dv3 &cameraPoint, float cameraHeading);
         bool m_isInInterior;
         bool m_isCameraAnimating;
+
+        Eegeo::Helpers::TCallback1<JumpPointsExample, std::string&> m_locationChangedCallback;
+        void OnLocationChanged(std::string& location);
         
     public:
         
@@ -100,7 +103,7 @@ namespace Examples
                           Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                           Eegeo::UI::Animations::AnimationsController& animationsController,
                           Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
-                          Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& getJumpPointStartPositionOrientation,
+                          WorldMenuLoader::SdkModel::WorldMenuLoaderModel& menuLoader,
                           IVRHeadTracker& headTracker,
                           const Examples::ApplicationConfig::ApplicationConfiguration& appConfig);
         
@@ -173,6 +176,8 @@ namespace Examples
         
         void OnWestportInteriorButtonSelected();
         void OnJumpPointSelected(Eegeo::UI::JumpPoints::JumpPoint& jumpPoint);
+
+        void ChangeLocation(const std::string& location);
     };
 }
 

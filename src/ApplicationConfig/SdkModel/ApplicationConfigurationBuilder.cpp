@@ -76,9 +76,9 @@ namespace Examples
                 return *this;
             }
 
-            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::AddExteriorLocation(const std::string& locationName)
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetExteriorLocations(const TWorldLocations& exteriorLocations)
             {
-                m_exteriorLocations.push_back(locationName);
+                m_exteriorLocations = exteriorLocations;
                 return *this;
             }
 

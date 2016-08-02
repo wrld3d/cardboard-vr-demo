@@ -24,6 +24,7 @@
 #include <vector>
 #include <string>
 #include "ApplicationConfiguration.h"
+#include "WorldMenuLoaderModel.h"
 
 namespace Examples
 {
@@ -136,11 +137,11 @@ namespace Examples
                                         		Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                         		Eegeo::UI::Animations::AnimationsController& animationsController,
                                                 Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
-                                                Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& getJumpPointStartPositionOrientation,
+                                                WorldMenuLoader::SdkModel::WorldMenuLoaderModel& menuLoader,
                                                 IVRHeadTracker& headTracker,
                                                 Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
         {
-            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, quadFactory, uIInteractionObservable, uICameraProvider, interiorsExplorerModule, deadZoneMenuRepository,animationsController, worldMenuModule, getJumpPointStartPositionOrientation, headTracker, appConfig)));
+            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, quadFactory, uIInteractionObservable, uICameraProvider, interiorsExplorerModule, deadZoneMenuRepository,animationsController, worldMenuModule, menuLoader, headTracker, appConfig)));
         }
         
         

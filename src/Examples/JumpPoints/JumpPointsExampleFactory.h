@@ -11,7 +11,7 @@
 #include "ScreenPropertiesProvider.h"
 #include "Modules/UI/Animations/AnimationsController.h"
 #include "Modules/WorldMenu/WorldMenuModule.h"
-
+#include "WorldMenuLoaderModel.h"
 #include "ApplicationConfiguration.h"
 
 namespace Examples
@@ -32,7 +32,7 @@ class JumpPointsExampleFactory : public IExampleFactory
     IVRHeadTracker& m_headTracker;
     
     Eegeo::UI::Animations::AnimationsController& m_animationsController;
-    Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& m_getJumpPointStartPositionOrientation;
+    WorldMenuLoader::SdkModel::WorldMenuLoaderModel& m_menuLoader;
     
 public:
     JumpPointsExampleFactory(Eegeo::EegeoWorld& world,
@@ -45,7 +45,7 @@ public:
                              Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                              Eegeo::UI::Animations::AnimationsController& animationsController,
                              Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
-                             Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& getJumpPointStartPositionOrientation,
+                             WorldMenuLoader::SdkModel::WorldMenuLoaderModel& menuLoader,
                              IVRHeadTracker& headTracker,
                              Examples::ApplicationConfig::ApplicationConfiguration& appConfig);
 

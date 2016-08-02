@@ -15,7 +15,7 @@ namespace Examples
                                                            const std::string& combinedVersionString,
                                                            const std::string& jumpPointsSpriteSheet,
                                                            const Eegeo::v2& jumpPointsSpriteSheetSize,
-                                                           const std::vector<std::string>& exteriorLocations,
+                                                           const TWorldLocations& worldLocations,
                                                            const TExteriorJumpPoints& exteriorJumpPoints,
                                                            const TInteriorJumpPoints& interiorJumpPoints
                                                            )
@@ -28,7 +28,7 @@ namespace Examples
         , m_combinedVersionString(combinedVersionString)
         , m_jumpPointsSpriteSheet(jumpPointsSpriteSheet)
         , m_jumpPointsSpriteSheetSize(jumpPointsSpriteSheetSize)
-        , m_exteriorLocations(exteriorLocations)
+        , m_worldLocations(worldLocations)
         , m_exteriorJumpPoints(exteriorJumpPoints)
         , m_interiorJumpPoints(interiorJumpPoints)
         {
@@ -80,9 +80,9 @@ namespace Examples
             return m_jumpPointsSpriteSheetSize;
         }
 
-        const std::vector<std::string>& ApplicationConfiguration::GetLocations() const
+        const TWorldLocations& ApplicationConfiguration::GetLocations() const
         {
-            return m_exteriorLocations;
+            return m_worldLocations;
         }
 
         const TExteriorJumpPoints& ApplicationConfiguration::GetExteriorJumpPoints() const

@@ -126,6 +126,12 @@
       },
       "Exterior":{
          "Dundee":{
+            "LocationID":1,
+            "LocationIcon":0,
+            "StartLocationLatitude":56.456160,
+            "StartLocationLongitude":-2.966101,
+            "StartLocationAltitude":250,
+            "StartLocationOrientationDegrees":0.0,
             "InteriorPOIs":[
                {
                   "id":"westport_house",
@@ -163,6 +169,22 @@
                   "size":50
                }
             ]
+         },
+         "SanFrancisco":{
+            "LocationID":2,
+            "LocationIcon":10,
+            "StartLocationLatitude":37.795215,
+            "StartLocationLongitude":-122.402797,
+            "StartLocationAltitude":306,
+            "StartLocationOrientationDegrees":0.0
+         },
+         "Paris":{
+            "LocationID":3,
+            "LocationIcon":11,
+            "StartLocationLatitude":48.856623,
+            "StartLocationLongitude":2.297102,
+            "StartLocationAltitude":450,
+            "StartLocationOrientationDegrees":0.0
          }
       }
    }

@@ -14,7 +14,7 @@ namespace Eegeo
     {
         namespace Distortion
         {
-            class VRDistortionTransitionModel : public IVRDistortionTransitionModel
+            class VRDistortionTransitionModel : public IVRDistortionTransitionModel, private Eegeo::NonCopyable
             {
             public:
                 VRDistortionTransitionModel();
