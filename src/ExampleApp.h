@@ -76,7 +76,9 @@ private:
     
     Eegeo::UI::WorldMenu::WorldMenuModule* m_pWorldMenuModule;
     Eegeo::Helpers::TCallback1<ExampleApp, Eegeo::UI::WorldMenu::WorldMenuItem&> m_worldMenuItemGazeCallback;
+    Eegeo::Helpers::TCallback0<ExampleApp> m_fadeOutCallback;
     
+    void FadeOutCallback();
     void OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem);
     void GetJumpPointStartPositionOrientation(Eegeo::dv3& position, Eegeo::m33& orientation);
     
@@ -84,6 +86,8 @@ private:
     bool m_night;
     float m_foggingFar;
     float m_nightTParam;
+    
+    int m_lastMenuItemSelected;
     int m_worldMenuItemSelected;
     
     Eegeo::v3 m_currentClearColor;

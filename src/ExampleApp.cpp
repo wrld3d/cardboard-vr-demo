@@ -143,6 +143,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_jumpPointExampleButtonClickedCallback(this, &ExampleApp::LoadJumpPointExample)
     , m_worldMenuItemGazeCallback(this, &ExampleApp::OnWorldMenuItemGazed)
     , m_getJumpPointStartPositionOrientation(this, &ExampleApp::GetJumpPointStartPositionOrientation)
+    , m_fadeOutCallback(this, &ExampleApp::FadeOutCallback)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -287,7 +288,8 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_pUIGazeView->HideView();
 
-    m_pWorldMenuLoaderModel = Eegeo_NEW(Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel)(m_pWorldMenuModule->GetRepository(), m_pVRDistortion->GetTransionModel());
+    
+    m_pWorldMenuLoaderModel = Eegeo_NEW(Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel)(m_pVRDistortion->GetTransionModel(), m_fadeOutCallback);
 
 }
 
@@ -488,13 +490,20 @@ void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuI
     if(menuItem.GetId()==m_worldMenuItemSelected)
         return;
     
-    int lastMenuItemSelected = m_worldMenuItemSelected;
+    m_pWorldMenuLoaderModel->FadeIn();
+    
+    m_lastMenuItemSelected = m_worldMenuItemSelected;
     m_worldMenuItemSelected = menuItem.GetId();
+    
+}
+
+void ExampleApp::FadeOutCallback()
+{
     
     Eegeo::m33 orientation;
     Eegeo::dv3 position;
     
-    switch(menuItem.GetId())
+    switch(m_worldMenuItemSelected)
     {
         case 0:
         {
@@ -505,7 +514,7 @@ void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuI
         case 2:
         case 3:
         {
-            if(lastMenuItemSelected==1 || lastMenuItemSelected==2 || lastMenuItemSelected==3)
+            if(m_lastMenuItemSelected==1 || m_lastMenuItemSelected==2 || m_lastMenuItemSelected==3)
                 m_pExampleController->RestartExample();
             else
                 m_pExampleController->ActivateExample("JumpPointsExample");
@@ -524,8 +533,6 @@ void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuI
 
 void ExampleApp::GetJumpPointStartPositionOrientation(Eegeo::dv3& position, Eegeo::m33& orientation)
 {
-    
-    EXAMPLE_LOG("case: %d", m_worldMenuItemSelected);
     
     switch (m_worldMenuItemSelected)
     {        

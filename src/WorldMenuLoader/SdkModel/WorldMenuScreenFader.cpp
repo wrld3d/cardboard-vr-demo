@@ -13,7 +13,7 @@ namespace Examples
                                                        float transitionTimeSeconds)
             : m_screenTransitionModel(screenTransitionModel)
             , m_shouldFadeToBlack(false)
-            , m_transitionParameter(1.0f)
+            , m_transitionParameter(2.0f)
             , m_transitionTimeSeconds(Eegeo::Max(transitionTimeSeconds, 0.0f))
             , m_currentVisibiltyState(VisibilityState::FullyVisible)
             {

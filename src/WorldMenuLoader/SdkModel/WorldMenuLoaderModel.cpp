@@ -11,23 +11,17 @@ namespace Examples
     {
         namespace SdkModel
         {
-            WorldMenuLoaderModel::WorldMenuLoaderModel(Eegeo::UI::WorldMenu::WorldMenuItemRepository& menuItemRepository,
-                                                       Eegeo::VR::Distortion::IVRDistortionTransitionModel& screenTransisionModel)
-            : m_menuItemRepository(menuItemRepository)
-            , m_worldMenuItemGazeCallback(this, &WorldMenuLoaderModel::OnWorldMenuItemGazed)
-            , m_screenVisibilityChanged(this, &WorldMenuLoaderModel::OnScreenVisiblityChanged)
+            WorldMenuLoaderModel::WorldMenuLoaderModel( Eegeo::VR::Distortion::IVRDistortionTransitionModel& screenTransisionModel,
+                                                        Eegeo::Helpers::ICallback0& onBlackOutCallback)
+            : m_screenVisibilityChanged(this, &WorldMenuLoaderModel::OnScreenVisiblityChanged)
+            , m_onBlackOutCallback(onBlackOutCallback)
             {
                 m_pScreenFader = Eegeo_NEW(WorldMenuScreenFader)(screenTransisionModel, SCREEN_FADE_TRANSITION_TIME);
                 m_pScreenFader->RegisterVisibilityChangedCallback(m_screenVisibilityChanged);
-
-                m_pMenuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(10, 8, m_worldMenuItemGazeCallback);
-                m_menuItemRepository.AddWorldMenuItem(m_pMenuItem);
             }
 
             WorldMenuLoaderModel::~WorldMenuLoaderModel()
             {
-                m_menuItemRepository.RemoveWorldMenuItem(m_pMenuItem);
-                Eegeo_DELETE m_pMenuItem;
 
                 m_pScreenFader->UnregisterVisibilityChangedCallback(m_screenVisibilityChanged);
                 Eegeo_DELETE m_pScreenFader;
@@ -38,7 +32,7 @@ namespace Examples
                 m_pScreenFader->Update(dt);
             }
 
-            void WorldMenuLoaderModel::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem &menuItem)
+            void WorldMenuLoaderModel::FadeIn()
             {
                 m_pScreenFader->SetShouldFadeToBlack(true);
             }
@@ -47,6 +41,7 @@ namespace Examples
             {
                 if (visbilityState == WorldMenuScreenFader::VisibilityState::FullyFaded)
                 {
+                    m_onBlackOutCallback();
                     m_pScreenFader->SetShouldFadeToBlack(false);
                 }
             }

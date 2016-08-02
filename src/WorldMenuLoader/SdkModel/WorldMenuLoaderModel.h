@@ -17,21 +17,22 @@ namespace Examples
             class WorldMenuLoaderModel : private Eegeo::NonCopyable
             {
             public:
-                WorldMenuLoaderModel(Eegeo::UI::WorldMenu::WorldMenuItemRepository& menuItemRepository,
-                                     Eegeo::VR::Distortion::IVRDistortionTransitionModel& screenTransisionModel);
+                WorldMenuLoaderModel(Eegeo::VR::Distortion::IVRDistortionTransitionModel& screenTransisionModel,
+                                     Eegeo::Helpers::ICallback0& onBlackOutCallback);
                 ~WorldMenuLoaderModel();
 
-                void OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem);
+                void FadeIn();
+                
                 void OnScreenVisiblityChanged(WorldMenuScreenFader::VisibilityState& visbilityState);
 
                 void Update(float dt);
 
             private:
-                Eegeo::UI::WorldMenu::WorldMenuItemRepository& m_menuItemRepository;
+                
                 WorldMenuScreenFader* m_pScreenFader;
                 Eegeo::UI::WorldMenu::WorldMenuItem* m_pMenuItem;
-                Eegeo::Helpers::TCallback1<WorldMenuLoaderModel, Eegeo::UI::WorldMenu::WorldMenuItem&> m_worldMenuItemGazeCallback;
                 Eegeo::Helpers::TCallback1<WorldMenuLoaderModel, WorldMenuScreenFader::VisibilityState&> m_screenVisibilityChanged;
+                Eegeo::Helpers::ICallback0& m_onBlackOutCallback;
             };
         }
     }
