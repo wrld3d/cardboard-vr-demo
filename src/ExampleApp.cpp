@@ -142,6 +142,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_splineExampleButtonClickedCallback(this, &ExampleApp::LoadSplineExample)
     , m_jumpPointExampleButtonClickedCallback(this, &ExampleApp::LoadJumpPointExample)
     , m_worldMenuItemGazeCallback(this, &ExampleApp::OnWorldMenuItemGazed)
+    , m_getJumpPointStartPositionOrientation(this, &ExampleApp::GetJumpPointStartPositionOrientation)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -279,9 +280,10 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
     m_pWorldMenuItems.push_back(menuItem);
     
+    m_worldMenuItemSelected = 1;
     
     m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_pInteriorExplorerModule, headTracker, m_pDeadZoneMenuModule->GetRepository());
-    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, headTracker, appConfig);
+    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, m_getJumpPointStartPositionOrientation, headTracker, appConfig);
     
     m_pUIGazeView->HideView();
 
@@ -482,6 +484,13 @@ void ExampleApp::DrawLoadingScreen ()
 
 void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem)
 {
+    
+    if(menuItem.GetId()==m_worldMenuItemSelected)
+        return;
+    
+    int lastMenuItemSelected = m_worldMenuItemSelected;
+    m_worldMenuItemSelected = menuItem.GetId();
+    
     Eegeo::m33 orientation;
     Eegeo::dv3 position;
     
@@ -491,24 +500,84 @@ void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuI
         {
             break;
         }
+            
         case 1:
-        {
-            m_pExampleController->ActivateExample("JumpPointsExample");
-            break;
-        }
         case 2:
-        {
-            m_pExampleController->ActivateExample("JumpPointsExample");
-            break;
-        }
         case 3:
         {
-            m_pExampleController->ActivateExample("JumpPointsExample");
+            if(lastMenuItemSelected==1 || lastMenuItemSelected==2 || lastMenuItemSelected==3)
+                m_pExampleController->RestartExample();
+            else
+                m_pExampleController->ActivateExample("JumpPointsExample");
             break;
         }
+            
         case 4:
         {
             m_pExampleController->ActivateExample("VRCameraSplineExample");
+            break;
+        }
+    }
+    
+    
+}
+
+void ExampleApp::GetJumpPointStartPositionOrientation(Eegeo::dv3& position, Eegeo::m33& orientation)
+{
+    
+    EXAMPLE_LOG("case: %d", m_worldMenuItemSelected);
+    
+    switch (m_worldMenuItemSelected)
+    {        
+        case 1:
+        {
+            
+            
+            Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250);
+            position = eyePosLla.ToECEF();
+            
+            Eegeo::Space::EcefTangentBasis tangentBasis;
+            Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(position, 0.f, tangentBasis);
+            
+            
+            orientation.SetRow(0, tangentBasis.GetRight());
+            orientation.SetRow(1, tangentBasis.GetUp());
+            orientation.SetRow(2, -tangentBasis.GetForward());
+            
+            break;
+        }
+            
+        case 2:
+        {
+            
+            
+            Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(37.795215, -122.402797, 305.956129);
+            position = eyePosLla.ToECEF();
+            
+            Eegeo::Space::EcefTangentBasis tangentBasis;
+            Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(position, 0.f, tangentBasis);
+            
+            orientation.SetRow(0, tangentBasis.GetRight());
+            orientation.SetRow(1, tangentBasis.GetUp());
+            orientation.SetRow(2, -tangentBasis.GetForward());
+            break;
+        }
+            
+        case 3:
+        {
+            
+            Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(48.856623, 2.297102, 450);
+            
+//            Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(35.657762, 139.746716, 188);
+            position = eyePosLla.ToECEF();
+            
+            Eegeo::Space::EcefTangentBasis tangentBasis;
+            Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(position, 0.f, tangentBasis);
+            
+            
+            orientation.SetRow(0, tangentBasis.GetRight());
+            orientation.SetRow(1, tangentBasis.GetUp());
+            orientation.SetRow(2, -tangentBasis.GetForward());
             break;
         }
     }

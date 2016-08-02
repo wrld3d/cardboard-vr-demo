@@ -64,6 +64,8 @@ namespace Eegeo
             void SetEcefPosition(const Eegeo::dv3& ecef);
             void SetStartLatLongAltitude(const Eegeo::Space::LatLongAltitude& eyePos);
             
+            void SetStartPositionAndOrientation(Eegeo::dv3& position, Eegeo::m33& orientation);
+            
             void GetNearFarPlaneDistances(float& out_near, float& out_far);
             
             // on animation update

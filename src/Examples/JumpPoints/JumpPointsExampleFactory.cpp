@@ -19,6 +19,7 @@ namespace Examples
                                                        Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                                        Eegeo::UI::Animations::AnimationsController& animationsController,
                                                        Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
+                                                       Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& getJumpPointStartPositionOrientation,
                                                        IVRHeadTracker& headTracker,
                                                        Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
     : m_uiQuadFactory(quadFactory)
@@ -33,6 +34,7 @@ namespace Examples
     , m_worldMenuModule(worldMenuModule)
     , m_headTracker(headTracker)
     , m_appConfig(appConfig)
+    ,m_getJumpPointStartPositionOrientation (getJumpPointStartPositionOrientation)
     {
         
     }
@@ -54,6 +56,7 @@ namespace Examples
                                                m_deadZoneMenuRepository,
                                                m_animationsController,
                                                m_worldMenuModule,
+                                               m_getJumpPointStartPositionOrientation,
                                                m_headTracker,
                                                m_appConfig
                                                );

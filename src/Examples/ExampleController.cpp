@@ -83,6 +83,12 @@ void ExampleController::UpdateSelectedExample()
 		}
 	}
 }
+    
+    
+void ExampleController::RestartExample()
+{
+    RefreshExample();
+}
  
 void ExampleController::ActivateExample(std::string selectedExampleName)
 {

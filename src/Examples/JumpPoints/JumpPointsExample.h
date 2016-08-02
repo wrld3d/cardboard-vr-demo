@@ -76,6 +76,7 @@ namespace Examples
 
         JumpPointsSwitcher* m_pJumpPointSwitcher;
         Eegeo::Helpers::TCallback0<JumpPointsExample> m_onInteriorFloorChanged;
+        Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& m_getJumpPointStartPositionOrientation;
         void OnInteriorFloorChanged();
 
         void LoadInteriorJumpPoints(const ApplicationConfig::TInteriorJumpPoints& interiorJumpPoints);
@@ -99,6 +100,7 @@ namespace Examples
                           Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                           Eegeo::UI::Animations::AnimationsController& animationsController,
                           Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
+                          Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& getJumpPointStartPositionOrientation,
                           IVRHeadTracker& headTracker,
                           const Examples::ApplicationConfig::ApplicationConfiguration& appConfig);
         

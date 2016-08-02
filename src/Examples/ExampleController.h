@@ -58,6 +58,8 @@ namespace Examples
         
         void UpdateSelectedExample();
         
+        void RestartExample();
+        
         void ActivateExample(std::string selectedExampleName);
         
         void ActivatePrevious();
@@ -134,10 +136,11 @@ namespace Examples
                                         		Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                         		Eegeo::UI::Animations::AnimationsController& animationsController,
                                                 Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
+                                                Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& getJumpPointStartPositionOrientation,
                                                 IVRHeadTracker& headTracker,
                                                 Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
         {
-            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, quadFactory, uIInteractionObservable, uICameraProvider, interiorsExplorerModule, deadZoneMenuRepository,animationsController, worldMenuModule, headTracker, appConfig)));
+            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, quadFactory, uIInteractionObservable, uICameraProvider, interiorsExplorerModule, deadZoneMenuRepository,animationsController, worldMenuModule, getJumpPointStartPositionOrientation, headTracker, appConfig)));
         }
         
         

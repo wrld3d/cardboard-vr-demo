@@ -32,6 +32,7 @@ class JumpPointsExampleFactory : public IExampleFactory
     IVRHeadTracker& m_headTracker;
     
     Eegeo::UI::Animations::AnimationsController& m_animationsController;
+    Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& m_getJumpPointStartPositionOrientation;
     
 public:
     JumpPointsExampleFactory(Eegeo::EegeoWorld& world,
@@ -44,6 +45,7 @@ public:
                              Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                              Eegeo::UI::Animations::AnimationsController& animationsController,
                              Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
+                             Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& getJumpPointStartPositionOrientation,
                              IVRHeadTracker& headTracker,
                              Examples::ApplicationConfig::ApplicationConfiguration& appConfig);
 

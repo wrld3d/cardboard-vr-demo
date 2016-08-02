@@ -78,10 +78,13 @@ private:
     Eegeo::Helpers::TCallback1<ExampleApp, Eegeo::UI::WorldMenu::WorldMenuItem&> m_worldMenuItemGazeCallback;
     
     void OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem);
+    void GetJumpPointStartPositionOrientation(Eegeo::dv3& position, Eegeo::m33& orientation);
+    
     
     bool m_night;
     float m_foggingFar;
     float m_nightTParam;
+    int m_worldMenuItemSelected;
     
     Eegeo::v3 m_currentClearColor;
     Eegeo::v3 m_startClearColor;
@@ -97,6 +100,7 @@ private:
     Eegeo::Helpers::TCallback0<ExampleApp> m_toggleDayNightClickedCallback;
     Eegeo::Helpers::TCallback0<ExampleApp> m_splineExampleButtonClickedCallback;
     Eegeo::Helpers::TCallback0<ExampleApp> m_jumpPointExampleButtonClickedCallback;
+    Eegeo::Helpers::TCallback2<ExampleApp, Eegeo::dv3&, Eegeo::m33&> m_getJumpPointStartPositionOrientation;
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
                Eegeo::Config::DeviceSpec deviceSpecs,

@@ -62,6 +62,7 @@ namespace Examples
                                          Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                          Eegeo::UI::Animations::AnimationsController& animationsController,
                                          Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
+                                         Eegeo::Helpers::ICallback2<Eegeo::dv3&, Eegeo::m33&>& getJumpPointStartPositionOrientation,
                                          IVRHeadTracker& headTracker,
                                          const Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
     : m_world(eegeoWorld)
@@ -85,6 +86,7 @@ namespace Examples
     , m_onWestPortEntryButtonCallback(this, &JumpPointsExample::OnWestportInteriorButtonSelected)
     , m_onInteriorFloorChanged(this, &JumpPointsExample::OnInteriorFloorChanged)
     , m_onJumpPointSelected(this, &JumpPointsExample::OnJumpPointSelected)
+    , m_getJumpPointStartPositionOrientation(getJumpPointStartPositionOrientation)
     , m_isInInterior(false)
     {
         
@@ -114,9 +116,16 @@ namespace Examples
         m_progressBarConfig.renderLayer = Eegeo::Rendering::LayerIds::Values::AfterAll;
         
         Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250);
+        
         m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla);
         m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
 
+        Eegeo::dv3 position;
+        Eegeo::m33 orientation;
+        
+        m_getJumpPointStartPositionOrientation(position, orientation);
+        m_pSplineCameraController->SetStartPositionAndOrientation(position, orientation);
+        
         Eegeo::v2 dimension = Eegeo::v2(50,50);
         Eegeo::v2 size(4,4);
         
