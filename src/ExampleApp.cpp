@@ -261,7 +261,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pWorldMenuModule = Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuModule)(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController,*m_pExampleController, menuTextureFileName, m_progressBarConfig, 4);
     m_pWorldMenuModule->SetMenuShouldDisplay(true);
     
-    Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(0, 13, m_worldMenuItemGazeCallback);
+    Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(0, 13, m_worldMenuItemGazeCallback, NULL, 0, 15);
     m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
     m_pWorldMenuItems.push_back(menuItem);
 
