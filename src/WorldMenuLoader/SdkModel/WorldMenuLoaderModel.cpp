@@ -18,11 +18,18 @@ namespace Examples
             , m_worldMenuItemGazeCallback(this, &WorldMenuLoaderModel::OnWorldMenuItemGazed)
             , m_screenVisibilityChanged(this, &WorldMenuLoaderModel::OnScreenVisiblityChanged)
             {
+                m_shouldRunVRSpline = false;
                 m_pScreenFader = Eegeo_NEW(WorldMenuScreenFader)(screenTransisionModel, SCREEN_FADE_TRANSITION_TIME);
                 m_pScreenFader->RegisterVisibilityChangedCallback(m_screenVisibilityChanged);
 
                 const ApplicationConfig::TWorldLocations& worldLocations = appConfig.GetLocations();
 
+                
+                Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(0, 13, m_worldMenuItemGazeCallback, new std::string("home"), 0, 15);
+                m_menuItemRepository.AddWorldMenuItem(menuItem);
+                m_pWorldMenuItems.push_back(menuItem);
+                
+                
                 for (ApplicationConfig::TWorldLocations::const_iterator it = worldLocations.begin(); it != worldLocations.end(); ++it)
                 {
                     const ApplicationConfig::WorldLocationData& locData = it->second;
@@ -30,8 +37,14 @@ namespace Examples
                     m_menuItemRepository.AddWorldMenuItem(menuItem);
                     m_pWorldMenuItems.push_back(menuItem);
                 }
+                
+                menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(4, 1, m_worldMenuItemGazeCallback,  NULL, 15);
+                m_menuItemRepository.AddWorldMenuItem(menuItem);
+                m_pWorldMenuItems.push_back(menuItem);
 
                 m_selectedLocation = worldLocations.begin()->first;
+                m_lastMenuItemGazedId = worldLocations.begin()->second.GetLocationID();
+                
             }
 
             WorldMenuLoaderModel::~WorldMenuLoaderModel()
@@ -60,10 +73,24 @@ namespace Examples
 
             void WorldMenuLoaderModel::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem &menuItem)
             {
+                if(menuItem.GetId()==0)
+                    return;
+                
+                if(m_lastMenuItemGazedId==menuItem.GetId())
+                    return;
+                
+                m_lastMenuItemGazedId = menuItem.GetId();
+                
                 if (menuItem.GetUserData() != NULL)
                 {
+                    m_shouldRunVRSpline = false;
                     const std::string *str = static_cast<const std::string *>(menuItem.GetUserData());
                     m_selectedLocation = *str;
+                    m_pScreenFader->SetShouldFadeToBlack(true);
+                }
+                else if (menuItem.GetId()==4)
+                {
+                    m_shouldRunVRSpline = true;
                     m_pScreenFader->SetShouldFadeToBlack(true);
                 }
             }

@@ -261,17 +261,10 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pWorldMenuModule = Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuModule)(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController,*m_pExampleController, menuTextureFileName, m_progressBarConfig, 4);
     m_pWorldMenuModule->SetMenuShouldDisplay(true);
     
-    Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(0, 13, m_worldMenuItemGazeCallback, NULL, 0, 15);
-    m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
-    m_pWorldMenuItems.push_back(menuItem);
 
     m_pWorldMenuLoaderModel = Eegeo_NEW(Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel)(m_pWorldMenuModule->GetRepository(), m_pVRDistortion->GetTransionModel(), appConfig);
-
     m_pWorldMenuLoaderModel->RegisterLocationChangedCallback(m_locationChangedCallback);
-
-    menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(4, 1, m_worldMenuItemGazeCallback, NULL, 15);
-    m_pWorldMenuModule->GetRepository().AddWorldMenuItem(menuItem);
-    m_pWorldMenuItems.push_back(menuItem);
+    
 
     m_worldMenuItemSelected = 1;
 
@@ -476,7 +469,10 @@ void ExampleApp::DrawLoadingScreen ()
 
 void ExampleApp::OnLocationChanged(std::string &location)
 {
-    m_pExampleController->ActivateExample("JumpPointsExample");
+    if(m_pWorldMenuLoaderModel->GetShouldRunVRSpline())
+        m_pExampleController->ActivateExample("VRCameraSplineExample");
+    else
+        m_pExampleController->ActivateExample("JumpPointsExample");
 }
 
 void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem)
