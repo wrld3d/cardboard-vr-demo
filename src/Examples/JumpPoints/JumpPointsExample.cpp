@@ -426,7 +426,7 @@ namespace Examples
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 40).ToECEF();
         
         m_animationsController.RemoveAnimationsForTag(0);
-        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 2.f, &Eegeo::UI::AnimationEase::EaseInOutExpo);
+        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 5.f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
         animation->SetTag(0);
         m_animationsController.AddAnimation(animation);
         
