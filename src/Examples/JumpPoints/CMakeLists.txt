@@ -9,6 +9,8 @@ set(currsources
   ../src/Examples/JumpPoints/JumpPointsExampleFactory.h
   ../src/Examples/JumpPoints/JumpPointsCameraController.cpp
   ../src/Examples/JumpPoints/JumpPointsCameraController.h
+  ../src/Examples/JumpPoints/WelcomeNoteViewer.cpp
+  ../src/Examples/JumpPoints/WelcomeNoteViewer.h
 )
 
 set(sources ${sources} ${currsources})

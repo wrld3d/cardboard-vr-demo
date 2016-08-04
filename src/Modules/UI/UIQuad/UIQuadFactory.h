@@ -13,7 +13,7 @@ namespace Eegeo
             
         private:
             
-            typedef std::map<std::string, Eegeo::Rendering::Materials::TexturedUniformColoredMaterial*> TMaterialMap;
+            typedef std::map<std::string, Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial*> TMaterialMap;
             TMaterialMap m_materialMap;
             
             Eegeo::Rendering::Shaders::TexturedUniformColoredShader* m_pShader;
@@ -26,7 +26,7 @@ namespace Eegeo
             Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
             Rendering::Materials::MaterialIdGenerator& m_materialIdGenerator;
             
-            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* GetMaterialForAsset(const std::string& assetPath);
+            Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial* GetMaterialForAsset(const std::string& assetPath);
             
             
         public:

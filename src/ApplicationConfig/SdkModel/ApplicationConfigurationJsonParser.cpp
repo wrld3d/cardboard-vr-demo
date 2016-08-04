@@ -143,13 +143,15 @@ namespace Examples
                     Eegeo_ASSERT(locationDocument.HasMember("StartLocationLongitude"));
                     Eegeo_ASSERT(locationDocument.HasMember("StartLocationAltitude"));
                     Eegeo_ASSERT(locationDocument.HasMember("StartLocationOrientationDegrees"));
+                    Eegeo_ASSERT(locationDocument.HasMember("WelcomeMessage"));
                     WorldLocationData locationData(locationName,
                                                    locationDocument["LocationID"].GetInt(),
                                                    locationDocument["LocationIcon"].GetInt(),
                                                    Eegeo::Space::LatLongAltitude::FromDegrees(locationDocument["StartLocationLatitude"].GetDouble(),
                                                                                               locationDocument["StartLocationLongitude"].GetDouble(),
                                                                                               locationDocument["StartLocationAltitude"].GetDouble()),
-                                                   static_cast<float>(document["StartLocationOrientationDegrees"].GetDouble()));
+                                                   static_cast<float>(locationDocument["StartLocationOrientationDegrees"].GetDouble()),
+                                                   locationDocument["WelcomeMessage"].GetString());
 
                     ParseJumpPoints(locationDocument, jumpPointsVector);
                     m_builder.AddExteriorJumpPoints(locationName, jumpPointsVector);

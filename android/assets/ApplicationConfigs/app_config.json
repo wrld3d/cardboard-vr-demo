@@ -132,6 +132,7 @@
             "StartLocationLongitude":-2.966101,
             "StartLocationAltitude":250,
             "StartLocationOrientationDegrees":0.0,
+            "WelcomeMessage":"mesh_example/PinIconTexturePage.png",
             "InteriorPOIs":[
                {
                   "id":"westport_house",
@@ -177,6 +178,7 @@
             "StartLocationLongitude":-122.402797,
             "StartLocationAltitude":306,
             "StartLocationOrientationDegrees":0.0,
+            "WelcomeMessage":"mesh_example/PinIconTexturePage.png",
             "JumpPoints":[
                {
                   "id":0,
@@ -219,6 +221,7 @@
             "StartLocationLongitude":2.297102,
             "StartLocationAltitude":250,
             "StartLocationOrientationDegrees":0.0,
+            "WelcomeMessage":"mesh_example/PinIconTexturePage.png",
             "JumpPoints":[
                {
                   "id":0,

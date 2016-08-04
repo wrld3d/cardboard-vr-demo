@@ -12,15 +12,17 @@ namespace Examples
         , m_iconID(0)
         , m_lla(Eegeo::Space::LatLongAltitude::FromDegrees(0, 0, 0))
         , m_orientation(0.f)
+        , m_locationWelcomeMessage("")
         {
         }
 
-        WorldLocationData::WorldLocationData(const std::string& location, int locID, int iconID, const Eegeo::Space::LatLongAltitude& lla, float orientation)
+        WorldLocationData::WorldLocationData(const std::string& location, int locID, int iconID, const Eegeo::Space::LatLongAltitude& lla, float orientation, const std::string& locationWelcomeMessage)
         : m_location(location)
         , m_locID(locID)
         , m_iconID(iconID)
         , m_lla(lla)
         , m_orientation(orientation)
+        , m_locationWelcomeMessage(locationWelcomeMessage)
         {
         }
 
@@ -47,6 +49,11 @@ namespace Examples
         float WorldLocationData::GetOrientation() const
         {
             return m_orientation;
+        }
+
+        const std::string& WorldLocationData::GetWelcomeMessage() const
+        {
+            return m_locationWelcomeMessage;
         }
     }
 }

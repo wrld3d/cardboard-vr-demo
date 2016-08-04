@@ -27,8 +27,6 @@ namespace Eegeo
         , m_mesh(mesh)
         , m_color(initialColor)
         , m_scale(initialScale)
-        , m_depthTest(depthTest)
-        , m_alphaBlend(alphaBlend)
         , m_orientationEcef(Eegeo::m44::CreateIdentity())
         {   
         }

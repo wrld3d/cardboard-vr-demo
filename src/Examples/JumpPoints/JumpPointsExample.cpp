@@ -26,6 +26,8 @@
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
 
+const float WelcomeMessageFadeSpeed = 0.5f;
+
 #include "Logger.h"
 
 namespace Examples
@@ -163,10 +165,14 @@ namespace Examples
 
         m_menuLoader.RegisterLocationChangedCallback(m_locationChangedCallback);
         ChangeLocation(m_menuLoader.GetCurrentSelectedLocation());
+
+        m_pWelcomeNoteViewer = Eegeo_NEW(WelcomeNoteViewer)(m_uiQuadFactory, *m_pUIRenderableFilter);
     }
     
     void JumpPointsExample::Suspend()
     {
+        Eegeo_DELETE m_pWelcomeNoteViewer;
+
         if(m_isInInterior)
         {
             m_interiorsExplorerModule.UnregisterVisibilityChangedCallback(m_onInteriorFloorChanged);
@@ -221,7 +227,14 @@ namespace Examples
     
     void JumpPointsExample::EarlyUpdate(float dt)
     {
-        
+
+    }
+
+    void JumpPointsExample::Draw()
+    {
+        Eegeo::v3 forward(m_pSplineCameraController->GetOrientation().GetRow(2));
+        Eegeo::dv3 position(m_pSplineCameraController->GetCameraPosition() + (forward*50));
+        m_pWelcomeNoteViewer->SetPosition(position);
     }
     
     void JumpPointsExample::Update(float dt)
@@ -229,9 +242,10 @@ namespace Examples
         m_pJumpPointsModule->Update(dt);
         
         m_pWestPortInteriorButton->Update(dt);
+
+        m_pWelcomeNoteViewer->Update(dt);
     }
-    
-    
+
     void JumpPointsExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
     {
     }
@@ -426,7 +440,7 @@ namespace Examples
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 40).ToECEF();
         
         m_animationsController.RemoveAnimationsForTag(0);
-        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 5.f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
+        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 5.0f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
         animation->SetTag(0);
         m_animationsController.AddAnimation(animation);
         
@@ -519,6 +533,7 @@ namespace Examples
 
     void JumpPointsExample::OnLocationChanged(std::string &location)
     {
+        m_pWelcomeNoteViewer->ShowWelcomeNote(m_appConfig.GetLocations().at(location).GetWelcomeMessage(), WelcomeMessageFadeSpeed, Eegeo::v2(15,5));
         ChangeLocation(location);
     }
     

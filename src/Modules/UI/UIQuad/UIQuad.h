@@ -3,7 +3,7 @@
 #pragma once
 
 #include "TexturedUniformColoredShader.h"
-#include "TexturedUniformColoredMaterial.h"
+#include "UITexturedUniformColoredMaterial.h"
 #include "Rendering.h"
 #include "IRenderableFilter.h"
 #include "Modules.h"
@@ -21,7 +21,7 @@ namespace Eegeo
         {
         private:
             
-            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial& m_material;
+            Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial& m_material;
             Eegeo::Rendering::Mesh* m_pRenderableMesh;
             
             Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
@@ -41,7 +41,7 @@ namespace Eegeo
             
             UIQuad(
                    const std::string& name,
-                   Eegeo::Rendering::Materials::TexturedUniformColoredMaterial& material,
+                   Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial& material,
                    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
                    Eegeo::Rendering::GlBufferPool& glBufferPool,
                    const Eegeo::v2& dimension,

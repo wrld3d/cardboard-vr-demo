@@ -31,12 +31,8 @@ namespace Eegeo
             
             void SetOrientationEcef(const Eegeo::m33& orientationEcef) { m_orientationEcef = orientationEcef.ToM44(); }
             void SetColor(const Eegeo::v4 color) { m_color = color; }
-            void SetDepthTest(bool enabled) { m_depthTest = enabled; }
-            void SetAlphaBlend(bool enabled) { m_alphaBlend = enabled; }
             
             const Eegeo::v4& GetColor() const { return m_color; }
-            bool IsDepthTest() const { return m_depthTest; }
-            bool IsAlphaBlend() const { return m_alphaBlend; }
             
             const Eegeo::v3& GetScale() { return m_scale; }
             void SetScale(const Eegeo::v3& scale) { m_scale = scale; }
@@ -45,8 +41,6 @@ namespace Eegeo
             Eegeo::Rendering::Mesh& m_mesh;
             Eegeo::m44 m_orientationEcef;
             Eegeo::v4 m_color;
-            bool m_depthTest;
-            bool m_alphaBlend;
             Eegeo::v3 m_scale;
         };
     }

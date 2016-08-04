@@ -14,6 +14,7 @@
 #include "JumpPointsSwitcher.h"
 #include "ApplicationConfig.h"
 #include "WorldMenuLoaderModel.h"
+#include "WelcomeNoteViewer.h"
 #include "Modules/UI/UIInteraction/UIInteractionController.h"
 #include "Modules/UI/IUICameraProvider.h"
 #include "Modules/UI/UIQuad/IUIQuadFactory.h"
@@ -87,6 +88,8 @@ namespace Examples
         bool m_isInInterior;
         bool m_isCameraAnimating;
 
+        WelcomeNoteViewer* m_pWelcomeNoteViewer;
+
         Eegeo::Helpers::TCallback1<JumpPointsExample, std::string&> m_locationChangedCallback;
         void OnLocationChanged(std::string& location);
         
@@ -123,7 +126,7 @@ namespace Examples
         void EarlyUpdate(float dt);
         void Update(float dt);
         void PreWorldDraw() { }
-        void Draw() {}
+        void Draw();
         void Suspend();
         
         const Eegeo::m33& getCurrentCameraOrientation();

@@ -39,11 +39,11 @@ namespace Eegeo
                              const Eegeo::v2& uvMin,
                              const Eegeo::v2& uvMax,
                              const Eegeo::Rendering::LayerIds::Values renderLayer){
-            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* pMaterial = GetMaterialForAsset(assetPath);
+            Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial* pMaterial = GetMaterialForAsset(assetPath);
             return new UIQuad(assetPath, *pMaterial, m_vertexBindingPool, m_glBufferPool, dimension, uvMin, uvMax, Eegeo::dv3::Zero(), Eegeo::v4::One(), renderLayer);
         }
         
-        Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* UIQuadFactory::GetMaterialForAsset(const std::string& assetPath)
+        Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial* UIQuadFactory::GetMaterialForAsset(const std::string& assetPath)
         {
             TMaterialMap::const_iterator foundMaterial = m_materialMap.find(assetPath);
             
@@ -66,7 +66,7 @@ namespace Eegeo
                 return NULL;
             
             const v4& initialColor = v4::One();
-            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* pMaterial = new (Eegeo::Rendering::Materials::TexturedUniformColoredMaterial) (
+            Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial* pMaterial = new (Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial) (
                                                                                m_materialIdGenerator.GetNextId(),
                                                                                "UIRectMaterial",
                                                                                *m_pShader,

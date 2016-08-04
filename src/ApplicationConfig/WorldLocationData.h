@@ -19,10 +19,11 @@ namespace Examples
             int m_iconID;
             Eegeo::Space::LatLongAltitude m_lla;
             float m_orientation;
+            std::string m_locationWelcomeMessage;
 
         public:
             WorldLocationData();
-            WorldLocationData(const std::string& location, int locID, int iconID, const Eegeo::Space::LatLongAltitude& lla, float orientation);
+            WorldLocationData(const std::string& location, int locID, int iconID, const Eegeo::Space::LatLongAltitude& lla, float orientation, const std::string& locationWelcomeMessage);
 
             const std::string& GetLocation() const;
 
@@ -33,6 +34,8 @@ namespace Examples
             const Eegeo::Space::LatLongAltitude& GetLocationCameraPosition() const;
 
             float GetOrientation() const;
+
+            const std::string& GetWelcomeMessage() const;
         };
     }
 }

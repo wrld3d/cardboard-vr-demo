@@ -84,7 +84,7 @@ namespace Eegeo
         
         UIQuad::UIQuad(
                        const std::string& name,
-                       Eegeo::Rendering::Materials::TexturedUniformColoredMaterial& material,
+                       Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial& material,
                        Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
                        Eegeo::Rendering::GlBufferPool& glBufferPool,
                        const Eegeo::v2& dimension,
