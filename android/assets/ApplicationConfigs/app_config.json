@@ -5,6 +5,7 @@
    "StartLocationAltitude":250,
    "StartLocationOrientationDegrees":0.0,
    "EegeoApiKey":"INSERT_API_KEY_HERE",
+   "ThemeManifestURL": "http://d2xvsc8j92rfya.cloudfront.net/mobile-themes-new/v674/manifest.txt.gz",
    "JumpPointsData":{
       "SpriteSheet":"mesh_example/PinIconTexturePage.png",
       "SpriteSheetWidth":4,
@@ -219,7 +220,7 @@
             "LocationIcon":6,
             "StartLocationLatitude":48.856623,
             "StartLocationLongitude":2.297102,
-            "StartLocationAltitude":250,
+            "StartLocationAltitude":450,
             "StartLocationOrientationDegrees":0.0,
             "WelcomeMessage":"mesh_example/PinIconTexturePage.png",
             "JumpPoints":[
@@ -227,7 +228,7 @@
                   "id":0,
                   "lat":48.856623,
                   "lon":2.297102,
-                  "alt":250,
+                  "alt":450,
                   "icon_id":0,
                   "size":80
                },
