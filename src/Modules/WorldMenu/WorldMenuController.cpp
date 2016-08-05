@@ -124,19 +124,19 @@ namespace Eegeo
                 float angle = Eegeo::Math::Rad2Deg(Eegeo::Math::ACos(Eegeo::v3::Dot(vA, vB)/(vA.Length()*vB.Length())));
                 
                 
-                float marginAngle = 90;
-                int positionMultiplier = 600;
+                const float MarginAngle = 70;
+                const int PositionMultiplier = 600;
                 
                 bool shouldUpdatePosition = false;
                 
-                if(!m_isMenuShown && angle<=marginAngle)
+                if(!m_isMenuShown && angle<=MarginAngle)
                 {
                     m_isMenuShown = true;
                     shouldUpdatePosition = true;
                     m_cachedHeadTracker = m_uiCameraProvider.GetHeadTrackerOrientation();
                     m_cachedCenter = center;
                 }
-                else if(m_isMenuShown && angle>marginAngle)
+                else if(m_isMenuShown && angle>MarginAngle)
                 {
                     m_isMenuShown = false;
                     shouldUpdatePosition = true;
@@ -176,7 +176,7 @@ namespace Eegeo
                         }
                         margin += pView->GetWorldMenuItem().GetMarginRight();
                         
-                        Eegeo::dv3 position(center + (forward*positionMultiplier) + (top*45) + ((right*55*halfCount)-(right*margin)));
+                        Eegeo::dv3 position(center + (forward*PositionMultiplier) + (top*45) + ((right*55*halfCount)-(right*margin)));
                         pView->SetEcefPosition(position);
                         pView->SetItemShouldRender(true);
                         halfCount-=1;

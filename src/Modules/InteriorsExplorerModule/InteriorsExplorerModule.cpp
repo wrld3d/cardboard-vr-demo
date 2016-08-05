@@ -35,7 +35,7 @@ namespace InteriorsExplorer
         Eegeo::Resources::Interiors::InteriorId id(std::string("westport_house"));
         interiorSelectionModel.SelectInteriorId(id);
         
-        const float transitionTime = 0.5f;
+        const float transitionTime = 1.5f;
         m_pVisibilityUpdater = Eegeo_NEW(InteriorVisibilityUpdater)(interiorTransitionModel, interiorSelectionModel, interiorInteractionModel, transitionTime);
         m_pModel = Eegeo_NEW(InteriorsExplorerModel)(interiorInteractionModel);
         
