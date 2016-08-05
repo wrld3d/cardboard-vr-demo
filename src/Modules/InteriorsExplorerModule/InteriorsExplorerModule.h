@@ -52,12 +52,16 @@ namespace InteriorsExplorer
         virtual void UnregisterVisibilityChangedCallback(Eegeo::Helpers::ICallback0& callback);
         
         void OnMenuItemGazed(InteriorMenu::InteriorMenuItem& menuItem);
+
+        virtual void RegisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback);
+        virtual void UnregisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback);
         
     private:
         
         int m_floorId;
         
         Eegeo::Helpers::TCallback1<InteriorsExplorerModule, InteriorMenu::InteriorMenuItem&> m_interiorMenuItemGazeCallback;
+        Eegeo::Helpers::CallbackCollection1<InteriorMenu::InteriorMenuItem&> m_menuItemCallbacks;
 
         typedef std::vector<InteriorMenu::InteriorMenuItem*> TInteriorMenuItems;
         TInteriorMenuItems  m_pInteriorMenuItems;

@@ -90,7 +90,9 @@ namespace Examples
     , m_onInteriorFloorChanged(this, &JumpPointsExample::OnInteriorFloorChanged)
     , m_onJumpPointSelected(this, &JumpPointsExample::OnJumpPointSelected)
     , m_locationChangedCallback(this, &JumpPointsExample::OnLocationChanged)
+    , m_interiorMenuItemSelected(this, &JumpPointsExample::OnFloorMenuItemSelected)
     , m_isInInterior(false)
+    , m_isAtFloorLevel(false)
     {
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
@@ -167,6 +169,8 @@ namespace Examples
         ChangeLocation(m_menuLoader.GetCurrentSelectedLocation());
 
         m_pWelcomeNoteViewer = Eegeo_NEW(WelcomeNoteViewer)(m_uiQuadFactory, *m_pUIRenderableFilter);
+
+        m_interiorsExplorerModule.RegisterMenuItemGazedCallback(m_interiorMenuItemSelected);
     }
     
     void JumpPointsExample::Suspend()
@@ -178,6 +182,7 @@ namespace Examples
             m_interiorsExplorerModule.UnregisterVisibilityChangedCallback(m_onInteriorFloorChanged);
         }
 
+        m_interiorsExplorerModule.UnregisterMenuItemGazedCallback(m_interiorMenuItemSelected);
         m_menuLoader.UnregisterLocationChangedCallback(m_locationChangedCallback);
 
         Eegeo_DELETE m_pJumpPointSwitcher;
@@ -495,33 +500,12 @@ namespace Examples
         Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this,m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), jumpPoint.GetEcefPosition(), time, &Eegeo::UI::AnimationEase::EaseInOutCubic);
         animation->SetTag(0);
         m_animationsController.AddAnimation(animation);
+
+        m_isAtFloorLevel = m_isInInterior;
     }
     
     void JumpPointsExample::OnInteriorFloorChanged()
     {
-        if(m_interiorsExplorerModule.GetSelectedFloor()<0){
-            m_isInInterior = false;
-            m_pWestPortInteriorButton->SetItemShouldRender(true);
-            
-            m_worldMenuModule.SetMenuShouldDisplay(true);
-            
-            Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459156, -2.975320, 300).ToECEF();
-            
-            m_animationsController.RemoveAnimationsForTag(0);
-            Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 3.f, &Eegeo::UI::AnimationEase::EaseInOutExpo);
-            animation->SetTag(0);
-            m_animationsController.AddAnimation(animation);
-            m_interiorsExplorerModule.UnregisterVisibilityChangedCallback(m_onInteriorFloorChanged);
-        }
-        else
-        {
-            
-            Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 40+(5*m_interiorsExplorerModule.GetSelectedFloor())).ToECEF();
-            m_animationsController.RemoveAnimationsForTag(0);
-            Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 1.f, &Eegeo::UI::AnimationEase::EaseOutExpo);
-            animation->SetTag(0);
-            m_animationsController.AddAnimation(animation);
-        }
     }
 
     void JumpPointsExample::ChangeLocation(const std::string &location)
@@ -536,5 +520,52 @@ namespace Examples
         m_pWelcomeNoteViewer->ShowWelcomeNote(m_appConfig.GetLocations().at(location).GetWelcomeMessage(), WelcomeMessageFadeSpeed, Eegeo::v2(15,5));
         ChangeLocation(location);
     }
-    
+
+    void JumpPointsExample::OnFloorMenuItemSelected(InteriorsExplorer::InteriorMenu::InteriorMenuItem& menuItem)
+    {
+        if (menuItem.GetId() < 0)
+        {
+            if (m_isAtFloorLevel)
+            {
+                Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 40+(5*m_interiorsExplorerModule.GetSelectedFloor())).ToECEF();
+                m_animationsController.RemoveAnimationsForTag(0);
+                Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 3.5f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
+                animation->SetTag(0);
+                m_animationsController.AddAnimation(animation);
+                m_isAtFloorLevel = false;
+            }
+            else
+            {
+                m_isAtFloorLevel = false;
+                m_isInInterior = false;
+                m_pWestPortInteriorButton->SetItemShouldRender(true);
+
+                m_worldMenuModule.SetMenuShouldDisplay(true);
+
+                Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459156, -2.975320, 300).ToECEF();
+
+                m_animationsController.RemoveAnimationsForTag(0);
+                Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 3.5f, &Eegeo::UI::AnimationEase::EaseInOutExpo);
+                animation->SetTag(0);
+                m_animationsController.AddAnimation(animation);
+                m_interiorsExplorerModule.UnregisterVisibilityChangedCallback(m_onInteriorFloorChanged);
+                m_interiorsExplorerModule.HideInteriors();
+            }
+        }
+        else
+        {
+            m_interiorsExplorerModule.SelectFloor(menuItem.GetId());
+
+            if(m_interiorsExplorerModule.GetSelectedFloor()>=0)
+            {
+                Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 40+(5*m_interiorsExplorerModule.GetSelectedFloor())).ToECEF();
+                m_animationsController.RemoveAnimationsForTag(0);
+                Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 1.5f, &Eegeo::UI::AnimationEase::EaseInOutExpo);
+                animation->SetTag(0);
+                m_animationsController.AddAnimation(animation);
+                m_isAtFloorLevel = false;
+            }
+        }
+    }
+
 }

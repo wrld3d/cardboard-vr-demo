@@ -87,17 +87,14 @@ namespace InteriorsExplorer
     
     void InteriorsExplorerModule::OnMenuItemGazed(InteriorMenu::InteriorMenuItem& menuItem)
     {
-        m_floorId = menuItem.GetId();
-        if(menuItem.GetId()<0)
-            HideInteriors();
-        else
-            SelectFloor(m_floorId);
+        m_menuItemCallbacks.ExecuteCallbacks(menuItem);
     }
     
     void InteriorsExplorerModule::SelectFloor(int floor)
     {
         if(m_floorId>=0)
         {
+            m_floorId = floor;
             m_interiorInteractionModel.SetSelectedFloorIndex(m_floorId);
             m_pInteriorMenuModule->GetController().SetSelectedFloorId(m_floorId);
         }
@@ -141,7 +138,6 @@ namespace InteriorsExplorer
     {
         bool shouldDisplay = !m_pVisibilityUpdater->GetInteriorShouldDisplay();
         m_pVisibilityUpdater->SetInteriorShouldDisplay(shouldDisplay);
-        m_pVisibilityUpdater->UpdateVisiblityImmediately();
         m_pInteriorMenuModule->SetMenuShouldDisplay(shouldDisplay);
     }
     
@@ -153,7 +149,6 @@ namespace InteriorsExplorer
             m_interiorInteractionModel.SetSelectedFloorIndex(m_floorId);
             m_pInteriorMenuModule->GetController().SetSelectedFloorId(m_floorId);
             m_pVisibilityUpdater->SetInteriorShouldDisplay(true);
-            m_pVisibilityUpdater->UpdateVisiblityImmediately();
             m_pInteriorMenuModule->SetMenuShouldDisplay(true);  
         }
     }
@@ -163,7 +158,6 @@ namespace InteriorsExplorer
         if (m_pVisibilityUpdater->GetInteriorShouldDisplay())
         {
             m_pVisibilityUpdater->SetInteriorShouldDisplay(false);
-            m_pVisibilityUpdater->UpdateVisiblityImmediately();
             m_pInteriorMenuModule->SetMenuShouldDisplay(false);
         }
      
@@ -184,5 +178,15 @@ namespace InteriorsExplorer
     {
         m_interiorTransitionModel.UnregisterChangedCallback(callback);
         m_interiorInteractionModel.UnregisterInteractionStateChangedCallback(callback);
+    }
+
+    void InteriorsExplorerModule::RegisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback)
+    {
+        m_menuItemCallbacks.AddCallback(callback);
+    }
+
+    void InteriorsExplorerModule::UnregisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback)
+    {
+        m_menuItemCallbacks.RemoveCallback(callback);
     }
 }

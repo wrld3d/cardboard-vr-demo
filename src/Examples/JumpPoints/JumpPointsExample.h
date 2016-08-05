@@ -49,7 +49,8 @@ namespace Examples
         Eegeo::UI::IUIQuadFactory& m_uiQuadFactory;
         Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
         Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
-        
+
+        bool m_isAtFloorLevel;
         InteriorsExplorer::InteriorsExplorerModule* m_pInteriorExplorerModule;
         
         Eegeo::Rendering::RenderableFilters& m_renderableFilters;
@@ -92,6 +93,10 @@ namespace Examples
 
         Eegeo::Helpers::TCallback1<JumpPointsExample, std::string&> m_locationChangedCallback;
         void OnLocationChanged(std::string& location);
+
+        Eegeo::Helpers::TCallback1<JumpPointsExample, InteriorsExplorer::InteriorMenu::InteriorMenuItem&> m_interiorMenuItemSelected;
+
+        void OnFloorMenuItemSelected(InteriorsExplorer::InteriorMenu::InteriorMenuItem& menuItem);
         
     public:
         
