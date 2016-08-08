@@ -27,7 +27,7 @@
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
 
-const float WelcomeMessageFadeSpeed = 0.5f;
+const float WelcomeMessageFadeSpeed = 0.25f;
 
 const float InteriorMenuFloorAngleThreshold = 70.f;
 const float InteriorMenuHighPositionAngleThreshold = 100.f;
