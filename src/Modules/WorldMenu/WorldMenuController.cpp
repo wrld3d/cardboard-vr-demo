@@ -124,7 +124,7 @@ namespace Eegeo
                 float angle = Eegeo::Math::Rad2Deg(Eegeo::Math::ACos(Eegeo::v3::Dot(vA, vB)/(vA.Length()*vB.Length())));
                 
                 
-                const float MarginAngle = 70;
+                const float MarginAngle = 85;
                 const int PositionMultiplier = 600;
                 
                 bool shouldUpdatePosition = false;

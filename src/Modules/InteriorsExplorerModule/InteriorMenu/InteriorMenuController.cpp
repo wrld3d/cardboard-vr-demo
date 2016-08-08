@@ -16,6 +16,7 @@ namespace InteriorsExplorer
         , m_viewFactory(viewFactory)
         , m_pIUIInteractionObservable(uiInteractionObservable)
         , m_uiCameraProvider(uiCameraProvider)
+        , m_marginAngle(75.f)
         {
             m_menuItemsShouldRender = true;
             m_isMenuShown = false;
@@ -120,21 +121,19 @@ namespace InteriorsExplorer
             Eegeo::v3 vA = center.ToSingle();
             Eegeo::v3 vB = m_uiCameraProvider.GetOrientation().GetRow(2);
             float angle = Eegeo::Math::Rad2Deg(Eegeo::Math::ACos(Eegeo::v3::Dot(vA, vB)/(vA.Length()*vB.Length())));
-            
-            
-            const float MarginAngle = 70;
+
             const int PositionMultiplier = 600;
             
             bool shouldUpdatePosition = false;
             
-            if(!m_isMenuShown && angle<=MarginAngle)
+            if(!m_isMenuShown && angle<=m_marginAngle)
             {
                 m_isMenuShown = true;
                 shouldUpdatePosition = true;
                 m_cachedHeadTracker = m_uiCameraProvider.GetHeadTrackerOrientation();
                 m_cachedCenter = center;
             }
-            else if(m_isMenuShown && angle>MarginAngle)
+            else if(m_isMenuShown && angle>m_marginAngle)
             {
                 m_isMenuShown = false;
                 shouldUpdatePosition = true;
@@ -199,6 +198,15 @@ namespace InteriorsExplorer
         {
             return (GetViewForModel(jp) != NULL);
         }
-        
+
+        void InteriorMenuController::SetMenuVisibilityThresholdAngle(float angle)
+        {
+            m_marginAngle = angle;
+        }
+
+        float InteriorMenuController::GetMenuVisibilityThresholdAngle()
+        {
+            return m_marginAngle;
+        }
     }
 }

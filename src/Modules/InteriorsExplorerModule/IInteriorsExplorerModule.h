@@ -35,6 +35,9 @@ namespace InteriorsExplorer
         virtual void RegisterVisibilityChangedCallback(Eegeo::Helpers::ICallback0& callback) = 0;
         virtual void UnregisterVisibilityChangedCallback(Eegeo::Helpers::ICallback0& callback) = 0;
 
+        virtual void SetMenuVisibilityThresholdAngle(float angle) = 0;
+        virtual float GetMenuVisibilityThresholdAngle() = 0;
+
         virtual void RegisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback) = 0;
         virtual void UnregisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback) = 0;
     };

@@ -21,12 +21,16 @@
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
 #include "Modules/WorldMenu/WorldMenuModule.h"
 
+#include "WorldMenuController.h"
 #include "JumpPointConfigData.h"
 
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
 
 const float WelcomeMessageFadeSpeed = 0.5f;
+
+const float InteriorMenuFloorAngleThreshold = 70.f;
+const float InteriorMenuHighPositionAngleThreshold = 100.f;
 
 #include "Logger.h"
 
@@ -461,6 +465,7 @@ namespace Examples
         m_interiorsExplorerModule.ShowInteriors();
         m_pWestPortInteriorButton->SetItemShouldRender(false);
         m_worldMenuModule.SetMenuShouldDisplay(false);
+        m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
     }
     
     void JumpPointsExample::HideInteriors()
@@ -502,6 +507,15 @@ namespace Examples
         m_animationsController.AddAnimation(animation);
 
         m_isAtFloorLevel = m_isInInterior;
+
+        if (m_isAtFloorLevel)
+        {
+            m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuFloorAngleThreshold);
+        }
+        else
+        {
+            m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
+        }
     }
     
     void JumpPointsExample::OnInteriorFloorChanged()
@@ -533,6 +547,7 @@ namespace Examples
                 animation->SetTag(0);
                 m_animationsController.AddAnimation(animation);
                 m_isAtFloorLevel = false;
+                m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
             }
             else
             {
@@ -564,6 +579,7 @@ namespace Examples
                 animation->SetTag(0);
                 m_animationsController.AddAnimation(animation);
                 m_isAtFloorLevel = false;
+                m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
             }
         }
     }

@@ -55,6 +55,9 @@ namespace InteriorsExplorer
 
         virtual void RegisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback);
         virtual void UnregisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback);
+
+        virtual void SetMenuVisibilityThresholdAngle(float angle);
+        virtual float GetMenuVisibilityThresholdAngle();
         
     private:
         

@@ -39,6 +39,10 @@ namespace InteriorsExplorer
             void SetMenuItemsShouldRender(bool menuItemsShouldRender);
             
             void SetSelectedFloorId(int floorId);
+
+            void SetMenuVisibilityThresholdAngle(float angle);
+
+            float GetMenuVisibilityThresholdAngle();
             
         protected:
             void PositionItems();
@@ -51,7 +55,8 @@ namespace InteriorsExplorer
             Eegeo::dv3 m_cachedCenter;
             Eegeo::dv3 m_cameraLastPosition;
             Eegeo::m33 m_cachedHeadTracker;
-            
+            float m_marginAngle;
+
             int m_floorId;
             bool m_isMenuShown;
             bool m_menuItemsShouldRender;

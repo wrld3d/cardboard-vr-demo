@@ -189,4 +189,14 @@ namespace InteriorsExplorer
     {
         m_menuItemCallbacks.RemoveCallback(callback);
     }
+
+    void InteriorsExplorerModule::SetMenuVisibilityThresholdAngle(float angle)
+    {
+        m_pInteriorMenuModule->GetController().SetMenuVisibilityThresholdAngle(angle);
+    }
+
+    float InteriorsExplorerModule::GetMenuVisibilityThresholdAngle()
+    {
+        return m_pInteriorMenuModule->GetController().GetMenuVisibilityThresholdAngle();
+    }
 }
