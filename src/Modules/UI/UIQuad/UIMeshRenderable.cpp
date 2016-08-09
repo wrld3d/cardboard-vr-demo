@@ -67,5 +67,15 @@ namespace Eegeo
             Eegeo::m44::Mul(modelViewProjection, viewProjection, orientedCameraRelativeModel);
             return modelViewProjection;
         }
+
+        void UIMeshRenderable::SetAlpha(float alpha)
+        {
+            m_color.SetW(Eegeo::Math::Clamp01(alpha));
+        }
+
+        float UIMeshRenderable::GetAlpha() const
+        {
+            return m_color.GetW();
+        }
     }
 }

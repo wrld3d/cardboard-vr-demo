@@ -59,6 +59,8 @@ namespace Eegeo
             inline void SetScale(const Eegeo::v3& scale) { m_pRenderable->SetScale(scale); }
             inline void SetColor(const Eegeo::v4& color) { m_pRenderable->SetColor(color); }
             inline const Eegeo::v4& GetColor() { return m_pRenderable->GetColor(); }
+            inline void SetAlpha(float alpha) { m_pRenderable->SetAlpha(alpha); }
+            inline const float GetAlpha() { return m_pRenderable->GetAlpha(); }
 
             // IUIRenderable interface
             virtual Eegeo::Rendering::RenderableBase& GetUpdatedRenderable(const Eegeo::Rendering::RenderContext& renderContext);

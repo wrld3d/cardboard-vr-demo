@@ -17,9 +17,6 @@ namespace Examples
         Eegeo::UI::IUIQuadFactory& m_quadFactory;
         Eegeo::UI::IUIRenderableFilter& m_uiRenderableFilter;
         Eegeo::UI::UISprite* m_pNote;
-        float m_noteAplha;
-        float m_fadeSpeed;
-        Eegeo::v4 m_color;
         
     public:
         WelcomeNoteViewer(Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter);

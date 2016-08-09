@@ -17,7 +17,10 @@ namespace Eegeo
             
             UIQuad* m_pQuad;
             Eegeo::v2 m_Size;
-            
+            bool m_shouldDisplay;
+            bool m_shouldFade;
+            float m_fadeTransitionSpeed;
+
         public:
             
             UISprite(IUIRenderableFilter& uiRenderableFilter
@@ -43,9 +46,16 @@ namespace Eegeo
             void SetScale(const Eegeo::v3& scale);
             Eegeo::v3 GetScale();
             
-            bool GetItemShouldRender(){ return m_pQuad->GetItemShouldRender(); }
-            void SetItemShouldRender(bool shouldRender){ m_pQuad->SetItemShouldRender(shouldRender); }
-            
+            bool GetItemShouldRender();
+            void SetItemShouldRender(bool shouldRender);
+
+            void SetAlpha(float alpha);
+            const float GetAlpha();
+
+            void SetFadeTransitionSpeed(float speed);
+
+            bool GetShouldFade();
+            void SetShouldFade(bool shouldFade);
         };
         
     }

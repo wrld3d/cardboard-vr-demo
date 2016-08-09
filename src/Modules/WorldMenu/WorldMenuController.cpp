@@ -39,11 +39,7 @@ namespace Eegeo
             {
                 
                 m_menuItemsShouldRender = menuItemsShouldRender;
-                for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
-                {
-                    WorldMenuItemView* pView = it->second;
-                    pView->SetItemShouldRender(menuItemsShouldRender);
-                }
+
             }
             
             void WorldMenuController::Update(float deltaTime)
@@ -182,7 +178,7 @@ namespace Eegeo
                         halfCount-=1;
                         
                         margin += pView->GetWorldMenuItem().GetMarginLeft();
-                        
+                        pView->SetItemShouldRender(m_menuItemsShouldRender);
                     }
                     
                     items.clear();

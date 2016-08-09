@@ -18,7 +18,11 @@ namespace Eegeo
                            , const Eegeo::v3& scale
                            , const Eegeo::v4& color)
         : m_pQuad(pQuad)
-        , m_UIRenderableFilter(uiRenderableFilter){
+        , m_UIRenderableFilter(uiRenderableFilter)
+        , m_shouldDisplay(true)
+        , m_fadeTransitionSpeed(1.f)
+        , m_shouldFade(true)
+        {
             m_Size = size;
             
             m_UIRenderableFilter.RegisterRenderable(m_pQuad);
@@ -35,6 +39,22 @@ namespace Eegeo
         
         void UISprite::Update(float dt)
         {
+            if (m_shouldFade)
+            {
+                float alpha = m_pQuad->GetAlpha();
+
+                if (m_shouldDisplay && alpha < 1.f)
+                {
+                    m_pQuad->SetAlpha(alpha + (dt * m_fadeTransitionSpeed));
+                }
+
+                if (!m_shouldDisplay && alpha > 0.f)
+                {
+                    m_pQuad->SetAlpha(alpha - (dt * m_fadeTransitionSpeed));
+                }
+
+                m_pQuad->SetItemShouldRender(m_pQuad->GetAlpha() > 0.f);
+            }
         }
         
         void UISprite::SetEcefPosition(const Eegeo::dv3& position)
@@ -77,6 +97,53 @@ namespace Eegeo
             return m_pQuad->GetScale();
         }
         
-        
+        bool UISprite::GetItemShouldRender()
+        {
+            if (m_shouldFade)
+            {
+                return m_shouldDisplay;
+            }
+            else
+            {
+                return m_pQuad->GetItemShouldRender();
+            }
+        }
+
+        void UISprite::SetItemShouldRender(bool shouldDisplay)
+        {
+            if (m_shouldFade)
+            {
+                m_shouldDisplay = shouldDisplay;
+            }
+            else
+            {
+                return m_pQuad->SetItemShouldRender(shouldDisplay);
+            }
+        }
+
+        void UISprite::SetAlpha(float alpha)
+        {
+            m_pQuad->SetAlpha(alpha);
+        }
+
+        const float UISprite::GetAlpha()
+        {
+            return m_pQuad->GetAlpha();
+        }
+
+        void UISprite::SetFadeTransitionSpeed(float speed)
+        {
+            m_fadeTransitionSpeed = speed;
+        }
+
+        bool UISprite::GetShouldFade()
+        {
+            return m_shouldFade;
+        }
+
+        void UISprite::SetShouldFade(bool shouldFade)
+        {
+            m_shouldFade = shouldFade;
+        }
     }
 }

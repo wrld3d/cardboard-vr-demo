@@ -9,7 +9,6 @@ namespace Examples
     : m_quadFactory(quadFactory)
     , m_uiRenderableFilter(uiRenderableFilter)
     , m_pNote(NULL)
-    , m_color(Eegeo::v4::One())
     {
 
     }
@@ -27,17 +26,12 @@ namespace Examples
     {
         if(m_pNote != NULL)
         {
-            m_noteAplha -= dt * m_fadeSpeed;
+            m_pNote->Update(dt);
 
-            if (m_noteAplha <= 0.f)
+            if (m_pNote->GetAlpha() <= 0.f)
             {
                 Eegeo_DELETE m_pNote;
                 m_pNote = NULL;
-            }
-            else
-            {
-                m_color.SetW(m_noteAplha);
-                m_pNote->SetColor(m_color);
             }
         }
     }
@@ -57,11 +51,10 @@ namespace Examples
             Eegeo_DELETE m_pNote;
         }
 
-        m_fadeSpeed = fadeSpeed;
-        m_noteAplha = 1.f;
-
         m_pNote = Eegeo_NEW(Eegeo::UI::UISprite)(m_uiRenderableFilter,
                                                     m_quadFactory.CreateUIQuad(noteAssetPath,
                                                                              dimension));
+        m_pNote->SetFadeTransitionSpeed(fadeSpeed);
+        m_pNote->SetItemShouldRender(false);
     }
 }

@@ -68,6 +68,7 @@ namespace Eegeo
                                                      , color);
                 
                 pFrame->SetItemShouldRender(false);
+                pFrame->SetShouldFade(false);
                 m_frames.push_back(pFrame);
             }
             
