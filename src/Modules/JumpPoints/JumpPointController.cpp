@@ -37,6 +37,14 @@ namespace Eegeo
             {
                 UpdateViews(deltaTime);
             }
+
+            void JumpPointController::ResetVisibility()
+            {
+                for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
+                {
+                    it->first->SetVisibilityStatus(true);
+                }
+            }
             
             void JumpPointController::OnJumpPointAdded(JumpPoint& jumpPoint)
             {
@@ -67,8 +75,8 @@ namespace Eegeo
                     
                     const dv3& origin = pJumpPoint->GetEcefPosition();
                     pView->SetEcefPosition(origin);
-                    pView->SetColor(pJumpPoint->GetColor());
                     pView->Update(deltaTime);
+                    pView->SetItemShouldRender(pJumpPoint->GetVisibility());
                 }
             }
             

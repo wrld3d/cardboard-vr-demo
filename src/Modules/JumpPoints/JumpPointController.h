@@ -31,6 +31,8 @@ namespace Eegeo
                 ~JumpPointController();
                 
                 void Update(float deltaTime);
+
+                void ResetVisibility();
                 
                 virtual void OnJumpPointAdded(JumpPoint& jumpPoint);
                 

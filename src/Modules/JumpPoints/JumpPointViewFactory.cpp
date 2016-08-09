@@ -38,6 +38,7 @@ namespace Eegeo
                                                                         , m_uiCameraProvider
                                                                         , m_onJumpPointSelected
                                                                         );
+                pJumpPointView->SetFadeTransitionSpeed(2.f);
                 return pJumpPointView;
             }
             

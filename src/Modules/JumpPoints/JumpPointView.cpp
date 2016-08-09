@@ -29,7 +29,7 @@ namespace Eegeo
                             , jumpPoint.GetDimensions()
                             , jumpPoint.GetEcefPosition()
                             , Eegeo::v3::One()
-                            , jumpPoint.GetColor()
+                            , Eegeo::v4::One()
                             , jumpPoint.GetUVMin()
                             , jumpPoint.GetUVMax()
                             )

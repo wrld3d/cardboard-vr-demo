@@ -60,16 +60,7 @@ namespace Eegeo
                 
                 /*! Set the ECEF position of the JumpPoint.
                  */
-                void SetEcefPosition(dv3 ecefPosition);
-                
-                /*! Get the color tint of the JumpPoint. The X,Y,Z, and W components refer to Red, Green, Blue and Alpha values between 0 and 1.
-                 * \return The color vector applied to the JumpPoint.
-                 */
-                const v4& GetColor() const;
-                
-                /*! Set the color tint of the JumpPoint. The X,Y,Z, and W components refer to Red, Green, Blue and Alpha values between 0 and 1.
-                 */
-                void SetColor(v4 color);
+                void SetEcefPosition(const dv3& ecefPosition);
                 
                 /*! Get the File name of the JumpPoint icon.
                  * \return The JumpPoint's icon file name.
@@ -104,6 +95,15 @@ namespace Eegeo
                 /*! Set the interior floor for jump point.
                  */
                 void SetInteriorFloor(int floor);
+
+                /*! Set the jump point visiblity status.
+                 */
+                void SetVisibilityStatus(bool isVisible);
+
+                /*! Get JumpPoint visibility status.
+                 * \return True if JumpPoint's is visible.
+                 */
+                bool GetVisibility() const;
                 
             private:
                 TJumpPointId m_id;
@@ -118,6 +118,7 @@ namespace Eegeo
                 const Eegeo::v2 m_uvMax;
                 const bool m_isInInterior;
                 int m_interiorFloor;
+                bool m_visiblityStatus;
             };
         }
     }

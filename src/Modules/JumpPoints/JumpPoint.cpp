@@ -27,6 +27,7 @@ namespace Eegeo
             , m_isInInterior(isInInterior)
             , m_interiorFloor(0)
             , m_pUserData(pUserData)
+            , m_visiblityStatus(true)
             {
                 m_color = Eegeo::v4::One();
             }
@@ -46,19 +47,9 @@ namespace Eegeo
                 return m_ecefPosition;
             }
             
-            void JumpPoint::SetEcefPosition(dv3 ecefPosition)
+            void JumpPoint::SetEcefPosition(const dv3& ecefPosition)
             {
                 m_ecefPosition = ecefPosition;
-            }
-            
-            const v4& JumpPoint::GetColor() const
-            {
-                return m_color;
-            }
-            
-            void JumpPoint::SetColor(v4 color)
-            {
-                m_color = color;
             }
             
             const std::string& JumpPoint::GetFileName() const
@@ -94,6 +85,16 @@ namespace Eegeo
             void JumpPoint::SetInteriorFloor(int floor)
             {
                 m_interiorFloor = floor;
+            }
+
+            void JumpPoint::SetVisibilityStatus(bool isVisible)
+            {
+                m_visiblityStatus = isVisible;
+            }
+
+            bool JumpPoint::GetVisibility() const
+            {
+                return m_visiblityStatus;
             }
         }
     }

@@ -501,6 +501,9 @@ namespace Examples
 
         m_pWestPortInteriorButton->SetItemShouldRender(!jumpPoint.GetIsInInterior());
 
+        m_pJumpPointsModule->GetController().ResetVisibility();
+        jumpPoint.SetVisibilityStatus(false);
+
         m_animationsController.RemoveAnimationsForTag(0);
         Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this,m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), jumpPoint.GetEcefPosition(), time, &Eegeo::UI::AnimationEase::EaseInOutCubic);
         animation->SetTag(0);
@@ -582,6 +585,8 @@ namespace Examples
                 m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
             }
         }
+
+        m_pJumpPointsModule->GetController().ResetVisibility();
     }
 
 }
