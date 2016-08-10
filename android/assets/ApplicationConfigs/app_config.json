@@ -8,8 +8,7 @@
    "ThemeManifestURL": "http://d2xvsc8j92rfya.cloudfront.net/mobile-themes-new/v674/manifest.txt.gz",
    "JumpPointsData":{
       "SpriteSheet":"mesh_example/PinIconTexturePage.png",
-      "SpriteSheetWidth":4,
-      "SpriteSheetHeight":4,
+      "NumberOfTilesAlong1Axis":5,
       "Interior":{
          "westport_house":{
             "FloorCount":7,
@@ -128,7 +127,7 @@
       "Exterior":{
          "Dundee":{
             "LocationID":1,
-            "LocationIcon":4,
+            "LocationIcon":17,
             "StartLocationLatitude":56.456160,
             "StartLocationLongitude":-2.966101,
             "StartLocationAltitude":250,
@@ -198,7 +197,7 @@
          },
          "SanFrancisco":{
             "LocationID":2,
-            "LocationIcon":5,
+            "LocationIcon":18,
             "StartLocationLatitude":37.795215,
             "StartLocationLongitude":-122.402797,
             "StartLocationAltitude":306,
@@ -241,7 +240,7 @@
          },
          "Paris":{
             "LocationID":3,
-            "LocationIcon":6,
+            "LocationIcon":19,
             "StartLocationLatitude":48.856623,
             "StartLocationLongitude":2.297102,
             "StartLocationAltitude":450,

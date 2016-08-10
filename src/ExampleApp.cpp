@@ -237,10 +237,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_progressBarConfig.spriteId = 0;
     m_progressBarConfig.color = Eegeo::v4::One();
     m_progressBarConfig.renderLayer = Eegeo::Rendering::LayerIds::Values::AfterAll;
-    
-    std::string menuTextureFileName("mesh_example/PinIconTexturePage.png");
-    
-    
+
     m_pInteriorExplorerModule = Eegeo_NEW(InteriorsExplorer::InteriorsExplorerModule)(
                                                                                       *m_pUIRenderableFilter,
                                                                                       *m_pQuadFactory, *
@@ -249,16 +246,18 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                                       m_progressBarConfig,
                                                                                       interiorsPresentationModule.GetInteriorInteractionModel(),
                                                                                       interiorsPresentationModule.GetInteriorSelectionModel(),
-                                                                                      interiorsPresentationModule.GetInteriorTransitionModel());
+                                                                                      interiorsPresentationModule.GetInteriorTransitionModel(),
+                                                                                      appConfig.JumpPointsSpriteSheet(),
+                                                                                      appConfig.JumpPointsSpriteSheetSize());
     
-    m_pDeadZoneMenuModule = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, menuTextureFileName, m_progressBarConfig, 4);
+    m_pDeadZoneMenuModule = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, appConfig.JumpPointsSpriteSheet(), m_progressBarConfig, appConfig.JumpPointsSpriteSheetSize());
     
     m_pMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 0, m_jumpPointExampleButtonClickedCallback);
     m_pMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 1, m_toggleDayNightClickedCallback);
     m_pMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 2, m_splineExampleButtonClickedCallback);
     
     
-    m_pWorldMenuModule = Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuModule)(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController,*m_pExampleController, menuTextureFileName, m_progressBarConfig, 4);
+    m_pWorldMenuModule = Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuModule)(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController,*m_pExampleController, appConfig.JumpPointsSpriteSheet(), m_progressBarConfig, appConfig.JumpPointsSpriteSheetSize());
     m_pWorldMenuModule->SetMenuShouldDisplay(true);
     
 

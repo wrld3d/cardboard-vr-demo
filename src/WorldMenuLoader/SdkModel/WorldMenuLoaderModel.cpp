@@ -25,7 +25,7 @@ namespace Examples
                 const ApplicationConfig::TWorldLocations& worldLocations = appConfig.GetLocations();
 
                 
-                Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(0, 13, m_worldMenuItemGazeCallback, new std::string("home"), 0, 15);
+                Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(0, 15, m_worldMenuItemGazeCallback, new std::string("home"), 0, 15);
                 m_menuItemRepository.AddWorldMenuItem(menuItem);
                 m_pWorldMenuItems.push_back(menuItem);
                 
@@ -38,7 +38,7 @@ namespace Examples
                     m_pWorldMenuItems.push_back(menuItem);
                 }
                 
-                menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(4, 1, m_worldMenuItemGazeCallback,  NULL, 15);
+                menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(4, 16, m_worldMenuItemGazeCallback,  NULL, 15);
                 m_menuItemRepository.AddWorldMenuItem(menuItem);
                 m_pWorldMenuItems.push_back(menuItem);
 

@@ -33,7 +33,7 @@ namespace Examples
 
                 virtual IApplicationConfigurationBuilder& SetJumpPointSpriteSheet(const std::string& spriteSheet) = 0;
 
-                virtual IApplicationConfigurationBuilder& SetJumpPointSpriteSheetSize(const Eegeo::v2& spriteSheetSize) = 0;
+                virtual IApplicationConfigurationBuilder& SetJumpPointSpriteSheetSize(const int spriteSheetSize) = 0;
 
                 virtual IApplicationConfigurationBuilder& SetExteriorLocations(const TWorldLocations& exteriorLocations) = 0;
 

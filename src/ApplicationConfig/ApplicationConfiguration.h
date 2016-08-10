@@ -27,7 +27,7 @@ namespace Examples
             const std::string m_combinedVersionString;
 
             const std::string m_jumpPointsSpriteSheet;
-            const Eegeo::v2 m_jumpPointsSpriteSheetSize;
+            const int m_jumpPointsSpriteSheetSize;
 
             const TExteriorJumpPoints m_exteriorJumpPoints;
             const TInteriorJumpPoints m_interiorJumpPoints;
@@ -42,7 +42,7 @@ namespace Examples
                                      const std::string& buildNumber,
                                      const std::string& combinedVersionString,
                                      const std::string& jumpPointsSpriteSheet,
-                                     const Eegeo::v2& jumpPointsSpriteSheetSize,
+                                     const int jumpPointsSpriteSheetSize,
                                      const TWorldLocations& worldLocations,
                                      const TExteriorJumpPoints& exteriorJumpPoints,
                                      const TInteriorJumpPoints& interiorJumpPoints
@@ -64,7 +64,7 @@ namespace Examples
 
             const std::string& JumpPointsSpriteSheet() const;
 
-            const Eegeo::v2& JumpPointsSpriteSheetSize() const;
+            const int JumpPointsSpriteSheetSize() const;
 
             const TWorldLocations& GetLocations() const;
 

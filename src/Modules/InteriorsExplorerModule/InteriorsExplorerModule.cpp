@@ -24,7 +24,9 @@ namespace InteriorsExplorer
                                                      , const Eegeo::UI::UIProgressBarConfig& progressBarConfig
                                                      , Eegeo::Resources::Interiors::InteriorInteractionModel& interiorInteractionModel
                                                      , Eegeo::Resources::Interiors::InteriorSelectionModel& interiorSelectionModel
-                                                     , Eegeo::Resources::Interiors::InteriorTransitionModel& interiorTransitionModel) :
+                                                     , Eegeo::Resources::Interiors::InteriorTransitionModel& interiorTransitionModel
+                                                     , const std::string& menuTextureFileName
+                                                     , int numberOfTilesAlong1Axis) :
     m_interiorInteractionModel(interiorInteractionModel),
     m_interiorSelectionModel(interiorSelectionModel),
     m_interiorTransitionModel(interiorTransitionModel),
@@ -39,9 +41,7 @@ namespace InteriorsExplorer
         m_pVisibilityUpdater = Eegeo_NEW(InteriorVisibilityUpdater)(interiorTransitionModel, interiorSelectionModel, interiorInteractionModel, transitionTime);
         m_pModel = Eegeo_NEW(InteriorsExplorerModel)(interiorInteractionModel);
         
-        
-        std::string menuTextureFileName("mesh_example/PinIconTexturePage.png");
-        m_pInteriorMenuModule = Eegeo_NEW(InteriorMenu::InteriorMenuModule)(uiRenderableFilter, uiQuadFactory, uiInteractionObservable,uiCameraProvider, menuTextureFileName, progressBarConfig, 4);
+        m_pInteriorMenuModule = Eegeo_NEW(InteriorMenu::InteriorMenuModule)(uiRenderableFilter, uiQuadFactory, uiInteractionObservable,uiCameraProvider, menuTextureFileName, progressBarConfig, numberOfTilesAlong1Axis);
         m_pInteriorMenuModule->SetMenuShouldDisplay(m_pVisibilityUpdater->GetInteriorShouldDisplay());
         
         for (int lop=-1; lop<7; lop++)

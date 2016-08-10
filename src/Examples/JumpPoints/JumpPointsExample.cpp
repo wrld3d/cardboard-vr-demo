@@ -127,7 +127,7 @@ namespace Examples
         m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
         
         Eegeo::v2 dimension = Eegeo::v2(50,50);
-        Eegeo::v2 size(4,4);
+        const Eegeo::v2 size(m_appConfig.JumpPointsSpriteSheetSize(), m_appConfig.JumpPointsSpriteSheetSize());
         
         Eegeo::v2 outMin;
         Eegeo::v2 outMax;
@@ -157,7 +157,7 @@ namespace Examples
         Eegeo::UI::CalculateUV(size, 14, outMin, outMax);
         m_pWestPortInteriorButton = Eegeo_NEW(Eegeo::UI::UIProgressButton)(*m_pUIRenderableFilter,
                                                                            m_uiQuadFactory,
-                                                                           "mesh_example/PinIconTexturePage.png",
+                                                                           m_appConfig.JumpPointsSpriteSheet(),
                                                                            m_progressBarConfig,
                                                                            m_onWestPortEntryButtonCallback,
                                                                            dimension / 2.0f,
@@ -261,9 +261,9 @@ namespace Examples
 
     void JumpPointsExample::LoadInteriorJumpPoints(const ApplicationConfig::TInteriorJumpPoints& interiorJumpPoints)
     {
-        ApplicationConfig::TInteriorJumpPoints::const_iterator itJumpPoints;
+        Eegeo::v2 spriteSheetSize(m_appConfig.JumpPointsSpriteSheetSize(), m_appConfig.JumpPointsSpriteSheetSize());
 
-        for (itJumpPoints = interiorJumpPoints.begin(); itJumpPoints != interiorJumpPoints.end(); ++itJumpPoints)
+        for (ApplicationConfig::TInteriorJumpPoints::const_iterator itJumpPoints = interiorJumpPoints.begin(); itJumpPoints != interiorJumpPoints.end(); ++itJumpPoints)
         {
             TInteriorFloorJumpPointsData floorData;
 
@@ -277,7 +277,7 @@ namespace Examples
 
                 for (ApplicationConfig::TJumpPointVector::const_iterator it = jumpPointConfigVector.begin(); it != jumpPointConfigVector.end(); ++it)
                 {
-                    dataVector.push_back(GetJumpPointFromConfigData(*it, m_appConfig.JumpPointsSpriteSheet(), m_appConfig.JumpPointsSpriteSheetSize(), true));
+                    dataVector.push_back(GetJumpPointFromConfigData(*it, m_appConfig.JumpPointsSpriteSheet(), spriteSheetSize, true));
                 }
 
                 floorData[itFloorJPs->first] = dataVector;
@@ -289,6 +289,8 @@ namespace Examples
 
     void JumpPointsExample::LoadExteriorJumpPoints(const ApplicationConfig::TExteriorJumpPoints &exteriorJumpPoints)
     {
+        Eegeo::v2 spriteSheetSize(m_appConfig.JumpPointsSpriteSheetSize(), m_appConfig.JumpPointsSpriteSheetSize());
+
         for (ApplicationConfig::TExteriorJumpPoints::const_iterator itLocationJPs = exteriorJumpPoints.begin(); itLocationJPs != exteriorJumpPoints.end(); ++itLocationJPs)
         {
             TJumpPointsDataVector dataVector;
@@ -297,7 +299,7 @@ namespace Examples
 
             for (ApplicationConfig::TJumpPointVector::const_iterator it = jumpPointConfigVector.begin(); it != jumpPointConfigVector.end(); ++it)
             {
-                dataVector.push_back(GetJumpPointFromConfigData(*it, m_appConfig.JumpPointsSpriteSheet(), m_appConfig.JumpPointsSpriteSheetSize(), false));
+                dataVector.push_back(GetJumpPointFromConfigData(*it, m_appConfig.JumpPointsSpriteSheet(), spriteSheetSize, false));
             }
 
             m_exteriorJumpPoints[itLocationJPs->first] = dataVector;

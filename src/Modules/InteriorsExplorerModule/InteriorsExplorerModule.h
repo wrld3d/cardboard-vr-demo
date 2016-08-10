@@ -28,7 +28,9 @@ namespace InteriorsExplorer
                                 , const Eegeo::UI::UIProgressBarConfig& progressBarConfig
                                 , Eegeo::Resources::Interiors::InteriorInteractionModel& interiorInteractionModel
                                 , Eegeo::Resources::Interiors::InteriorSelectionModel& interiorSelectionModel
-                                , Eegeo::Resources::Interiors::InteriorTransitionModel& interiorTransitionModel);
+                                , Eegeo::Resources::Interiors::InteriorTransitionModel& interiorTransitionModel
+                                , const std::string& menuTextureFileName
+                                , int numberOfTilesAlong1Axis);
         
         ~InteriorsExplorerModule();
         

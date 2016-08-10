@@ -26,7 +26,7 @@ namespace Examples
                 std::string m_combinedVersionString;
 
                 std::string m_jumpPointsSpriteSheet;
-                Eegeo::v2 m_jumpPointsSpriteSheetSize;
+                int m_jumpPointsSpriteSheetSize;
 
                 TWorldLocations m_exteriorLocations;
                 TExteriorJumpPoints m_exteriorJumpPoints;
@@ -53,7 +53,7 @@ namespace Examples
 
                 IApplicationConfigurationBuilder& SetJumpPointSpriteSheet(const std::string& spriteSheet);
 
-                IApplicationConfigurationBuilder& SetJumpPointSpriteSheetSize(const Eegeo::v2& spriteSheetSize);
+                IApplicationConfigurationBuilder& SetJumpPointSpriteSheetSize(const int spriteSheetSize);
 
                 IApplicationConfigurationBuilder& SetExteriorLocations(const TWorldLocations& exteriorLocations);
 

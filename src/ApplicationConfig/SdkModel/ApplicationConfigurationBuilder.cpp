@@ -17,7 +17,7 @@ namespace Examples
             , m_buildNumber("")
             , m_combinedVersionString("")
             , m_jumpPointsSpriteSheet("")
-            , m_jumpPointsSpriteSheetSize(Eegeo::v2::Zero())
+            , m_jumpPointsSpriteSheetSize(1)
             {
 
             }
@@ -70,7 +70,7 @@ namespace Examples
                 return *this;
             }
 
-            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetJumpPointSpriteSheetSize(const Eegeo::v2& spriteSheetSize)
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetJumpPointSpriteSheetSize(const int spriteSheetSize)
             {
                 m_jumpPointsSpriteSheetSize = spriteSheetSize;
                 return *this;

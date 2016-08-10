@@ -120,9 +120,8 @@ namespace Examples
                 Eegeo_ASSERT(jumpPointsData.HasMember("SpriteSheet"));
                 m_builder.SetJumpPointSpriteSheet(jumpPointsData["SpriteSheet"].GetString());
 
-                Eegeo_ASSERT(jumpPointsData.HasMember("SpriteSheetWidth"));
-                Eegeo_ASSERT(jumpPointsData.HasMember("SpriteSheetHeight"));
-                m_builder.SetJumpPointSpriteSheetSize(Eegeo::v2(jumpPointsData["SpriteSheetWidth"].GetDouble(),jumpPointsData["SpriteSheetHeight"].GetDouble()));
+                Eegeo_ASSERT(jumpPointsData.HasMember("NumberOfTilesAlong1Axis"));
+                m_builder.SetJumpPointSpriteSheetSize(jumpPointsData["NumberOfTilesAlong1Axis"].GetInt());
 
                 Eegeo_ASSERT(jumpPointsData.HasMember("Exterior"));
                 const TGenericValue& exteriourJumpPointsData = jumpPointsData["Exterior"];
