@@ -132,7 +132,7 @@
             "StartLocationLatitude":56.456160,
             "StartLocationLongitude":-2.966101,
             "StartLocationAltitude":250,
-            "StartLocationOrientationDegrees":0.0,
+            "StartLocationOrientationDegrees":300.0,
             "WelcomeMessage":"mesh_example/PinIconTexturePage.png",
             "InteriorPOIs":[
                {
@@ -202,7 +202,7 @@
             "StartLocationLatitude":37.795215,
             "StartLocationLongitude":-122.402797,
             "StartLocationAltitude":306,
-            "StartLocationOrientationDegrees":0.0,
+            "StartLocationOrientationDegrees":300.0,
             "WelcomeMessage":"mesh_example/PinIconTexturePage.png",
             "JumpPoints":[
                {
@@ -239,44 +239,52 @@
                }
             ]
          },
-         "Paris":{
+         "Tokyo":{
             "LocationID":3,
             "LocationIcon":19,
-            "StartLocationLatitude":48.856623,
-            "StartLocationLongitude":2.297102,
-            "StartLocationAltitude":450,
-            "StartLocationOrientationDegrees":0.0,
+            "StartLocationLatitude":35.681470,
+            "StartLocationLongitude":139.728948,
+            "StartLocationAltitude":250,
+            "StartLocationOrientationDegrees":200.0,
             "WelcomeMessage":"mesh_example/PinIconTexturePage.png",
             "JumpPoints":[
                {
                   "id":0,
-                  "lat":48.856623,
-                  "lon":2.297102,
-                  "alt":450,
+                  "lat":35.681470,
+                  "lon":139.728948,
+                  "alt":250,
                   "icon_id":0,
                   "size":80
                },
                {
                   "id":1,
-                  "lat":48.861238,
-                  "lon":2.334870,
-                  "alt":100,
+                  "lat":35.684832,
+                  "lon":139.695193,
+                  "alt":250,
                   "icon_id":0,
                   "size":80
                },
                {
                   "id":2,
-                  "lat":48.854141,
-                  "lon":2.312455,
-                  "alt":100,
+                  "lat":35.662743,
+                  "lon":139.730022,
+                  "alt":300,
                   "icon_id":0,
                   "size":80
                },
                {
                   "id":3,
-                  "lat":48.873441,
-                  "lon":2.296113,
-                  "alt":100,
+                  "lat":35.669423,
+                  "lon":139.698853,
+                  "alt":150,
+                  "icon_id":0,
+                  "size":80
+               },
+               {
+                  "id":4,
+                  "lat":35.661584,
+                  "lon":139.742857,
+                  "alt":350,
                   "icon_id":0,
                   "size":80
                }
