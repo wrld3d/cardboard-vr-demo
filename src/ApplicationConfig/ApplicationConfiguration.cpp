@@ -10,6 +10,8 @@ namespace Examples
                                                            const std::string& eegeoApiKey,
                                                            const Eegeo::Space::LatLongAltitude& interestLocation,
                                                            float orientationDegrees,
+                                                           const std::string& coverageTreeManifestURL,
+                                                           const std::string& themeManifestURL,
                                                            const std::string& productVersion,
                                                            const std::string& buildNumber,
                                                            const std::string& combinedVersionString,
@@ -23,6 +25,8 @@ namespace Examples
         , m_eegeoApiKey(eegeoApiKey)
         , m_interestLocation(interestLocation)
         , m_orientationDegrees(orientationDegrees)
+        , m_coverageTreeManifestURL(coverageTreeManifestURL)
+        , m_themeManifestURL(themeManifestURL)
         , m_productVersion(productVersion)
         , m_buildNumber(buildNumber)
         , m_combinedVersionString(combinedVersionString)
@@ -53,6 +57,16 @@ namespace Examples
         float ApplicationConfiguration::OrientationDegrees() const
         {
             return m_orientationDegrees;
+        }
+
+        const std::string& ApplicationConfiguration::CoverageTreeManifestURL() const
+        {
+            return m_coverageTreeManifestURL;
+        }
+
+        const std::string& ApplicationConfiguration::ThemeManifestURL() const
+        {
+            return m_themeManifestURL;
         }
         
         const std::string& ApplicationConfiguration::ProductVersion() const

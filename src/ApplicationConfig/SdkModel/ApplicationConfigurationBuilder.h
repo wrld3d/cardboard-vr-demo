@@ -21,6 +21,8 @@ namespace Examples
                 std::string m_eegeoApiKey;
                 Eegeo::Space::LatLongAltitude m_interestLocation;
                 float m_orientationDegrees;
+                std::string m_coverageTreeManifestURL;
+                std::string m_themeManifestURL;
                 std::string m_productVersion;
                 std::string m_buildNumber;
                 std::string m_combinedVersionString;
@@ -44,6 +46,10 @@ namespace Examples
                 IApplicationConfigurationBuilder& SetStartDistanceFromInterestPoint(float distanceMetres);
 
                 IApplicationConfigurationBuilder& SetStartOrientationAboutInterestPoint(float degrees);
+
+                IApplicationConfigurationBuilder& SetCoverageTreeManifestURL(const std::string& coverageTreeManifestUrl);
+
+                IApplicationConfigurationBuilder& SetThemeManifestURL(const std::string& themesManifestUrl);
 
                 IApplicationConfigurationBuilder& SetProductVersion(const std::string& productVersion);
 

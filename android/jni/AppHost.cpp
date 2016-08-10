@@ -154,6 +154,9 @@ AppHost::AppHost(
 	config.CityThemesConfig.EmbeddedThemeNameContains = "Summer";
 	config.CityThemesConfig.EmbeddedThemeStateName = "DayDefault";
 
+	config.CoverageTreeConfig.ManifestUrl = appConfig.CoverageTreeManifestURL();
+	config.CityThemesConfig.StreamedManifestUrl = appConfig.ThemeManifestURL();
+
 	m_pWorld = new Eegeo::EegeoWorld(
 		appConfig.EegeoApiKey(),
 	    *m_pAndroidPlatformAbstractionModule,

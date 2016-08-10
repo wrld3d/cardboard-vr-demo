@@ -114,6 +114,12 @@ namespace Examples
                 Eegeo_ASSERT(document.HasMember("StartLocationOrientationDegrees"));
                 m_builder.SetStartOrientationAboutInterestPoint(static_cast<float>(document["StartLocationOrientationDegrees"].GetDouble()));
 
+                Eegeo_ASSERT(document.HasMember("CoverageTreeManifestURL"), "CoverageTreeManifestURL config not found");
+                m_builder.SetCoverageTreeManifestURL(document["CoverageTreeManifestURL"].GetString());
+
+                Eegeo_ASSERT(document.HasMember("ThemeManifestURL"), "ThemeManifestURL config not found");
+                m_builder.SetThemeManifestURL(document["ThemeManifestURL"].GetString());
+
                 Eegeo_ASSERT(document.HasMember("JumpPointsData"));
                 const TGenericValue& jumpPointsData = document["JumpPointsData"];
 

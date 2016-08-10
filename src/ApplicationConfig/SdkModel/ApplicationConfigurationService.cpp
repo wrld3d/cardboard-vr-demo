@@ -33,6 +33,8 @@ namespace Examples
                 								parsedConfig.EegeoApiKey(),
                                                 parsedConfig.InterestLocation(),
                                                 parsedConfig.OrientationDegrees(),
+                                                parsedConfig.CoverageTreeManifestURL(),
+                                                parsedConfig.ThemeManifestURL(),
                                                 m_productVersion,
                                                 m_buildNumber,
                                                 combinedVersionString,

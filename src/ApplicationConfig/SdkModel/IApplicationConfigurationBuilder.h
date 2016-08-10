@@ -25,6 +25,10 @@ namespace Examples
 
                 virtual IApplicationConfigurationBuilder& SetStartOrientationAboutInterestPoint(float degrees) = 0;
 
+                virtual IApplicationConfigurationBuilder& SetCoverageTreeManifestURL(const std::string& coverageTreeManifestUrl) = 0;
+
+                virtual IApplicationConfigurationBuilder& SetThemeManifestURL(const std::string& themesManifestUrl) = 0;
+
                 virtual IApplicationConfigurationBuilder& SetProductVersion(const std::string& productVersion) = 0;
 
                 virtual IApplicationConfigurationBuilder& SetBuildNumber(const std::string& buildNumber) = 0;

@@ -13,6 +13,8 @@ namespace Examples
             , m_eegeoApiKey("")
             , m_interestLocation(0.0, 0.0, 0.0)
             , m_orientationDegrees(0.f)
+            , m_coverageTreeManifestURL("")
+            , m_themeManifestURL("")
             , m_productVersion("")
             , m_buildNumber("")
             , m_combinedVersionString("")
@@ -43,6 +45,18 @@ namespace Examples
             IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetStartOrientationAboutInterestPoint(float degrees)
             {
                 m_orientationDegrees = degrees;
+                return *this;
+            }
+
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetCoverageTreeManifestURL(const std::string& coverageTreeManifestURL)
+            {
+                m_coverageTreeManifestURL = coverageTreeManifestURL;
+                return *this;
+            }
+
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetThemeManifestURL(const std::string& themeManifestURL)
+            {
+                m_themeManifestURL = themeManifestURL;
                 return *this;
             }
 
@@ -100,6 +114,8 @@ namespace Examples
                                                 m_eegeoApiKey,
                                                 m_interestLocation,
                                                 m_orientationDegrees,
+                                                m_coverageTreeManifestURL,
+                                                m_themeManifestURL,
                                                 m_productVersion,
                                                 m_buildNumber,
                                                 m_combinedVersionString,
