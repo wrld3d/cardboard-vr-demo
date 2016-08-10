@@ -85,11 +85,14 @@ namespace Eegeo
             m_orientation.SetRow(0, tangentBasis.GetRight());
             m_orientation.SetRow(1, tangentBasis.GetUp());
             m_orientation.SetRow(2, -tangentBasis.GetForward());
-            
-            m_pRenderCamera->SetOrientationMatrix(m_orientation);
+
+            m33 orientationMatrix;
+            m33::Mul(orientationMatrix, m_orientation, m_headTrackerOrientation);
+            m_currentOrientation = Eegeo::m33(orientationMatrix);
+
+            m_pRenderCamera->SetOrientationMatrix(m_currentOrientation);
             m_pRenderCamera->SetEcefLocation(m_ecefPosition);
         }
-        
         
         void JumpPointsCameraController::SetStartPositionAndOrientation(const Eegeo::dv3& position, const Eegeo::m33& orientation)
         {

@@ -27,10 +27,12 @@
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
 
-const float WelcomeMessageFadeSpeed = 0.25f;
+const float WelcomeMessageFadeSpeed = 0.5f;
 
 const float InteriorMenuFloorAngleThreshold = 70.f;
 const float InteriorMenuHighPositionAngleThreshold = 100.f;
+
+const float WelcomeNoteDistanceFromCamera = 50.f;
 
 #include "Logger.h"
 
@@ -241,9 +243,7 @@ namespace Examples
 
     void JumpPointsExample::Draw()
     {
-        Eegeo::v3 forward(m_pSplineCameraController->GetOrientation().GetRow(2));
-        Eegeo::dv3 position(m_pSplineCameraController->GetCameraPosition() + (forward*50));
-        m_pWelcomeNoteViewer->SetPosition(position);
+
     }
     
     void JumpPointsExample::Update(float dt)
@@ -536,8 +536,12 @@ namespace Examples
 
     void JumpPointsExample::OnLocationChanged(std::string &location)
     {
-        m_pWelcomeNoteViewer->ShowWelcomeNote(m_appConfig.GetLocations().at(location).GetWelcomeMessage(), WelcomeMessageFadeSpeed, Eegeo::v2(15,5));
+        m_pWelcomeNoteViewer->ShowWelcomeNote(m_appConfig.GetLocations().at(location).GetWelcomeMessage(), WelcomeMessageFadeSpeed, 2.f, Eegeo::v2(15,5));
         ChangeLocation(location);
+
+        Eegeo::v3 forward = Eegeo::v3::Cross(m_pSplineCameraController->GetOrientation().GetRow(0), m_pSplineCameraController->GetCameraPosition().ToSingle().Norm());
+        Eegeo::dv3 position(m_pSplineCameraController->GetCameraPosition() + (forward*WelcomeNoteDistanceFromCamera));
+        m_pWelcomeNoteViewer->SetPosition(position);
     }
 
     void JumpPointsExample::OnFloorMenuItemSelected(InteriorsExplorer::InteriorMenu::InteriorMenuItem& menuItem)

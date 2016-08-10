@@ -17,6 +17,7 @@ namespace Examples
         Eegeo::UI::IUIQuadFactory& m_quadFactory;
         Eegeo::UI::IUIRenderableFilter& m_uiRenderableFilter;
         Eegeo::UI::UISprite* m_pNote;
+        float m_fadeDelay;
         
     public:
         WelcomeNoteViewer(Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter);
@@ -25,6 +26,6 @@ namespace Examples
         void Update(float dt);
         void SetPosition(const Eegeo::dv3& ecefPosition);
 
-        void ShowWelcomeNote(const std::string& noteAssetPath, float duration, const Eegeo::v2& dimension);
+        void ShowWelcomeNote(const std::string& noteAssetPath, float duration, float fadeDelay, const Eegeo::v2& dimension);
     };
 }

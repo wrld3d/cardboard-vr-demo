@@ -26,6 +26,13 @@ namespace Examples
     {
         if(m_pNote != NULL)
         {
+            m_fadeDelay -= dt;
+
+            if (m_fadeDelay < 0.f && m_pNote->GetItemShouldRender())
+            {
+                m_pNote->SetItemShouldRender(false);
+            }
+
             m_pNote->Update(dt);
 
             if (m_pNote->GetAlpha() <= 0.f)
@@ -44,7 +51,7 @@ namespace Examples
         }
     }
 
-    void WelcomeNoteViewer::ShowWelcomeNote(const std::string &noteAssetPath, float fadeSpeed, const Eegeo::v2& dimension)
+    void WelcomeNoteViewer::ShowWelcomeNote(const std::string &noteAssetPath, float fadeSpeed, float fadeDelay,  const Eegeo::v2& dimension)
     {
         if(m_pNote != NULL)
         {
@@ -55,6 +62,6 @@ namespace Examples
                                                     m_quadFactory.CreateUIQuad(noteAssetPath,
                                                                              dimension));
         m_pNote->SetFadeTransitionSpeed(fadeSpeed);
-        m_pNote->SetItemShouldRender(false);
+        m_fadeDelay = fadeDelay;
     }
 }
