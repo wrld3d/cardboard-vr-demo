@@ -19,6 +19,7 @@ namespace Eegeo
                            , const Eegeo::v4& color)
         : m_pQuad(pQuad)
         , m_UIRenderableFilter(uiRenderableFilter)
+        , m_maxAlpha(1.f)
         , m_shouldDisplay(true)
         , m_fadeTransitionSpeed(1.f)
         , m_shouldFade(true)
@@ -43,7 +44,7 @@ namespace Eegeo
             {
                 float alpha = m_pQuad->GetAlpha();
 
-                if (m_shouldDisplay && alpha < 1.f)
+                if (m_shouldDisplay && alpha < m_maxAlpha)
                 {
                     m_pQuad->SetAlpha(alpha + (dt * m_fadeTransitionSpeed));
                 }
@@ -134,6 +135,16 @@ namespace Eegeo
         void UISprite::SetFadeTransitionSpeed(float speed)
         {
             m_fadeTransitionSpeed = speed;
+        }
+
+        void UISprite::SetMaxAlpha(float maxAlpha)
+        {
+            m_maxAlpha = maxAlpha;
+
+            if (GetAlpha() > maxAlpha)
+            {
+                SetAlpha(maxAlpha);
+            }
         }
 
         bool UISprite::GetShouldFade()

@@ -20,6 +20,7 @@ namespace Eegeo
             bool m_shouldDisplay;
             bool m_shouldFade;
             float m_fadeTransitionSpeed;
+            float m_maxAlpha;
 
         public:
             
@@ -53,6 +54,8 @@ namespace Eegeo
             const float GetAlpha();
 
             void SetFadeTransitionSpeed(float speed);
+
+            void SetMaxAlpha(float maxAlpha);
 
             bool GetShouldFade();
             void SetShouldFade(bool shouldFade);
