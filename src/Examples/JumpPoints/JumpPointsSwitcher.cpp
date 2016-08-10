@@ -30,7 +30,9 @@ namespace Examples
     {
         m_jumpPointRepository.RemoveAllJumpPoints();
 
-        for (TJumpPointsDataVector::const_iterator it = jumpPoints.begin(); it != jumpPoints.end(); ++it) {
+        for (TJumpPointsDataVector::const_iterator it = jumpPoints.begin(); it != jumpPoints.end(); ++it)
+        {
+            (*it)->SetVisibilityStatus(true);
             m_jumpPointRepository.AddJumpPoint(*it);
         }
     }
