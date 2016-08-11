@@ -27,8 +27,9 @@ namespace InteriorsExplorer
         {
         public:
             InteriorMenuController(IInteriorMenuItemObservable& InteriorMenuItemObservable, IInteriorMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
-                                   , Eegeo::UI::IUICameraProvider& uiCameraProvider,
-                                   Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter);
+                                   , Eegeo::UI::IUICameraProvider& uiCameraProvider
+                                   , Eegeo::UI::IUIQuadFactory& quadFactory
+                                   , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter);
             
             ~InteriorMenuController();
             
@@ -51,7 +52,7 @@ namespace InteriorsExplorer
             
         private:
             
-            InteriorMenuUpView* m_interiorMenuUpView;
+            InteriorMenuUpView* m_pInteriorMenuUpView;
             IInteriorMenuItemObservable& m_InteriorMenuItemRepository;
             IInteriorMenuItemViewFactory& m_viewFactory;
             Eegeo::UI::IUIInteractionObservable& m_pIUIInteractionObservable;

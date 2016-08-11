@@ -13,6 +13,7 @@
 #include "IWorldMenuItemObservable.h"
 #include "IWorldMenuItemViewFactory.h"
 #include "IUIInteractionObservable.h"
+#include "WorldMenuUpView.h"
 
 namespace Eegeo
 {
@@ -27,8 +28,12 @@ namespace Eegeo
             class WorldMenuController : protected Eegeo::NonCopyable, public IWorldMenuItemObserver
             {
             public:
-                WorldMenuController(IWorldMenuItemObservable& worldMenuItemObservable, IWorldMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
-                                       , Eegeo::UI::IUICameraProvider& uiCameraProvider);
+                WorldMenuController(IWorldMenuItemObservable& worldMenuItemObservable
+                                    , IWorldMenuItemViewFactory& viewFactory
+                                    , Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
+                                    , Eegeo::UI::IUICameraProvider& uiCameraProvider
+                                    , Eegeo::UI::IUIQuadFactory& quadFactory
+                                    , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter);
                 
                 ~WorldMenuController();
                 
@@ -46,6 +51,9 @@ namespace Eegeo
                 void PositionItems();
                 
             private:
+                
+                WorldMenuUpView* m_pWorldMenuUpView;
+                
                 IWorldMenuItemObservable& m_WorldMenuItemRepository;
                 IWorldMenuItemViewFactory& m_viewFactory;
                 Eegeo::UI::IUIInteractionObservable& m_pIUIInteractionObservable;

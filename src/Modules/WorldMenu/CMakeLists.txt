@@ -19,6 +19,8 @@ set(currsources
   ../src/Modules/WorldMenu/WorldMenuItemViewFactory.h
   ../src/Modules/WorldMenu/WorldMenuUIButton.cpp
   ../src/Modules/WorldMenu/WorldMenuUIButton.h
+  ../src/Modules/WorldMenu/WorldMenuUpView.cpp
+  ../src/Modules/WorldMenu/WorldMenuUpView.h
 )
 
 set(sources ${sources} ${currsources})

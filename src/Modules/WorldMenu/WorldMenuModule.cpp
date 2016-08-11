@@ -20,7 +20,7 @@ namespace Eegeo
                 m_menuShouldDisplayMenu = true;
                 m_pViewFactory = new WorldMenuItemViewFactory(uiRenderableFilter, uiQuadFactory, spriteFileName, progressBarConfig, numberOfTilesAlong1Axis);
                 m_pRepository = new WorldMenuItemRepository();
-                m_pController = new WorldMenuController(*m_pRepository, *m_pViewFactory, uiInteractionObservable, uiCameraProvider);
+                m_pController = new WorldMenuController(*m_pRepository, *m_pViewFactory, uiInteractionObservable, uiCameraProvider, uiQuadFactory, uiRenderableFilter);
             }
             
             WorldMenuModule::~WorldMenuModule()

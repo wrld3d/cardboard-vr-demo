@@ -16,7 +16,7 @@ namespace InteriorsExplorer
         {
             Eegeo::v2 dimension = Eegeo::v2(5.f,5.f);
             m_pPointer = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter,
-                                                        quadFactory.CreateUIQuad("mesh_example/arrow.png",
+                                                        quadFactory.CreateUIQuad("mesh_example/arrow_interior.png",
                                                                                 dimension,
                                                                                 Eegeo::v2::Zero(),
                                                                                 Eegeo::v2::One(),
@@ -45,7 +45,6 @@ namespace InteriorsExplorer
         {
             if(!m_isShown)
             {
-                EXAMPLE_LOG("showing menu");
                 m_isShown = true;
                 m_pPointer->SetItemShouldRender(m_isShown);
             }

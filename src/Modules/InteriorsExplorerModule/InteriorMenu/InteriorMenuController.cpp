@@ -19,7 +19,7 @@ namespace InteriorsExplorer
         , m_uiCameraProvider(uiCameraProvider)
         , m_marginAngle(75.f)
         {
-            m_interiorMenuUpView = Eegeo_NEW(InteriorMenuUpView)(quadFactory, uiRenderableFilter);
+            m_pInteriorMenuUpView = Eegeo_NEW(InteriorMenuUpView)(quadFactory, uiRenderableFilter);
             
             m_menuItemsShouldRender = true;
             m_isMenuShown = false;
@@ -28,7 +28,7 @@ namespace InteriorsExplorer
         
         InteriorMenuController::~InteriorMenuController()
         {
-            Eegeo_DELETE(m_interiorMenuUpView);
+            Eegeo_DELETE(m_pInteriorMenuUpView);
             m_InteriorMenuItemRepository.RemoveInteriorMenuObserver(this);
             for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
             {
@@ -60,18 +60,18 @@ namespace InteriorsExplorer
             Eegeo::dv3 center = m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation();
             Eegeo::dv3 position(center + (forward*100)+ (top*(Eegeo::Math::Tan(m_uiCameraProvider.GetRenderCameraForUI().GetFOV()/2.1f)*100)));
             
-            m_interiorMenuUpView->SetEcefPosition(position);
+            m_pInteriorMenuUpView->SetEcefPosition(position);
             
             if(!m_menuItemsShouldRender || m_isMenuShown)
             {
-                m_interiorMenuUpView->HideView();
+                m_pInteriorMenuUpView->HideView();
             }
             else
             {
-                m_interiorMenuUpView->ShowView();
+                m_pInteriorMenuUpView->ShowView();
             }
             
-            m_interiorMenuUpView->Update(deltaTime);
+            m_pInteriorMenuUpView->Update(deltaTime);
             
             for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
             {

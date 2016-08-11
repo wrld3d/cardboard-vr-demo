@@ -3,6 +3,7 @@
 #include "WorldMenuController.h"
 #include "WorldMenuItemView.h"
 #include "WorldMenuItem.h"
+#include "WorldMenuUpView.h"
 #include "Logger.h"
 #include <vector>
 
@@ -13,12 +14,18 @@ namespace Eegeo
         namespace WorldMenu
         {
             
-            WorldMenuController::WorldMenuController(IWorldMenuItemObservable& worldMenuItemObservable, IWorldMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable , Eegeo::UI::IUICameraProvider& uiCameraProvider)
+            WorldMenuController::WorldMenuController(IWorldMenuItemObservable& worldMenuItemObservable
+                                                     , IWorldMenuItemViewFactory& viewFactory
+                                                     , Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
+                                                     , Eegeo::UI::IUICameraProvider& uiCameraProvider
+                                                     , Eegeo::UI::IUIQuadFactory& quadFactory
+                                                     , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter)
             : m_WorldMenuItemRepository(worldMenuItemObservable)
             , m_viewFactory(viewFactory)
             , m_pIUIInteractionObservable(uiInteractionObservable)
             , m_uiCameraProvider(uiCameraProvider)
             {
+                m_pWorldMenuUpView = Eegeo_NEW(WorldMenuUpView)(quadFactory, uiRenderableFilter);
                 m_menuItemsShouldRender = true;
                 m_isMenuShown = false;
                 m_WorldMenuItemRepository.AddWorldMenuObserver(this);
@@ -26,6 +33,7 @@ namespace Eegeo
             
             WorldMenuController::~WorldMenuController()
             {
+                Eegeo_DELETE(m_pWorldMenuUpView);
                 m_WorldMenuItemRepository.RemoveWorldMenuObserver(this);
                 for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
                 {
@@ -45,6 +53,27 @@ namespace Eegeo
             void WorldMenuController::Update(float deltaTime)
             {
                 PositionItems();
+                
+                Eegeo::m33 headTrackedOrientation  = m_uiCameraProvider.GetOrientation();
+                Eegeo::v3 top(headTrackedOrientation.GetRow(1));
+                Eegeo::v3 forward(headTrackedOrientation.GetRow(2));
+                
+                Eegeo::dv3 center = m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation();
+                Eegeo::dv3 position(center + (forward*100)+ (top*(Eegeo::Math::Tan(m_uiCameraProvider.GetRenderCameraForUI().GetFOV()/2.1f)*100)));
+                
+                m_pWorldMenuUpView->SetEcefPosition(position);
+                
+                if(!m_menuItemsShouldRender || m_isMenuShown)
+                {
+                    m_pWorldMenuUpView->HideView();
+                }
+                else
+                {
+                    m_pWorldMenuUpView->ShowView();
+                }
+                
+                m_pWorldMenuUpView->Update(deltaTime);
+            
                 for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
                 {
                     WorldMenuItemView* pView = it->second;
