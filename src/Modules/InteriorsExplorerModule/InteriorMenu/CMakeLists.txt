@@ -19,6 +19,8 @@ set(currsources
   ../src/Modules/InteriorsExplorerModule/InteriorMenu/InteriorMenuItemViewFactory.h
   ../src/Modules/InteriorsExplorerModule/InteriorMenu/InteriorMenuUIButton.cpp
   ../src/Modules/InteriorsExplorerModule/InteriorMenu/InteriorMenuUIButton.h
+  ../src/Modules/InteriorsExplorerModule/InteriorMenu/InteriorMenuUpView.cpp
+  ../src/Modules/InteriorsExplorerModule/InteriorMenu/InteriorMenuUpView.h
 )
 
 set(sources ${sources} ${currsources})

@@ -13,7 +13,7 @@ namespace Eegeo
         namespace WorldMenu
         {
             
-            WorldMenuItemView::WorldMenuItemView(WorldMenuItem& WorldMenuItem
+            WorldMenuItemView::WorldMenuItemView(WorldMenuItem& worldMenuItem
                                                        , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
                                                        , Eegeo::UI::IUIQuadFactory& quadFactory
                                                        , const std::string& assetPath
@@ -32,7 +32,7 @@ namespace Eegeo
                                    , Eegeo::v4::One()
                                    , uvMin
                                    , uvMax)
-            ,m_WorldMenuItem(WorldMenuItem)
+            ,m_WorldMenuItem(worldMenuItem)
             {}
             
             bool WorldMenuItemView::IsCollidingWithPoint(const Eegeo::v2& screenPoint, Eegeo::UI::IUICameraProvider& cameraProvider)

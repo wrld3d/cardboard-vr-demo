@@ -12,6 +12,7 @@
 #include "IInteriorMenuItemObserver.h"
 #include "IInteriorMenuItemObservable.h"
 #include "IInteriorMenuItemViewFactory.h"
+#include "InteriorMenuUpView.h"
 #include "IUIInteractionObservable.h"
 
 namespace InteriorsExplorer
@@ -26,7 +27,8 @@ namespace InteriorsExplorer
         {
         public:
             InteriorMenuController(IInteriorMenuItemObservable& InteriorMenuItemObservable, IInteriorMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
-                                   , Eegeo::UI::IUICameraProvider& uiCameraProvider);
+                                   , Eegeo::UI::IUICameraProvider& uiCameraProvider,
+                                   Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter);
             
             ~InteriorMenuController();
             
@@ -48,6 +50,8 @@ namespace InteriorsExplorer
             void PositionItems();
             
         private:
+            
+            InteriorMenuUpView* m_interiorMenuUpView;
             IInteriorMenuItemObservable& m_InteriorMenuItemRepository;
             IInteriorMenuItemViewFactory& m_viewFactory;
             Eegeo::UI::IUIInteractionObservable& m_pIUIInteractionObservable;

@@ -26,7 +26,7 @@ namespace Eegeo
             class WorldMenuItemView : protected Eegeo::NonCopyable , public WorldMenuUIButton
             {
             public:
-                WorldMenuItemView(WorldMenuItem& WorldMenuItem
+                WorldMenuItemView(WorldMenuItem& worldMenuItem
                                      , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
                                      , Eegeo::UI::IUIQuadFactory& quadFactory
                                      , const std::string& assetPath

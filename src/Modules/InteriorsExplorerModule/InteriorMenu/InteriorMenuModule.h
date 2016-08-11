@@ -28,6 +28,7 @@ namespace InteriorsExplorer
                                , Eegeo::UI::IUIQuadFactory& uiQuadFactory
                                , Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
                                , Eegeo::UI::IUICameraProvider& uiCameraProvider
+                               , Eegeo::UI::IUIQuadFactory& quadFactory
                                , const std::string& spriteFileName
                                , const Eegeo::UI::UIProgressBarConfig& progressBarConfig
                                , int numberOfTilesAlong1Axis

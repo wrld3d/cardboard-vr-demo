@@ -194,7 +194,8 @@ namespace Examples
         Eegeo_DELETE m_pJumpPointSwitcher;
         m_uiInteractionObservable.UnRegisterInteractableItem(m_pWestPortInteriorButton);
         Eegeo_DELETE m_pWestPortInteriorButton;
-
+        
+        m_pJumpPointsModule->GetRepository().RemoveAllJumpPoints();
         for (TInteriorJumpPointsData::const_iterator itInterior = m_interiorJumpPoints.begin(); itInterior != m_interiorJumpPoints.end(); ++itInterior)
         {
             const TInteriorFloorJumpPointsData& jpFloorData = itInterior->second;

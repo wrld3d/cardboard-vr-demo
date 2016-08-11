@@ -22,7 +22,7 @@ namespace Eegeo
                  * \param WorldMenuModel The WorldMenuItem model object to create a view for.
                  * \return A pointer to the newly created WorldMenuItemView to represent the given model.
                  */
-                virtual WorldMenuItemView* CreateViewForWorldMenuItem(WorldMenuItem& WorldMenuModel) = 0;
+                virtual WorldMenuItemView* CreateViewForWorldMenuItem(WorldMenuItem& worldMenuModel) = 0;
                 
                 virtual ~IWorldMenuItemViewFactory() {};
             };

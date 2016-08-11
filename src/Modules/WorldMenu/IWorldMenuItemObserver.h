@@ -23,12 +23,12 @@ namespace Eegeo
                 /*! Notification that a WorldMenuItem has been added to a collection.
                  * \param WorldMenuItem The WorldMenuItem that has been added to the collection.
                  */
-                virtual void OnWorldMenuItemAdded(WorldMenuItem& WorldMenuItem) = 0;
+                virtual void OnWorldMenuItemAdded(WorldMenuItem& worldMenuItem) = 0;
                 
                 /*! Notification that a WorldMenuItem has been removed from a collection.
                  * \param WorldMenuItem The WorldMenuItem that has been removed from the collection.
                  */
-                virtual void OnWorldMenuItemRemoved(WorldMenuItem& WorldMenuItem) = 0;
+                virtual void OnWorldMenuItemRemoved(WorldMenuItem& worldMenuItem) = 0;
                 
                 virtual ~IWorldMenuItemObserver() {};
             };

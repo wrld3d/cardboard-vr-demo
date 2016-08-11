@@ -27,16 +27,16 @@ namespace Eegeo
             class WorldMenuController : protected Eegeo::NonCopyable, public IWorldMenuItemObserver
             {
             public:
-                WorldMenuController(IWorldMenuItemObservable& WorldMenuItemObservable, IWorldMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
+                WorldMenuController(IWorldMenuItemObservable& worldMenuItemObservable, IWorldMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
                                        , Eegeo::UI::IUICameraProvider& uiCameraProvider);
                 
                 ~WorldMenuController();
                 
                 void Update(float deltaTime);
                 
-                virtual void OnWorldMenuItemAdded(WorldMenuItem& WorldMenuItem);
+                virtual void OnWorldMenuItemAdded(WorldMenuItem& worldMenuItem);
                 
-                virtual void OnWorldMenuItemRemoved(WorldMenuItem& WorldMenuItem);
+                virtual void OnWorldMenuItemRemoved(WorldMenuItem& worldMenuItem);
                 
                 void SetMenuItemsShouldRender(bool menuItemsShouldRender);
                 

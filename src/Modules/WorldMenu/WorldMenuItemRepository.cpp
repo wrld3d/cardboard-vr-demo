@@ -48,9 +48,9 @@ namespace Eegeo
                 return (int)m_WorldMenuItem.size();
             }
             
-            WorldMenuItem* WorldMenuItemRepository::GetWorldMenuItemAtIndex(int WorldMenuItemIndex) const
+            WorldMenuItem* WorldMenuItemRepository::GetWorldMenuItemAtIndex(int worldMenuItemIndex) const
             {
-                return m_WorldMenuItem[WorldMenuItemIndex];
+                return m_WorldMenuItem[worldMenuItemIndex];
             }
             
             WorldMenuItem* WorldMenuItemRepository::GetWorldMenuItemById(TWorldMenuItemId id) const
@@ -87,9 +87,9 @@ namespace Eegeo
                 return false;
             }
             
-            bool WorldMenuItemRepository::ContainsWorldMenuItemId(TWorldMenuItemId WorldMenuItemId) const
+            bool WorldMenuItemRepository::ContainsWorldMenuItemId(TWorldMenuItemId worldMenuItemId) const
             {
-                if (GetWorldMenuItemById(WorldMenuItemId) != NULL) {
+                if (GetWorldMenuItemById(worldMenuItemId) != NULL) {
                     return true;
                 }
                 

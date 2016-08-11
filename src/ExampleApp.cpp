@@ -423,6 +423,10 @@ void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld&
     m_pUIGazeView->Update(dt);
     m_pUIGazeView->SetEcefPosition(position);
     
+    if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed()){
+        m_pWorldMenuModule->Update(dt);
+        m_pInteriorExplorerModule ->Update(dt);
+    }
     eegeoWorld.Draw(drawParameters);
     
     m_pExampleController->Draw();
@@ -447,6 +451,11 @@ void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld
     Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
     m_pUIGazeView->Update(dt);
     m_pUIGazeView->SetEcefPosition(position);
+    
+    if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed()){
+        m_pWorldMenuModule->Update(dt);
+        m_pInteriorExplorerModule ->Update(dt);
+    }
     eegeoWorld.Draw(drawParameters);
     
     m_pExampleController->Draw();
@@ -468,6 +477,7 @@ void ExampleApp::DrawLoadingScreen ()
 
 void ExampleApp::OnLocationChanged(std::string &location)
 {
+    m_pAnimationController->ClearAllAnimations();
     if(m_pWorldMenuLoaderModel->GetShouldRunVRSpline())
         m_pExampleController->ActivateExample("VRCameraSplineExample");
     else

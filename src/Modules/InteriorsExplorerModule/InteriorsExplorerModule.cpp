@@ -41,7 +41,7 @@ namespace InteriorsExplorer
         m_pVisibilityUpdater = Eegeo_NEW(InteriorVisibilityUpdater)(interiorTransitionModel, interiorSelectionModel, interiorInteractionModel, transitionTime);
         m_pModel = Eegeo_NEW(InteriorsExplorerModel)(interiorInteractionModel);
         
-        m_pInteriorMenuModule = Eegeo_NEW(InteriorMenu::InteriorMenuModule)(uiRenderableFilter, uiQuadFactory, uiInteractionObservable,uiCameraProvider, menuTextureFileName, progressBarConfig, numberOfTilesAlong1Axis);
+        m_pInteriorMenuModule = Eegeo_NEW(InteriorMenu::InteriorMenuModule)(uiRenderableFilter, uiQuadFactory, uiInteractionObservable,uiCameraProvider, uiQuadFactory, menuTextureFileName, progressBarConfig, numberOfTilesAlong1Axis);
         m_pInteriorMenuModule->SetMenuShouldDisplay(m_pVisibilityUpdater->GetInteriorShouldDisplay());
         
         for (int lop=-1; lop<7; lop++)

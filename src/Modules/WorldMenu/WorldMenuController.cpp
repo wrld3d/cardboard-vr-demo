@@ -13,8 +13,8 @@ namespace Eegeo
         namespace WorldMenu
         {
             
-            WorldMenuController::WorldMenuController(IWorldMenuItemObservable& WorldMenuItemObservable, IWorldMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable , Eegeo::UI::IUICameraProvider& uiCameraProvider)
-            : m_WorldMenuItemRepository(WorldMenuItemObservable)
+            WorldMenuController::WorldMenuController(IWorldMenuItemObservable& worldMenuItemObservable, IWorldMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable , Eegeo::UI::IUICameraProvider& uiCameraProvider)
+            : m_WorldMenuItemRepository(worldMenuItemObservable)
             , m_viewFactory(viewFactory)
             , m_pIUIInteractionObservable(uiInteractionObservable)
             , m_uiCameraProvider(uiCameraProvider)
@@ -74,23 +74,23 @@ namespace Eegeo
                 }
             }
             
-            void WorldMenuController::OnWorldMenuItemAdded(WorldMenuItem& WorldMenuItem)
+            void WorldMenuController::OnWorldMenuItemAdded(WorldMenuItem& worldMenuItem)
             {
-                Eegeo_ASSERT(!HasViewForModel(WorldMenuItem), "Attempt to add duplicate model to WorldMenuController.");
+                Eegeo_ASSERT(!HasViewForModel(worldMenuItem), "Attempt to add duplicate model to WorldMenuController.");
                 
-                WorldMenuItemView* pView = m_viewFactory.CreateViewForWorldMenuItem(WorldMenuItem);
-                m_viewsByModel[&WorldMenuItem] = pView;
+                WorldMenuItemView* pView = m_viewFactory.CreateViewForWorldMenuItem(worldMenuItem);
+                m_viewsByModel[&worldMenuItem] = pView;
                 
                 m_pIUIInteractionObservable.RegisterInteractableItem(pView);
                 m_isMenuShown = false;
             }
             
-            void WorldMenuController::OnWorldMenuItemRemoved(WorldMenuItem& WorldMenuItem)
+            void WorldMenuController::OnWorldMenuItemRemoved(WorldMenuItem& worldMenuItem)
             {
-                Eegeo_ASSERT(HasViewForModel(WorldMenuItem), "Attempt to remove unknown model from WorldMenuController.");
-                WorldMenuItemView* pView = GetViewForModel(WorldMenuItem);
+                Eegeo_ASSERT(HasViewForModel(worldMenuItem), "Attempt to remove unknown model from WorldMenuController.");
+                WorldMenuItemView* pView = GetViewForModel(worldMenuItem);
                 
-                m_viewsByModel.erase(&WorldMenuItem);
+                m_viewsByModel.erase(&worldMenuItem);
                 m_pIUIInteractionObservable.UnRegisterInteractableItem(pView);
                 
             }

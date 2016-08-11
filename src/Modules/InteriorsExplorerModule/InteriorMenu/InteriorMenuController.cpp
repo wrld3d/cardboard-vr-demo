@@ -11,13 +11,16 @@ namespace InteriorsExplorer
     namespace InteriorMenu
     {
         
-        InteriorMenuController::InteriorMenuController(IInteriorMenuItemObservable& InteriorMenuItemObservable, IInteriorMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable , Eegeo::UI::IUICameraProvider& uiCameraProvider)
+        InteriorMenuController::InteriorMenuController(IInteriorMenuItemObservable& InteriorMenuItemObservable, IInteriorMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable , Eegeo::UI::IUICameraProvider& uiCameraProvider,
+            Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter)
         : m_InteriorMenuItemRepository(InteriorMenuItemObservable)
         , m_viewFactory(viewFactory)
         , m_pIUIInteractionObservable(uiInteractionObservable)
         , m_uiCameraProvider(uiCameraProvider)
         , m_marginAngle(75.f)
         {
+            m_interiorMenuUpView = Eegeo_NEW(InteriorMenuUpView)(quadFactory, uiRenderableFilter);
+            
             m_menuItemsShouldRender = true;
             m_isMenuShown = false;
             m_InteriorMenuItemRepository.AddInteriorMenuObserver(this);
@@ -25,6 +28,7 @@ namespace InteriorsExplorer
         
         InteriorMenuController::~InteriorMenuController()
         {
+            Eegeo_DELETE(m_interiorMenuUpView);
             m_InteriorMenuItemRepository.RemoveInteriorMenuObserver(this);
             for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
             {
@@ -48,10 +52,31 @@ namespace InteriorsExplorer
         void InteriorMenuController::Update(float deltaTime)
         {
             PositionItems();
+            
+            Eegeo::m33 headTrackedOrientation  = m_uiCameraProvider.GetOrientation();
+            Eegeo::v3 top(headTrackedOrientation.GetRow(1));
+            Eegeo::v3 forward(headTrackedOrientation.GetRow(2));
+            
+            Eegeo::dv3 center = m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation();
+            Eegeo::dv3 position(center + (forward*100)+ (top*(Eegeo::Math::Tan(m_uiCameraProvider.GetRenderCameraForUI().GetFOV()/2.1f)*100)));
+            
+            m_interiorMenuUpView->SetEcefPosition(position);
+            
+            if(!m_menuItemsShouldRender || m_isMenuShown)
+            {
+                m_interiorMenuUpView->HideView();
+            }
+            else
+            {
+                m_interiorMenuUpView->ShowView();
+            }
+            
+            m_interiorMenuUpView->Update(deltaTime);
+            
             for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
             {
                 InteriorMenuItemView* pView = it->second;
-                pView->SetItemShouldRender(m_menuItemsShouldRender & m_isMenuShown);
+                pView->SetItemShouldRender(m_menuItemsShouldRender && m_isMenuShown);
                 pView->Update(deltaTime);
             }
             

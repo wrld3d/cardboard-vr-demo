@@ -29,7 +29,7 @@ namespace Eegeo
                 
                 int GetNumOfWorldMenuItems() const;
                 
-                WorldMenuItem* GetWorldMenuItemAtIndex(int WorldMenuItemIndex) const;
+                WorldMenuItem* GetWorldMenuItemAtIndex(int worldMenuItemIndex) const;
                 
                 WorldMenuItem* GetWorldMenuItemById(TWorldMenuItemId id) const;
                 
@@ -46,7 +46,7 @@ namespace Eegeo
                 TWorldMenuItemObservers m_observers;
                 
                 bool ContainsWorldMenuItem(const WorldMenuItem* pWorldMenuItemToCheck) const;
-                bool ContainsWorldMenuItemId(TWorldMenuItemId WorldMenuItemId) const;
+                bool ContainsWorldMenuItemId(TWorldMenuItemId worldMenuItemId) const;
             };
         }
     }

@@ -11,6 +11,7 @@ namespace InteriorsExplorer
                                                , Eegeo::UI::IUIQuadFactory& uiQuadFactory
                                                , Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
                                                , Eegeo::UI::IUICameraProvider& uiCameraProvider
+                                               , Eegeo::UI::IUIQuadFactory& quadFactory
                                                , const std::string& spriteFileName
                                                , const Eegeo::UI::UIProgressBarConfig& progressBarConfig
                                                , int numberOfTilesAlong1Axis)
@@ -18,7 +19,7 @@ namespace InteriorsExplorer
             m_menuShouldDisplayMenu = true;
             m_pViewFactory = new InteriorMenuItemViewFactory(uiRenderableFilter, uiQuadFactory, spriteFileName, progressBarConfig, numberOfTilesAlong1Axis);
             m_pRepository = new InteriorMenuItemRepository();
-            m_pController = new InteriorMenuController(*m_pRepository, *m_pViewFactory, uiInteractionObservable, uiCameraProvider);
+            m_pController = new InteriorMenuController(*m_pRepository, *m_pViewFactory, uiInteractionObservable, uiCameraProvider, quadFactory, uiRenderableFilter);
         }
         
         InteriorMenuModule::~InteriorMenuModule()
