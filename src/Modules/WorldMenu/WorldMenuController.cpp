@@ -77,7 +77,7 @@ namespace Eegeo
                 for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
                 {
                     WorldMenuItemView* pView = it->second;
-                    pView->SetItemShouldRender(m_menuItemsShouldRender & m_isMenuShown);
+                    pView->SetItemShouldRender(m_menuItemsShouldRender && m_isMenuShown);
                     pView->Update(deltaTime);
                 }
                 
@@ -139,10 +139,9 @@ namespace Eegeo
                     halfCount-=0.5f;
                 
                 Eegeo::dv3 center = m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation();
-                
-                Eegeo::v3 top(headTrackedOrientation.GetRow(1));
                 Eegeo::v3 forward(headTrackedOrientation.GetRow(2));
-                Eegeo::v3 right(headTrackedOrientation.GetRow(0));
+                Eegeo::v3 top(center.ToSingle().Norm());
+                Eegeo::v3 right(Eegeo::v3::Cross(top, forward));
                 
                 Eegeo::v3 vA = center.ToSingle();
                 Eegeo::v3 vB = m_uiCameraProvider.GetOrientation().GetRow(2);
