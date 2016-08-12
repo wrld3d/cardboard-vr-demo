@@ -33,6 +33,10 @@ namespace Examples
         bool m_isInInterior;
         int m_currentSelectedFloor;
 
+        float m_delay;
+        bool m_shouldSwitch;
+        TJumpPointsDataVector m_jumpPoints;
+
     public:
         JumpPointsSwitcher(Eegeo::UI::JumpPoints::JumpPointRepository& jumpPointRepository,
                            InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
@@ -40,8 +44,12 @@ namespace Examples
                            const TInteriorJumpPointsData& interiorJumpPoints);
         ~JumpPointsSwitcher();
 
-        void SwitchJumpPoints(const TJumpPointsDataVector& jumpPoints);
+        void SwitchJumpPoints(const TJumpPointsDataVector& jumpPoints, float delay = 0.f);
         void SwitchLocation(const std::string& location);
+
+        void Update(float dt);
+
+        void ReloadJumpPoints();
 
         //Callback for Interiors
         void MapStateChanged();

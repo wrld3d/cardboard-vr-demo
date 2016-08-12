@@ -17,7 +17,8 @@ namespace Examples
             Eegeo::Space::LatLongAltitude m_jumpPointLocation;
             int m_iconID;
             double m_size;
-
+            TJumpPointVector m_childJumpPoints;
+            
         public:
             JumpPointConfigData(int jumpPointID, Eegeo::Space::LatLongAltitude lla, int iconID, double size);
 
@@ -28,6 +29,10 @@ namespace Examples
             int GetIconID() const;
 
             double GetSize() const;
+
+            void SetChildJumpPoints(const TJumpPointVector& childJumpPoints);
+            
+            const TJumpPointVector& GetChildJumpPoints() const;
         };
     }
 }

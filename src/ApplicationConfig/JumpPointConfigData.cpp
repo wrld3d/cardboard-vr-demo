@@ -34,5 +34,15 @@ namespace Examples
         {
             return m_size;
         }
+
+        void JumpPointConfigData::SetChildJumpPoints(const TJumpPointVector& childJumpPoints)
+        {
+            m_childJumpPoints = childJumpPoints;
+        }
+
+        const TJumpPointVector& JumpPointConfigData::GetChildJumpPoints() const
+        {
+            return m_childJumpPoints;
+        }
     }
 }

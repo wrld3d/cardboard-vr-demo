@@ -96,6 +96,16 @@ namespace Eegeo
             {
                 return m_visiblityStatus;
             }
+
+            void JumpPoint::SetChildJumpPoints(const TJumpPoints& childJumpPoints)
+            {
+                m_childJumpPoints = childJumpPoints;
+            }
+
+            const TJumpPointsVector& JumpPoint::GetChildJumpPoints() const
+            {
+                return m_childJumpPoints;
+            }
         }
     }
 }

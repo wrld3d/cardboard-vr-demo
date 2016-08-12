@@ -49,14 +49,23 @@ namespace Examples
         Eegeo::v2 outMax;
         Eegeo::UI::CalculateUV(spriteSheetSize, jumpPointData.GetIconID(), outMin, outMax);
 
-        return Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(jumpPointData.GetID(),
-                                                           jumpPointData.GetJumpPointLocation(),
-                                                           spriteSheetPath,
-                                                           Eegeo::v2(jumpPointData.GetSize(),jumpPointData.GetSize()),
-                                                           outMin,
-                                                           outMax,
-                                                           isInInterior
-                                                           );
+        Eegeo::UI::JumpPoints::TJumpPointsVector jpVector;
+
+        for (ApplicationConfig::TJumpPointVector::const_iterator it = jumpPointData.GetChildJumpPoints().begin(); it != jumpPointData.GetChildJumpPoints().end(); ++it)
+        {
+            jpVector.push_back(GetJumpPointFromConfigData(*it, spriteSheetPath, spriteSheetSize, isInInterior));
+        }
+
+        Eegeo::UI::JumpPoints::JumpPoint* pJumpPoint = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint)(jumpPointData.GetID(),
+                                                                                                  jumpPointData.GetJumpPointLocation(),
+                                                                                                  spriteSheetPath,
+                                                                                                  Eegeo::v2(jumpPointData.GetSize(),jumpPointData.GetSize()),
+                                                                                                  outMin,
+                                                                                                  outMax,
+                                                                                                  isInInterior
+                                                                                                  );
+        pJumpPoint->SetChildJumpPoints(jpVector);
+        return pJumpPoint;
     }
 
     JumpPointsExample::JumpPointsExample(Eegeo::EegeoWorld& eegeoWorld,
@@ -254,6 +263,8 @@ namespace Examples
         m_pWestPortInteriorButton->Update(dt);
 
         m_pWelcomeNoteViewer->Update(dt);
+
+        m_pJumpPointSwitcher->Update(dt);
     }
 
     void JumpPointsExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
@@ -512,11 +523,17 @@ namespace Examples
         animation->SetTag(0);
         m_animationsController.AddAnimation(animation);
 
+        if (m_isInInterior && !m_isAtFloorLevel)
+        {
+            m_pJumpPointSwitcher->SwitchJumpPoints(jumpPoint.GetChildJumpPoints(), time/2.f);
+        }
+
         m_isAtFloorLevel = m_isInInterior;
 
         if (m_isAtFloorLevel)
         {
             m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuFloorAngleThreshold);
+
         }
         else
         {
@@ -558,6 +575,7 @@ namespace Examples
                 m_animationsController.AddAnimation(animation);
                 m_isAtFloorLevel = false;
                 m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
+                m_pJumpPointSwitcher->ReloadJumpPoints();
             }
             else
             {

@@ -14,6 +14,8 @@ namespace Eegeo
     {
         namespace JumpPoints
         {
+            typedef std::vector<JumpPoint*> TJumpPointsVector;
+
             /*!
              * \brief Defines the data model for a Jump point placed in the 3D world.
              *
@@ -104,6 +106,15 @@ namespace Eegeo
                  * \return True if JumpPoint's is visible.
                  */
                 bool GetVisibility() const;
+
+                /*! Set the JumpPoint's children.
+                 */
+                void SetChildJumpPoints(const TJumpPointsVector& childJumpPoint);
+
+                /*! Get JumpPoint's children.
+                 * \return JumpPoint's children.
+                 */
+                const TJumpPointsVector& GetChildJumpPoints() const;
                 
             private:
                 TJumpPointId m_id;
@@ -119,6 +130,9 @@ namespace Eegeo
                 const bool m_isInInterior;
                 int m_interiorFloor;
                 bool m_visiblityStatus;
+
+                typedef std::vector<JumpPoint*> TJumpPoints;
+                TJumpPoints m_childJumpPoints;
             };
         }
     }

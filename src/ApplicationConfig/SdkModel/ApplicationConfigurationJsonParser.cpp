@@ -18,6 +18,22 @@ namespace Examples
         {
             typedef rapidjson::GenericValue<rapidjson::UTF8<char>, rapidjson::MemoryPoolAllocator<rapidjson::CrtAllocator>> TGenericValue;
 
+            JumpPointConfigData ParseJumpPoint(const TGenericValue& data)
+            {
+                Eegeo_ASSERT(data.HasMember("id"));
+                Eegeo_ASSERT(data.HasMember("lat"));
+                Eegeo_ASSERT(data.HasMember("lon"));
+                Eegeo_ASSERT(data.HasMember("alt"));
+                Eegeo_ASSERT(data.HasMember("icon_id"));
+                Eegeo_ASSERT(data.HasMember("size"));
+                return JumpPointConfigData(data["id"].GetInt(),
+                                           Eegeo::Space::LatLongAltitude::FromDegrees(data["lat"].GetDouble(),
+                                                                                      data["lon"].GetDouble(),
+                                                                                      data["alt"].GetDouble()),
+                                           data["icon_id"].GetInt(),
+                                           data["size"].GetDouble());
+            }
+
             void ParseJumpPoints(const TGenericValue& exteriorData, TJumpPointVector& outJumpPointVector)
             {
                 if(exteriorData.HasMember("JumpPoints"))
@@ -25,20 +41,7 @@ namespace Examples
                     for (rapidjson::Value::ConstValueIterator itr = exteriorData["JumpPoints"].Begin(); itr != exteriorData["JumpPoints"].End(); ++itr)
                     {
                         const TGenericValue& exteriorJumpPoint = *itr;
-
-                        Eegeo_ASSERT(exteriorJumpPoint.HasMember("id"));
-                        Eegeo_ASSERT(exteriorJumpPoint.HasMember("lat"));
-                        Eegeo_ASSERT(exteriorJumpPoint.HasMember("lon"));
-                        Eegeo_ASSERT(exteriorJumpPoint.HasMember("alt"));
-                        Eegeo_ASSERT(exteriorJumpPoint.HasMember("icon_id"));
-                        Eegeo_ASSERT(exteriorJumpPoint.HasMember("size"));
-                        JumpPointConfigData jpData(exteriorJumpPoint["id"].GetInt(),
-                                                   Eegeo::Space::LatLongAltitude::FromDegrees(exteriorJumpPoint["lat"].GetDouble(),
-                                                                                              exteriorJumpPoint["lon"].GetDouble(),
-                                                                                              exteriorJumpPoint["alt"].GetDouble()),
-                                                   exteriorJumpPoint["icon_id"].GetInt(),
-                                                   exteriorJumpPoint["size"].GetDouble());
-                        outJumpPointVector.push_back(jpData);
+                        outJumpPointVector.push_back(ParseJumpPoint(exteriorJumpPoint));
                     }
                 }
             }
@@ -66,18 +69,23 @@ namespace Examples
                         {
                             const TGenericValue& interiorJumpPoint = *itr;
 
-                            Eegeo_ASSERT(interiorJumpPoint.HasMember("id"));
-                            Eegeo_ASSERT(interiorJumpPoint.HasMember("lat"));
-                            Eegeo_ASSERT(interiorJumpPoint.HasMember("lon"));
-                            Eegeo_ASSERT(interiorJumpPoint.HasMember("alt"));
-                            Eegeo_ASSERT(interiorJumpPoint.HasMember("icon_id"));
-                            Eegeo_ASSERT(interiorJumpPoint.HasMember("size"));
-                            JumpPointConfigData jpData(interiorJumpPoint["id"].GetInt(),
-                                                       Eegeo::Space::LatLongAltitude::FromDegrees(interiorJumpPoint["lat"].GetDouble(),
-                                                                                                  interiorJumpPoint["lon"].GetDouble(),
-                                                                                                  interiorJumpPoint["alt"].GetDouble()),
-                                                       interiorJumpPoint["icon_id"].GetInt(),
-                                                       interiorJumpPoint["size"].GetDouble());
+                            JumpPointConfigData jpData = ParseJumpPoint(interiorJumpPoint);
+
+                            if (interiorJumpPoint.HasMember("child_jump_points"))
+                            {
+                                TJumpPointVector childJumpPointData;
+
+                                const TGenericValue& interiorFloorJumpPoints = interiorJumpPoint["child_jump_points"];
+
+                                for (rapidjson::Value::ConstValueIterator floorItr = interiorFloorJumpPoints.Begin(); floorItr != interiorFloorJumpPoints.End(); ++floorItr)
+                                {
+                                    const TGenericValue& interiorFloorJumpPoint = *floorItr;
+                                    childJumpPointData.push_back(ParseJumpPoint(interiorFloorJumpPoint));
+                                }
+
+                                jpData.SetChildJumpPoints(childJumpPointData);
+                            }
+
                             floorJumpPointData.push_back(jpData);
                         }
                         

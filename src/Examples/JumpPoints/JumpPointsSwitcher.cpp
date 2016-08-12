@@ -17,6 +17,8 @@ namespace Examples
     , m_currentLocation("")
     , m_isInInterior(false)
     , m_currentSelectedFloor(0)
+    , m_delay(0.f)
+    , m_shouldSwitch(false)
     {
         m_interiorsExplorerModule.RegisterVisibilityChangedCallback(m_interiorVisibilityChangedCallback);
     }
@@ -26,15 +28,33 @@ namespace Examples
         m_interiorsExplorerModule.UnregisterVisibilityChangedCallback(m_interiorVisibilityChangedCallback);
     }
 
-    void JumpPointsSwitcher::SwitchJumpPoints(const TJumpPointsDataVector& jumpPoints)
+    void JumpPointsSwitcher::Update(float dt)
     {
-        m_jumpPointRepository.RemoveAllJumpPoints();
-
-        for (TJumpPointsDataVector::const_iterator it = jumpPoints.begin(); it != jumpPoints.end(); ++it)
+        if (m_shouldSwitch)
         {
-            (*it)->SetVisibilityStatus(true);
-            m_jumpPointRepository.AddJumpPoint(*it);
+            if (m_delay <= 0.f)
+            {
+                m_shouldSwitch = false;
+                m_jumpPointRepository.RemoveAllJumpPoints();
+
+                for (TJumpPointsDataVector::const_iterator it = m_jumpPoints.begin(); it != m_jumpPoints.end(); ++it)
+                {
+                    (*it)->SetVisibilityStatus(true);
+                    m_jumpPointRepository.AddJumpPoint(*it);
+                }
+            }
+            else
+            {
+                m_delay -= dt;
+            }
         }
+    }
+
+    void JumpPointsSwitcher::SwitchJumpPoints(const TJumpPointsDataVector& jumpPoints, float delay)
+    {
+        m_delay = delay;
+        m_shouldSwitch = true;
+        m_jumpPoints = jumpPoints;
     }
 
     void JumpPointsSwitcher::SwitchLocation(const std::string &location)
@@ -48,6 +68,50 @@ namespace Examples
             {
                 SwitchJumpPoints(m_exteriorJumpPoints.at(m_currentLocation));
             }
+            else
+            {
+                m_jumpPointRepository.RemoveAllJumpPoints();
+            }
+        }
+    }
+
+    void JumpPointsSwitcher::ReloadJumpPoints()
+    {
+        if (m_interiorsExplorerModule.IsInteriorVisible())
+        {
+            const std::string& interiorID = m_interiorsExplorerModule.GetSelectedInteriorID();
+            TInteriorJumpPointsData::const_iterator itInterior = m_interiorJumpPoints.find(interiorID);
+            if (itInterior != m_interiorJumpPoints.end())
+            {
+                const TInteriorFloorJumpPointsData& currnetInteriorData = itInterior->second;
+                m_currentSelectedFloor = m_interiorsExplorerModule.GetSelectedFloor();
+                TInteriorFloorJumpPointsData::const_iterator itFloorData = currnetInteriorData.find(m_currentSelectedFloor);
+
+                if (itFloorData != currnetInteriorData.end())
+                {
+                    SwitchJumpPoints(itFloorData->second);
+                }
+                else
+                {
+                    m_jumpPointRepository.RemoveAllJumpPoints();
+                }
+            }
+        }
+        else
+        {
+            TExteriorJumpPointsData::const_iterator it = m_exteriorJumpPoints.find(m_currentLocation);
+
+            if (it != m_exteriorJumpPoints.end())
+            {
+                SwitchJumpPoints(m_exteriorJumpPoints.at(m_currentLocation));
+            }
+            else
+            {
+                m_jumpPointRepository.RemoveAllJumpPoints();
+            }
+
+            m_isInInterior = false;
+            
         }
     }
 
