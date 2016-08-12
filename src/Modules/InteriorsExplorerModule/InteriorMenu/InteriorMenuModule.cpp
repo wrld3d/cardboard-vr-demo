@@ -19,7 +19,7 @@ namespace InteriorsExplorer
             m_menuShouldDisplayMenu = true;
             m_pViewFactory = new InteriorMenuItemViewFactory(uiRenderableFilter, uiQuadFactory, spriteFileName, progressBarConfig, numberOfTilesAlong1Axis);
             m_pRepository = new InteriorMenuItemRepository();
-            m_pController = new InteriorMenuController(*m_pRepository, *m_pViewFactory, uiInteractionObservable, uiCameraProvider, quadFactory, uiRenderableFilter);
+            m_pController = new InteriorMenuController(*m_pRepository, *m_pViewFactory, uiInteractionObservable, uiCameraProvider, quadFactory, uiRenderableFilter, spriteFileName);
         }
         
         InteriorMenuModule::~InteriorMenuModule()

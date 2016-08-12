@@ -12,7 +12,8 @@ namespace InteriorsExplorer
     {
         
         InteriorMenuController::InteriorMenuController(IInteriorMenuItemObservable& InteriorMenuItemObservable, IInteriorMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable , Eegeo::UI::IUICameraProvider& uiCameraProvider,
-            Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter)
+                                                       Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
+                                                       , const std::string& spriteFileName)
         : m_InteriorMenuItemRepository(InteriorMenuItemObservable)
         , m_viewFactory(viewFactory)
         , m_pIUIInteractionObservable(uiInteractionObservable)
@@ -21,6 +22,16 @@ namespace InteriorsExplorer
         {
             m_pInteriorMenuUpView = Eegeo_NEW(InteriorMenuUpView)(quadFactory, uiRenderableFilter);
             
+            Eegeo::v2 dimension = Eegeo::v2(50.f,50.f);
+            m_pSelectedArrow = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter,
+                                                        quadFactory.CreateUIQuad(spriteFileName,
+                                                                                 dimension,
+                                                                                 Eegeo::v2(.0f, 4.f/5.f),
+                                                                                 Eegeo::v2(1.f/5.f, 1.f),
+                                                                                 Eegeo::Rendering::LayerIds::Values::AfterAll),
+                                                        dimension);
+            
+            
             m_menuItemsShouldRender = true;
             m_isMenuShown = false;
             m_InteriorMenuItemRepository.AddInteriorMenuObserver(this);
@@ -28,6 +39,7 @@ namespace InteriorsExplorer
         
         InteriorMenuController::~InteriorMenuController()
         {
+            Eegeo_DELETE(m_pSelectedArrow);
             Eegeo_DELETE(m_pInteriorMenuUpView);
             m_InteriorMenuItemRepository.RemoveInteriorMenuObserver(this);
             for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
@@ -46,12 +58,14 @@ namespace InteriorsExplorer
             {
                 InteriorMenuItemView* pView = it->second;
                 pView->SetItemShouldRender(menuItemsShouldRender);
+                m_pSelectedArrow->SetItemShouldRender(menuItemsShouldRender);
             }
         }
         
         void InteriorMenuController::Update(float deltaTime)
         {
             PositionItems();
+            m_pSelectedArrow->Update(deltaTime);
             
             Eegeo::m33 headTrackedOrientation  = m_uiCameraProvider.GetOrientation();
             Eegeo::v3 top(headTrackedOrientation.GetRow(1));
@@ -77,6 +91,7 @@ namespace InteriorsExplorer
             {
                 InteriorMenuItemView* pView = it->second;
                 pView->SetItemShouldRender(m_menuItemsShouldRender && m_isMenuShown);
+                m_pSelectedArrow->SetItemShouldRender(m_menuItemsShouldRender && m_isMenuShown);
                 pView->Update(deltaTime);
             }
             
@@ -192,12 +207,21 @@ namespace InteriorsExplorer
                     if(!m_isMenuShown)
                     {
                         pView->SetItemShouldRender(false);
+                        m_pSelectedArrow->SetItemShouldRender(false);
                         continue;
                     }
                     
                     Eegeo::dv3 position(center + (forward*PositionMultiplier) + (top*40) + (right*60*halfCount));
                     pView->SetEcefPosition(position);
                     pView->SetItemShouldRender(true);
+                    m_pSelectedArrow->SetItemShouldRender(true);
+                    
+                    
+                    if(m_floorId==pView->GetInteriorMenuItem().GetId())
+                    {
+                        m_pSelectedArrow->SetEcefPosition(center + (forward*PositionMultiplier) + (top*91) + (right*60*halfCount));
+                    }
+                    
                     halfCount-=1;
                 }
                 

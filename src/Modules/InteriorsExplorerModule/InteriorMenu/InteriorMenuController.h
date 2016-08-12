@@ -29,7 +29,8 @@ namespace InteriorsExplorer
             InteriorMenuController(IInteriorMenuItemObservable& InteriorMenuItemObservable, IInteriorMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
                                    , Eegeo::UI::IUICameraProvider& uiCameraProvider
                                    , Eegeo::UI::IUIQuadFactory& quadFactory
-                                   , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter);
+                                   , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
+                                   , const std::string& spriteFileName);
             
             ~InteriorMenuController();
             
@@ -52,6 +53,7 @@ namespace InteriorsExplorer
             
         private:
             
+            Eegeo::UI::UISprite* m_pSelectedArrow;
             InteriorMenuUpView* m_pInteriorMenuUpView;
             IInteriorMenuItemObservable& m_InteriorMenuItemRepository;
             IInteriorMenuItemViewFactory& m_viewFactory;
