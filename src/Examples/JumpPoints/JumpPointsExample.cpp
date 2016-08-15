@@ -28,6 +28,8 @@
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
 
 const float WelcomeMessageFadeSpeed = 0.5f;
+const float WelcomeMessageFadeDelay = 2.0f;
+const Eegeo::v2 WelcomeMessageSize = Eegeo::v2(48,3);
 
 const float InteriorMenuFloorAngleThreshold = 70.f;
 const float InteriorMenuHighPositionAngleThreshold = 100.f;
@@ -554,7 +556,7 @@ namespace Examples
 
     void JumpPointsExample::OnLocationChanged(std::string &location)
     {
-        m_pWelcomeNoteViewer->ShowWelcomeNote(m_appConfig.GetLocations().at(location).GetWelcomeMessage(), WelcomeMessageFadeSpeed, 2.f, Eegeo::v2(15,5));
+        m_pWelcomeNoteViewer->ShowWelcomeNote(m_appConfig.GetLocations().at(location).GetWelcomeMessage(), WelcomeMessageFadeSpeed, WelcomeMessageFadeDelay, WelcomeMessageSize);
         ChangeLocation(location);
 
         Eegeo::v3 forward = Eegeo::v3::Cross(m_pSplineCameraController->GetOrientation().GetRow(0), m_pSplineCameraController->GetCameraPosition().ToSingle().Norm());

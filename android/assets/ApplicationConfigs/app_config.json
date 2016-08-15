@@ -323,7 +323,7 @@
             "StartLocationLongitude":-2.966101,
             "StartLocationAltitude":250,
             "StartLocationOrientationDegrees":300.0,
-            "WelcomeMessage":"mesh_example/PinIconTexturePage.png",
+            "WelcomeMessage":"mesh_example/welcome_dundee.png",
             "InteriorPOIs":[
                {
                   "id":"westport_house",
@@ -393,7 +393,7 @@
             "StartLocationLongitude":-122.402797,
             "StartLocationAltitude":306,
             "StartLocationOrientationDegrees":300.0,
-            "WelcomeMessage":"mesh_example/PinIconTexturePage.png",
+            "WelcomeMessage":"mesh_example/welcome_sanfrancisco.png",
             "JumpPoints":[
                {
                   "id":0,
@@ -436,7 +436,7 @@
             "StartLocationLongitude":139.728948,
             "StartLocationAltitude":250,
             "StartLocationOrientationDegrees":200.0,
-            "WelcomeMessage":"mesh_example/PinIconTexturePage.png",
+            "WelcomeMessage":"mesh_example/welcome_toko.png",
             "JumpPoints":[
                {
                   "id":0,
