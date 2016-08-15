@@ -7,7 +7,7 @@
 #include "EegeoWorld.h"
 #include "Logger.h"
 
-#define PROGRESS_SCALE_MULTIPLIER 1.5f
+#define PROGRESS_SCALE_MULTIPLIER 1.1f
 
 namespace InteriorsExplorer
 {
