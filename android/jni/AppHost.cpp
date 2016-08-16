@@ -143,7 +143,7 @@ AppHost::AppHost(
 
 	Eegeo::EffectHandler::Initialise();
 
-	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::Latin;
+	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::JapanPlaceNames;
 	std::string deviceModel = std::string(nativeState.deviceModel, strlen(nativeState.deviceModel));
 	Eegeo::Config::PlatformConfig config = Eegeo::Android::AndroidPlatformConfigBuilder(deviceModel).Build();
 
