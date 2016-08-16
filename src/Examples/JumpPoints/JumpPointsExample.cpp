@@ -513,7 +513,7 @@ namespace Examples
         
         float time = 5.f;
         if(m_isInInterior)
-            time = 1.5f;
+            time = 3.5f;
 
         m_pWestPortInteriorButton->SetItemShouldRender(!jumpPoint.GetIsInInterior());
 
