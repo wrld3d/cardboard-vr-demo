@@ -110,6 +110,7 @@ namespace Examples
     , m_interiorMenuItemSelected(this, &JumpPointsExample::OnFloorMenuItemSelected)
     , m_isInInterior(false)
     , m_isAtFloorLevel(false)
+    , m_placeNameController(m_world.GetMapModule().GetPlaceNamesPresentationModule().GetPlaceNamesController())
     {
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
@@ -535,10 +536,11 @@ namespace Examples
         if (m_isAtFloorLevel)
         {
             m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuFloorAngleThreshold);
-
+            m_placeNameController.SetTargetAlpha(0.f);
         }
         else
         {
+            m_placeNameController.SetTargetAlpha(1.f);
             m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
         }
     }
@@ -613,6 +615,7 @@ namespace Examples
             }
         }
 
+        m_placeNameController.SetTargetAlpha(1.f);
         m_pJumpPointsModule->GetController().ResetVisibility();
     }
 
