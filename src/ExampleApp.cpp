@@ -668,7 +668,8 @@ void ExampleApp::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenPro
     {
         m_pLoadingScreen->NotifyScreenDimensionsChanged(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
     }
-    
+
+    m_pVRDistortion->NotifyScreenPropertiesChanged(screenProperties);
     m_pExampleController->NotifyScreenPropertiesChanged(screenProperties);
 }
 
