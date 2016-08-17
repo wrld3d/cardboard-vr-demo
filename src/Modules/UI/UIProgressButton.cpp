@@ -119,7 +119,6 @@ namespace Eegeo
         void UIProgressButton::SetColor(const Eegeo::v4& color)
         {
             m_pSprite->SetColor(color);
-            m_pGazeProgress->SetColor(color);
         }
         
         Eegeo::v4 UIProgressButton::GetColor()

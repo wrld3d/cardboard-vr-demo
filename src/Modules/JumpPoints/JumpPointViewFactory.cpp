@@ -39,6 +39,7 @@ namespace Eegeo
                                                                         , m_onJumpPointSelected
                                                                         );
                 pJumpPointView->SetFadeTransitionSpeed(2.f);
+                pJumpPointView->SetColor(Eegeo::v4(1.f,1.f,1.f,0.f));
                 return pJumpPointView;
             }
             
