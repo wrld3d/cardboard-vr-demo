@@ -568,7 +568,6 @@ void ExampleApp::GetJumpPointStartPositionOrientation(Eegeo::dv3& position, Eege
             
             Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(48.856623, 2.297102, 450);
             
-//            Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(35.657762, 139.746716, 188);
             position = eyePosLla.ToECEF();
             
             Eegeo::Space::EcefTangentBasis tangentBasis;

@@ -59,7 +59,7 @@ namespace Eegeo
                 Eegeo::v3 forward(headTrackedOrientation.GetRow(2));
                 
                 Eegeo::dv3 center = m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation();
-                Eegeo::dv3 position(center + (forward*100)+ (top*(Eegeo::Math::Tan(m_uiCameraProvider.GetRenderCameraForUI().GetFOV()/2.1f)*100)));
+                Eegeo::dv3 position(center + (forward*100)+ (top*(Eegeo::Math::Tan(m_uiCameraProvider.GetRenderCameraForUI().GetFOV()/2.3f)*100)));
                 
                 m_pWorldMenuUpView->SetEcefPosition(position);
                 

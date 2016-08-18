@@ -16,16 +16,17 @@ namespace Eegeo
             
             void WorldMenuUpView::Init(Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter)
             {
-                Eegeo::v2 dimension = Eegeo::v2(5.f,5.f);
+                Eegeo::v2 dimension = Eegeo::v2(9.f,9.f);
                 m_pPointer = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter,
-                                                            quadFactory.CreateUIQuad("mesh_example/arrow_exterior.png",
+                                                            quadFactory.CreateUIQuad("mesh_example/PinIconTexturePage.png",
                                                                                      dimension,
-                                                                                     Eegeo::v2::Zero(),
-                                                                                     Eegeo::v2::One(),
+                                                                                     Eegeo::v2(1.f/5.f, 4.f/5.f),
+                                                                                     Eegeo::v2(2.f/5.f, 1.f),
                                                                                      Eegeo::Rendering::LayerIds::Values::AfterAll),
                                                             dimension);
                 m_isShown = true;
                 m_pPointer->SetItemShouldRender(m_isShown);
+                m_pPointer->SetMaxAlpha(0.6f);
             }
             
             WorldMenuUpView::~WorldMenuUpView()
