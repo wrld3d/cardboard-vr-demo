@@ -33,17 +33,19 @@
 #include "Logger.h"
 #include "ICallback.h"
 
+#include "SplashScreen.h"
+
 class ExampleApp : private Eegeo::NonCopyable
 {
 private:
     
     Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule* m_pDeadZoneMenuModule;
     
-    
     Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pMenuItem1;
     Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pMenuItem2;
     Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pMenuItem3;
     
+    Eegeo::UI::SplashScreen::SplashScreen* m_pSplashScreen;
     
     Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
@@ -77,6 +79,7 @@ private:
     Eegeo::UI::WorldMenu::WorldMenuModule* m_pWorldMenuModule;
     Eegeo::Helpers::TCallback1<ExampleApp, Eegeo::UI::WorldMenu::WorldMenuItem&> m_worldMenuItemGazeCallback;
 
+    void SplashPlayButtonCallback();
     void OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem);
     void GetJumpPointStartPositionOrientation(Eegeo::dv3& position, Eegeo::m33& orientation);
     
@@ -99,6 +102,7 @@ private:
     
     void UpdateLoadingScreen(float dt);
     
+    Eegeo::Helpers::TCallback0<ExampleApp> m_splashPlayButtonCallback;
     Eegeo::Helpers::TCallback0<ExampleApp> m_toggleDayNightClickedCallback;
     Eegeo::Helpers::TCallback0<ExampleApp> m_splineExampleButtonClickedCallback;
     Eegeo::Helpers::TCallback0<ExampleApp> m_jumpPointExampleButtonClickedCallback;

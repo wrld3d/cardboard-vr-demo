@@ -138,6 +138,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_startClearColor(0.f/255.f,24.f/255.f,72.f/255.f)
     , m_destClearColor(135.f/255.0f, 206.f/255.0f, 235.f/255.0f)
     , m_screenPropertiesProvider(screenProperties)
+    , m_splashPlayButtonCallback(this, &ExampleApp::SplashPlayButtonCallback)
     , m_toggleDayNightClickedCallback(this, &ExampleApp::ToggleNight)
     , m_splineExampleButtonClickedCallback(this, &ExampleApp::LoadSplineExample)
     , m_jumpPointExampleButtonClickedCallback(this, &ExampleApp::LoadJumpPointExample)
@@ -271,9 +272,10 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, *m_pWorldMenuLoaderModel, headTracker, appConfig);
     
     m_pUIGazeView->HideView();
-
-
-
+    
+    m_pSplashScreen = Eegeo_NEW(Eegeo::UI::SplashScreen::SplashScreen)(*m_pExampleController, *m_pUIInteractionController, *m_pUIRenderableFilter, *m_pQuadFactory, appConfig.JumpPointsSpriteSheet(), m_progressBarConfig, m_splashPlayButtonCallback);
+    
+    
 }
 
 ExampleApp::~ExampleApp()
@@ -291,6 +293,8 @@ ExampleApp::~ExampleApp()
         Eegeo_DELETE menuItem;
     }
 
+    Eegeo_DELETE(m_pSplashScreen);
+    
     Eegeo_DELETE m_pQuadFactory;
     Eegeo_DELETE m_pUIGazeView;
     
@@ -371,6 +375,7 @@ void ExampleApp::Update (float dt, float headTansform[])
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
     {
         
+        m_pSplashScreen->Update(dt);
         m_pWorldMenuModule->Update(dt);
         m_pAnimationController->Update(dt);
         m_pExampleController->Update(dt);
@@ -482,6 +487,12 @@ void ExampleApp::OnLocationChanged(std::string &location)
         m_pExampleController->ActivateExample("VRCameraSplineExample");
     else
         m_pExampleController->ActivateExample("JumpPointsExample");
+}
+
+
+void ExampleApp::SplashPlayButtonCallback()
+{
+    
 }
 
 void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem)
