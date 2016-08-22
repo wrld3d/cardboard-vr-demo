@@ -5,6 +5,13 @@
 
 namespace InteriorsExplorer
 {
+
+    enum InteriorsExplorerFloorAnimationState
+    {
+        AnimationStarted,
+        AnimationEnded
+    };
+
     class IInteriorsExplorerModule;
     class InteriorsExplorerModel;
     class InteriorVisibilityUpdater;

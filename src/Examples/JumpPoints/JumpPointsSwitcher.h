@@ -25,6 +25,7 @@ namespace Examples
         InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
 
         Eegeo::Helpers::TCallback0<JumpPointsSwitcher> m_interiorVisibilityChangedCallback;
+        Eegeo::Helpers::TCallback1<JumpPointsSwitcher, InteriorsExplorer::InteriorsExplorerFloorAnimationState> m_floorAnimationCallback;
 
         const TExteriorJumpPointsData& m_exteriorJumpPoints;
         const TInteriorJumpPointsData& m_interiorJumpPoints;
@@ -53,5 +54,7 @@ namespace Examples
 
         //Callback for Interiors
         void MapStateChanged();
+
+        void FloorAnimationStateChanged(InteriorsExplorer::InteriorsExplorerFloorAnimationState& state);
     };
 }

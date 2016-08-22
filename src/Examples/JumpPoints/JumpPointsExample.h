@@ -35,6 +35,8 @@
 #include "Modules/WorldMenu/WorldMenuModule.h"
 
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
+#include "InteriorCameraAnimationPositionProvider.h"
+#include "FloorSwitchCameraAnimator.h"
 
 namespace Examples
 {
@@ -53,6 +55,8 @@ namespace Examples
 
         bool m_isAtFloorLevel;
         InteriorsExplorer::InteriorsExplorerModule* m_pInteriorExplorerModule;
+        InteriorCameraAnimationPositionProvider* m_pInteriorCameraAnimationPositionProvider;
+        FloorSwitchCameraAnimator* m_pFloorSwitchCameraAnimator;
         
         Eegeo::Rendering::RenderableFilters& m_renderableFilters;
         InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;

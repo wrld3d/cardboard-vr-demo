@@ -111,6 +111,9 @@ namespace Examples
     , m_isInInterior(false)
     , m_isAtFloorLevel(false)
     , m_placeNameController(m_world.GetMapModule().GetPlaceNamesPresentationModule().GetPlaceNamesController())
+    , m_pInteriorExplorerModule(NULL)
+    , m_pFloorSwitchCameraAnimator(NULL)
+    , m_pInteriorCameraAnimationPositionProvider(NULL)
     {
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
@@ -189,10 +192,17 @@ namespace Examples
         m_pWelcomeNoteViewer = Eegeo_NEW(WelcomeNoteViewer)(m_uiQuadFactory, *m_pUIRenderableFilter);
 
         m_interiorsExplorerModule.RegisterMenuItemGazedCallback(m_interiorMenuItemSelected);
+
+        m_pInteriorCameraAnimationPositionProvider = Eegeo_NEW(InteriorCameraAnimationPositionProvider)(m_world.GetMapModule().GetInteriorsPresentationModule().GetInteriorViewModel(),
+                                                                                                        m_world.GetMapModule().GetEnvironmentFlatteningService());
+        const Eegeo::dv3 cameraInteriorBasePos = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 40).ToECEF();
+        m_pFloorSwitchCameraAnimator = Eegeo_NEW(FloorSwitchCameraAnimator)(m_interiorsExplorerModule, *m_pSplineCameraController, *m_pInteriorCameraAnimationPositionProvider, cameraInteriorBasePos);
     }
     
     void JumpPointsExample::Suspend()
     {
+        Eegeo_DELETE m_pFloorSwitchCameraAnimator;
+        Eegeo_DELETE m_pInteriorCameraAnimationPositionProvider;
         Eegeo_DELETE m_pWelcomeNoteViewer;
 
         if(m_isInInterior)
@@ -268,6 +278,8 @@ namespace Examples
         m_pWelcomeNoteViewer->Update(dt);
 
         m_pJumpPointSwitcher->Update(dt);
+
+        m_pFloorSwitchCameraAnimator->Update(dt);
     }
 
     void JumpPointsExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
@@ -601,15 +613,11 @@ namespace Examples
         }
         else
         {
-            m_interiorsExplorerModule.SelectFloor(menuItem.GetId());
+            m_interiorsExplorerModule.SelectFloor(menuItem.GetId(), true);
 
             if(m_interiorsExplorerModule.GetSelectedFloor()>=0)
             {
-                Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 40+(5*m_interiorsExplorerModule.GetSelectedFloor())).ToECEF();
                 m_animationsController.RemoveAnimationsForTag(0);
-                Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 1.5f, &Eegeo::UI::AnimationEase::EaseInOutExpo);
-                animation->SetTag(0);
-                m_animationsController.AddAnimation(animation);
                 m_isAtFloorLevel = false;
                 m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
             }

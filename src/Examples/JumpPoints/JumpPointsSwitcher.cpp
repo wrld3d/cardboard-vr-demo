@@ -14,6 +14,7 @@ namespace Examples
     , m_exteriorJumpPoints(exteriorJumpPoints)
     , m_interiorJumpPoints(interiorJumpPoints)
     , m_interiorVisibilityChangedCallback(this, &JumpPointsSwitcher::MapStateChanged)
+    , m_floorAnimationCallback(this, &JumpPointsSwitcher::FloorAnimationStateChanged)
     , m_currentLocation("")
     , m_isInInterior(false)
     , m_currentSelectedFloor(0)
@@ -21,11 +22,13 @@ namespace Examples
     , m_shouldSwitch(false)
     {
         m_interiorsExplorerModule.RegisterVisibilityChangedCallback(m_interiorVisibilityChangedCallback);
+        m_interiorsExplorerModule.RegisterInteriorAnimationCallback(m_floorAnimationCallback);
     }
 
     JumpPointsSwitcher::~JumpPointsSwitcher()
     {
         m_interiorsExplorerModule.UnregisterVisibilityChangedCallback(m_interiorVisibilityChangedCallback);
+        m_interiorsExplorerModule.UnregisterInteriorAnimationCallback(m_floorAnimationCallback);
     }
 
     void JumpPointsSwitcher::Update(float dt)
@@ -134,7 +137,7 @@ namespace Examples
         
         if (m_interiorsExplorerModule.IsInteriorVisible())
         {
-            if (!m_isInInterior || m_interiorsExplorerModule.GetSelectedFloor() != m_currentSelectedFloor)
+            if (!m_isInInterior)
             {
                 const std::string& interiorID = m_interiorsExplorerModule.GetSelectedInteriorID();
                 TInteriorJumpPointsData::const_iterator itInterior = m_interiorJumpPoints.find(interiorID);
@@ -170,6 +173,24 @@ namespace Examples
 
                 m_isInInterior = false;
             }
+        }
+    }
+
+    void JumpPointsSwitcher::FloorAnimationStateChanged(InteriorsExplorer::InteriorsExplorerFloorAnimationState& state)
+    {
+        switch (state)
+        {
+            case InteriorsExplorer::InteriorsExplorerFloorAnimationState::AnimationStarted:
+                m_jumpPointRepository.RemoveAllJumpPoints();
+                break;
+
+            case InteriorsExplorer::InteriorsExplorerFloorAnimationState::AnimationEnded:
+                ReloadJumpPoints();
+                break;
+
+            default:
+                ReloadJumpPoints();
+                break;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace InteriorsExplorer
         virtual void ForceEnterInterior(int floorId) = 0;
         virtual void ForceLeaveInterior() = 0;
         
-        virtual void SelectFloor(int floor) = 0;
+        virtual void SelectFloor(int floor, bool shouldAnimate) = 0;
         virtual int GetSelectedFloor() const = 0;
         virtual void Update(float dt) const = 0;
 
@@ -40,5 +40,8 @@ namespace InteriorsExplorer
 
         virtual void RegisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback) = 0;
         virtual void UnregisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback) = 0;
+
+        virtual void RegisterInteriorAnimationCallback(Eegeo::Helpers::ICallback1<InteriorsExplorerFloorAnimationState>& callback) = 0;
+        virtual void UnregisterInteriorAnimationCallback(Eegeo::Helpers::ICallback1<InteriorsExplorerFloorAnimationState>& callback) = 0;
     };
 }

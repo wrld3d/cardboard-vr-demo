@@ -43,7 +43,7 @@ namespace InteriorsExplorer
         virtual void SelectInterior(std::string);
         virtual std::string GetSelectedInteriorID() const;
         virtual bool InteriorLoaded();
-        virtual void SelectFloor(int floor);
+        virtual void SelectFloor(int floor, bool shouldAnimate);
         virtual int GetSelectedFloor() const;
         virtual void ShowInteriors();
         virtual void HideInteriors();
@@ -57,6 +57,9 @@ namespace InteriorsExplorer
 
         virtual void RegisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback);
         virtual void UnregisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback);
+
+        virtual void RegisterInteriorAnimationCallback(Eegeo::Helpers::ICallback1<InteriorsExplorerFloorAnimationState>& callback);
+        virtual void UnregisterInteriorAnimationCallback(Eegeo::Helpers::ICallback1<InteriorsExplorerFloorAnimationState>& callback);
 
         virtual void SetMenuVisibilityThresholdAngle(float angle);
         virtual float GetMenuVisibilityThresholdAngle();

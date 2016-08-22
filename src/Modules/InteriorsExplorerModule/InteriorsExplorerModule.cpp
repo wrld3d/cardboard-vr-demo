@@ -76,7 +76,7 @@ namespace InteriorsExplorer
     {
         ShowInteriors();
         m_floorId = floorId;
-        SelectFloor(m_floorId);
+        SelectFloor(m_floorId, false);
         m_pInteriorMenuModule->SetMenuShouldDisplay(false);
     }
     
@@ -90,12 +90,20 @@ namespace InteriorsExplorer
         m_menuItemCallbacks.ExecuteCallbacks(menuItem);
     }
     
-    void InteriorsExplorerModule::SelectFloor(int floor)
+    void InteriorsExplorerModule::SelectFloor(int floor, bool shouldAnimate)
     {
         if(m_floorId>=0)
         {
             m_floorId = floor;
-            m_interiorInteractionModel.SetSelectedFloorIndex(m_floorId);
+            if (shouldAnimate)
+            {
+                m_pModel->AnimateToFloor(floor);
+            }
+            else
+            {
+                m_pModel->SelectFloor(floor);
+            }
+
             m_pInteriorMenuModule->GetController().SetSelectedFloorId(m_floorId);
         }
     }
@@ -128,8 +136,8 @@ namespace InteriorsExplorer
             m_pInteriorMenuModule->Update(dt);
             if(m_interiorInteractionModel.HasInteriorModel())
             {
-                m_interiorInteractionModel.SetSelectedFloorIndex(m_floorId);
                 m_pVisibilityUpdater->Update(dt);
+                m_pModel->Update(dt);
             }
         }
     }
@@ -146,7 +154,7 @@ namespace InteriorsExplorer
         if (!m_pVisibilityUpdater->GetInteriorShouldDisplay())
         {
             m_floorId = 0;
-            m_interiorInteractionModel.SetSelectedFloorIndex(m_floorId);
+            m_pModel->SelectFloor(m_floorId);
             m_pInteriorMenuModule->GetController().SetSelectedFloorId(m_floorId);
             m_pVisibilityUpdater->SetInteriorShouldDisplay(true);
             m_pInteriorMenuModule->SetMenuShouldDisplay(true);  
@@ -188,6 +196,16 @@ namespace InteriorsExplorer
     void InteriorsExplorerModule::UnregisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback)
     {
         m_menuItemCallbacks.RemoveCallback(callback);
+    }
+
+    void InteriorsExplorerModule::RegisterInteriorAnimationCallback(Eegeo::Helpers::ICallback1<InteriorsExplorerFloorAnimationState>& callback)
+    {
+        m_pModel->RegisterInteriorAnimationCallback(callback);
+    }
+
+    void InteriorsExplorerModule::UnregisterInteriorAnimationCallback(Eegeo::Helpers::ICallback1<InteriorsExplorerFloorAnimationState>& callback)
+    {
+        m_pModel->UnregisterInteriorAnimationCallback(callback);
     }
 
     void InteriorsExplorerModule::SetMenuVisibilityThresholdAngle(float angle)
