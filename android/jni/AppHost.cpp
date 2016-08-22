@@ -128,6 +128,7 @@ AppHost::AppHost(
 	customApplicationAssetDirectories.insert("route_simulation_example");
 	customApplicationAssetDirectories.insert("route_simulation_animation_example");
 	customApplicationAssetDirectories.insert("ApplicationConfigs");
+	customApplicationAssetDirectories.insert("vr_splash_screen");
 
 	Examples::ApplicationConfig::ApplicationConfiguration appConfig(LoadConfiguration(nativeState));
 

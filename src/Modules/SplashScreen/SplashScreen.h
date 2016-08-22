@@ -13,6 +13,9 @@
 #include "StateButton.h"
 #include "UIInteractionController.h"
 #include "../UI/UIProgressButton.h"
+#include "SplashScreenModel.h"
+#include "SplashScreenModelFactory.h"
+#include "SceneModelRenderableFilter.h"
 
 namespace Eegeo
 {
@@ -23,6 +26,10 @@ namespace Eegeo
             class SplashScreen
             {
             private:
+                Eegeo::Rendering::Filters::SceneModelRenderableFilter& m_sceneModelRenderableFilter;
+
+                SplashScreenModel* m_pSplashScreenModel;
+                SplashScreenModelFactory* m_pSplashScreenModelFactory;
                 
                 Eegeo::UI::UIInteractionController& m_uiInteractionController;
                 Eegeo::UI::SplashScreen::StateButton* m_pStateButtonLocation;
@@ -35,7 +42,9 @@ namespace Eegeo
                 void PlayButtonClicked();
                 
             public:
-                SplashScreen(Eegeo::UI::IUICameraProvider& uICameraProvider
+                SplashScreen(Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader
+                             , Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter
+                             , Eegeo::UI::IUICameraProvider& uICameraProvider
                              , UIInteractionController& uiInteractionController
                              , IUIRenderableFilter& uiRenderableFilter
                              , Eegeo::UI::IUIQuadFactory& quadFactory

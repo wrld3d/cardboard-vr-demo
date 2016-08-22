@@ -11,17 +11,22 @@ namespace Eegeo
     {
         namespace SplashScreen
         {
-            SplashScreen::SplashScreen(Eegeo::UI::IUICameraProvider& uICameraProvider
+            SplashScreen::SplashScreen(Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader
+                                       , Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter
+                                       , Eegeo::UI::IUICameraProvider& uICameraProvider
                                        , UIInteractionController& uiInteractionController
                                        , IUIRenderableFilter& uiRenderableFilter
                                        , Eegeo::UI::IUIQuadFactory& quadFactory
                                        , const std::string& assetPath
                                        , const UIProgressBarConfig& progressBarConfig
                                        , Eegeo::Helpers::ICallback0& playButtonCallback)
-            : m_uiInteractionController(uiInteractionController)
+            : m_sceneModelRenderableFilter(sceneModelRenderableFilter)
+            , m_uiInteractionController(uiInteractionController)
             , m_playButtonCallback(playButtonCallback)
             , m_stateButtonClicked(this, &SplashScreen::StateButtonClicked)
             , m_playButtonClicked(this, &SplashScreen::PlayButtonClicked)
+            , m_pSplashScreenModel(NULL)
+            , m_pSplashScreenModelFactory(NULL)
             {
                 
                 UIProgressBarConfig config = progressBarConfig;
@@ -56,6 +61,12 @@ namespace Eegeo
                 
                 
                 
+                m_pSplashScreenModelFactory = Eegeo_NEW(SplashScreenModelFactory)(sceneModelLoader);
+
+                m_pSplashScreenModel = m_pSplashScreenModelFactory->CreateSplashScreenModel("vr_splash_screen/WelcomeScreen.POD", Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 100).ToECEF(), 110);
+                m_pSplashScreenModel->SetScale(100);
+
+                m_sceneModelRenderableFilter.AddSceneModel(m_pSplashScreenModel->GetSceneModel());
             }
             
             SplashScreen::~SplashScreen()
@@ -69,6 +80,11 @@ namespace Eegeo
                 Eegeo_DELETE(m_pStateButtonBuilding);
                 Eegeo_DELETE(m_pStateButtonPOI);
                 Eegeo_DELETE(m_pPlayButton);
+
+                Eegeo_DELETE m_pSplashScreenModelFactory;
+
+                m_sceneModelRenderableFilter.RemoveSceneModel(m_pSplashScreenModel->GetSceneModel());
+                Eegeo_DELETE m_pSplashScreenModel;
             }
             
             void SplashScreen::Update(float dt)

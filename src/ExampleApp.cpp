@@ -12,6 +12,7 @@
 
 // Modules
 #include "MapModule.h"
+#include "SceneModelsModule.h"
 #include "TerrainModelModule.h"
 #include "GlobalFogging.h"
 #include "CityThemesModule.h"
@@ -272,9 +273,10 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, *m_pWorldMenuLoaderModel, headTracker, appConfig);
     
     m_pUIGazeView->HideView();
+
+    Eegeo::Modules::Core::SceneModelsModule& sceneModelsModule = pWorld->GetCoreModule().GetSceneModelsModule();
     
-    m_pSplashScreen = Eegeo_NEW(Eegeo::UI::SplashScreen::SplashScreen)(*m_pExampleController, *m_pUIInteractionController, *m_pUIRenderableFilter, *m_pQuadFactory, appConfig.JumpPointsSpriteSheet(), m_progressBarConfig, m_splashPlayButtonCallback);
-    
+    m_pSplashScreen = Eegeo_NEW(Eegeo::UI::SplashScreen::SplashScreen)(sceneModelsModule.GetLocalModelLoader(), sceneModelsModule.GetSceneModelRenderableFilter(), *m_pExampleController, *m_pUIInteractionController, *m_pUIRenderableFilter, *m_pQuadFactory, appConfig.JumpPointsSpriteSheet(), m_progressBarConfig, m_splashPlayButtonCallback);
     
 }
 
