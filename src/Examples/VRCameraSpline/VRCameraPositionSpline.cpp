@@ -108,7 +108,7 @@ namespace Eegeo
         
         void VRCameraPositionSpline::NextSpline()
         {
-            const int MaxSpline = 9;
+            const int MaxSpline = 8;
             m_time = 0.0f;
             ++m_currentSpline;
             if (m_currentSpline > MaxSpline)
@@ -335,26 +335,7 @@ namespace Eegeo
                 }
                     
                     
-                case 8: // 7 STOP POINT
-                {
-                    
-                    
-                    std::vector<Eegeo::dv3> points;
-                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.763647, -73.973468, 25).ToECEF());
-                    points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.764722, -73.972690, 25).ToECEF());
-                    
-                    std::vector<Eegeo::dv3>::iterator it;
-                    for(it = points.begin(); it < points.end()-1; it++){
-                        Eegeo::dv3 point = *(it+1) - *it;
-                        Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(*it, Eegeo::v3(point.GetX(), point.GetY(), point.GetZ()));
-                        orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
-                        AddPoint(*it, orientation);
-                    }
-                    break;
-                }
-                    
-                    
-                case 9: // NY
+                case 8: // NY
                 {
                     
                     orientation.SetFromBasis(Eegeo::v3(-0.003297,-0.301644,0.953413),Eegeo::v3(0.728825,0.652078,0.208825),Eegeo::v3(0.684698,-0.695559,-0.217691));
