@@ -11,12 +11,15 @@ namespace Eegeo
     {
         namespace SplashScreen
         {
+            typedef std::vector<std::string> TMaterialNames;
+
             class ISplashScreenModelFactory
             {
             public:
                 virtual ~ISplashScreenModelFactory() {};
 
                 virtual SplashScreenModel* CreateSplashScreenModel(const std::string& assetPath,
+                                                                   const TMaterialNames& materialNames,
                                                                    const Eegeo::dv3& position,
                                                                    float absoluteHeadingDegrees) = 0;
             };

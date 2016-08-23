@@ -11,7 +11,8 @@ namespace Eegeo
     {
         namespace SplashScreen
         {
-            SplashScreen::SplashScreen(Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader
+            SplashScreen::SplashScreen(Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
+                                       Eegeo::Rendering::SceneModels::SceneModelFactory::TMaterialRepo& sceneModelMaterials
                                        , Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter
                                        , Eegeo::UI::IUICameraProvider& uICameraProvider
                                        , UIInteractionController& uiInteractionController
@@ -61,9 +62,15 @@ namespace Eegeo
                 
                 
                 
-                m_pSplashScreenModelFactory = Eegeo_NEW(SplashScreenModelFactory)(sceneModelLoader);
+                m_pSplashScreenModelFactory = Eegeo_NEW(SplashScreenModelFactory)(sceneModelLoader, sceneModelMaterials);
 
-                m_pSplashScreenModel = m_pSplashScreenModelFactory->CreateSplashScreenModel("vr_splash_screen/WelcomeScreen.POD", Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250).ToECEF(), 110);
+                TMaterialNames materialNames;
+
+                materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_mesh_gradient");
+                materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_eeGeo_logo");
+                materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_alt_text");
+
+                m_pSplashScreenModel = m_pSplashScreenModelFactory->CreateSplashScreenModel("vr_splash_screen/WelcomeScreen.POD", materialNames, Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250).ToECEF(), 110);
 
                 m_sceneModelRenderableFilter.AddSceneModel(m_pSplashScreenModel->GetSceneModel());
             }
@@ -92,6 +99,7 @@ namespace Eegeo
                 m_pStateButtonBuilding->Update(dt);
                 m_pStateButtonPOI->Update(dt);
                 m_pPlayButton->Update(dt);
+                m_pSplashScreenModel->Update(dt);
             }
             
             void SplashScreen::StateButtonClicked()
@@ -110,6 +118,7 @@ namespace Eegeo
                 m_pStateButtonBuilding->Hide();
                 m_pStateButtonPOI->Hide();
                 m_pPlayButton->SetItemShouldRender(false);
+                m_pSplashScreenModel->SetShouldDisplay(false);
             }
             
             void SplashScreen::Show()
@@ -118,6 +127,7 @@ namespace Eegeo
                 m_pStateButtonBuilding->Show();
                 m_pStateButtonPOI->Show();
                 m_pPlayButton->SetItemShouldRender(true);
+                m_pSplashScreenModel->SetShouldDisplay(true);
             }
             
         }

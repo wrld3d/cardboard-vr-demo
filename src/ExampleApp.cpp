@@ -276,7 +276,16 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
     Eegeo::Modules::Core::SceneModelsModule& sceneModelsModule = pWorld->GetCoreModule().GetSceneModelsModule();
     
-    m_pSplashScreen = Eegeo_NEW(Eegeo::UI::SplashScreen::SplashScreen)(sceneModelsModule.GetLocalModelLoader(), sceneModelsModule.GetSceneModelRenderableFilter(), *m_pExampleController, *m_pUIInteractionController, *m_pUIRenderableFilter, *m_pQuadFactory, appConfig.JumpPointsSpriteSheet(), m_progressBarConfig, m_splashPlayButtonCallback);
+    m_pSplashScreen = Eegeo_NEW(Eegeo::UI::SplashScreen::SplashScreen)(sceneModelsModule.GetLocalModelLoader(),
+                                                                       sceneModelsModule.GetMaterialResourceRepository(),
+                                                                       sceneModelsModule.GetSceneModelRenderableFilter(),
+                                                                       *m_pExampleController,
+                                                                       *m_pUIInteractionController,
+                                                                       *m_pUIRenderableFilter,
+                                                                       *m_pQuadFactory,
+                                                                       appConfig.JumpPointsSpriteSheet(),
+                                                                       m_progressBarConfig,
+                                                                       m_splashPlayButtonCallback);
     
 }
 

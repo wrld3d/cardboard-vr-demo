@@ -42,7 +42,8 @@ namespace Eegeo
                 void PlayButtonClicked();
                 
             public:
-                SplashScreen(Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader
+                SplashScreen(Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
+                             Eegeo::Rendering::SceneModels::SceneModelFactory::TMaterialRepo& sceneModelMaterials
                              , Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter
                              , Eegeo::UI::IUICameraProvider& uICameraProvider
                              , UIInteractionController& uiInteractionController
