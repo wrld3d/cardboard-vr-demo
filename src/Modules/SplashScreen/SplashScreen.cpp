@@ -63,8 +63,7 @@ namespace Eegeo
                 
                 m_pSplashScreenModelFactory = Eegeo_NEW(SplashScreenModelFactory)(sceneModelLoader);
 
-                m_pSplashScreenModel = m_pSplashScreenModelFactory->CreateSplashScreenModel("vr_splash_screen/WelcomeScreen.POD", Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 100).ToECEF(), 110);
-                m_pSplashScreenModel->SetScale(100);
+                m_pSplashScreenModel = m_pSplashScreenModelFactory->CreateSplashScreenModel("vr_splash_screen/WelcomeScreen.POD", Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250).ToECEF(), 110);
 
                 m_sceneModelRenderableFilter.AddSceneModel(m_pSplashScreenModel->GetSceneModel());
             }
