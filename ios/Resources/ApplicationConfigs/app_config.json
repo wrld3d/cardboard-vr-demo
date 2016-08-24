@@ -2,7 +2,7 @@
    "Name":"Eegeo Cardboard",
    "StartLocationLatitude":56.456160,
    "StartLocationLongitude":-2.966101,
-   "StartLocationAltitude":250,
+   "StartLocationAltitude":550,
    "StartLocationOrientationDegrees":0.0,
    "EegeoApiKey":"INSERT_API_KEY_HERE",
    "CoverageTreeManifestURL":"http://cdn1.eegeo.com/coverage-trees/vprivateglobal/v465/manifest.bin.gz",
