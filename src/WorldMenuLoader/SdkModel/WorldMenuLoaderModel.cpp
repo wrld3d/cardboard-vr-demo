@@ -3,8 +3,6 @@
 #include "WorldMenuLoaderModel.h"
 #include "ApplicationConfiguration.h"
 
-#define SCREEN_FADE_TRANSITION_TIME 1.0f
-
 namespace Examples
 {
     namespace WorldMenuLoader
@@ -12,16 +10,16 @@ namespace Examples
         namespace SdkModel
         {
             WorldMenuLoaderModel::WorldMenuLoaderModel(Eegeo::UI::WorldMenu::WorldMenuItemRepository& menuItemRepository,
-                                                       Eegeo::VR::Distortion::IVRDistortionTransitionModel& screenTransisionModel,
+                                                       ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
                                                        const ApplicationConfig::ApplicationConfiguration& appConfig)
             : m_menuItemRepository(menuItemRepository)
+            , m_screenFader(screenFader)
             , m_worldMenuItemGazeCallback(this, &WorldMenuLoaderModel::OnWorldMenuItemGazed)
             , m_screenVisibilityChanged(this, &WorldMenuLoaderModel::OnScreenVisiblityChanged)
             , m_locationHasChanged(false)
             {
                 m_shouldRunVRSpline = false;
-                m_pScreenFader = Eegeo_NEW(WorldMenuScreenFader)(screenTransisionModel, SCREEN_FADE_TRANSITION_TIME);
-                m_pScreenFader->RegisterVisibilityChangedCallback(m_screenVisibilityChanged);
+                m_screenFader.RegisterVisibilityChangedCallback(m_screenVisibilityChanged);
 
                 const ApplicationConfig::TWorldLocations& worldLocations = appConfig.GetLocations();
 
@@ -58,13 +56,7 @@ namespace Examples
                     Eegeo_DELETE menuItem;
                 }
 
-                m_pScreenFader->UnregisterVisibilityChangedCallback(m_screenVisibilityChanged);
-                Eegeo_DELETE m_pScreenFader;
-            }
-
-            void WorldMenuLoaderModel::Update(float dt)
-            {
-                m_pScreenFader->Update(dt);
+                m_screenFader.UnregisterVisibilityChangedCallback(m_screenVisibilityChanged);
             }
 
             const std::string& WorldMenuLoaderModel::GetCurrentSelectedLocation() const
@@ -87,30 +79,25 @@ namespace Examples
                     m_shouldRunVRSpline = false;
                     const std::string *str = static_cast<const std::string *>(menuItem.GetUserData());
                     m_selectedLocation = *str;
-                    m_pScreenFader->SetShouldFadeToBlack(true);
+                    m_screenFader.SetShouldFadeToBlack(true);
                     m_locationHasChanged = true;
                 }
                 else if (menuItem.GetId()==4)
                 {
                     m_shouldRunVRSpline = true;
-                    m_pScreenFader->SetShouldFadeToBlack(true);
+                    m_screenFader.SetShouldFadeToBlack(true);
                     m_locationHasChanged = true;
                 }
             }
 
-            void WorldMenuLoaderModel::OnScreenVisiblityChanged(WorldMenuScreenFader::VisibilityState &visbilityState)
+            void WorldMenuLoaderModel::OnScreenVisiblityChanged(ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState &visbilityState)
             {
-                if (visbilityState == WorldMenuScreenFader::VisibilityState::FullyFaded && m_locationHasChanged)
+                if (visbilityState == ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState::FullyFaded && m_locationHasChanged)
                 {
                     NotifyLocationChange(m_selectedLocation);
-                    m_pScreenFader->SetShouldFadeToBlack(false);
+                    m_screenFader.SetShouldFadeToBlack(false);
                     m_locationHasChanged = false;
                 }
-            }
-
-            WorldMenuScreenFader& WorldMenuLoaderModel::GetWorldMenuScreenFader()
-            {
-                return *m_pScreenFader;
             }
 
             void WorldMenuLoaderModel::NotifyLocationChange(std::string& location)

@@ -17,7 +17,7 @@ namespace Examples
                                                                InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                                Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                                                                Eegeo::UI::IUIQuadFactory& quadFactory,
-                                                               WorldMenuLoader::SdkModel::WorldMenuScreenFader& screenFader)
+                                                               ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader)
     : m_world(world)
     , m_headTracker(headTracker)
     , m_screenPropertiesProvider(screenPropertiesProvider)

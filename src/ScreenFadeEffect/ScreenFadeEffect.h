@@ -2,16 +2,13 @@
 
 #pragma once
 
-#include <map>
-#include <vector>
-
 namespace Examples
 {
-    namespace WorldMenuLoader
+    namespace ScreenFadeEffect
     {
         namespace SdkModel
         {
-            class WorldMenuLoaderModel;
+            class ScreenFadeEffectController;
         }
     }
 }

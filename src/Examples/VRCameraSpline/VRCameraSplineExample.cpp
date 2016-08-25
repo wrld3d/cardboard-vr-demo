@@ -35,7 +35,7 @@ namespace Examples
                                                  InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                  Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                                                  Eegeo::UI::IUIQuadFactory& quadFactory,
-                                                 WorldMenuLoader::SdkModel::WorldMenuScreenFader& screenFader)
+                                                 ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader)
     : m_world(eegeoWorld),
       m_interiorsExplorerModule(interiorsExplorerModule),
       m_deadZoneRepository(deadZoneRepository),
@@ -233,9 +233,9 @@ namespace Examples
         m_pSplineCameraController->PlaySpline(9);
     }
 
-    void VRCameraSplineExample::OnScreenVisiblityChanged(WorldMenuLoader::SdkModel::WorldMenuScreenFader::VisibilityState& visbilityState)
+    void VRCameraSplineExample::OnScreenVisiblityChanged(ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState& visbilityState)
     {
-        if (visbilityState == WorldMenuLoader::SdkModel::WorldMenuScreenFader::VisibilityState::FullyFaded && m_splineChanged)
+        if (visbilityState == ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState::FullyFaded && m_splineChanged)
         {
             m_screenFader.SetShouldFadeToBlack(false);
             m_splineChanged = false;

@@ -146,6 +146,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_worldMenuItemGazeCallback(this, &ExampleApp::OnWorldMenuItemGazed)
     , m_getJumpPointStartPositionOrientation(this, &ExampleApp::GetJumpPointStartPositionOrientation)
     , m_locationChangedCallback(this, &ExampleApp::OnLocationChanged)
+    , m_pScreenFadeEffectController(NULL)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -261,9 +262,10 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_pWorldMenuModule = Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuModule)(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController,*m_pExampleController, appConfig.JumpPointsSpriteSheet(), m_progressBarConfig, appConfig.JumpPointsSpriteSheetSize());
     m_pWorldMenuModule->SetMenuShouldDisplay(true);
-    
 
-    m_pWorldMenuLoaderModel = Eegeo_NEW(Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel)(m_pWorldMenuModule->GetRepository(), m_pVRDistortion->GetTransionModel(), appConfig);
+    m_pScreenFadeEffectController = Eegeo_NEW(Examples::ScreenFadeEffect::SdkModel::ScreenFadeEffectController)(m_pVRDistortion->GetTransionModel(), 1.f);
+
+    m_pWorldMenuLoaderModel = Eegeo_NEW(Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel)(m_pWorldMenuModule->GetRepository(), *m_pScreenFadeEffectController, appConfig);
     m_pWorldMenuLoaderModel->RegisterLocationChangedCallback(m_locationChangedCallback);
     
 
@@ -274,7 +276,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                                                             headTracker,
                                                                                                             m_pDeadZoneMenuModule->GetRepository(),
                                                                                                             *m_pQuadFactory,
-                                                                                                            m_pWorldMenuLoaderModel->GetWorldMenuScreenFader());
+                                                                                                            *m_pScreenFadeEffectController);
 
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, *m_pWorldMenuLoaderModel, headTracker, appConfig);
     
@@ -327,6 +329,8 @@ ExampleApp::~ExampleApp()
     Eegeo_DELETE m_pWorldMenuLoaderModel;
 
     Eegeo_DELETE m_pWorldMenuModule;
+
+    Eegeo_DELETE m_pScreenFadeEffectController;
 
     Eegeo_DELETE m_pDeadZoneMenuModule;
     Eegeo_DELETE m_pMenuItem1;
@@ -403,7 +407,7 @@ void ExampleApp::Update (float dt, float headTansform[])
         Eegeo::v2 center = m_pVRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
         m_pUIInteractionController->Event_ScreenInteractionMoved(center);
         m_pInteriorExplorerModule ->Update(dt);
-        m_pWorldMenuLoaderModel->Update(dt);
+        m_pScreenFadeEffectController->Update(dt);
     }
     
     UpdateNightTParam(dt);

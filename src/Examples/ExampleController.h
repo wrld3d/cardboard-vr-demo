@@ -25,6 +25,7 @@
 #include <string>
 #include "ApplicationConfiguration.h"
 #include "WorldMenuLoaderModel.h"
+#include "IScreenFadeEffectController.h"
 
 namespace Examples
 {
@@ -126,7 +127,7 @@ namespace Examples
                                                        Examples::IVRHeadTracker& headTracker,
                                                        Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                                                        Eegeo::UI::IUIQuadFactory& quadFactory,
-                                                       WorldMenuLoader::SdkModel::WorldMenuScreenFader& screenFader)
+                                                       ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader)
         {
             m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world,
                                                               m_defaultCameraControllerFactory,

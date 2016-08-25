@@ -18,7 +18,7 @@
 #include "RenderableFilters.h"
 #include "WelcomeNoteViewer.h"
 #include "UIRenderableFilter.h"
-#include "WorldMenuScreenFader.h"
+#include "IScreenFadeEffectController.h"
 
 namespace Examples
 {
@@ -49,8 +49,8 @@ private:
     Eegeo::UI::UIRenderableFilter* m_pUIRenderableFilter;
     WelcomeNoteViewer* m_pWelcomeNoteViewer;
 
-    WorldMenuLoader::SdkModel::WorldMenuScreenFader& m_screenFader;
-    Eegeo::Helpers::TCallback1<VRCameraSplineExample, WorldMenuLoader::SdkModel::WorldMenuScreenFader::VisibilityState&> m_screenVisibilityChanged;
+    ScreenFadeEffect::SdkModel::IScreenFadeEffectController& m_screenFader;
+    Eegeo::Helpers::TCallback1<VRCameraSplineExample, ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState&> m_screenVisibilityChanged;
     bool m_splineChanged;
 
     Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onSplineEndedCallback;
@@ -59,7 +59,7 @@ private:
     void OnSplineEnded();
 
     void ShowWelcomeNote();
-    void OnScreenVisiblityChanged(WorldMenuLoader::SdkModel::WorldMenuScreenFader::VisibilityState& visbilityState);
+    void OnScreenVisiblityChanged(ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState& visbilityState);
 
 public:
     
@@ -71,7 +71,7 @@ public:
                           InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                           Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                           Eegeo::UI::IUIQuadFactory& quadFactory,
-                          WorldMenuLoader::SdkModel::WorldMenuScreenFader& screenFader);
+                          ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader);
 
     virtual ~VRCameraSplineExample();
     

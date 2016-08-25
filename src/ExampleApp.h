@@ -29,6 +29,7 @@
 #include "Modules/DeadZoneMenu/DeadZoneMenu.h"
 #include "ApplicationConfiguration.h"
 #include "WorldMenuLoaderModel.h"
+#include "ScreenFadeEffectController.h"
 
 #include "Logger.h"
 #include "ICallback.h"
@@ -56,6 +57,7 @@ private:
     Eegeo::Streaming::CameraFrustumStreamingVolume* m_pStreamingVolume;
     
     Eegeo::VR::Distortion::VRDistortionModule* m_pVRDistortion;
+    Examples::ScreenFadeEffect::SdkModel::ScreenFadeEffectController* m_pScreenFadeEffectController;
     Eegeo::Skybox::SkyboxModule *m_pVRSkybox;
 
     Eegeo::UI::UIInteractionController *m_pUIInteractionController;

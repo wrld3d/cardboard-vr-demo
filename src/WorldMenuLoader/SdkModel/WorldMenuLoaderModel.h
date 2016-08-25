@@ -5,7 +5,7 @@
 #include "Types.h"
 #include "IVRDistortionTransitionModel.h"
 #include "ICallback.h"
-#include "WorldMenuScreenFader.h"
+#include "IScreenFadeEffectController.h"
 #include "WorldMenuItemRepository.h"
 #include "ApplicationConfig.h"
 
@@ -21,14 +21,12 @@ namespace Examples
             {
             public:
                 WorldMenuLoaderModel(Eegeo::UI::WorldMenu::WorldMenuItemRepository& menuItemRepository,
-                                     Eegeo::VR::Distortion::IVRDistortionTransitionModel& screenTransisionModel,
+                                     ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
                                      const ApplicationConfig::ApplicationConfiguration& appConfig);
                 ~WorldMenuLoaderModel();
 
                 void OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem);
-                void OnScreenVisiblityChanged(WorldMenuScreenFader::VisibilityState& visbilityState);
-
-                void Update(float dt);
+                void OnScreenVisiblityChanged(ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState& visbilityState);
 
                 const std::string& GetCurrentSelectedLocation() const;
 
@@ -36,12 +34,10 @@ namespace Examples
                 void UnregisterLocationChangedCallback(Eegeo::Helpers::ICallback1<std::string&>& callback);
 
                 bool GetShouldRunVRSpline(){return m_shouldRunVRSpline;}
-
-                WorldMenuScreenFader& GetWorldMenuScreenFader();
                 
             private:
                 Eegeo::UI::WorldMenu::WorldMenuItemRepository& m_menuItemRepository;
-                WorldMenuScreenFader* m_pScreenFader;
+                ScreenFadeEffect::SdkModel::IScreenFadeEffectController& m_screenFader;
 
                 typedef std::vector<Eegeo::UI::WorldMenu::WorldMenuItem*> TWorldMenuItems;
                 TWorldMenuItems  m_pWorldMenuItems;
@@ -50,7 +46,7 @@ namespace Examples
                 bool m_locationHasChanged;
 
                 Eegeo::Helpers::TCallback1<WorldMenuLoaderModel, Eegeo::UI::WorldMenu::WorldMenuItem&> m_worldMenuItemGazeCallback;
-                Eegeo::Helpers::TCallback1<WorldMenuLoaderModel, WorldMenuScreenFader::VisibilityState&> m_screenVisibilityChanged;
+                Eegeo::Helpers::TCallback1<WorldMenuLoaderModel, ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState&> m_screenVisibilityChanged;
 
                 Eegeo::Helpers::CallbackCollection1<std::string&> m_locationChangedCallbacks;
                 
