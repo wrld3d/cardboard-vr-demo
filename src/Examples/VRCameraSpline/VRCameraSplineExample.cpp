@@ -22,51 +22,104 @@
 
 namespace Examples
 {
+    const float WelcomeMessageFadeSpeed = 0.5f;
+    const float WelcomeMessageFadeDelay = 3.0f;
+    const Eegeo::v2 WelcomeMessageSize = Eegeo::v2(48,3);
+    const float WelcomeNoteDistanceFromCamera = 50.f;
+
     VRCameraSplineExample::VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
                                                  Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
                                                  Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                                                  IVRHeadTracker& headTracker,
                                                  const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
                                                  InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                                                 Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository)
+                                                 Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
+                                                 Eegeo::UI::IUIQuadFactory& quadFactory,
+                                                 WorldMenuLoader::SdkModel::WorldMenuScreenFader& screenFader)
     : m_world(eegeoWorld),
       m_interiorsExplorerModule(interiorsExplorerModule),
       m_deadZoneRepository(deadZoneRepository),
       m_onSFSplineSelectedCallback(this, &VRCameraSplineExample::OnSFSplineSelected),
       m_onNYSplineSelectedCallback(this, &VRCameraSplineExample::OnNYSplineSelected),
-      m_onWestPortSplineSelectedCallback(this, &VRCameraSplineExample::OnWestPortSplineSelected)
+      m_onWestPortSplineSelectedCallback(this, &VRCameraSplineExample::OnWestPortSplineSelected),
+      m_uiQuadFactory(quadFactory),
+      m_screenFader(screenFader),
+      m_renderableFilters(eegeoWorld.GetRenderingModule().GetRenderableFilters()),
+      m_onSplineEndedCallback(this, &VRCameraSplineExample::OnSplineEnded),
+      m_screenVisibilityChanged(this, &VRCameraSplineExample::OnScreenVisiblityChanged),
+      m_splineChanged(false),
+      m_shouldUpdateWelcomeNote(false),
+      m_pUIRenderableFilter(NULL),
+      m_pWelcomeNoteViewer(NULL)
     {
         NotifyScreenPropertiesChanged(initialScreenProperties);
         Eegeo::m44 projectionMatrix = Eegeo::m44(pCameraController->GetRenderCamera().GetProjectionMatrix());
         m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight(), headTracker);
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
+
+        m_pUIRenderableFilter = Eegeo_NEW(Eegeo::UI::UIRenderableFilter)();
+        m_pWelcomeNoteViewer = Eegeo_NEW(WelcomeNoteViewer)(m_uiQuadFactory, *m_pUIRenderableFilter);
+
+        m_pSFSplineButton = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 3, m_onSFSplineSelectedCallback);
+        m_pNYSplineButton = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(11, 4, m_onNYSplineSelectedCallback);
+        m_pWPSplineButton = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(12, 5, m_onWestPortSplineSelectedCallback);
     }
     
-    VRCameraSplineExample::~VRCameraSplineExample(){
-//        delete m_pSplineCameraController;
+    VRCameraSplineExample::~VRCameraSplineExample()
+    {
+        Eegeo_DELETE m_pWelcomeNoteViewer;
+
+        Eegeo_DELETE m_pSFSplineButton;
+        Eegeo_DELETE m_pNYSplineButton;
+        Eegeo_DELETE m_pWPSplineButton;
+
+        Eegeo_DELETE m_pUIRenderableFilter;
+
+        Eegeo_DELETE m_pSplineCameraController;
     }
     
     void VRCameraSplineExample::Start()
     {
+        m_renderableFilters.AddRenderableFilter(*m_pUIRenderableFilter);
         
         Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250);
         m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla);
-        
-        m_pSFSplineButton = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(10, 3, m_onSFSplineSelectedCallback);
-        m_pNYSplineButton = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(11, 4, m_onNYSplineSelectedCallback);
-        m_pWPSplineButton = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(12, 5, m_onWestPortSplineSelectedCallback);
 
+        m_pSplineCameraController->RegisterSplineFinishedCallback(m_onSplineEndedCallback);
+        m_screenFader.RegisterVisibilityChangedCallback(m_screenVisibilityChanged);
+
+        ShowWelcomeNote();
     }
     
     void VRCameraSplineExample::Suspend()
     {
+        m_screenFader.UnregisterVisibilityChangedCallback(m_screenVisibilityChanged);
+        m_pSplineCameraController->UnregisterSplineFinishedCallback(m_onSplineEndedCallback);
+
         m_interiorsExplorerModule.ForceLeaveInterior();
-        
-        
-        Eegeo_DELETE m_pSFSplineButton;
-        Eegeo_DELETE m_pNYSplineButton;
-        Eegeo_DELETE m_pWPSplineButton;
+
+        m_renderableFilters.RemoveRenderableFilter(*m_pUIRenderableFilter);
+
+    }
+
+    void VRCameraSplineExample::OnSplineEnded()
+    {
+        m_screenFader.SetShouldFadeToBlack(true);
+        m_splineChanged = true;
+    }
+
+    void VRCameraSplineExample::ShowWelcomeNote()
+    {
+        if (m_pSplineCameraController->GetVRCameraPositionSpline().GetCurrentSplineHasWelcomeNote())
+        {
+            m_pWelcomeNoteViewer->ShowWelcomeNote(m_pSplineCameraController->GetVRCameraPositionSpline().GetCurrentSplineWelcomeNote(),
+                                                  WelcomeMessageFadeSpeed,
+                                                  WelcomeMessageFadeDelay,
+                                                  WelcomeMessageSize);
+
+            m_shouldUpdateWelcomeNote = true;
+        }
     }
     
     void VRCameraSplineExample::UpdateCardboardProfile(float cardboardProfile[])
@@ -78,19 +131,33 @@ namespace Examples
     void VRCameraSplineExample::EarlyUpdate(float dt)
     {
         m_pSplineCameraController->Update(dt);
-        
-            if (m_pSplineCameraController->GetVRCameraPositionSpline().IsInteriorSpline()) {
-                m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
-                
-                m_interiorsExplorerModule.ForceEnterInterior(2);
-            }
-            else {
-                m_pSplineCameraController->SetNearMultiplier(EXTERIOR_NEAR_MULTIPLIER);
-                m_interiorsExplorerModule.ForceLeaveInterior();
-            }
-        
+
+        if (m_pSplineCameraController->GetVRCameraPositionSpline().IsInteriorSpline())
+        {
+            m_pSplineCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
+            m_interiorsExplorerModule.ForceEnterInterior(2);
+        }
+        else
+        {
+            m_pSplineCameraController->SetNearMultiplier(EXTERIOR_NEAR_MULTIPLIER);
+            m_interiorsExplorerModule.ForceLeaveInterior();
+        }
+
     }
-    
+
+    void VRCameraSplineExample::Update(float dt)
+    {
+        m_pWelcomeNoteViewer->Update(dt);
+
+        if (m_shouldUpdateWelcomeNote)
+        {
+            m_shouldUpdateWelcomeNote = false;
+            Eegeo::v3 forward = Eegeo::v3::Cross(m_pSplineCameraController->GetOrientation().GetRow(0), m_pSplineCameraController->GetCameraPosition().ToSingle().Norm());
+            Eegeo::dv3 position(m_pSplineCameraController->GetCameraPosition() + (forward*WelcomeNoteDistanceFromCamera));
+            m_pWelcomeNoteViewer->SetPosition(position);
+        }
+    }
+
     void VRCameraSplineExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
     {
     }
@@ -164,5 +231,17 @@ namespace Examples
     void VRCameraSplineExample::OnNYSplineSelected()
     {
         m_pSplineCameraController->PlaySpline(9);
+    }
+
+    void VRCameraSplineExample::OnScreenVisiblityChanged(WorldMenuLoader::SdkModel::WorldMenuScreenFader::VisibilityState& visbilityState)
+    {
+        if (visbilityState == WorldMenuLoader::SdkModel::WorldMenuScreenFader::VisibilityState::FullyFaded && m_splineChanged)
+        {
+            m_screenFader.SetShouldFadeToBlack(false);
+            m_splineChanged = false;
+
+            m_pSplineCameraController->PlayNextSpline();
+            ShowWelcomeNote();
+        }
     }
 }

@@ -269,7 +269,13 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
     m_worldMenuItemSelected = 1;
 
-    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_pInteriorExplorerModule, headTracker, m_pDeadZoneMenuModule->GetRepository());
+    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider,
+                                                                                                            *m_pInteriorExplorerModule,
+                                                                                                            headTracker,
+                                                                                                            m_pDeadZoneMenuModule->GetRepository(),
+                                                                                                            *m_pQuadFactory,
+                                                                                                            m_pWorldMenuLoaderModel->GetWorldMenuScreenFader());
+
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, *m_pWorldMenuLoaderModel, headTracker, appConfig);
     
     m_pUIGazeView->HideView();

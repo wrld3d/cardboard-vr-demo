@@ -5,6 +5,8 @@
 #include "Types.h"
 #include "CatmullRomSpline.h"
 #include "VectorMathDecl.h"
+#include "ICallback.h"
+#include "CallbackCollection.h"
 
 namespace Eegeo
 {
@@ -19,6 +21,7 @@ namespace Eegeo
             , m_time(0.0)
             , m_slowDownFactor(0.0f)
             , m_currentSpline(0)
+            , m_currentSplineHasWelcomeNote(false)
             {
                 SetSpline(m_currentSpline);
             }
@@ -49,6 +52,10 @@ namespace Eegeo
             void NextSpline();
             void SetSpline(int splineId);
             void GetCurrentCameraPosition(dv3& interpolatedPositionEcef, m33& interpolatedOrientation) const;
+
+            bool GetCurrentSplineHasWelcomeNote() const;
+            const std::string& GetCurrentSplineWelcomeNote() const;
+
         private:
             Geometry::CatmullRomSpline m_positionSpline;
             Geometry::CatmullRomSpline m_forwardSpline;
@@ -61,6 +68,9 @@ namespace Eegeo
             
             float m_slowDownFactor;
             float m_currentPlaybackSpeed;
+
+            bool m_currentSplineHasWelcomeNote;
+            std::string m_welcomeNote;
         };
     }
 }

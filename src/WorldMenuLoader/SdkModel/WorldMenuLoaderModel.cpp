@@ -17,6 +17,7 @@ namespace Examples
             : m_menuItemRepository(menuItemRepository)
             , m_worldMenuItemGazeCallback(this, &WorldMenuLoaderModel::OnWorldMenuItemGazed)
             , m_screenVisibilityChanged(this, &WorldMenuLoaderModel::OnScreenVisiblityChanged)
+            , m_locationHasChanged(false)
             {
                 m_shouldRunVRSpline = false;
                 m_pScreenFader = Eegeo_NEW(WorldMenuScreenFader)(screenTransisionModel, SCREEN_FADE_TRANSITION_TIME);
@@ -87,21 +88,29 @@ namespace Examples
                     const std::string *str = static_cast<const std::string *>(menuItem.GetUserData());
                     m_selectedLocation = *str;
                     m_pScreenFader->SetShouldFadeToBlack(true);
+                    m_locationHasChanged = true;
                 }
                 else if (menuItem.GetId()==4)
                 {
                     m_shouldRunVRSpline = true;
                     m_pScreenFader->SetShouldFadeToBlack(true);
+                    m_locationHasChanged = true;
                 }
             }
 
             void WorldMenuLoaderModel::OnScreenVisiblityChanged(WorldMenuScreenFader::VisibilityState &visbilityState)
             {
-                if (visbilityState == WorldMenuScreenFader::VisibilityState::FullyFaded)
+                if (visbilityState == WorldMenuScreenFader::VisibilityState::FullyFaded && m_locationHasChanged)
                 {
                     NotifyLocationChange(m_selectedLocation);
                     m_pScreenFader->SetShouldFadeToBlack(false);
+                    m_locationHasChanged = false;
                 }
+            }
+
+            WorldMenuScreenFader& WorldMenuLoaderModel::GetWorldMenuScreenFader()
+            {
+                return *m_pScreenFader;
             }
 
             void WorldMenuLoaderModel::NotifyLocationChange(std::string& location)

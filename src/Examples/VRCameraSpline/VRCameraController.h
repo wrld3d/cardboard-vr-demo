@@ -52,6 +52,7 @@ namespace Eegeo
             , m_shiftDown(false)
             , m_nearMultiplier(0.1f)
             , m_pHeadTracker(headTracker)
+            , m_isPlaying(true)
             {
                 m_renderCamera = new Camera::RenderCamera();
                 m_orientation.Identity();
@@ -110,6 +111,11 @@ namespace Eegeo
             m33& GetOrientation();
             
             void PlaySpline(int splineID);
+
+            void PlayNextSpline();
+
+            void RegisterSplineFinishedCallback(Helpers::ICallback0 &callback);
+            void UnregisterSplineFinishedCallback(Helpers::ICallback0 &callback);
             
         private:
             bool CanAcceptUserInput() const;
@@ -149,6 +155,9 @@ namespace Eegeo
             m33 m_currentOrientation;
             m33 m_headTrackerOrientation;
             float m_nearMultiplier;
+
+            Helpers::CallbackCollection0 m_splineEndedCallbacks;
+            bool m_isPlaying;
 
         };
     }
