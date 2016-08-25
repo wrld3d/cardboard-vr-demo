@@ -149,6 +149,13 @@ public class BackgroundThreadActivity extends MainActivity
 
 		m_headTracker.resetTracker();
 		
+		runOnNativeThread(new Runnable()
+		{
+			public void run()
+			{
+				m_threadedRunner.ResetHeadTransform();
+			}
+		});
 	}
 	
 	@SuppressLint("InlinedApi") 
@@ -304,11 +311,16 @@ public class BackgroundThreadActivity extends MainActivity
 		{
 			m_nativeThreadHandler.post(runnable);
 		}
+		
+		public void ResetHeadTransform()
+		{
+			smoothHeadTransform = null; //Reset the head transform
+		}
 
 		public void start()
 		{
 			m_running = true;
-			smoothHeadTransform = null; //Reset the head transform
+			ResetHeadTransform();
 		}
 
 		public void stop()
