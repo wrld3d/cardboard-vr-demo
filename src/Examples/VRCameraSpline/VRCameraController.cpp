@@ -127,26 +127,12 @@ namespace Eegeo
                     m_splineEndedCallbacks.ExecuteCallbacks();
 
                 }
-                m_vrCameraPositionSpline.Update(dt);
-                m_vrCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
             }
-            else if(IsFalling())
-            {
-                Fall(dt);
-            }
-            else if (IsFollowingSpline())
-            {
-                m_vrCameraPositionSpline.Update(dt);
-                m_vrCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
-            }
-            else
+            else if (!IsFollowingSpline())
             {
                 m_splineEndPauseTimeElapsed += dt;
                 if(m_splineEndPauseTimeElapsed > m_splineEndPauseTime || m_vrCameraPositionSpline.GetCurrentSplineID()!=2)
                 {
-                    m_vrCameraPositionSpline.Update(dt);
-                    m_vrCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
-
                     if (m_isPlaying)
                     {
                         m_isPlaying = false;
@@ -154,6 +140,9 @@ namespace Eegeo
                     }
                 }
             }
+
+            m_vrCameraPositionSpline.Update(dt);
+            m_vrCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
         }
         
         void VRCameraController::PlaySpline(int splineID)

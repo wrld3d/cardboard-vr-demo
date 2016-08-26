@@ -62,6 +62,7 @@ namespace Examples
                                                     m_quadFactory.CreateUIQuad(noteAssetPath,
                                                                              dimension));
         m_pNote->SetFadeTransitionSpeed(fadeSpeed);
+        m_pNote->SetAlpha(0.f);
         m_fadeDelay = fadeDelay;
     }
 }

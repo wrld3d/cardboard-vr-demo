@@ -28,7 +28,7 @@
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
 
 const float WelcomeMessageFadeSpeed = 0.5f;
-const float WelcomeMessageFadeDelay = 2.0f;
+const float WelcomeMessageFadeDelay = 4.0f;
 const Eegeo::v2 WelcomeMessageSize = Eegeo::v2(48,3);
 
 const float InteriorMenuFloorAngleThreshold = 70.f;

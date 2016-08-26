@@ -23,7 +23,7 @@
 namespace Examples
 {
     const float WelcomeMessageFadeSpeed = 0.5f;
-    const float WelcomeMessageFadeDelay = 3.0f;
+    const float WelcomeMessageFadeDelay = 4.0f;
     const Eegeo::v2 WelcomeMessageSize = Eegeo::v2(48,3);
     const float WelcomeNoteDistanceFromCamera = 50.f;
 
@@ -48,7 +48,6 @@ namespace Examples
       m_onSplineEndedCallback(this, &VRCameraSplineExample::OnSplineEnded),
       m_screenVisibilityChanged(this, &VRCameraSplineExample::OnScreenVisiblityChanged),
       m_splineChanged(false),
-      m_shouldUpdateWelcomeNote(false),
       m_pUIRenderableFilter(NULL),
       m_pWelcomeNoteViewer(NULL)
     {
@@ -117,8 +116,9 @@ namespace Examples
                                                   WelcomeMessageFadeSpeed,
                                                   WelcomeMessageFadeDelay,
                                                   WelcomeMessageSize);
-
-            m_shouldUpdateWelcomeNote = true;
+            Eegeo::v3 forward = Eegeo::v3::Cross(m_pSplineCameraController->GetOrientation().GetRow(0), m_pSplineCameraController->GetCameraPosition().ToSingle().Norm());
+            Eegeo::dv3 position(m_pSplineCameraController->GetCameraPosition() + (forward*WelcomeNoteDistanceFromCamera));
+            m_pWelcomeNoteViewer->SetPosition(position);
         }
     }
     
@@ -148,14 +148,6 @@ namespace Examples
     void VRCameraSplineExample::Update(float dt)
     {
         m_pWelcomeNoteViewer->Update(dt);
-
-        if (m_shouldUpdateWelcomeNote)
-        {
-            m_shouldUpdateWelcomeNote = false;
-            Eegeo::v3 forward = Eegeo::v3::Cross(m_pSplineCameraController->GetOrientation().GetRow(0), m_pSplineCameraController->GetCameraPosition().ToSingle().Norm());
-            Eegeo::dv3 position(m_pSplineCameraController->GetCameraPosition() + (forward*WelcomeNoteDistanceFromCamera));
-            m_pWelcomeNoteViewer->SetPosition(position);
-        }
     }
 
     void VRCameraSplineExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
@@ -241,6 +233,9 @@ namespace Examples
             m_splineChanged = false;
 
             m_pSplineCameraController->PlayNextSpline();
+        }
+        else if (visbilityState == ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState::FullyVisible)
+        {
             ShowWelcomeNote();
         }
     }

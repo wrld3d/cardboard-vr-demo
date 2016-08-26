@@ -55,7 +55,6 @@ private:
 
     Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onSplineEndedCallback;
 
-    bool m_shouldUpdateWelcomeNote;
     void OnSplineEnded();
 
     void ShowWelcomeNote();
