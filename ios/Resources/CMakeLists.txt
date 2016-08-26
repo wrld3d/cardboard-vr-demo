@@ -1,4 +1,5 @@
 set(resources ${resources}
+		Resources/ApplicationConfigs
 		Resources/DejaVuSansBold.fnt
 		Resources/DejaVuSansBold_0.png
 		Resources/embedded_manifest.txt
@@ -16,5 +17,6 @@ set(resources ${resources}
 		Resources/route_simulation_example
 		Resources/SplashScreen-1024x768.png
 		Resources/Textures
+		Resources/vr_splash_screen
 		ExampleApp/Images.xcassets
 )

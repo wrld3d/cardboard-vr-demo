@@ -21,7 +21,7 @@
 #include "ScreenProperties.h"
 #include "BuildingFootprintsModule.h"
 #include "CollisionVisualizationModule.h"
-
+#include "VRHeadTracker.h"
 namespace
 {
     Eegeo::Modules::BuildingFootprintsModule* CreateBuildingFootprintsModule(Eegeo::EegeoWorld& world, const Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule)
@@ -60,9 +60,10 @@ namespace
 using namespace Eegeo::iOS;
 
 AppHost::AppHost(
-                 const std::string& apiKey,
                  ViewController& viewController,
-                 const Eegeo::Rendering::ScreenProperties& screenProperties
+                 const Eegeo::Rendering::ScreenProperties& screenProperties,
+                 Examples::ApplicationConfig::ApplicationConfiguration& applicationConfiguration
+
                  )
     :m_viewController(viewController)
     ,m_pJpegLoader(NULL)
@@ -76,12 +77,13 @@ AppHost::AppHost(
 	,m_pApp(NULL)
     ,m_pCollisionVisualizationModule(NULL)
     ,m_pBuildingFootprintsModule(NULL)
+    ,m_applicationConfiguration(applicationConfiguration)
 {
 	m_piOSLocationService = new iOSLocationService();
 	   
     m_pJpegLoader = new Eegeo::Helpers::Jpeg::JpegLoader();
     
-    m_piOSPlatformAbstractionModule = new Eegeo::iOS::iOSPlatformAbstractionModule(*m_pJpegLoader, apiKey);
+    m_piOSPlatformAbstractionModule = new Eegeo::iOS::iOSPlatformAbstractionModule(*m_pJpegLoader, applicationConfiguration.EegeoApiKey());
 
 	Eegeo::EffectHandler::Initialise();
     
@@ -89,11 +91,21 @@ AppHost::AppHost(
     
 	Eegeo::Config::PlatformConfig config = Eegeo::iOS::iOSPlatformConfigBuilder(App::GetDevice(), App::IsDeviceMultiCore(), App::GetMajorSystemVersion()).Build();
     
-    config.OptionsConfig.StartMapModuleAutomatically = false;
+    /*config.OptionsConfig.StartMapModuleAutomatically = false;
     config.OptionsConfig.GenerateCollisionForAllResources = true;
-    config.GraphicsConfig.AlwaysUseHighFidelityWaterShader = true;
+    config.GraphicsConfig.AlwaysUseHighFidelityWaterShader = true;*/
     
-	m_pWorld = new Eegeo::EegeoWorld(apiKey,
+    config.OptionsConfig.InteriorsAffectedByFlattening = false;
+    
+    config.CoverageTreeConfig.ManifestUrl = applicationConfiguration.CoverageTreeManifestURL();
+    config.CityThemesConfig.StreamedManifestUrl = applicationConfiguration.ThemeManifestURL();
+    
+    config.CityThemesConfig.EmbeddedThemeManifestFile = "embedded_manifest.txt";
+    config.CityThemesConfig.EmbeddedThemeTexturePath = "Textures/EmbeddedTheme";
+    config.CityThemesConfig.EmbeddedThemeNameContains = "Summer";
+    config.CityThemesConfig.EmbeddedThemeStateName = "DayDefault";
+    
+	m_pWorld = new Eegeo::EegeoWorld(applicationConfiguration.EegeoApiKey(),
                                      *m_piOSPlatformAbstractionModule,
                                      *m_pJpegLoader,
                                      screenProperties,
@@ -109,7 +121,7 @@ AppHost::AppHost(
 	ConfigureExamples(screenProperties, config.PerformanceConfig.DeviceSpecification);
     
     m_pAppInputDelegate = new AppInputDelegate(*m_pApp, m_viewController, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight(), screenProperties.GetPixelScale());
-    m_pAppLocationDelegate = new AppLocationDelegate(*m_piOSLocationService, m_viewController);
+    m_pAppLocationDelegate = new AppLocationDelegate(*m_piOSLocationService, m_viewController);  
 }
 
 AppHost::~AppHost()
@@ -128,8 +140,7 @@ AppHost::~AppHost()
     delete m_pCollisionVisualizationModule;
     m_pCollisionVisualizationModule = NULL;
 
-	delete m_pApp;
-	m_pApp = NULL;
+	Eegeo_DELETE m_pApp;
 
 	delete m_pWorld;
 	m_pWorld = NULL;
@@ -189,6 +200,12 @@ void AppHost::Draw(float dt)
 void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs)
 {
 	m_piOSExampleControllerView = new Examples::iOSExampleControllerView([&m_viewController view]);
+    Examples::IVRHeadTracker *headTracker = Eegeo_NEW(Examples::VRHeadTracker)();
+    
+    
+    
+    
+    m_pApp = Eegeo_NEW(ExampleApp)(m_pWorld,deviceSpecs ,*m_piOSExampleControllerView, *headTracker,screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule,m_applicationConfiguration);
 
 	m_piOSExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 

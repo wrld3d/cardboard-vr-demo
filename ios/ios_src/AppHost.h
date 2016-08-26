@@ -32,9 +32,9 @@ class AppHost : protected Eegeo::NonCopyable
 {
 public:
 	AppHost(
-	    const std::string& apiKey,
         ViewController& viewController,
-        const Eegeo::Rendering::ScreenProperties& screenProperties
+        const Eegeo::Rendering::ScreenProperties& screenProperties,
+        Examples::ApplicationConfig::ApplicationConfiguration& applicationConfiguration
 	);
 	~AppHost();
 
@@ -57,6 +57,8 @@ private:
     Eegeo::Modules::BuildingFootprintsModule* m_pBuildingFootprintsModule;
 	AppInputDelegate* m_pAppInputDelegate;
     AppLocationDelegate* m_pAppLocationDelegate;
+    Examples::ApplicationConfig::ApplicationConfiguration& m_applicationConfiguration;
+
 
 	Eegeo::UI::NativeInput::iOS::iOSInputBoxFactory m_iOSInputBoxFactory;
 	Eegeo::UI::NativeInput::iOS::iOSKeyboardInputFactory m_iOSKeyboardInputFactory;
@@ -65,7 +67,7 @@ private:
     Eegeo::iOS::iOSPlatformAbstractionModule* m_piOSPlatformAbstractionModule;
 
 	ExampleApp* m_pApp;
-	Examples::iOSExampleControllerView* m_piOSExampleControllerView;
+	Examples::IExampleControllerView* m_piOSExampleControllerView;
 	Examples::iOSRouteMatchingExampleViewFactory* m_piOSRouteMatchingExampleViewFactory;
 	Examples::iOSRouteSimulationExampleViewFactory* m_piOSRouteSimulationExampleViewFactory;
     

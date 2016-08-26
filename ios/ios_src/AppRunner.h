@@ -15,8 +15,8 @@ class AppRunner : Eegeo::NonCopyable
 {
 public:
 	AppRunner(
-	    const std::string& apiKey,
-        ViewController& pView
+        ViewController& pView,
+        Examples::ApplicationConfig::ApplicationConfiguration& applicationConfiguration
     );
 	~AppRunner();
 
@@ -28,8 +28,8 @@ public:
 
     void NotifyViewLayoutChanged();
 private:
+    Examples::ApplicationConfig::ApplicationConfiguration& m_applicationConfiguration;
     ViewController& m_viewController;
-	const std::string& m_apiKey;
 
 	GlDisplayService m_displayService;
 	void ReleaseDisplay();

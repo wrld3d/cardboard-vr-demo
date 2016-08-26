@@ -5,7 +5,7 @@
 
 #include "IUIActionHandler.h"
 #include <string>
-
+#include <vector>
 namespace Examples
 {
 class IExampleControllerView
@@ -32,6 +32,8 @@ public:
 	virtual std::string GetSelectedExample()=0;
     
     virtual void NotifyNeedsLayout() = 0;
+    virtual void PopulateExampleList(const std::vector<std::string>& exampleNames) = 0;
+
 };
 }
 

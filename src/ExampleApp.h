@@ -109,7 +109,7 @@ private:
     Eegeo::Helpers::TCallback2<ExampleApp, Eegeo::dv3&, Eegeo::m33&> m_getJumpPointStartPositionOrientation;
     Eegeo::Helpers::TCallback1<ExampleApp, std::string&> m_locationChangedCallback;
 
-    void OnLocationChanged(std::string& location);
+    void OnLocationChanged(std::string& location);    
 public:
 	ExampleApp(Eegeo::EegeoWorld* pWorld,
                Eegeo::Config::DeviceSpec deviceSpecs,

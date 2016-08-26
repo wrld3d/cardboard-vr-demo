@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace
+namespace Examples
 {
     static const std::string ApplicationConfigurationPath = "ApplicationConfigs/app_config.json";
 }

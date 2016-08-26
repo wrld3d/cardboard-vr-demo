@@ -6,11 +6,11 @@
 
 AppRunner::AppRunner
 (
- const std::string& apiKey,
- ViewController& viewController
+ ViewController& viewController,
+ Examples::ApplicationConfig::ApplicationConfiguration& applicationConfiguration
 )
 	: m_viewController(viewController)
-    , m_apiKey(apiKey)
+    , m_applicationConfiguration(applicationConfiguration)
 	, m_pAppHost(NULL)
 {
 	ReleaseDisplay();
@@ -42,9 +42,9 @@ void AppRunner::CreateAppHost()
         
 		m_pAppHost = Eegeo_NEW(AppHost)
         (
-         m_apiKey,
          m_viewController,
-         screenProperties
+         screenProperties,
+         m_applicationConfiguration
         );
 	}
 }

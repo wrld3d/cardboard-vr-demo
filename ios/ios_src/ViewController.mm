@@ -1,5 +1,6 @@
 // Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
+#include "AppDelegate.h"
 #include "ViewController.h"
 #include "AppLocationDelegate.h"
 
@@ -26,7 +27,8 @@ using namespace Eegeo::iOS;
 	m_previousTimestamp = CFAbsoluteTimeGetCurrent();
 	self.preferredFramesPerSecond = 60;
     
-    m_pAppRunner = new AppRunner(ApiKey, *self);
+    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    m_pAppRunner = new AppRunner(*self,*(appDelegate.m_pApplicationConfiguration));
     
     if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
         // iOS 7>=

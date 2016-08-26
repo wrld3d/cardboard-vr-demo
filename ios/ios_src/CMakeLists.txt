@@ -12,9 +12,14 @@ set(currsources
   ios_src/AppRunner.mm
   ios_src/GlDisplayService.h
   ios_src/GlDisplayService.mm
-  ios_src/Main.m
+  ios_src/Main.mm
   ios_src/ViewController.h
   ios_src/ViewController.mm
+  ios_src/AppDelegate.h
+  ios_src/AppDelegate.mm
+  ios_src/VRHeadTracker.h
+  ios_src/VRHeadTracker.cpp
+
 )
 set(sources ${sources} ${currsources})
 source_group(\\ios_src\\ FILES ${currsources})
