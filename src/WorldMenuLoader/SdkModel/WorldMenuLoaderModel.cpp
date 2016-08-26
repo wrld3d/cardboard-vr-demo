@@ -2,6 +2,7 @@
 
 #include "WorldMenuLoaderModel.h"
 #include "ApplicationConfiguration.h"
+#include "Logger.h"
 
 namespace Examples
 {
@@ -18,32 +19,34 @@ namespace Examples
             , m_screenVisibilityChanged(this, &WorldMenuLoaderModel::OnScreenVisiblityChanged)
             , m_locationHasChanged(false)
             {
+                m_shouldShowSplash = true;
                 m_shouldRunVRSpline = false;
                 m_screenFader.RegisterVisibilityChangedCallback(m_screenVisibilityChanged);
 
                 const ApplicationConfig::TWorldLocations& worldLocations = appConfig.GetLocations();
 
-                
-                Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(0, 2, m_worldMenuItemGazeCallback, new std::string("home"), 0, 15);
-                m_menuItemRepository.AddWorldMenuItem(menuItem);
-                m_pWorldMenuItems.push_back(menuItem);
-                
-                
                 for (ApplicationConfig::TWorldLocations::const_iterator it = worldLocations.begin(); it != worldLocations.end(); ++it)
                 {
                     const ApplicationConfig::WorldLocationData& locData = it->second;
-                    Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(locData.GetLocationID(), locData.GetIconID(), m_worldMenuItemGazeCallback, new std::string(it->first));
+                    int rightMargin = 0;
+                    int leftMargin = 0;
+                    
+                    if(locData.GetLocationID()==0)
+                    {
+                        m_selectedLocation = it->first;
+                        m_lastMenuItemGazedId = it->second.GetLocationID();
+                        rightMargin = 15;
+                    }
+                    
+                    Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(locData.GetLocationID(), locData.GetIconID(), m_worldMenuItemGazeCallback, new std::string(it->first), leftMargin, rightMargin);
                     m_menuItemRepository.AddWorldMenuItem(menuItem);
                     m_pWorldMenuItems.push_back(menuItem);
                 }
                 
-                menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(4, 16, m_worldMenuItemGazeCallback,  NULL, 15);
+                Eegeo::UI::WorldMenu::WorldMenuItem* menuItem =  Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuItem)(4, 16, m_worldMenuItemGazeCallback,  NULL, 15);
                 m_menuItemRepository.AddWorldMenuItem(menuItem);
                 m_pWorldMenuItems.push_back(menuItem);
 
-                m_selectedLocation = worldLocations.begin()->first;
-                m_lastMenuItemGazedId = worldLocations.begin()->second.GetLocationID();
-                
             }
 
             WorldMenuLoaderModel::~WorldMenuLoaderModel()
@@ -66,8 +69,6 @@ namespace Examples
 
             void WorldMenuLoaderModel::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem &menuItem)
             {
-                if(menuItem.GetId()==0)
-                    return;
                 
                 if(m_lastMenuItemGazedId==menuItem.GetId())
                     return;
@@ -81,6 +82,7 @@ namespace Examples
                     m_selectedLocation = *str;
                     m_screenFader.SetShouldFadeToBlack(true);
                     m_locationHasChanged = true;
+                    m_shouldShowSplash = (menuItem.GetId()==0);
                 }
                 else if (menuItem.GetId()==4)
                 {
@@ -98,6 +100,16 @@ namespace Examples
                     m_screenFader.SetShouldFadeToBlack(false);
                     m_locationHasChanged = false;
                 }
+            }
+            
+            void WorldMenuLoaderModel::OnPlayButtonGazed()
+            {
+                m_shouldRunVRSpline = false;
+                m_shouldShowSplash = false;
+                m_lastMenuItemGazedId = 1;
+                m_selectedLocation="Dundee";
+                m_locationHasChanged = true;
+                m_screenFader.SetShouldFadeToBlack(true);
             }
 
             void WorldMenuLoaderModel::NotifyLocationChange(std::string& location)

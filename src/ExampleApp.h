@@ -48,6 +48,8 @@ private:
     
     Eegeo::UI::SplashScreen::SplashScreen* m_pSplashScreen;
     
+    Examples::IVRHeadTracker& m_headTracker;
+    
     Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
 	Eegeo::EegeoWorld* m_pWorld;

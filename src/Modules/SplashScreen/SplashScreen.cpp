@@ -3,6 +3,8 @@
 #include "SplashScreen.h"
 #include "LatLongAltitude.h"
 #include "ApplicationConfiguration.h"
+#include "CameraHelpers.h"
+#include "../UI/IUICameraProvider.h"
 #include "../UI/UIProgressButton.h"
 
 namespace Eegeo
@@ -33,22 +35,21 @@ namespace Eegeo
                 UIProgressBarConfig config = progressBarConfig;
                 config.frameRate = progressBarConfig.frameRate*2.8f;
                 
-                m_pStateButtonLocation = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 23, 24, 5, config, m_stateButtonClicked, Eegeo::v2(50.f, 50.f));
-                m_pStateButtonBuilding = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 14, 13, 5, config, m_stateButtonClicked, Eegeo::v2(50.f, 50.f));
-                m_pStateButtonPOI = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 0, 22, 5, config, m_stateButtonClicked, Eegeo::v2(50.f, 50.f));
-                m_pStateButtonLocation->SetEcefPosition(Eegeo::Space::LatLongAltitude::FromDegrees(56.4577389, -2.9707447, 200).ToECEF());
-                m_pStateButtonBuilding->SetEcefPosition(Eegeo::Space::LatLongAltitude::FromDegrees(56.4577389, -2.9707447, 250).ToECEF());
-                m_pStateButtonPOI->SetEcefPosition(Eegeo::Space::LatLongAltitude::FromDegrees(56.4577389, -2.9707447, 150).ToECEF());
+                Eegeo::v2 size(27.f, 27.f);
                 
-                int row = 1%5;
-                int col = 1/5;
+                m_pStateButtonLocation = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 23, 24, 5, config, m_stateButtonClicked, size);
+                m_pStateButtonBuilding = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 14, 13, 5, config, m_stateButtonClicked, size);
+                m_pStateButtonPOI = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 0, 22, 5, config, m_stateButtonClicked, size);
+                
+                int row = 16%5;
+                int col = 16/5;
                 float fraction = 1.f/5;
                 
                 Eegeo::v2 outMinUV (fraction*row, fraction*col);
                 Eegeo::v2 outMaxUV (fraction*(row+1), fraction*(col+1));
                 
-                m_pPlayButton = Eegeo_NEW(Eegeo::UI::UIProgressButton)(uiRenderableFilter, quadFactory, assetPath, config, m_playButtonClicked, Eegeo::v2(50.f, 50.f)
-                                                                       , Eegeo::Space::LatLongAltitude::FromDegrees(56.4577389, -2.9707447, 100).ToECEF()
+                m_pPlayButton = Eegeo_NEW(Eegeo::UI::UIProgressButton)(uiRenderableFilter, quadFactory, assetPath, config, m_playButtonClicked, size
+                                                                       , Eegeo::Space::LatLongAltitude::FromDegrees(56.4577389, -2.9707447, 250).ToECEF()
                                                                        , Eegeo::v3::One()
                                                                        , Eegeo::v4::One()
                                                                        , outMinUV
@@ -70,8 +71,7 @@ namespace Eegeo
                 materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_eeGeo_logo");
                 materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_alt_text");
 
-                m_pSplashScreenModel = m_pSplashScreenModelFactory->CreateSplashScreenModel("vr_splash_screen/WelcomeScreen.POD", materialNames, Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250).ToECEF(), 110);
-
+                m_pSplashScreenModel = m_pSplashScreenModelFactory->CreateSplashScreenModel("vr_splash_screen/WelcomeScreen.POD", materialNames, Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250).ToECEF(), 120);
                 m_sceneModelRenderableFilter.AddSceneModel(m_pSplashScreenModel->GetSceneModel());
             }
             
@@ -108,7 +108,6 @@ namespace Eegeo
             
             void SplashScreen::PlayButtonClicked()
             {
-                Hide();
                 m_playButtonCallback();
             }
             
@@ -123,6 +122,20 @@ namespace Eegeo
             
             void SplashScreen::Show()
             {
+                
+                Eegeo::Space::EcefTangentBasis basis;
+                Eegeo::dv3 p = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 248.f).ToECEF();
+                Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(p, -60.53f, basis);
+                
+                Eegeo::dv3 top(p.ToSingle().Norm());
+                Eegeo::dv3 forward(basis.GetForward().Norm());
+                Eegeo::dv3 right(Eegeo::dv3::Cross(top, forward));
+                
+                m_pStateButtonLocation->SetEcefPosition((forward*310.f) + p);
+                m_pStateButtonBuilding->SetEcefPosition((forward*310.f) + (right*-41.f) + p);
+                m_pStateButtonPOI->SetEcefPosition((forward*310.f) + (right*43.5f) + p);
+                m_pPlayButton->SetEcefPosition((forward*270.f) + (top*-90.f) + p);
+                
                 m_pStateButtonLocation->Show();
                 m_pStateButtonBuilding->Show();
                 m_pStateButtonPOI->Show();

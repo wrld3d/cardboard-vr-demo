@@ -183,7 +183,7 @@ namespace Examples
                                                                            Eegeo::v4::One(),
                                                                            outMin,
                                                                            outMax);
-        
+        m_pWestPortInteriorButton->SetItemShouldRender(false);
         m_uiInteractionObservable.RegisterInteractableItem(m_pWestPortInteriorButton);
 
         m_menuLoader.RegisterLocationChangedCallback(m_locationChangedCallback);
@@ -566,16 +566,20 @@ namespace Examples
         const ApplicationConfig::WorldLocationData& currentLocation = m_appConfig.GetLocations().at(location);
         m_pSplineCameraController->SetStartLatLongAltitude(currentLocation.GetLocationCameraPosition(), currentLocation.GetOrientation());
         m_pJumpPointSwitcher->SwitchLocation(location);
+        m_pWestPortInteriorButton->SetItemShouldRender(currentLocation.GetLocationID()!=0);
     }
 
     void JumpPointsExample::OnLocationChanged(std::string &location)
     {
-        m_pWelcomeNoteViewer->ShowWelcomeNote(m_appConfig.GetLocations().at(location).GetWelcomeMessage(), WelcomeMessageFadeSpeed, WelcomeMessageFadeDelay, WelcomeMessageSize);
         ChangeLocation(location);
-
-        Eegeo::v3 forward = Eegeo::v3::Cross(m_pSplineCameraController->GetOrientation().GetRow(0), m_pSplineCameraController->GetCameraPosition().ToSingle().Norm());
-        Eegeo::dv3 position(m_pSplineCameraController->GetCameraPosition() + (forward*WelcomeNoteDistanceFromCamera));
-        m_pWelcomeNoteViewer->SetPosition(position);
+        if(m_appConfig.GetLocations().at(location).GetLocationID()!=0)
+        {
+            m_pWelcomeNoteViewer->ShowWelcomeNote(m_appConfig.GetLocations().at(location).GetWelcomeMessage(), WelcomeMessageFadeSpeed, WelcomeMessageFadeDelay, WelcomeMessageSize);
+            Eegeo::v3 forward = Eegeo::v3::Cross(m_pSplineCameraController->GetOrientation().GetRow(0), m_pSplineCameraController->GetCameraPosition().ToSingle().Norm());
+            Eegeo::dv3 position(m_pSplineCameraController->GetCameraPosition() + (forward*WelcomeNoteDistanceFromCamera));
+            m_pWelcomeNoteViewer->SetPosition(position);
+        }
+        
     }
 
     void JumpPointsExample::OnFloorMenuItemSelected(InteriorsExplorer::InteriorMenu::InteriorMenuItem& menuItem)

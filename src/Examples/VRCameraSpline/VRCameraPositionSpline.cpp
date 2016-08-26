@@ -51,8 +51,6 @@ namespace Eegeo
                 const dv3 up = upPoints.at(i).Position;
                 const dv3 forward = forwardPoints.at(i).Position;
                 const dv3 position = positionPoints.at(i).Position;
-                printf("orientation.SetFromBasis(Eegeo::v3(%f,%f,%f),Eegeo::v3(%f,%f,%f),Eegeo::v3(%f,%f,%f));\n", right.x,right.y,right.z,up.x,up.y,up.z,forward.x,forward.y,forward.z);
-                printf("AddPoint(Eegeo::dv3(%f,%f,%f), orientation);\n",position.x,position.y,position.z);
             }
         }
         

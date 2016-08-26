@@ -353,7 +353,8 @@ public class BackgroundThreadActivity extends MainActivity
 							if(m_running)
 							{
 								float[] tempHeadTransform = new float[16];
-								m_headTracker.getLastHeadView(tempHeadTransform, 0);
+								if(m_headTracker!=null)
+									m_headTracker.getLastHeadView(tempHeadTransform, 0);
 								if(!Float.isNaN(tempHeadTransform[0])){
 									smoothHeadTransform = exponentialSmoothing(tempHeadTransform, smoothHeadTransform, deltaSeconds * HEAD_TRANSFORM_SMOOTHING_SPEED);
 									NativeJniCalls.updateNativeCode(deltaSeconds, smoothHeadTransform);	

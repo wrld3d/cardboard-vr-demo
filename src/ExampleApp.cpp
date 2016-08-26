@@ -139,6 +139,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_startClearColor(0.f/255.f,24.f/255.f,72.f/255.f)
     , m_destClearColor(135.f/255.0f, 206.f/255.0f, 235.f/255.0f)
     , m_screenPropertiesProvider(screenProperties)
+    , m_headTracker(headTracker)
     , m_splashPlayButtonCallback(this, &ExampleApp::SplashPlayButtonCallback)
     , m_toggleDayNightClickedCallback(this, &ExampleApp::ToggleNight)
     , m_splineExampleButtonClickedCallback(this, &ExampleApp::LoadSplineExample)
@@ -261,24 +262,13 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     
     m_pWorldMenuModule = Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuModule)(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController,*m_pExampleController, appConfig.JumpPointsSpriteSheet(), m_progressBarConfig, appConfig.JumpPointsSpriteSheetSize());
-    m_pWorldMenuModule->SetMenuShouldDisplay(true);
+    m_pWorldMenuModule->SetMenuShouldDisplay(false);
 
     m_pScreenFadeEffectController = Eegeo_NEW(Examples::ScreenFadeEffect::SdkModel::ScreenFadeEffectController)(m_pVRDistortion->GetTransionModel(), 1.f);
 
     m_pWorldMenuLoaderModel = Eegeo_NEW(Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel)(m_pWorldMenuModule->GetRepository(), *m_pScreenFadeEffectController, appConfig);
     m_pWorldMenuLoaderModel->RegisterLocationChangedCallback(m_locationChangedCallback);
     
-
-    m_worldMenuItemSelected = 1;
-
-    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider,
-                                                                                                            *m_pInteriorExplorerModule,
-                                                                                                            headTracker,
-                                                                                                            m_pDeadZoneMenuModule->GetRepository(),
-                                                                                                            *m_pQuadFactory,
-                                                                                                            *m_pScreenFadeEffectController);
-
-    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, *m_pWorldMenuLoaderModel, headTracker, appConfig);
     
     m_pUIGazeView->HideView();
 
@@ -294,6 +284,16 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                        appConfig.JumpPointsSpriteSheet(),
                                                                        m_progressBarConfig,
                                                                        m_splashPlayButtonCallback);
+    
+    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider,
+                                                                                                            *m_pInteriorExplorerModule,
+                                                                                                            headTracker,
+                                                                                                            m_pDeadZoneMenuModule->GetRepository(),
+                                                                                                            *m_pQuadFactory,
+                                                                                                            *m_pScreenFadeEffectController);
+
+    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, *m_pWorldMenuLoaderModel, headTracker, appConfig);
+    
     
 }
 
@@ -505,15 +505,28 @@ void ExampleApp::OnLocationChanged(std::string &location)
 {
     m_pAnimationController->ClearAllAnimations();
     if(m_pWorldMenuLoaderModel->GetShouldRunVRSpline())
+    {
         m_pExampleController->ActivateExample("VRCameraSplineExample");
-    else
+    }
+    else if(m_pWorldMenuLoaderModel->GetShouldShowSplash())
+    {
+        m_headTracker.ResetTracker();
+        m_pWorldMenuModule->SetMenuShouldDisplay(false);
+        m_pSplashScreen->Show();
         m_pExampleController->ActivateExample("JumpPointsExample");
+    }
+    else
+    {
+        m_pExampleController->ActivateExample("JumpPointsExample");
+    }
 }
 
 
 void ExampleApp::SplashPlayButtonCallback()
 {
-    
+    m_pSplashScreen->Hide();
+    m_pWorldMenuModule->SetMenuShouldDisplay(true);
+    m_pWorldMenuLoaderModel->OnPlayButtonGazed();
 }
 
 void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem)
@@ -713,6 +726,8 @@ void ExampleApp::UpdateLoadingScreen(float dt)
     
     if (!eegeoWorld.Initialising() && !m_pLoadingScreen->IsDismissed())
     {
+        m_headTracker.ResetTracker();
+        m_pSplashScreen->Show();
         m_pLoadingScreen->Dismiss();
         Eegeo::TtyHandler::TtyEnabled = true;
     }

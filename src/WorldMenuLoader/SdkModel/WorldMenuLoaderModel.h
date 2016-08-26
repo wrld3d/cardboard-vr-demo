@@ -32,8 +32,11 @@ namespace Examples
 
                 void RegisterLocationChangedCallback(Eegeo::Helpers::ICallback1<std::string&>& callback);
                 void UnregisterLocationChangedCallback(Eegeo::Helpers::ICallback1<std::string&>& callback);
-
+                
+                void OnPlayButtonGazed();
+                
                 bool GetShouldRunVRSpline(){return m_shouldRunVRSpline;}
+                bool GetShouldShowSplash(){return m_shouldShowSplash;}
                 
             private:
                 Eegeo::UI::WorldMenu::WorldMenuItemRepository& m_menuItemRepository;
@@ -50,6 +53,7 @@ namespace Examples
 
                 Eegeo::Helpers::CallbackCollection1<std::string&> m_locationChangedCallbacks;
                 
+                bool m_shouldShowSplash;
                 bool m_shouldRunVRSpline;
                 int m_lastMenuItemGazedId;
 

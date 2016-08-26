@@ -73,6 +73,7 @@ namespace Eegeo
 
             void SplashScreenModel::SetEcefPosition(const dv3& ecefPosition)
             {
+                m_position = ecefPosition;
                 m_pModel->SetEcefPosition(ecefPosition);
             }
 
