@@ -20,11 +20,13 @@ namespace Eegeo
             private:
                 Eegeo::Rendering::SceneModels::SceneModelLoader& m_sceneModelLoader;
                 Eegeo::Rendering::SceneModels::SceneModelFactory::TMaterialRepo& m_sceneModelMaterials;
+                Eegeo::Rendering::Filters::SceneModelRenderableFilter& m_sceneModelRenderableFilter;
 
                 Eegeo::Rendering::SceneModels::SceneModelMaterialResource* LoadAlphaMaterial(const std::string& materialName);
             public:
                 SplashScreenModelFactory(Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
-                                         Eegeo::Rendering::SceneModels::SceneModelFactory::TMaterialRepo& sceneModelMaterials);
+                                         Eegeo::Rendering::SceneModels::SceneModelFactory::TMaterialRepo& sceneModelMaterials,
+                                         Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter);
 
                 virtual SplashScreenModel* CreateSplashScreenModel(const std::string& assetPath,
                                                                    const TMaterialNames& materialNames,

@@ -448,7 +448,7 @@ void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld&
     Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
     m_pUIGazeView->Update(dt);
     m_pUIGazeView->SetEcefPosition(position);
-    
+    m_pSplashScreen->SetEcefPosition(cameraState.LocationEcef());
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed()){
         m_pWorldMenuModule->Update(dt);
         m_pInteriorExplorerModule ->Update(dt);
@@ -477,7 +477,7 @@ void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld
     Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
     m_pUIGazeView->Update(dt);
     m_pUIGazeView->SetEcefPosition(position);
-    
+    m_pSplashScreen->SetEcefPosition(cameraState.LocationEcef());
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed()){
         m_pWorldMenuModule->Update(dt);
         m_pInteriorExplorerModule ->Update(dt);

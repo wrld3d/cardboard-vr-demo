@@ -63,7 +63,7 @@ namespace Eegeo
                 
                 
                 
-                m_pSplashScreenModelFactory = Eegeo_NEW(SplashScreenModelFactory)(sceneModelLoader, sceneModelMaterials);
+                m_pSplashScreenModelFactory = Eegeo_NEW(SplashScreenModelFactory)(sceneModelLoader, sceneModelMaterials, m_sceneModelRenderableFilter);
 
                 TMaterialNames materialNames;
 
@@ -72,7 +72,6 @@ namespace Eegeo
                 materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_alt_text");
 
                 m_pSplashScreenModel = m_pSplashScreenModelFactory->CreateSplashScreenModel("vr_splash_screen/WelcomeScreen.POD", materialNames, Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250).ToECEF(), 120);
-                m_sceneModelRenderableFilter.AddSceneModel(m_pSplashScreenModel->GetSceneModel());
             }
             
             SplashScreen::~SplashScreen()
@@ -89,10 +88,14 @@ namespace Eegeo
 
                 Eegeo_DELETE m_pSplashScreenModelFactory;
 
-                m_sceneModelRenderableFilter.RemoveSceneModel(m_pSplashScreenModel->GetSceneModel());
                 Eegeo_DELETE m_pSplashScreenModel;
             }
-            
+
+            void SplashScreen::SetEcefPosition(const Eegeo::dv3 &ecefPosition)
+            {
+                m_pSplashScreenModel->SetEcefPosition(ecefPosition);
+            }
+
             void SplashScreen::Update(float dt)
             {
                 m_pStateButtonLocation->Update(dt);
