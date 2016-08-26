@@ -47,9 +47,13 @@ namespace Eegeo
 
                 void SetScale(float scale);
 
-                Rendering::SceneModels::SceneModel& GetSceneModel();
+                float GetAbsoluteHeadingDegrees() const;
 
-                bool GetShouldDisplay();
+                void SetAbsoluteHeadingDegrees(float absoluteHeadingDegrees);
+
+                Rendering::SceneModels::SceneModel& GetSceneModel() const;
+
+                bool GetShouldDisplay() const;
 
                 void SetShouldDisplay(bool shouldDisplay);
 

@@ -84,12 +84,23 @@ namespace Eegeo
                 Eegeo::Rendering::SceneModels::SceneModelTransformHelpers::PositionOnEarthSurface(*m_pModel, m_position, m_absoluteHeadingDegrees, scaleMatrix);
             }
 
-            Rendering::SceneModels::SceneModel& SplashScreenModel::GetSceneModel()
+            float SplashScreenModel::GetAbsoluteHeadingDegrees() const
+            {
+                return m_absoluteHeadingDegrees;
+            }
+
+            void SplashScreenModel::SetAbsoluteHeadingDegrees(float absoluteHeadingDegrees)
+            {
+                m_absoluteHeadingDegrees = absoluteHeadingDegrees;
+                Eegeo::Rendering::SceneModels::SceneModelTransformHelpers::PositionOnEarthSurface(*m_pModel, m_position, m_absoluteHeadingDegrees);
+            }
+
+            Rendering::SceneModels::SceneModel& SplashScreenModel::GetSceneModel() const
             {
                 return *m_pModel;
             }
 
-            bool SplashScreenModel::GetShouldDisplay()
+            bool SplashScreenModel::GetShouldDisplay() const
             {
                 return m_shouldDisplay;
             }
