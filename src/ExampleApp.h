@@ -136,7 +136,7 @@ public:
     void Draw (float dt, float headTansform[]);
     void DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld);
     void DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld);
-    
+    void DrawEyeFromCameraState(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld);
     void DrawLoadingScreen ();
     
     void UpdateNightTParam(float dt);

@@ -415,7 +415,8 @@ void ExampleApp::Update (float dt, float headTansform[])
     UpdateLoadingScreen(dt);
 }
 
-void ExampleApp::Draw (float dt, float headTansform[]){
+void ExampleApp::Draw (float dt, float headTansform[])
+{
     Eegeo::EegeoWorld& eegeoWorld = World();
     if(eegeoWorld.Validated())
     {
@@ -430,64 +431,52 @@ void ExampleApp::Draw (float dt, float headTansform[]){
     
 }
 
-void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld){
+void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld)
+{
     
     m_pExampleController->PreWorldDraw();
     
     glViewport(0, 0, m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(), m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentLeftCameraState(headTansform));
-    Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
-                                              cameraState.InterestPointEcef(),
-                                              cameraState.ViewMatrix(),
-                                              cameraState.ProjectionMatrix(),
-                                              m_screenPropertiesProvider.GetScreenProperties());
     
-    
-    Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
-    Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
-    m_pUIGazeView->Update(dt);
-    m_pUIGazeView->SetEcefPosition(position);
-    m_pSplashScreen->SetEcefPosition(cameraState.LocationEcef());
-    if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed()){
-        m_pWorldMenuModule->Update(dt);
-        m_pInteriorExplorerModule ->Update(dt);
-    }
-    eegeoWorld.Draw(drawParameters);
-    
-    m_pExampleController->Draw();
-    
-    
+    DrawEyeFromCameraState(dt, cameraState, eegeoWorld);
 }
 
-void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld){
+void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld)
+{
     
     m_pExampleController->PreWorldDraw();
     
     glViewport(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(), 0, m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentRightCameraState(headTansform));
-    Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
-                                               cameraState.InterestPointEcef(),
-                                               cameraState.ViewMatrix(),
-                                               cameraState.ProjectionMatrix(),
-                                               m_screenPropertiesProvider.GetScreenProperties());
     
+    DrawEyeFromCameraState(dt, cameraState, eegeoWorld);
+}
+
+void ExampleApp::DrawEyeFromCameraState(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld)
+{
+    Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
+                                              cameraState.InterestPointEcef(),
+                                              cameraState.ViewMatrix(),
+                                              cameraState.ProjectionMatrix(),
+                                              m_screenPropertiesProvider.GetScreenProperties());
+
     Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
     Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
     m_pUIGazeView->Update(dt);
     m_pUIGazeView->SetEcefPosition(position);
     m_pSplashScreen->SetEcefPosition(cameraState.LocationEcef());
+
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed()){
         m_pWorldMenuModule->Update(dt);
         m_pInteriorExplorerModule ->Update(dt);
     }
-    eegeoWorld.Draw(drawParameters);
-    
-    m_pExampleController->Draw();
-    
-}
 
+    eegeoWorld.Draw(drawParameters);
+    m_pExampleController->Draw();
+}
 
 void ExampleApp::DrawLoadingScreen ()
 {
