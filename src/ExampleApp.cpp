@@ -233,7 +233,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_pUIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*m_pExampleController, *m_pUIGazeView);
     
-    m_progressBarConfig.textureFilename = "mesh_example/gaze_loader.png";
+    m_progressBarConfig.textureFilename = "mesh_example/gaze_loader";
     m_progressBarConfig.frameRate = 4.2f;
     m_progressBarConfig.spriteGridSize = Eegeo::v2(5,5);
     m_progressBarConfig.spriteId = 0;

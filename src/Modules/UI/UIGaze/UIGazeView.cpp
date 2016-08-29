@@ -16,7 +16,7 @@ namespace Eegeo
         {
             Eegeo::v2 dimension = Eegeo::v2(0.075f,0.075f)*3.f;
             m_pPointer = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter,
-                                                       quadFactory.CreateUIQuad("mesh_example/gaze_point.png",
+                                                       quadFactory.CreateUIQuad("mesh_example/gaze_point",
                                                                                 dimension,
                                                                                 Eegeo::v2::Zero(),
                                                                                 Eegeo::v2::One(),
