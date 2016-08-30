@@ -35,7 +35,7 @@ namespace Eegeo
                 UIProgressBarConfig config = progressBarConfig;
                 config.frameRate = progressBarConfig.frameRate*2.8f;
                 
-                Eegeo::v2 size(27.f, 27.f);
+                Eegeo::v2 size(16.f, 16.f);
                 
                 m_pStateButtonLocation = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 23, 24, 5, config, m_stateButtonClicked, size);
                 m_pStateButtonBuilding = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 14, 13, 5, config, m_stateButtonClicked, size);
@@ -127,17 +127,17 @@ namespace Eegeo
             {
                 
                 Eegeo::Space::EcefTangentBasis basis;
-                Eegeo::dv3 p = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 248.f).ToECEF();
+                Eegeo::dv3 p = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 241.5f).ToECEF();
                 Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(p, -60.53f, basis);
                 
                 Eegeo::dv3 top(p.ToSingle().Norm());
                 Eegeo::dv3 forward(basis.GetForward().Norm());
                 Eegeo::dv3 right(Eegeo::dv3::Cross(top, forward));
-                
-                m_pStateButtonLocation->SetEcefPosition((forward*310.f) + p);
-                m_pStateButtonBuilding->SetEcefPosition((forward*310.f) + (right*-41.f) + p);
-                m_pStateButtonPOI->SetEcefPosition((forward*310.f) + (right*43.5f) + p);
-                m_pPlayButton->SetEcefPosition((forward*270.f) + (top*-90.f) + p);
+
+                m_pStateButtonBuilding->SetEcefPosition((forward*310.f) + (right*4.f) + p);
+                m_pStateButtonPOI->SetEcefPosition((forward*310.f) + (right*-28.f) + p);
+                m_pStateButtonLocation->SetEcefPosition((forward*310.f) + (right*37.f) + p);
+                m_pPlayButton->SetEcefPosition((forward*270.f) + (right*5.f) + (top*-35.f) + p);
                 
                 m_pStateButtonLocation->Show();
                 m_pStateButtonBuilding->Show();
