@@ -29,7 +29,7 @@ PinsExample::PinsExample(
 	, m_addRemoveTimer(0.0f)
 	, m_pPin0(NULL)
 {
-	textureLoader.LoadTexture(m_pinIconsTexture, "pins_example/PinIconTexturePage.png", true);
+	textureLoader.LoadTexture(m_pinIconsTexture, "pins_example/PinIconTexturePage.pvr", true);
 	Eegeo_ASSERT(m_pinIconsTexture.textureId != 0);
 
 	// This example uses a texture page containing 2 x 2 icons.

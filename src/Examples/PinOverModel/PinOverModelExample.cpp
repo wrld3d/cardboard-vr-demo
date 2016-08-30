@@ -41,7 +41,7 @@ PinOverModelExample::PinOverModelExample(
 	,m_nullMaterialFactory(nullMaterialFactory)
     ,m_pNullMaterial(NULL)
 {
-	textureLoader.LoadTexture(m_pinIconsTexture, "pin_over_model_example/PinIconTexturePage.png", true);
+	textureLoader.LoadTexture(m_pinIconsTexture, "pin_over_model_example/PinIconTexturePage.pvr", true);
 	Eegeo_ASSERT(m_pinIconsTexture.textureId != 0);
 
 	// This example uses a texture page containing 2 x 2 icons.

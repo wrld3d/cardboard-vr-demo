@@ -18,7 +18,7 @@ namespace Eegeo
             {
                 Eegeo::v2 dimension = Eegeo::v2(9.f,9.f);
                 m_pPointer = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter,
-                                                            quadFactory.CreateUIQuad("mesh_example/PinIconTexturePage.png",
+                                                            quadFactory.CreateUIQuad("mesh_example/PinIconTexturePage",
                                                                                      dimension,
                                                                                      Eegeo::v2(1.f/5.f, 4.f/5.f),
                                                                                      Eegeo::v2(2.f/5.f, 1.f),

@@ -8,9 +8,10 @@ set(resources ${resources}
 		Resources/FrankBold50_A8_icons_0.png
 		Resources/heatmap_example
 		Resources/load_model_example
-		Resources/mesh_example
+		Resources/mesh_exampleResources/mesh_example/arrow_exterior.pngResources/mesh_example/arrow_interior.pngResources/mesh_example/gaze_loader.pvrResources/mesh_example/gaze_point.pvrResources/mesh_example/PinIconTexturePage.pngResources/mesh_example/PinIconTexturePage.pvrResources/mesh_example/quadrants.pngResources/mesh_example/welcome_dundee.pngResources/mesh_example/welcome_sanfrancisco.pngResources/mesh_example/welcome_toko.png
 		Resources/pin_over_model_example
 		Resources/pins_example
+Resources/pins_example/PinIconTexturePage.pngResources/pins_example/PinIconTexturePage.pvr
 		Resources/placeholder.pvr
 		Resources/pod_animation_example
 		Resources/route_simulation_animation_example
@@ -19,4 +20,5 @@ set(resources ${resources}
 		Resources/Textures
 		Resources/vr_splash_screen
 		ExampleApp/Images.xcassets
+
 )
