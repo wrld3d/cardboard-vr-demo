@@ -4,7 +4,7 @@
    "StartLocationLongitude":-2.966101,
    "StartLocationAltitude":550,
    "StartLocationOrientationDegrees":0.0,
-   "EegeoApiKey":"b488cb833b4d73f0ff4662160743e8f2",
+   "EegeoApiKey":"Insert App key",
    "CoverageTreeManifestURL":"http://cdn1.eegeo.com/coverage-trees/vprivateglobal/v465/manifest.bin.gz",
    "ThemeManifestURL":"http://d2xvsc8j92rfya.cloudfront.net/mobile-themes-new/v674/manifest.txt.gz",
    "JumpPointsData":{
@@ -323,7 +323,7 @@
             "StartLocationLongitude":-2.966101,
             "StartLocationAltitude":250,
             "StartLocationOrientationDegrees":300.0,
-            "WelcomeMessage":"mesh_example/welcome_dundee.png",
+            "WelcomeMessage":"mesh_example/welcome_dundee",
             "InteriorPOIs":[
                {
                   "id":"westport_house",
@@ -393,7 +393,7 @@
             "StartLocationLongitude":-122.402797,
             "StartLocationAltitude":306,
             "StartLocationOrientationDegrees":300.0,
-            "WelcomeMessage":"mesh_example/welcome_sanfrancisco.png",
+            "WelcomeMessage":"mesh_example/welcome_sanfrancisco",
             "JumpPoints":[
                {
                   "id":0,
@@ -436,7 +436,7 @@
             "StartLocationLongitude":139.728948,
             "StartLocationAltitude":250,
             "StartLocationOrientationDegrees":200.0,
-            "WelcomeMessage":"mesh_example/welcome_toko.png",
+            "WelcomeMessage":"mesh_example/welcome_toko",
             "JumpPoints":[
                {
                   "id":0,
