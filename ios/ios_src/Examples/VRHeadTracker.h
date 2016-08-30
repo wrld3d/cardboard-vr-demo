@@ -9,7 +9,7 @@ namespace Examples
     {
     public:
         VRHeadTracker();
-        //~VRHeadTracker();
+        ~VRHeadTracker();
         void ResetTracker();
     };
 }

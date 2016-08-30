@@ -23,7 +23,7 @@
 #include "iOSExampleControllerView.h"
 #include "iOSRouteMatchingExampleViewFactory.h"
 #include "iOSRouteSimulationExampleViewFactory.h"
-
+#include "HeadTracker.h"
 @class ViewController;
 class AppInputDelegate;
 class AppLocationDelegate;
@@ -70,6 +70,8 @@ private:
 	Examples::IExampleControllerView* m_piOSExampleControllerView;
 	Examples::iOSRouteMatchingExampleViewFactory* m_piOSRouteMatchingExampleViewFactory;
 	Examples::iOSRouteSimulationExampleViewFactory* m_piOSRouteSimulationExampleViewFactory;
+    CardboardSDK::HeadTracker *m_pcardBoardHeadTracker;
+
     
     void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs);
 	void DestroyExamples();

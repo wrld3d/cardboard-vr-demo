@@ -51,7 +51,10 @@ set(ios_frameworks
   -framework MobileCoreServices 
   -framework SystemConfiguration 
   -framework CFNetwork 
-  -framework GLKit 
+  -framework GLKit
+  -framework CoreMotion 
+  -framework AudioToolbox
+  -framework QuartzCore   
   -framework OpenGLES 
   -framework UIKit 
   -framework Foundation 

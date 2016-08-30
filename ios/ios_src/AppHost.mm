@@ -121,7 +121,10 @@ AppHost::AppHost(
 	ConfigureExamples(screenProperties, config.PerformanceConfig.DeviceSpecification);
     
     m_pAppInputDelegate = new AppInputDelegate(*m_pApp, m_viewController, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight(), screenProperties.GetPixelScale());
-    m_pAppLocationDelegate = new AppLocationDelegate(*m_piOSLocationService, m_viewController);  
+    m_pAppLocationDelegate = new AppLocationDelegate(*m_piOSLocationService, m_viewController);
+    m_pcardBoardHeadTracker = Eegeo_NEW(CardboardSDK::HeadTracker)();
+    m_pcardBoardHeadTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
+
 }
 
 AppHost::~AppHost()
@@ -153,6 +156,9 @@ AppHost::~AppHost()
     
     delete m_pJpegLoader;
     m_pJpegLoader = NULL;
+    
+    m_pcardBoardHeadTracker->stopTracking();
+    Eegeo_DELETE m_pcardBoardHeadTracker;
 
 	Eegeo::EffectHandler::Reset();
 	Eegeo::EffectHandler::Shutdown();
@@ -186,8 +192,17 @@ void AppHost::Update(float dt)
     }
     
     // identity matrix, this should be coming from head tracking.
-    float items[] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
-	m_pApp->Update(dt, items);
+    if (m_pcardBoardHeadTracker != NULL)
+    {
+        GLKMatrix4 value = m_pcardBoardHeadTracker->lastHeadView();
+        m_pApp->Update(dt, value.m);
+    }
+    else
+    {
+        float items[] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
+        m_pApp->Update(dt, items);
+    }
+
 }
 
 void AppHost::Draw(float dt)

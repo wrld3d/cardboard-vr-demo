@@ -8,10 +8,10 @@ namespace Examples
     {
     
     }
-   /* VRHeadTracker::~VRHeadTracker()
+    VRHeadTracker::~VRHeadTracker()
     {
     
-    }*/
+    }
     void VRHeadTracker::ResetTracker()
     {
     

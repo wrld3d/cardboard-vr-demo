@@ -17,11 +17,9 @@ set(currsources
   ios_src/ViewController.mm
   ios_src/AppDelegate.h
   ios_src/AppDelegate.mm
-  ios_src/VRHeadTracker.h
-  ios_src/VRHeadTracker.cpp
-
 )
 set(sources ${sources} ${currsources})
 source_group(\\ios_src\\ FILES ${currsources})
 include(ios_src/Examples/CMakeLists.txt)
+include(ios_src/CardboardSDK/CMakeLists.txt)
 endif(${IOS})
