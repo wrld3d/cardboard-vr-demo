@@ -102,7 +102,7 @@ if(${COMPILE_CPP_03})
   set_xcode_property(${executable_name} CLANG_CXX_LIBRARY "libstdc++")
 else(${COMPILE_CPP_03})
   add_definitions(-DCOMPILE_CPP_11)
-  set_xcode_property(${executable_name} CLANG_CXX_LANGUAGE_STANDARD "c++11")
+  set_xcode_property(${executable_name} CLANG_CXX_LANGUAGE_STANDARD "gnu++0x")
   set_xcode_property(${executable_name} CLANG_CXX_LIBRARY "libc++")
 endif(${COMPILE_CPP_03})
 
