@@ -9,7 +9,10 @@ namespace Examples
     class IVRHeadTracker
     {
     public:
+        virtual ~IVRHeadTracker(){}
         virtual void ResetTracker() = 0;
+        virtual void HeadViewValue(float value[]) = 0;
+
     };
 }
 

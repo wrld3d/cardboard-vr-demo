@@ -21,7 +21,7 @@
 #include "ScreenProperties.h"
 #include "BuildingFootprintsModule.h"
 #include "CollisionVisualizationModule.h"
-#include "VRHeadTracker.h"
+
 namespace
 {
     Eegeo::Modules::BuildingFootprintsModule* CreateBuildingFootprintsModule(Eegeo::EegeoWorld& world, const Eegeo::Modules::CollisionVisualizationModule& collisionVisualizationModule)
@@ -122,8 +122,6 @@ AppHost::AppHost(
     
     m_pAppInputDelegate = new AppInputDelegate(*m_pApp, m_viewController, screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight(), screenProperties.GetPixelScale());
     m_pAppLocationDelegate = new AppLocationDelegate(*m_piOSLocationService, m_viewController);
-    m_pcardBoardHeadTracker = Eegeo_NEW(CardboardSDK::HeadTracker)();
-    m_pcardBoardHeadTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
 
 }
 
@@ -157,9 +155,8 @@ AppHost::~AppHost()
     delete m_pJpegLoader;
     m_pJpegLoader = NULL;
     
-    m_pcardBoardHeadTracker->stopTracking();
-    Eegeo_DELETE m_pcardBoardHeadTracker;
-
+    Eegeo_DELETE m_pvrHeadTracker;
+    
 	Eegeo::EffectHandler::Reset();
 	Eegeo::EffectHandler::Shutdown();
 }
@@ -192,10 +189,11 @@ void AppHost::Update(float dt)
     }
     
     // identity matrix, this should be coming from head tracking.
-    if (m_pcardBoardHeadTracker != NULL)
+    if (m_pvrHeadTracker != NULL)
     {
-        GLKMatrix4 value = m_pcardBoardHeadTracker->lastHeadView();
-        m_pApp->Update(dt, value.m);
+        float items[16];
+        m_pvrHeadTracker->HeadViewValue(items);
+        m_pApp->Update(dt, items);
     }
     else
     {
@@ -208,19 +206,27 @@ void AppHost::Update(float dt)
 void AppHost::Draw(float dt)
 {
     // identity matrix, this should be coming from head tracking.
-    float items[] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
-	m_pApp->Draw(dt,items);
+    if (m_pvrHeadTracker != NULL)
+    {
+        float items[16];
+        m_pvrHeadTracker->HeadViewValue(items);
+        m_pApp->Draw(dt,items);
+    }
+    else
+    {
+        float items[] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
+        m_pApp->Draw(dt,items);
+    }
 }
 
 void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs)
 {
 	m_piOSExampleControllerView = new Examples::iOSExampleControllerView([&m_viewController view]);
-    Examples::IVRHeadTracker *headTracker = Eegeo_NEW(Examples::VRHeadTracker)();
+    
+    m_pvrHeadTracker = Eegeo_NEW(Examples::VRHeadTracker)();
     
     
-    
-    
-    m_pApp = Eegeo_NEW(ExampleApp)(m_pWorld,deviceSpecs ,*m_piOSExampleControllerView, *headTracker,screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule,m_applicationConfiguration);
+    m_pApp = Eegeo_NEW(ExampleApp)(m_pWorld,deviceSpecs ,*m_piOSExampleControllerView, *m_pvrHeadTracker,screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule,m_applicationConfiguration);
 
 	m_piOSExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 
