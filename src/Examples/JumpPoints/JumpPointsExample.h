@@ -68,7 +68,6 @@ namespace Examples
         Eegeo::UI::UIRenderableFilter* m_pUIRenderableFilter;
         Eegeo::Resources::PlaceNames::PlaceNamesController& m_placeNameController;
 
-        Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem *m_pSPButton1, *m_pSPButton2, *m_pSPButton3, *m_pSPButton4, *m_pSPButton5, *m_pSPButton6, *m_pSPButton7;
         Eegeo::Helpers::TCallback0<JumpPointsExample> m_onSP1SelectedCallback, m_onSP2SelectedCallback, m_onSP3SelectedCallback, m_onSP4SelectedCallback, m_onSP5SelectedCallback, m_onSP6SelectedCallback, m_onSP7SelectedCallback;
         Eegeo::Helpers::TCallback0<JumpPointsExample> m_onWestPortEntryButtonCallback;
 

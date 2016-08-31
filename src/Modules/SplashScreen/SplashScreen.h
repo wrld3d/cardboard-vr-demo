@@ -40,6 +40,10 @@ namespace Eegeo
                 
                 void StateButtonClicked();
                 void PlayButtonClicked();
+
+                Eegeo::Helpers::TCallback0<SplashScreen> m_stateButtonClicked;
+                Eegeo::Helpers::TCallback0<SplashScreen> m_playButtonClicked;
+                Eegeo::Helpers::ICallback0& m_playButtonCallback;
                 
             public:
                 SplashScreen(Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
@@ -61,10 +65,6 @@ namespace Eegeo
                 
                 void Show();
                 void Hide();
-                
-                Eegeo::Helpers::TCallback0<SplashScreen> m_stateButtonClicked;
-                Eegeo::Helpers::TCallback0<SplashScreen> m_playButtonClicked;
-                Eegeo::Helpers::ICallback0& m_playButtonCallback;
             };
             
         }
