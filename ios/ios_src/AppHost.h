@@ -70,7 +70,7 @@ private:
 	Examples::IExampleControllerView* m_piOSExampleControllerView;
 	Examples::iOSRouteMatchingExampleViewFactory* m_piOSRouteMatchingExampleViewFactory;
 	Examples::iOSRouteSimulationExampleViewFactory* m_piOSRouteSimulationExampleViewFactory;
-    Examples::IVRHeadTracker *m_pvrHeadTracker;
+    Examples::IVRHeadTracker *m_pVrHeadTracker;
 
 
     

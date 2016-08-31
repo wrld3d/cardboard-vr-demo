@@ -11,23 +11,24 @@ namespace Examples
 {
     VRHeadTracker::VRHeadTracker()
     {
-        m_pcardBoardHeadTracker = Eegeo_NEW(CardboardSDK::HeadTracker)();
-        m_pcardBoardHeadTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
-
-    
+        m_pCardBoardHeadTracker = Eegeo_NEW(CardboardSDK::HeadTracker)();
+        m_pCardBoardHeadTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
     }
+    
     VRHeadTracker::~VRHeadTracker()
     {
-        m_pcardBoardHeadTracker->stopTracking();
-        Eegeo_DELETE m_pcardBoardHeadTracker;
+        m_pCardBoardHeadTracker->stopTracking();
+        Eegeo_DELETE m_pCardBoardHeadTracker;
     }
+    
     void VRHeadTracker::ResetTracker()
     {
     
     }
+    
     void VRHeadTracker::HeadViewValue(float value[])
     {
-        GLKMatrix4 lastViewValue = m_pcardBoardHeadTracker->lastHeadView();
+        GLKMatrix4 lastViewValue = m_pCardBoardHeadTracker->lastHeadView();
         for (int i=0; i<16; i++)
         {
             value[i] = lastViewValue.m[i];
@@ -37,31 +38,26 @@ namespace Examples
     
     void VRHeadTracker::UpdatedCardboardProfile(float profileValue[])
     {
-        CardboardSDK::HeadMountedDisplay *hMDManager = Eegeo_NEW(CardboardSDK::HeadMountedDisplay)([UIScreen mainScreen]);
-        CardboardSDK::ScreenParams *screenParams = hMDManager->getScreen();
-        CardboardSDK::CardboardDeviceParams *cardboardDeviceParams = hMDManager->getCardboard();
+        CardboardSDK::HeadMountedDisplay *pHMDManager = Eegeo_NEW(CardboardSDK::HeadMountedDisplay)([UIScreen mainScreen]);
+        CardboardSDK::ScreenParams *pScreenParams = pHMDManager->getScreen();
+        CardboardSDK::CardboardDeviceParams *pCardboardDeviceParams = pHMDManager->getCardboard();
         
-        CardboardSDK::FieldOfView *fov = cardboardDeviceParams->maximumLeftEyeFOV();
-        CardboardSDK::Distortion  *distCoef = cardboardDeviceParams->distortion();
-        profileValue[0] = fov->left();
-        profileValue[1] = fov->top();
-        profileValue[2] = fov->right();
-        profileValue[3] = fov->bottom();
-        profileValue[4] = screenParams->widthInMeters();
-        profileValue[5] = screenParams->heightInMeters();
-        profileValue[6] = screenParams->borderSizeInMeters();
-        profileValue[7] = cardboardDeviceParams->interLensDistance();
-        profileValue[8] = cardboardDeviceParams->verticalDistanceToLensCenter();
-        profileValue[9] = cardboardDeviceParams->screenToLensDistance();
+        CardboardSDK::FieldOfView *pFov = pCardboardDeviceParams->maximumLeftEyeFOV();
+        CardboardSDK::Distortion  *pDistCoef = pCardboardDeviceParams->distortion();
+        profileValue[0] = pFov->left();
+        profileValue[1] = pFov->top();
+        profileValue[2] = pFov->right();
+        profileValue[3] = pFov->bottom();
+        profileValue[4] = pScreenParams->widthInMeters();
+        profileValue[5] = pScreenParams->heightInMeters();
+        profileValue[6] = pScreenParams->borderSizeInMeters();
+        profileValue[7] = pCardboardDeviceParams->interLensDistance();
+        profileValue[8] = pCardboardDeviceParams->verticalDistanceToLensCenter();
+        profileValue[9] = pCardboardDeviceParams->screenToLensDistance();
         profileValue[10] = -1;
-        profileValue[11] = distCoef->coefficients()[0];
-        profileValue[12] = distCoef->coefficients()[1];
-        profileValue[13] = fov->left();
-        profileValue[14] = fov->left();
-        profileValue[15] = fov->left();
-        
-        Eegeo_DELETE hMDManager;
-        
+        profileValue[11] = pDistCoef->coefficients()[0];
+        profileValue[12] = pDistCoef->coefficients()[1];
+
+        Eegeo_DELETE pHMDManager;
     }
-    
 }

@@ -155,7 +155,7 @@ AppHost::~AppHost()
     delete m_pJpegLoader;
     m_pJpegLoader = NULL;
     
-    Eegeo_DELETE m_pvrHeadTracker;
+    Eegeo_DELETE m_pVrHeadTracker;
     
 	Eegeo::EffectHandler::Reset();
 	Eegeo::EffectHandler::Shutdown();
@@ -164,10 +164,10 @@ AppHost::~AppHost()
 void AppHost::OnResume()
 {
 	m_pApp->OnResume();
-    if (m_pvrHeadTracker != NULL)
+    if (m_pVrHeadTracker != NULL)
     {
-        float profileValue[16];
-        m_pvrHeadTracker->UpdatedCardboardProfile(profileValue);
+        float profileValue[13];
+        m_pVrHeadTracker->UpdatedCardboardProfile(profileValue);
         m_pApp->UpdateCardboardProfile(profileValue);
     }
 }
@@ -195,10 +195,10 @@ void AppHost::Update(float dt)
     }
     
     // identity matrix, this should be coming from head tracking.
-    if (m_pvrHeadTracker != NULL)
+    if (m_pVrHeadTracker != NULL)
     {
         float items[16];
-        m_pvrHeadTracker->HeadViewValue(items);
+        m_pVrHeadTracker->HeadViewValue(items);
         m_pApp->Update(dt, items);
     }
     else
@@ -212,10 +212,10 @@ void AppHost::Update(float dt)
 void AppHost::Draw(float dt)
 {
     // identity matrix, this should be coming from head tracking.
-    if (m_pvrHeadTracker != NULL)
+    if (m_pVrHeadTracker != NULL)
     {
         float items[16];
-        m_pvrHeadTracker->HeadViewValue(items);
+        m_pVrHeadTracker->HeadViewValue(items);
         m_pApp->Draw(dt,items);
     }
     else
@@ -229,19 +229,19 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 {
 	m_piOSExampleControllerView = new Examples::iOSExampleControllerView([&m_viewController view]);
     
-    m_pvrHeadTracker = Eegeo_NEW(Examples::VRHeadTracker)();
+    m_pVrHeadTracker = Eegeo_NEW(Examples::VRHeadTracker)();
     
     
-    m_pApp = Eegeo_NEW(ExampleApp)(m_pWorld,deviceSpecs ,*m_piOSExampleControllerView, *m_pvrHeadTracker,screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule,m_applicationConfiguration);
+    m_pApp = Eegeo_NEW(ExampleApp)(m_pWorld,deviceSpecs ,*m_piOSExampleControllerView, *m_pVrHeadTracker,screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule,m_applicationConfiguration);
 
 	m_piOSExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 
 	m_pApp->GetExampleController().ActivatePrevious();
     
-    if (m_pvrHeadTracker != NULL)
+    if (m_pVrHeadTracker != NULL)
     {
-        float profileValue[16];
-        m_pvrHeadTracker->UpdatedCardboardProfile(profileValue);
+        float profileValue[13];
+        m_pVrHeadTracker->UpdatedCardboardProfile(profileValue);
         m_pApp->UpdateCardboardProfile(profileValue);
     }
 }

@@ -18,6 +18,6 @@ namespace Examples
         void UpdatedCardboardProfile(float profileValue[]);
 
     private:
-        CardboardSDK::HeadTracker *m_pcardBoardHeadTracker;
+        CardboardSDK::HeadTracker *m_pCardBoardHeadTracker;
     };
 }
