@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.eegeo.mobilesdkharness.MainActivity;
-import com.eegeo.vr.R;
+import com.eegeo.cardboardvrdemo.R;
 
 
 //this is the java companion type to native ShowJavaPlaceJumpUIExample

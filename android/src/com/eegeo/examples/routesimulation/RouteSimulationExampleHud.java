@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.eegeo.mobilesdkharness.MainActivity;
-import com.eegeo.vr.R;
+import com.eegeo.cardboardvrdemo.R;
 
 
 public class RouteSimulationExampleHud
