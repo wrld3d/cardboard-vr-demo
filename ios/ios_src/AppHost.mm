@@ -164,6 +164,12 @@ AppHost::~AppHost()
 void AppHost::OnResume()
 {
 	m_pApp->OnResume();
+    if (m_pvrHeadTracker != NULL)
+    {
+        float profileValue[16];
+        m_pvrHeadTracker->UpdatedCardboardProfile(profileValue);
+        m_pApp->UpdateCardboardProfile(profileValue);
+    }
 }
 
 void AppHost::OnPause()
