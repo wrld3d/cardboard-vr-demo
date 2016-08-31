@@ -69,7 +69,7 @@ namespace Eegeo
             void GetNearFarPlaneDistances(float& out_near, float& out_far);
             
             // on animation update
-            virtual void OnDv3Updated(Eegeo::dv3& delta);
+            virtual void OnDv3Updated(const Eegeo::dv3& delta);
             
             void Update(float dt);
             

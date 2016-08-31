@@ -54,9 +54,9 @@ namespace Eegeo
                 
                 WorldMenuUpView* m_pWorldMenuUpView;
                 
-                IWorldMenuItemObservable& m_WorldMenuItemRepository;
+                IWorldMenuItemObservable& m_worldMenuItemRepository;
                 IWorldMenuItemViewFactory& m_viewFactory;
-                Eegeo::UI::IUIInteractionObservable& m_pIUIInteractionObservable;
+                Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
                 Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
                 Eegeo::dv3 m_cachedCenter;
                 Eegeo::dv3 m_cameraLastPosition;

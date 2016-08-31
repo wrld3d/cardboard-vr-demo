@@ -20,25 +20,25 @@ namespace Eegeo
                                                      , Eegeo::UI::IUICameraProvider& uiCameraProvider
                                                      , Eegeo::UI::IUIQuadFactory& quadFactory
                                                      , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter)
-            : m_WorldMenuItemRepository(worldMenuItemObservable)
+            : m_worldMenuItemRepository(worldMenuItemObservable)
             , m_viewFactory(viewFactory)
-            , m_pIUIInteractionObservable(uiInteractionObservable)
+            , m_uiInteractionObservable(uiInteractionObservable)
             , m_uiCameraProvider(uiCameraProvider)
             {
                 m_pWorldMenuUpView = Eegeo_NEW(WorldMenuUpView)(quadFactory, uiRenderableFilter);
                 m_menuItemsShouldRender = true;
                 m_isMenuShown = false;
-                m_WorldMenuItemRepository.AddWorldMenuObserver(this);
+                m_worldMenuItemRepository.AddWorldMenuObserver(this);
             }
             
             WorldMenuController::~WorldMenuController()
             {
                 Eegeo_DELETE(m_pWorldMenuUpView);
-                m_WorldMenuItemRepository.RemoveWorldMenuObserver(this);
+                m_worldMenuItemRepository.RemoveWorldMenuObserver(this);
                 for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
                 {
                     WorldMenuItemView* pView = it->second;
-                    m_pIUIInteractionObservable.UnRegisterInteractableItem(pView);
+                    m_uiInteractionObservable.UnRegisterInteractableItem(pView);
                 }
                 m_viewsByModel.clear();
             }
@@ -110,7 +110,7 @@ namespace Eegeo
                 WorldMenuItemView* pView = m_viewFactory.CreateViewForWorldMenuItem(worldMenuItem);
                 m_viewsByModel[&worldMenuItem] = pView;
                 
-                m_pIUIInteractionObservable.RegisterInteractableItem(pView);
+                m_uiInteractionObservable.RegisterInteractableItem(pView);
                 m_isMenuShown = false;
             }
             
@@ -120,7 +120,7 @@ namespace Eegeo
                 WorldMenuItemView* pView = GetViewForModel(worldMenuItem);
                 
                 m_viewsByModel.erase(&worldMenuItem);
-                m_pIUIInteractionObservable.UnRegisterInteractableItem(pView);
+                m_uiInteractionObservable.UnRegisterInteractableItem(pView);
                 
             }
             

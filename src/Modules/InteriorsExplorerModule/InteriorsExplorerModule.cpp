@@ -49,9 +49,9 @@ namespace InteriorsExplorer
             int iconId = lop+3;
             if(lop==-1)
                 iconId = 15;
-            InteriorMenu::InteriorMenuItem* menuItem =  Eegeo_NEW(InteriorMenu::InteriorMenuItem)(lop, iconId, m_interiorMenuItemGazeCallback);
-            m_pInteriorMenuModule->GetRepository().AddInteriorMenuItem(menuItem);
-            m_pInteriorMenuItems.push_back(menuItem);
+            InteriorMenu::InteriorMenuItem* pMenuItem =  Eegeo_NEW(InteriorMenu::InteriorMenuItem)(lop, iconId, m_interiorMenuItemGazeCallback);
+            m_pInteriorMenuModule->GetRepository().AddInteriorMenuItem(pMenuItem);
+            m_interiorMenuItems.push_back(pMenuItem);
         }
         
         
@@ -59,12 +59,12 @@ namespace InteriorsExplorer
     
     InteriorsExplorerModule::~InteriorsExplorerModule()
     {
-        while(m_pInteriorMenuItems.size()>0)
+        while(m_interiorMenuItems.size()>0)
         {
-            InteriorMenu::InteriorMenuItem* menuItem = *m_pInteriorMenuItems.begin();
-            m_pInteriorMenuModule->GetRepository().RemoveInteriorMenuItem(menuItem);
-            m_pInteriorMenuItems.erase(m_pInteriorMenuItems.begin());
-            Eegeo_DELETE menuItem;
+            InteriorMenu::InteriorMenuItem* pMenuItem = *m_interiorMenuItems.begin();
+            m_pInteriorMenuModule->GetRepository().RemoveInteriorMenuItem(pMenuItem);
+            m_interiorMenuItems.erase(m_interiorMenuItems.begin());
+            Eegeo_DELETE pMenuItem;
         }
         
         Eegeo_DELETE m_pInteriorMenuModule;

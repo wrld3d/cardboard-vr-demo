@@ -21,7 +21,7 @@ namespace Examples
                                            Eegeo::Location::ILocationService& locationService)
     : GlobeCameraExampleBase(pCameraController, cameraTouchController)
     , m_world(eegeoWorld)
-    , m_cameraController(pCameraController)
+    , m_pCameraController(pCameraController)
 	, m_debugRenderer(debugRenderer)
     , m_locationService(locationService)
     {
@@ -29,9 +29,9 @@ namespace Examples
     
     void ReadHeadingExample::Update(float dt)
     {
-        EXAMPLE_LOG("%.2f	\n", m_cameraController->GetRenderCamera().GetAltitude());
+        EXAMPLE_LOG("%.2f	\n", m_pCameraController->GetRenderCamera().GetAltitude());
         
-        EXAMPLE_LOG("%.2f, %.2f, %.2f\n", m_cameraController->GetRenderCamera().GetFOV(), m_cameraController->GetRenderCamera().GetNearClip(), m_cameraController->GetRenderCamera().GetFarClip());
+        EXAMPLE_LOG("%.2f, %.2f, %.2f\n", m_pCameraController->GetRenderCamera().GetFOV(), m_pCameraController->GetRenderCamera().GetNearClip(), m_pCameraController->GetRenderCamera().GetFarClip());
         
         
         

@@ -101,7 +101,7 @@ namespace Eegeo
         }
         
         
-        void JumpPointsCameraController::OnDv3Updated(Eegeo::dv3& delta)
+        void JumpPointsCameraController::OnDv3Updated(const Eegeo::dv3& delta)
         {
             m_pRenderCamera->SetEcefLocation(delta);
         }

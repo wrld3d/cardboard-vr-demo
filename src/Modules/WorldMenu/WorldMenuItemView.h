@@ -40,7 +40,7 @@ namespace Eegeo
                  */
                 WorldMenuItem& GetWorldMenuItem() const
                 {
-                    return m_WorldMenuItem;
+                    return m_worldMenuItem;
                 }
                 
                 virtual bool IsCollidingWithPoint(const Eegeo::v2& screenPoint, Eegeo::UI::IUICameraProvider& cameraProvider);
@@ -48,7 +48,7 @@ namespace Eegeo
                 
                 
             private:
-                WorldMenuItem& m_WorldMenuItem;
+                WorldMenuItem& m_worldMenuItem;
             };
         }
     }
