@@ -1,10 +1,4 @@
-//
-//  VRDistortionMaterial
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 3/21/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include "VRDistortionRenderable.h"
 
@@ -24,6 +18,16 @@ namespace Eegeo
                 Eegeo_GL(glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_SHORT, (void*)(0)));
                 m_pMesh->UnbindVertexBuffers(glState);
                 
+            }
+
+            void VRDistortionRenderable::SetFadeModifier(float fadeModifier)
+            {
+                m_fadeModifier = fadeModifier;
+            }
+
+            float VRDistortionRenderable::GetFadeModifier() const
+            {
+                return m_fadeModifier;
             }
         }
     }

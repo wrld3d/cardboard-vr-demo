@@ -50,7 +50,7 @@ namespace Eegeo
         
         void VRCameraController::UpdateFromPose(const Eegeo::m33& orientation, float eyeDistance)
         {
-            m_ecefPosition = m_renderCamera->GetEcefLocation();
+            m_headTrackerOrientation = orientation;
             m33 orientationMatrix;
             m33::Mul(orientationMatrix, m_orientation, orientation);
             
@@ -70,11 +70,6 @@ namespace Eegeo
             float uAngle = Math::Rad2Deg(Math::ACos(v3::Dot(uA, uB) / (uA.Length() * uB.Length())));
             float fAngle = Math::Rad2Deg(Math::ACos(v3::Dot(fA, fB) / (fA.Length() * fB.Length())));
             
-            float lookDownFactor = 1.0f;
-            
-//            if(fAngle>85.f)
-//                lookDownFactor = fAngle/175.f;
-            
             float factor = 1.0f;
             if(uAngle<100.f && fAngle<100.f){
                 factor = 1.f - (uAngle/90.f + fAngle/90.f)/2.f;
@@ -89,7 +84,7 @@ namespace Eegeo
             float near, far;
             GetNearFarPlaneDistances(near,far);
             if(!std::isnan(factor)){
-                m_VRCameraPositionSpline.setSlowDownFactor(1.f - factor);
+                m_vrCameraPositionSpline.setSlowDownFactor(1.f - factor);
                 m_renderCamera->SetOrientationMatrix(orientationMatrix);
                 m_renderCamera->SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
                 m_renderCamera->SetProjection(0.7f, near*m_nearMultiplier, far);
@@ -123,43 +118,61 @@ namespace Eegeo
             
             m_time += dt;
             
-            if(m_VRCameraPositionSpline.IsStopPoint())
+            if(m_vrCameraPositionSpline.IsStopPoint())
             {
-                m_VRCameraPositionSpline.Update(dt);
-                m_VRCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
                 m_stopTimeElapsed += dt;
-                if(m_stopTimeElapsed>=m_stopTime)
+                if(m_stopTimeElapsed>=m_stopTime && m_isPlaying)
                 {
-//                    m_pHeadTracker.ResetTracker();
-                    m_stopTimeElapsed = 0.0f;
-                    m_VRCameraPositionSpline.NextSpline();
-                    m_VRCameraPositionSpline.Start();
+                    m_isPlaying = false;
+                    m_splineEndedCallbacks.ExecuteCallbacks();
+
                 }
             }
-            else if(IsFalling())
-            {
-                Fall(dt);
-            }
-            else if (IsFollowingSpline())
-            {
-//                m_VRCameraPositionSpline.Update(dt);
-//                m_VRCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
-                
-            }
-            else
+            else if (!IsFollowingSpline())
             {
                 m_splineEndPauseTimeElapsed += dt;
-                if(m_splineEndPauseTimeElapsed > m_splineEndPauseTime || m_VRCameraPositionSpline.GetCurrentSplineID()!=2)
+                if(m_splineEndPauseTimeElapsed > m_splineEndPauseTime || m_vrCameraPositionSpline.GetCurrentSplineID()!=2)
                 {
-//                    m_pHeadTracker.ResetTracker();
-                    m_splineEndPauseTimeElapsed = 0.0f;
-                    m_VRCameraPositionSpline.NextSpline();
-                    m_VRCameraPositionSpline.Start();
+                    if (m_isPlaying)
+                    {
+                        m_isPlaying = false;
+                        m_splineEndedCallbacks.ExecuteCallbacks();
+                    }
                 }
-//                Move(dt);
             }
+
+            m_vrCameraPositionSpline.Update(dt);
+            m_vrCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
         }
         
+        void VRCameraController::PlaySpline(int splineID)
+        {
+            m_pHeadTracker.ResetTracker();
+            m_vrCameraPositionSpline.SetSpline(splineID);
+            m_vrCameraPositionSpline.Start();
+            m_splineEndPauseTimeElapsed = 0.0f;
+        }
+
+        void VRCameraController::PlayNextSpline()
+        {
+            m_pHeadTracker.ResetTracker();
+            m_stopTimeElapsed = 0.0f;
+            m_splineEndPauseTimeElapsed = 0.0f;
+            m_vrCameraPositionSpline.NextSpline();
+            m_vrCameraPositionSpline.Start();
+            m_isPlaying = true;
+        }
+
+        void VRCameraController::RegisterSplineFinishedCallback(Helpers::ICallback0 &callback)
+        {
+            m_splineEndedCallbacks.AddCallback(callback);
+        }
+
+        void VRCameraController::UnregisterSplineFinishedCallback(Helpers::ICallback0 &callback)
+        {
+            m_splineEndedCallbacks.RemoveCallback(callback);
+        }
+
         bool VRCameraController::CanAcceptUserInput() const
         {
             return (!(IsFalling() || IsFollowingSpline()));

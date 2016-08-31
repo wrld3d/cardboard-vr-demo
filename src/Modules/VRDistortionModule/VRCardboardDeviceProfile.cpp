@@ -1,10 +1,4 @@
-//
-//  CardboardDeviceProfile.cpp
-//  SDKSamplesApp
-//
-//  Created by Ali on 3/31/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include "VRCardboardDeviceProfile.h"
 #include "Logger.h"
@@ -92,31 +86,31 @@ namespace Eegeo
                 //   matA * [K1, K2] = y
                 // Solve:
                 //   [K1, K2] = inverse(transpose(matA) * matA) * transpose(matA) * y
-                double **matA = new double*[numSamples];
+                double **ppMatA = new double*[numSamples];
                 double vecY[numSamples];
                 for (int i = 0; i < numSamples; ++i) {
-                    matA[i] = new double[numCoefficients];
+                    ppMatA[i] = new double[numCoefficients];
                     float r = maxRadius * (i + 1) / (float) numSamples;
                     double rp = Distort(r, distort.k1, distort.k2);
                     double v = rp;
                     for (int j = 0; j < numCoefficients; ++j) {
                         v *= rp * rp;
-                        matA[i][j] = v;
+                        ppMatA[i][j] = v;
                     }
                     vecY[i] = r - rp;
                 }
                 double vecK[numCoefficients];
-                SolveLeastSquares(matA, vecY, numSamples, numCoefficients, vecK);
+                SolveLeastSquares(ppMatA, vecY, numSamples, numCoefficients, vecK);
                 VRDistortionCoeff coeef = {(float)vecK[0],(float)vecK[1]};
                 for (int i = 0; i < numSamples; ++i) {
-                    delete [] matA[i];
+                    delete [] ppMatA[i];
                 }
                 
-                delete [] matA;
+                delete [] ppMatA;
                 return coeef;
             }
             
-            void VRCardboardDeviceProfile::SolveLeastSquares(double **matA, double vecY[], const int numSamples, const int numCoefficients, double vecX[]) {
+            void VRCardboardDeviceProfile::SolveLeastSquares(double **ppMatA, double vecY[], const int numSamples, const int numCoefficients, double vecX[]) {
                 if (numCoefficients != 2) {
                     EXAMPLE_LOG("Only 2 coefficients supported.");
                     return;
@@ -129,7 +123,7 @@ namespace Eegeo
                     for (int j = 0; j < numCoefficients; ++j) {
                         double sum = 0.0f;
                         for (int i = 0; i < numSamples; ++i) {
-                            sum += matA[i][j] * matA[i][k];
+                            sum += ppMatA[i][j] * ppMatA[i][k];
                         }
                         matATA[j][k] = sum;
                     }
@@ -152,7 +146,7 @@ namespace Eegeo
                 for (int j = 0; j < numCoefficients; ++j) {
                     double sum = 0.0;
                     for (int i = 0; i < numSamples; ++i) {
-                        sum += matA[i][j] * vecY[i];
+                        sum += ppMatA[i][j] * vecY[i];
                     }
                     vecATY[j] = sum;
                 }
@@ -174,7 +168,7 @@ namespace Eegeo
             
             /// Calculates the tan-angles from the maximum FOV for the left eye for the
             /// current device and screen parameters, assuming no lenses.
-            void VRCardboardDeviceProfile::GetLeftEyeNoLensTanAngles(float* result) {
+            void VRCardboardDeviceProfile::GetLeftEyeNoLensTanAngles(float* pResult) {
                 // Tan-angles from the max FOV.
                 float fovLeft = DistortInv(Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(-device.maxFOV.outer)), device.distortion.k1, device.distortion.k2);
                 float fovTop = DistortInv(Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(device.maxFOV.upper)), device.distortion.k1, device.distortion.k2);
@@ -193,15 +187,15 @@ namespace Eegeo
                 float screenRight = (centerX + halfWidth) / centerZ;
                 float screenBottom = (centerY - halfHeight) / centerZ;
                 // Compare the two sets of tan-angles and take the value closer to zero on each side.
-                result[0] = Eegeo::Max<float>(fovLeft, screenLeft);
-                result[1] = Eegeo::Min<float>(fovTop, screenTop);
-                result[2] = Eegeo::Min<float>(fovRight, screenRight);
-                result[3] = Eegeo::Max<float>(fovBottom, screenBottom);
+                pResult[0] = Eegeo::Max<float>(fovLeft, screenLeft);
+                pResult[1] = Eegeo::Min<float>(fovTop, screenTop);
+                pResult[2] = Eegeo::Min<float>(fovRight, screenRight);
+                pResult[3] = Eegeo::Max<float>(fovBottom, screenBottom);
             }
             
             /// Calculates the tan-angles from the maximum FOV for the left eye for the
             /// current device and screen parameters.
-            void VRCardboardDeviceProfile::GetLeftEyeVisibleTanAngles(float* result) {
+            void VRCardboardDeviceProfile::GetLeftEyeVisibleTanAngles(float* pResult) {
                 // Tan-angles from the max FOV.
                 
                 float fovLeft = Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(-device.maxFOV.outer));
@@ -222,13 +216,13 @@ namespace Eegeo
                 float screenBottom = Distort((centerY - halfHeight) / centerZ, device.distortion.k1, device.distortion.k2);
                 // Compare the two sets of tan-angles and take the value closer to zero on each side.
 
-                result[0] = Eegeo::Max<float>(fovLeft, screenLeft);
-                result[1] = Eegeo::Min<float>(fovTop, screenTop);
-                result[2] = Eegeo::Min<float>(fovRight, screenRight);
-                result[3] = Eegeo::Max<float>(fovBottom, screenBottom);
+                pResult[0] = Eegeo::Max<float>(fovLeft, screenLeft);
+                pResult[1] = Eegeo::Min<float>(fovTop, screenTop);
+                pResult[2] = Eegeo::Min<float>(fovRight, screenRight);
+                pResult[3] = Eegeo::Max<float>(fovBottom, screenBottom);
             }
             
-            void VRCardboardDeviceProfile::GetLeftEyeVisibleScreenRect(float undistortedFrustum[], float *rect) {
+            void VRCardboardDeviceProfile::GetLeftEyeVisibleScreenRect(float undistortedFrustum[], float *pRect) {
                 float dist = device.lenses.screenDistance;
                 float eyeX = (screen.width - device.lenses.separation) / 2;
                 float eyeY = GetVerticalLensOffset() + screen.height / 2;
@@ -237,10 +231,10 @@ namespace Eegeo
                 float right = (undistortedFrustum[2] * dist + eyeX) / screen.width;
                 float bottom = (undistortedFrustum[3] * dist + eyeY) / screen.height;
                 
-                rect[0] = left;
-                rect[1] = bottom;
-                rect[2] = right - left;
-                rect[3] = top - bottom;
+                pRect[0] = left;
+                pRect[1] = bottom;
+                pRect[2] = right - left;
+                pRect[3] = top - bottom;
             }
             
             Eegeo::v2 VRCardboardDeviceProfile::GetScreenMeshCenter(float width, float height) {

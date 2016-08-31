@@ -1,13 +1,6 @@
-//
-//  UIQuadFactory.h
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 6/1/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-#ifndef UIQuadFactory_h
-#define UIQuadFactory_h
+#pragma once
 
 #include "IUIQuadFactory.h"
 
@@ -20,21 +13,20 @@ namespace Eegeo
             
         private:
             
-            typedef std::map<std::string, Eegeo::Rendering::Materials::TexturedUniformColoredMaterial*> TMaterialMap;
-            TMaterialMap m_MaterialMap;
+            typedef std::map<std::string, Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial*> TMaterialMap;
+            TMaterialMap m_materialMap;
             
-            Eegeo::Rendering::Shaders::TexturedUniformColoredShader* m_Shader;
+            Eegeo::Rendering::Shaders::TexturedUniformColoredShader* m_pShader;
             
-            Eegeo::Rendering::GlBufferPool& m_GlBufferPool;
-            Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_VertexBindingPool;
-            Eegeo::Rendering::VertexLayouts::VertexLayoutPool& m_VertexLayoutPool;
-            Eegeo::Rendering::RenderableFilters& m_RenderableFilters;
+            Eegeo::Rendering::GlBufferPool& m_glBufferPool;
+            Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
+            Eegeo::Rendering::VertexLayouts::VertexLayoutPool& m_vertexLayoutPool;
             
-            Eegeo::Helpers::ITextureFileLoader& m_TextureFileLoader;
-            Rendering::Shaders::ShaderIdGenerator& m_ShaderIdGenerator;
-            Rendering::Materials::MaterialIdGenerator& m_MaterialIdGenerator;
+            Eegeo::Helpers::ITextureFileLoader& m_textureFileLoader;
+            Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
+            Rendering::Materials::MaterialIdGenerator& m_materialIdGenerator;
             
-            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial* GetMaterialForAsset(const std::string& assetPath);
+            Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial* GetMaterialForAsset(const std::string& assetPath);
             
             
         public:
@@ -47,8 +39,6 @@ namespace Eegeo
                                  const Eegeo::v2& dimension,
                                  const Eegeo::v2& uvMin = Eegeo::v2::Zero(),
                                  const Eegeo::v2& uvMax = Eegeo::v2::One(),
-                                 const Eegeo::dv3& ecefPosition = Eegeo::v3::One(),
-                                 const Eegeo::v4& initialColor = Eegeo::v4::One(),
                                  const Eegeo::Rendering::LayerIds::Values renderLayer = Eegeo::Rendering::LayerIds::Values::AfterWorld);
             
             
@@ -60,4 +50,3 @@ namespace Eegeo
 
 
 
-#endif /* UIQuadFactory_h */

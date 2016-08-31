@@ -7,8 +7,10 @@
 #include "VectorMath.h"
 #include "Bounds.h"
 #include "JumpPoints.h"
-#include "../UI/UIImageButton.h"
+#include "../UI/UIProgressButton.h"
 #include "../UI/IUICameraProvider.h"
+#include "IInteriorsExplorerModule.h"
+#include "UIQuad/IUIQuadFactory.h"
 
 namespace Eegeo
 {
@@ -22,15 +24,19 @@ namespace Eegeo
              *  This class deals with the concerns of displaying a JumpPoint.
              *
              */
-            class JumpPointView : protected Eegeo::NonCopyable , public UIImageButton
+            class JumpPointView : public Eegeo::UI::UIProgressButton
             {
             public:
                 JumpPointView(JumpPoint& jumpPoint
-                              , UIQuad* quad
-                              , IUICameraProvider& p_UICameraProvider
-                              );
+                              , IUIRenderableFilter& uiRenderableFilter
+                              , Eegeo::UI::IUIQuadFactory& quadFactory
+                              , const UIProgressBarConfig& progressBarConfig
+                              , IUICameraProvider& uiCameraProvider
+                              , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected);
+
+                virtual ~JumpPointView(){}
                 
-                /*! Retrieve the JumpPoint model that the view represents.
+	         /*! Retrieve the JumpPoint model that the view represents.
                  * \return The view's JumpPoint model.
                  */
                 JumpPoint& GetJumpPoint() const;
@@ -38,12 +44,16 @@ namespace Eegeo
                 /*! Move the render camera to jump point.
                  * \param The color vector to apply to the JumpPoint.
                  */
-                void MoveCameraToJumpPoint();
+                void JumpPointGazed();
+                
                 
             private:
-                JumpPoint& m_JumpPoint;
-                IUICameraProvider& m_UICameraProvider;
-                Eegeo::Helpers::TCallback0<JumpPointView> m_JumpPointClickCallback;
+                
+                JumpPoint& m_jumpPoint;
+                IUICameraProvider& m_uiCameraProvider;
+                Eegeo::Helpers::TCallback0<JumpPointView> m_jumpPointGazed;
+                Eegeo::Helpers::ICallback1<JumpPoint&>& m_onJumpPointSelected;
+                
             };
         }
     }

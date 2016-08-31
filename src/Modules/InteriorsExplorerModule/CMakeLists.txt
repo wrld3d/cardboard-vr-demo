@@ -11,3 +11,4 @@ set(currsources
 )
 set(sources ${sources} ${currsources})
 source_group(\\src\\Modules\\InteriorsExplorerModule\\ FILES ${currsources})
+include(../src/Modules/InteriorsExplorerModule/InteriorMenu/CMakeLists.txt)

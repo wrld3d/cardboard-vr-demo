@@ -1,14 +1,9 @@
-//
-//  JumpPoint.cpp
-//  SDKSamplesApp
-//
-//  Created by Ali on 5/19/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include "JumpPoint.h"
 #include "JumpPointView.h"
-
+#include "InteriorVisibilityUpdater.h"
+#include "InteriorsExplorerModel.h"
 namespace Eegeo
 {
     namespace UI
@@ -16,23 +11,34 @@ namespace Eegeo
         namespace JumpPoints
         {
             JumpPointView::JumpPointView(JumpPoint& jumpPoint
-                                         , UIQuad* quad
-                                         , IUICameraProvider& p_UICameraProvider
+                                         , IUIRenderableFilter& uiRenderableFilter
+                                         , Eegeo::UI::IUIQuadFactory& quadFactory
+                                         , const UIProgressBarConfig& progressBarConfig
+                                         , IUICameraProvider& uiCameraProvider
+                                         , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected
                                          )
-            : m_JumpPoint(jumpPoint)
-            , m_UICameraProvider(p_UICameraProvider)
-            , m_JumpPointClickCallback(this, &JumpPointView::MoveCameraToJumpPoint)
-            , UIImageButton(
-                            quad
+            : m_jumpPoint(jumpPoint)
+            , m_uiCameraProvider(uiCameraProvider)
+            , m_jumpPointGazed(this, &JumpPointView::JumpPointGazed)
+            , m_onJumpPointSelected(onJumpPointSelected)
+            , UIProgressButton(uiRenderableFilter
+                            , quadFactory
+                            , jumpPoint.GetFileName()
+                            , progressBarConfig
+                            , m_jumpPointGazed
                             , jumpPoint.GetDimensions()
                             , jumpPoint.GetEcefPosition()
-                            , m_JumpPointClickCallback
+                            , Eegeo::v3::One()
+                            , Eegeo::v4::One()
+                            , jumpPoint.GetUVMin()
+                            , jumpPoint.GetUVMax()
                             )
-            {}
-            
-            void JumpPointView::MoveCameraToJumpPoint()
             {
-                m_UICameraProvider.GetRenderCameraForUI()->SetEcefLocation(m_JumpPoint.GetEcefPosition());
+            }
+            
+            void JumpPointView::JumpPointGazed()
+            {
+                m_onJumpPointSelected(m_jumpPoint);
             }
             
         }

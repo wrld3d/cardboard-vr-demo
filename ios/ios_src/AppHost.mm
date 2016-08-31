@@ -189,10 +189,6 @@ void AppHost::Draw(float dt)
 void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs)
 {
 	m_piOSExampleControllerView = new Examples::iOSExampleControllerView([&m_viewController view]);
-  
-//	m_pApp = new ExampleApp(m_pWorld, deviceSpecs, *m_piOSExampleControllerView, screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule);
-
-//	RegisteriOSSpecificExamples();
 
 	m_piOSExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 

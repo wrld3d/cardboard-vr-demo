@@ -15,12 +15,21 @@
 #include "DefaultCameraControllerFactory.h"
 #include "VRCameraSpline/IVRHeadTracker.h"
 #include "CameraState.h"
+#include "Modules/UI/UIInteraction/IUIInteractionObservable.h"
+#include "Modules/UI/IUICameraProvider.h"
+#include "Modules/UI/UIQuad/IUIQuadFactory.h"
+#include "Modules/DeadZoneMenu/IDeadZoneMenuItemObservable.h"
+#include "Modules/UI/Animations/AnimationsController.h"
+#include "Modules/WorldMenu/WorldMenu.h"
 #include <vector>
 #include <string>
+#include "ApplicationConfiguration.h"
+#include "WorldMenuLoaderModel.h"
+#include "IScreenFadeEffectController.h"
 
 namespace Examples
 {
-    class ExampleController : private Eegeo::NonCopyable
+    class ExampleController : private Eegeo::NonCopyable, public Eegeo::UI::IUICameraProvider
     {
         IExample* m_pCurrentExample;
         int m_currentExampleFactoryIndex;
@@ -51,6 +60,10 @@ namespace Examples
         
         void UpdateSelectedExample();
         
+        void RestartExample();
+        
+        void ActivateExample(std::string selectedExampleName);
+        
         void ActivatePrevious();
         
         void ActivateNext();
@@ -67,9 +80,11 @@ namespace Examples
         
         void RegisterExample(IExampleFactory* pFactory);
         
-        Eegeo::m33& GetOrientation();
+        const Eegeo::m33& GetOrientation();
+        const Eegeo::m33& GetBaseOrientation();
+        const Eegeo::m33& GetHeadTrackerOrientation();
         
-        Eegeo::Camera::RenderCamera* GetRenderCamera();
+        Eegeo::Camera::RenderCamera& GetRenderCamera();
         
         Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const;
         Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const;
@@ -103,12 +118,43 @@ namespace Examples
             m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, screenPropertiesProvider)));
         }
         
+        
+        
+        
         template <typename TExampleFactory>
-        void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider, const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                                                       Examples::IVRHeadTracker& headTracker)
+        void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider,
+                                                       InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                                                       Examples::IVRHeadTracker& headTracker,
+                                                       Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
+                                                       Eegeo::UI::IUIQuadFactory& quadFactory,
+                                                       ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader)
         {
-            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, headTracker, screenPropertiesProvider, interiorsExplorerModule)));
+            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world,
+                                                              m_defaultCameraControllerFactory,
+                                                              headTracker,
+                                                              screenPropertiesProvider,
+                                                              interiorsExplorerModule,
+                                                              deadZoneRepository,
+                                                              quadFactory,
+                                                              screenFader)));
         }
+        
+        template <typename TExampleFactory>
+        void RegisterJumpPointVRExample(const IScreenPropertiesProvider& screenPropertiesProvider,
+                                                Eegeo::UI::IUIQuadFactory& quadFactory,
+                                                Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
+                                                Eegeo::UI::IUICameraProvider& uICameraProvider,
+                                        		InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                                        		Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
+                                        		Eegeo::UI::Animations::AnimationsController& animationsController,
+                                                Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
+                                                WorldMenuLoader::SdkModel::WorldMenuLoaderModel& menuLoader,
+                                                IVRHeadTracker& headTracker,
+                                                Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
+        {
+            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, quadFactory, uIInteractionObservable, uICameraProvider, interiorsExplorerModule, deadZoneMenuRepository,animationsController, worldMenuModule, menuLoader, headTracker, appConfig)));
+        }
+        
         
         void Event_TouchRotate(const AppInterface::RotateData& data);
         void Event_TouchRotate_Start(const AppInterface::RotateData& data);
@@ -128,6 +174,8 @@ namespace Examples
         void Event_TouchDown(const AppInterface::TouchData& data);
         void Event_TouchMove(const AppInterface::TouchData& data);
         void Event_TouchUp(const AppInterface::TouchData& data);
+        
+        Eegeo::Camera::RenderCamera& GetRenderCameraForUI();
     };
 }
 

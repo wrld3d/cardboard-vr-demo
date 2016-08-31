@@ -24,16 +24,18 @@ namespace Eegeo
                 void AddJumpPoint(JumpPoint* pJumpPointToAdd);
                 
                 void RemoveJumpPoint(JumpPoint* pJumpPointToRemove);
+
+                void RemoveAllJumpPoints();
                 
-                int GetNumOfJumpPoints() const;
+                size_t GetNumOfJumpPoints() const;
                 
                 JumpPoint* GetJumpPointAtIndex(int jumpPointIndex) const;
                 
                 JumpPoint* GetJumpPointById(TJumpPointId id) const;
                 
-                virtual void AddJumpPointObserver(IJumpPointObserver* observerToAdd);
+                virtual void AddJumpPointObserver(IJumpPointObserver* pObserverToAdd);
                 
-                virtual void RemoveJumpPointObserver(IJumpPointObserver* observerToRemove);
+                virtual void RemoveJumpPointObserver(IJumpPointObserver* pObserverToRemove);
                 
             private:
                 typedef std::vector<JumpPoint*> TJumpPoints;

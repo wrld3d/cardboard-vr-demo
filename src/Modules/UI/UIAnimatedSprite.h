@@ -1,72 +1,63 @@
-//
-//  UIAnimatedQuad.h
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 5/24/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
-#include "UIQuad/UIQuad.h"
-#include "UIInteraction/IUIInteractableItem.h"
+#pragma once
+
+#include "UISprite.h"
 #include "ICallback.h"
-
-#ifndef UIAnimatedSprite_h
-#define UIAnimatedSprite_h
+#include "UIQuad/UIQuadFactory.h"
+#include <vector>
 
 namespace Eegeo
 {
     namespace UI
     {
-        class UIAnimatedSprite : public Eegeo::UI::IUIInteractableItem
+        class UIAnimatedSprite
         {
             
         private:
-            
-            float m_TimeElapsed;
-            float m_FrameRate;
-            
-            int m_CurrentFrameNumber;
-            float m_Radius;
-            
-            Eegeo::v2& m_FramesGridSize;
-            
-            UIQuad* m_Quad;
-            Eegeo::Helpers::ICallback0& m_OnClickedEvent;
-            
-            Eegeo::v3 m_scale;
+            typedef std::vector<UISprite*> TSpriteFrames;
+            TSpriteFrames m_frames;
+
+            int m_currentFrame;
+            float m_timeElapsed;
+            float m_frameRate;
+
+            void LoadNextFrame();
             
         public:
-            UIAnimatedSprite(UIQuad* quad
-                             , Eegeo::Helpers::ICallback0& onClickedEvent
-                             , const Eegeo::v2& dimension
-                             , Eegeo::v2& framesGridSize
+            
+            UIAnimatedSprite(IUIRenderableFilter& uiRenderableFilter
+                             , IUIQuadFactory& uiQuadFactory
+                             , const std::string& assetPath
                              , float frameRate
-                          );
+                             , const Eegeo::v2& spriteGridSize = Eegeo::v2::One()
+                             , int spriteId = 0
+                             , const Eegeo::v2&  size = Eegeo::v2::One()
+                             , const Eegeo::dv3& ecefPosition = Eegeo::dv3::Zero()
+                             , const Eegeo::v3& scale = Eegeo::v3::One()
+                             , const Eegeo::v4& color = Eegeo::v4::One()
+                             , const Eegeo::Rendering::LayerIds::Values renderLayer = Eegeo::Rendering::LayerIds::Values::AfterWorld);
+        
             
             virtual ~UIAnimatedSprite();
             
+            void CreateFrames(IUIRenderableFilter& uiRenderableFilter
+                              , IUIQuadFactory& uiQuadFactory
+                              , const std::string& assetPath
+                              , const Eegeo::v2& spriteGridSize
+                              , const Eegeo::v2& size
+                              , const Eegeo::dv3& ecefPosition
+                              , const Eegeo::v3& scale
+                              , const Eegeo::v4& color
+                              , const Eegeo::Rendering::LayerIds::Values renderLayer);
             void Reset();
-            
-            inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){ m_Quad->SetEcefPosition(ecefPosition); }
-            inline Eegeo::v3 GetScale() { return m_Quad->GetScale(); }
-            void SetScale(Eegeo::v3 p_scale);
-            
-            // UIInteractableItem interface
-            virtual void OnItemClicked();
-            virtual void OnFocusGained();
-            virtual void OnFocusLost();
             
             virtual void Update(float dt);
             
-            const virtual float GetItemRadius() { return m_Radius; }
-            
-            const virtual Eegeo::dv3& GetItemEcefPosition() { return m_Quad->GetEcefPosition(); }
+            void SetEcefPosition(const dv3& ecefPosition);
+            void SetScale(const Eegeo::v3& scale);
+            void SetColor(const Eegeo::v4& color);
         };
         
     }
 }
-
-
-
-
-#endif /* UIAnimatedQuad_h */

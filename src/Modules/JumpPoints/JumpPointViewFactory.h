@@ -9,6 +9,7 @@
 #include "Bounds.h"
 #include "JumpPointView.h"
 #include "IUIQuadFactory.h"
+#include "IInteriorsExplorerModule.h"
 
 namespace Eegeo
 {
@@ -19,16 +20,22 @@ namespace Eegeo
             class JumpPointViewFactory : protected Eegeo::NonCopyable, public IJumpPointViewFactory
             {
             public:
-                JumpPointViewFactory(IUIQuadFactory& p_IUIQuadFactory
-                                     , IUICameraProvider& p_UICameraProvider);
+                JumpPointViewFactory(IUIRenderableFilter& p_UIRenderableFilter
+                                     , IUIQuadFactory& p_IUIQuadFactory
+                                     , IUICameraProvider& p_UICameraProvider
+                                     , const UIProgressBarConfig& progressBarConfig
+                                     , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected);
                 
                 ~JumpPointViewFactory();
                 
                 virtual JumpPointView* CreateViewForJumpPoint(JumpPoint& jumpPointModel);
                 
             private:
-                IUICameraProvider& m_UICameraProvider;
-                IUIQuadFactory& m_IUIQuadFactory;
+                IUICameraProvider& m_uiCameraProvider;
+                IUIQuadFactory& m_uiQuadFactory;
+                IUIRenderableFilter& m_uiRenderableFilter;
+                const UIProgressBarConfig& m_progressBarConfig;
+                Eegeo::Helpers::ICallback1<JumpPoint&>& m_onJumpPointSelected;
             };
         }
     }

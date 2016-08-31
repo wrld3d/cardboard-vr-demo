@@ -43,7 +43,6 @@ class AppHost : protected Eegeo::NonCopyable
 {
 public:
 	AppHost(
-	    const std::string& apiKey,
 	    AndroidNativeState& nativeState,
 	    float displayWidth,
 	    float displayHeight,
@@ -92,14 +91,12 @@ private:
 	ExampleApp* m_pApp;
 	Examples::AndroidExampleControllerView* m_pAndroidExampleControllerView;
     Examples::AndroidVRHeadTracker* m_pHeadTracker;
-//	Examples::AndroidRouteMatchingExampleViewFactory* m_pAndroidRouteMatchingExampleViewFactory;
-//	Examples::AndroidRouteSimulationExampleViewFactory* m_pAndroidRouteSimulationExampleViewFactory;
 
 	Eegeo::Android::Input::AndroidInputProcessor* m_pInputProcessor;
 
 	Eegeo::Android::AndroidPlatformAbstractionModule* m_pAndroidPlatformAbstractionModule;
 
-	void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs);
+	void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs, Examples::ApplicationConfig::ApplicationConfiguration appConfig);
 	void DestroyExamples();
 	void RegisterAndroidSpecificExamples();
 };

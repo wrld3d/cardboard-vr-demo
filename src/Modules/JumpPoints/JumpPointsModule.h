@@ -25,9 +25,12 @@ namespace Eegeo
             {
             public:
                 
-                JumpPointsModule(IUIQuadFactory& p_IUIQuadFactory
-                                 , IUIInteractionObservable& p_IUIInteractionObservable
-                                 , IUICameraProvider& p_UICameraProvider
+                JumpPointsModule(IUIRenderableFilter& uiRenderableFilter
+                                 , IUIQuadFactory& uiQuadFactory
+                                 , IUIInteractionObservable& uiInteractionObservable
+                                 , IUICameraProvider& uiCameraProvider
+                                 , const UIProgressBarConfig& progressBarConfig
+                                 , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected
                                  );
                 
                 ~JumpPointsModule();

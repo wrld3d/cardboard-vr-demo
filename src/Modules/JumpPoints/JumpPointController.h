@@ -24,23 +24,27 @@ namespace Eegeo
             class JumpPointController : protected Eegeo::NonCopyable, public IJumpPointObserver
             {
             public:
-                JumpPointController(IJumpPointObservable& jumpPointObservable, IJumpPointViewFactory& viewFactory, IUIInteractionObservable& p_IUIInteractionObservable);
+                JumpPointController(IJumpPointObservable& jumpPointObservable
+                                    , IJumpPointViewFactory& viewFactory
+                                    , IUIInteractionObservable& uiInteractionObservable);
                 
                 ~JumpPointController();
                 
                 void Update(float deltaTime);
+
+                void ResetVisibility();
                 
                 virtual void OnJumpPointAdded(JumpPoint& jumpPoint);
                 
                 virtual void OnJumpPointRemoved(JumpPoint& jumpPoint);
                 
             protected:
-                virtual void UpdateViews();
+                virtual void UpdateViews(float deltaTime);
                 
             private:
                 IJumpPointObservable& m_jumppointRepository;
                 IJumpPointViewFactory& m_viewFactory;
-                IUIInteractionObservable& m_pIUIInteractionObservable;
+                IUIInteractionObservable& m_uiInteractionObservable;
                 
                 typedef std::map<JumpPoint*, JumpPointView*> TViewsByModel;
                 

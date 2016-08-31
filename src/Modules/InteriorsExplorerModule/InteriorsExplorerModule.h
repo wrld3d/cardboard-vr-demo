@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include <vector>
+#include <map>
+
 #include "Interiors.h"
 #include "Types.h"
 #include "GlobeCamera.h"
@@ -9,6 +12,8 @@
 #include "IIdentity.h"
 #include "InteriorsExplorer.h"
 #include "IInteriorsExplorerModule.h"
+#include "InteriorMenu/InteriorMenuModule.h"
+#include "ICallback.h"
 
 namespace InteriorsExplorer
 {
@@ -16,27 +21,64 @@ namespace InteriorsExplorer
     {
     public:
         
-        InteriorsExplorerModule(
-                                Eegeo::Resources::Interiors::InteriorInteractionModel& interiorInteractionModel,
-                                Eegeo::Resources::Interiors::InteriorSelectionModel& interiorSelectionModel,
-                                Eegeo::Resources::Interiors::InteriorTransitionModel& interiorTransitionModel);
+        InteriorsExplorerModule(  Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
+                                , Eegeo::UI::IUIQuadFactory& uiQuadFactory
+                                , Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
+                                , Eegeo::UI::IUICameraProvider& uiCameraProvider
+                                , const Eegeo::UI::UIProgressBarConfig& progressBarConfig
+                                , Eegeo::Resources::Interiors::InteriorInteractionModel& interiorInteractionModel
+                                , Eegeo::Resources::Interiors::InteriorSelectionModel& interiorSelectionModel
+                                , Eegeo::Resources::Interiors::InteriorTransitionModel& interiorTransitionModel
+                                , const std::string& menuTextureFileName
+                                , int numberOfTilesAlong1Axis);
         
         ~InteriorsExplorerModule();
         
-        InteriorsExplorerModel& GetInteriorsExplorerModel() const;
-        InteriorVisibilityUpdater& GetInteriorVisibilityUpdater() const;
         
         void Update(float dt) const;
         
-        void SwitchToInterior();
-        bool InteriorLoaded();
+        virtual void ForceEnterInterior(int floorId);
+        virtual void ForceLeaveInterior();
         
+        virtual void SelectInterior(std::string);
+        virtual std::string GetSelectedInteriorID() const;
+        virtual bool InteriorLoaded();
+        virtual void SelectFloor(int floor, bool shouldAnimate);
+        virtual int GetSelectedFloor() const;
+        virtual void ShowInteriors();
+        virtual void HideInteriors();
+        virtual bool IsInteriorVisible();
         void ToggleInteriorDisplay();
+
+        virtual void RegisterVisibilityChangedCallback(Eegeo::Helpers::ICallback0& callback);
+        virtual void UnregisterVisibilityChangedCallback(Eegeo::Helpers::ICallback0& callback);
+        
+        void OnMenuItemGazed(InteriorMenu::InteriorMenuItem& menuItem);
+
+        virtual void RegisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback);
+        virtual void UnregisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback);
+
+        virtual void RegisterInteriorAnimationCallback(Eegeo::Helpers::ICallback1<InteriorsExplorerFloorAnimationState>& callback);
+        virtual void UnregisterInteriorAnimationCallback(Eegeo::Helpers::ICallback1<InteriorsExplorerFloorAnimationState>& callback);
+
+        virtual void SetMenuVisibilityThresholdAngle(float angle);
+        virtual float GetMenuVisibilityThresholdAngle();
         
     private:
         
+        int m_floorId;
+        
+        Eegeo::Helpers::TCallback1<InteriorsExplorerModule, InteriorMenu::InteriorMenuItem&> m_interiorMenuItemGazeCallback;
+        Eegeo::Helpers::CallbackCollection1<InteriorMenu::InteriorMenuItem&> m_menuItemCallbacks;
+
+        typedef std::vector<InteriorMenu::InteriorMenuItem*> TInteriorMenuItems;
+        TInteriorMenuItems  m_pInteriorMenuItems;
+        
+        InteriorMenu::InteriorMenuModule* m_pInteriorMenuModule;
         InteriorsExplorerModel* m_pModel;
         InteriorVisibilityUpdater* m_pVisibilityUpdater;
-        Eegeo::Resources::Interiors::InteriorInteractionModel& m_InteriorInteractionModel;
+        Eegeo::Resources::Interiors::InteriorInteractionModel& m_interiorInteractionModel;
+        Eegeo::Resources::Interiors::InteriorSelectionModel& m_interiorSelectionModel;
+        Eegeo::Resources::Interiors::InteriorTransitionModel& m_interiorTransitionModel;
     };
 }

@@ -1,15 +1,9 @@
-//
-//  UIQuad.h
-//  SDKSamplesApp
-//
-//  Created by Ali on 4/6/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #pragma once
 
 #include "TexturedUniformColoredShader.h"
-#include "TexturedUniformColoredMaterial.h"
+#include "UITexturedUniformColoredMaterial.h"
 #include "Rendering.h"
 #include "IRenderableFilter.h"
 #include "Modules.h"
@@ -17,36 +11,38 @@
 #include "GLHelpers.h"
 #include "ITextureFileLoader.h"
 #include "UIGeometryHelpers.h"
+#include "IUIRenderable.h"
 
 namespace Eegeo
 {
     namespace UI
     {
-        class UIQuad : public Eegeo::Rendering::IRenderableFilter
+        class UIQuad : public IUIRenderable
         {
         private:
             
-            Eegeo::Rendering::Materials::TexturedUniformColoredMaterial& m_Material;
-            Eegeo::Rendering::Mesh* m_RenderableMesh;
+            Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial& m_material;
+            Eegeo::Rendering::Mesh* m_pRenderableMesh;
             
-            Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_VertexBindingPool;
-            Eegeo::Rendering::RenderableFilters& m_RenderableFilters;
-            Eegeo::Rendering::GlBufferPool& m_GlBufferPool;
+            Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
+            Eegeo::Rendering::GlBufferPool& m_glBufferPool;
             
-            UIMeshRenderable* m_Renderable;
+            UIMeshRenderable* m_pRenderable;
             
             Eegeo::m33 m_basisToEcef;
             
-            Eegeo::v2 m_Dimension;
-            Eegeo::dv3 m_EcefPosition;
-            const Eegeo::Rendering::LayerIds::Values m_RenderLayer;
+            Eegeo::v2 m_dimension;
+            Eegeo::dv3 m_ecefPosition;
+            const Eegeo::Rendering::LayerIds::Values m_renderLayer;
+            
+            std::string m_name;
             
         public:
             
             UIQuad(
-                   Eegeo::Rendering::Materials::TexturedUniformColoredMaterial& material,
+                   const std::string& name,
+                   Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial& material,
                    Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-                   Eegeo::Rendering::RenderableFilters& renderableFilters,
                    Eegeo::Rendering::GlBufferPool& glBufferPool,
                    const Eegeo::v2& dimension,
                    const Eegeo::v2& uvMin = Eegeo::v2::Zero(),
@@ -57,16 +53,17 @@ namespace Eegeo
                    );
             
             virtual ~UIQuad();
-            inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){ m_Renderable->SetEcefPosition(ecefPosition); }
-            inline const dv3& GetEcefPosition() const { return m_Renderable->GetEcefPosition(); }
-            inline Eegeo::v3 GetScale() { return m_Renderable->GetScale(); }
-            inline void SetScale(Eegeo::v3 p_scale) { m_Renderable->SetScale(p_scale); }
-            inline void SetColor(const Eegeo::v4& color) { m_Renderable->SetColor(color); }
-            
-            void UpdateUVs(Eegeo::v2& min, Eegeo::v2& max);
-            
-            // IRenderableFilter interface
-            void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);
+            inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){ m_pRenderable->SetEcefPosition(ecefPosition); }
+            inline const dv3& GetEcefPosition() const { return m_pRenderable->GetEcefPosition(); }
+            inline const Eegeo::v3& GetScale() { return m_pRenderable->GetScale(); }
+            inline void SetScale(const Eegeo::v3& scale) { m_pRenderable->SetScale(scale); }
+            inline void SetColor(const Eegeo::v4& color) { m_pRenderable->SetColor(color); }
+            inline const Eegeo::v4& GetColor() { return m_pRenderable->GetColor(); }
+            inline void SetAlpha(float alpha) { m_pRenderable->SetAlpha(alpha); }
+            inline const float GetAlpha() { return m_pRenderable->GetAlpha(); }
+
+            // IUIRenderable interface
+            virtual Eegeo::Rendering::RenderableBase& GetUpdatedRenderable(const Eegeo::Rendering::RenderContext& renderContext);
         };
         
     }

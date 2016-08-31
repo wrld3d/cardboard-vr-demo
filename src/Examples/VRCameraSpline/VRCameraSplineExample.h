@@ -11,6 +11,14 @@
 #include "GlobeCamera.h"
 #include "IInteriorsExplorerModule.h"
 #include "IVRHeadTracker.h"
+#include "Modules/DeadZoneMenu/DeadZoneMenuItemRepository.h"
+#include "Modules/DeadZoneMenu/DeadZoneMenuItem.h"
+#include "ICallback.h"
+
+#include "RenderableFilters.h"
+#include "WelcomeNoteViewer.h"
+#include "UIRenderableFilter.h"
+#include "IScreenFadeEffectController.h"
 
 namespace Examples
 {
@@ -22,24 +30,48 @@ class VRCameraSplineExample : public IExample, Eegeo::NonCopyable
 private:
 	
     float m_eyeDistance;
-//    bool firstCall;
-//    Eegeo::m33 reverseMatrix;
     Eegeo::EegeoWorld& m_world;
     
-    Eegeo::Geometry::CatmullRomSpline* m_pPositionSpline;
-	Eegeo::Geometry::CatmullRomSpline* m_pTargetSpline;
     Eegeo::VR::VRCameraController* m_pSplineCameraController;
-    const InteriorsExplorer::IInteriorsExplorerModule& m_InteriorsExplorerModule;
+    InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneRepository;
     
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pSFSplineButton;
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pNYSplineButton;
+    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pWPSplineButton;
+    
+    Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onSFSplineSelectedCallback;
+    Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onNYSplineSelectedCallback;
+    Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onWestPortSplineSelectedCallback;
+
+    Eegeo::Rendering::RenderableFilters& m_renderableFilters;
+    Eegeo::UI::IUIQuadFactory& m_uiQuadFactory;
+    Eegeo::UI::UIRenderableFilter* m_pUIRenderableFilter;
+    WelcomeNoteViewer* m_pWelcomeNoteViewer;
+
+    ScreenFadeEffect::SdkModel::IScreenFadeEffectController& m_screenFader;
+    Eegeo::Helpers::TCallback1<VRCameraSplineExample, ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState&> m_screenVisibilityChanged;
+    bool m_splineChanged;
+
+    Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onSplineEndedCallback;
+
+    void OnSplineEnded();
+
+    void ShowWelcomeNote();
+    void OnScreenVisiblityChanged(ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState& visbilityState);
+
 public:
     
     VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
                           Eegeo::Streaming::ResourceCeilingProvider& resourceCeilingProvider,
-                          Eegeo::Camera::GlobeCamera::GlobeCameraController* cameraController,
+                          Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
                           IVRHeadTracker& headTracker,
                           const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
-                          const InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule);
-    
+                          InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+                          Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
+                          Eegeo::UI::IUIQuadFactory& quadFactory,
+                          ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader);
+
     virtual ~VRCameraSplineExample();
     
 	static std::string GetName()
@@ -54,16 +86,18 @@ public:
 	void Start();
     void OrientationUpdate();
 	void EarlyUpdate(float dt);
-	void Update(float dt) { }
+    void Update(float dt);
     void PreWorldDraw() { }
 	void Draw() {}
 	void Suspend();
     
-    Eegeo::m33& getCurrentCameraOrientation();
+    const Eegeo::m33& getCurrentCameraOrientation();
+    const Eegeo::m33& GetBaseOrientation();
+    const Eegeo::m33& GetHeadTrackerOrientation();
     
     void UpdateCardboardProfile(float cardboardProfile[]);
     
-    virtual Eegeo::Camera::RenderCamera* GetRenderCamera();
+    virtual Eegeo::Camera::RenderCamera& GetRenderCamera();
     virtual Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const;
     virtual Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const;
     virtual Eegeo::Camera::CameraState GetCurrentCameraState() const;
@@ -71,6 +105,10 @@ public:
     virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
 
     void NotifyViewNeedsLayout() {}
+    
+    void OnWestPortSplineSelected();
+    void OnSFSplineSelected();
+    void OnNYSplineSelected();
     
     void Event_TouchRotate 			(const AppInterface::RotateData& data) { }
     void Event_TouchRotate_Start	(const AppInterface::RotateData& data) { }

@@ -14,6 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.eegeo.cardboardvrdemo.R;
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams.VerticalAlignmentType;
 import com.google.vrtoolkit.cardboard.FieldOfView;
@@ -38,8 +39,6 @@ public class BackgroundThreadActivity extends MainActivity
 	private MagnetSensor m_magnetSensor;
 	
 	private NfcSensor mNfcSensor;
-	private boolean m_CardboardProfileInitialized = false;
-	
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
 	}
@@ -81,12 +80,10 @@ public class BackgroundThreadActivity extends MainActivity
 		mNfcSensor.addOnCardboardNfcListener(new OnCardboardNfcListener() {
 			@Override
 			public void onRemovedFromCardboard() {
-//				System.out.println("On Removed From Cardboard.");
 			}
 			
 			@Override
 			public void onInsertedIntoCardboard(CardboardDeviceParams params) {
-//				System.out.println("params: "+params.getDistortion().getCoefficients()[0]);
 			}
 		});
 		
@@ -107,8 +104,6 @@ public class BackgroundThreadActivity extends MainActivity
 				}
 			}
 		});
-		
-		m_CardboardProfileInitialized = false;
 	}
 
 	private float[] getUpdatedCardboardProfile(){
@@ -141,13 +136,7 @@ public class BackgroundThreadActivity extends MainActivity
                 distCoef[1]  //K2
             };
 		
-//		String logStr = "Parameters";
-//		
-//		for (int i = 0; i < cardboardProperties.length; i++)
-//			logStr += cardboardProperties[i] + ",\n";
-//		
 		Log.i("Eegeo VR", "Cardboard profile for " + cardboardDeviceParams.getModel() + " by " + cardboardDeviceParams.getVendor() + "has been loaded.");
-//		Log.i("CardboardVRTest", logStr);
 		
 		return cardboardProperties;
 
@@ -155,32 +144,11 @@ public class BackgroundThreadActivity extends MainActivity
 	
 	public void SetHeadMountedDisplayResolution(int width, int height) {
 		
-//		try {
-//			if (m_cardboardView == null)
-//				return;
-//			
-//			Display display = getWindowManager().getDefaultDisplay();
-//			ScreenParams sp = new ScreenParams(display);
-//			Phone.PhoneParams pp = new Phone.PhoneParams();
-//			pp.setXPpi(width / sp.getWidthMeters() * METERS_PER_INCH);
-//			pp.setYPpi(height / sp.getHeightMeters() * METERS_PER_INCH);
-//			sp = ScreenParams.fromProto(display, pp);
-//			
-//			sp.setWidth(width);
-//			sp.setHeight(height);
-//			m_cardboardView.updateScreenParams(sp);
-//			
-//		} catch (Exception e) {
-//			Log.e("backgroundThreadActivity", "exception", e);
-//		}
 	}
 	
-	public void ResetTracker(){
-
-		m_headTracker.stopTracking();
+	public void ResetTracker()
+	{
 		m_headTracker.resetTracker();
-		m_headTracker.startTracking();
-		
 	}
 	
 	@SuppressLint("InlinedApi") 
@@ -243,14 +211,16 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onDestroy()
 	{
 		super.onDestroy();
+		m_headTracker.stopTracking();
+		m_headTracker = null;
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
 			{
+				
 				m_threadedRunner.stop();
 				NativeJniCalls.destroyNativeCode();
 				m_threadedRunner.destroyed();
-				android.os.Process.killProcess(android.os.Process.myPid());
 			}
 		});
 
@@ -291,11 +261,8 @@ public class BackgroundThreadActivity extends MainActivity
 				{
 					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
 					m_threadedRunner.start();
-					if(!m_CardboardProfileInitialized) 
-					{
-						NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
-						m_CardboardProfileInitialized = true;
-					}
+					
+					NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
 				}
 			}
 		});
@@ -303,14 +270,11 @@ public class BackgroundThreadActivity extends MainActivity
 
 	private class ThreadedUpdateRunner implements Runnable
 	{
-		private final float HEAD_TRANSFORM_SMOOTHING_SPEED = 10f;
-		
 		private long m_endOfLastFrameNano;
 		private boolean m_running;
 		private Handler m_nativeThreadHandler;
 		private float m_frameThrottleDelaySeconds;
 		private boolean m_destroyed;
-		float[] smoothHeadTransform = null;
 		
 		public ThreadedUpdateRunner(boolean running)
 		{
@@ -341,7 +305,6 @@ public class BackgroundThreadActivity extends MainActivity
 		public void start()
 		{
 			m_running = true;
-			smoothHeadTransform = null; //Reset the head transform
 		}
 
 		public void stop()
@@ -371,13 +334,21 @@ public class BackgroundThreadActivity extends MainActivity
 						
 						if(deltaSeconds > m_frameThrottleDelaySeconds)
 						{
-							
 							if(m_running)
 							{
-								float[] tempHeadTransform = new float[16];
-								m_headTracker.getLastHeadView(tempHeadTransform, 0);
-								smoothHeadTransform = exponentialSmoothing(tempHeadTransform, smoothHeadTransform, deltaSeconds * HEAD_TRANSFORM_SMOOTHING_SPEED);
-								NativeJniCalls.updateNativeCode(deltaSeconds, smoothHeadTransform);
+								float[] headTransform = new float[16];
+								
+								m_headTracker.getLastHeadView(headTransform, 0);
+								
+								if(!Float.isNaN(headTransform[0]))
+								{
+									NativeJniCalls.updateNativeCode(deltaSeconds, headTransform);	
+								}
+								else
+								{
+									System.out.println("Fixing NaN");
+									ResetTracker();
+								}
 							}
 							else
 							{
@@ -393,15 +364,6 @@ public class BackgroundThreadActivity extends MainActivity
 
 				Looper.loop();
 			}
-		}
-		
-		float[] exponentialSmoothing( float[] input, float[] output, float alpha ) {
-	        if ( output == null ) 
-	            return input;
-	        for ( int i=0; i<input.length; i++ ) {
-	             output[i] = output[i] + alpha * (input[i] - output[i]);
-	        }
-	        return output;
 		}
 	}
 }

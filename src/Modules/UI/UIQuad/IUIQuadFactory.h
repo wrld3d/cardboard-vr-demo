@@ -1,13 +1,6 @@
-//
-//  Header.h
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 6/1/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-#ifndef IUIQuadFactory_h
-#define IUIQuadFactory_h
+#pragma once
 
 #include "UIQuad.h"
 
@@ -23,8 +16,6 @@ namespace Eegeo
                                  const Eegeo::v2& dimension,
                                  const Eegeo::v2& uvMin = Eegeo::v2::Zero(),
                                  const Eegeo::v2& uvMax = Eegeo::v2::One(),
-                                 const Eegeo::dv3& ecefPosition = Eegeo::v3::One(),
-                                 const Eegeo::v4& initialColor = Eegeo::v4::One(),
                                  const Eegeo::Rendering::LayerIds::Values renderLayer = Eegeo::Rendering::LayerIds::Values::AfterWorld) = 0;
             
             virtual ~IUIQuadFactory(){};
@@ -33,4 +24,3 @@ namespace Eegeo
 }
 
 
-#endif /* IUIQuadFactory_h */

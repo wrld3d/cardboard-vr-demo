@@ -1,6 +1,7 @@
 // Copyright eeGeo Ltd (2012-2014), All Rights Reserved
 
 #include "GlDisplayService.h"
+#include "AndroidNativeState.h"
 #include "Logger.h"
 #include "AndroidNativeState.h"
 

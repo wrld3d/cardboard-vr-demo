@@ -1,13 +1,6 @@
-//
-//  VRDistortionMeshHelper.hpp
-//  SDKSamplesApp
-//
-//  Created by Ali on 3/31/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-#ifndef VRDistortionMeshHelper_h
-#define VRDistortionMeshHelper_h
+#pragma once
 
 #include "Types.h"
 #include "VectorMath.h"
@@ -46,5 +39,3 @@ namespace Eegeo
     }
 }
 
-
-#endif /* VRDistortionMeshHelper_hpp */

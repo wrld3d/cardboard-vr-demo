@@ -1,10 +1,4 @@
-//
-//  VRDistortionMaterial
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 3/21/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 
 #include "VRDistortionMaterial.h"
@@ -12,6 +6,7 @@
 #include "Rendering.h"
 #include "VectorMath.h"
 #include "VRDistortionShader.h"
+#include "VRDistortionRenderable.h"
 
 #include "Logger.h"
 
@@ -63,7 +58,12 @@ namespace Eegeo
                 m_screenProperties = screenProperties;
             }
             
-            void VRDistortionMaterial::SetStatePerRenderable(const Rendering::RenderableBase* renderableBase, Rendering::GLState& glState) const{}
+            void VRDistortionMaterial::SetStatePerRenderable(const Rendering::RenderableBase* pRenderableBase, Rendering::GLState& glState) const
+            {
+                const VRDistortionRenderable* renderable = static_cast<const VRDistortionRenderable*>(pRenderableBase);
+
+                m_shader.SetFadeMultiplier(renderable->GetFadeModifier());
+            }
         }
     }
 }

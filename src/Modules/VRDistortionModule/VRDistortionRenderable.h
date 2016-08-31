@@ -1,13 +1,6 @@
-//
-//  VRDistortionMaterial
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 3/21/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-#ifndef __ExampleApp__VRDistortionRenderable__
-#define __ExampleApp__VRDistortionRenderable__
+#pragma once
 
 #include "Rendering.h"
 #include "MeshRenderable.h"
@@ -23,17 +16,22 @@ namespace Eegeo
             {
             public:
                 VRDistortionRenderable(Eegeo::Rendering::LayerIds::Values layerId,
-                                       Eegeo::Rendering::Materials::IMaterial* material,
+                                       Eegeo::Rendering::Materials::IMaterial* pMaterial,
                                        const Eegeo::Rendering::VertexLayouts::VertexBinding& vertexBinding,
                                        Eegeo::Rendering::Mesh* pMesh)
-                : MeshRenderable(layerId, Eegeo::dv3(), material, pMesh, vertexBinding)
+                : MeshRenderable(layerId, Eegeo::dv3(), pMaterial, pMesh, vertexBinding)
                 {}
                 
                 virtual void Render(Eegeo::Rendering::GLState& glState) const;
-                
+
+                void SetFadeModifier(float fadeModifier);
+                float GetFadeModifier() const;
+
+            private:
+                float m_fadeModifier;
             };
         }
     }
 }
 
-#endif /* defined(__ExampleApp__VRDistortionRenderable__) */
+#pragma once

@@ -1,51 +1,43 @@
-//
-//  UIImageButton.h
-//  SDKSamplesApp
-//
-//  Created by Ali on 5/16/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #pragma once
 
 #include "ICallback.h"
+#include "UISprite.h"
 #include "UIQuad/UIQuad.h"
+#include "IUICameraProvider.h"
 #include "UIInteraction/IUIInteractableItem.h"
 
 namespace Eegeo
 {
     namespace UI
     {
-        class UIImageButton : public Eegeo::UI::IUIInteractableItem
+        class UIImageButton : public Eegeo::UI::IUIInteractableItem, public UISprite
         {
         private:
-            UIQuad* m_ButtonImage;
-            Eegeo::Helpers::ICallback0& m_OnClickedEvent;
-            float m_Radius;
+            
+            Eegeo::Helpers::ICallback0& m_onClickedEvent;
+            float m_radius;
             
         public:
-            UIImageButton(UIQuad* quad,
-                          const Eegeo::v2& p_Dimension,
-                          const Eegeo::dv3& ecefPosition,
-                          Eegeo::Helpers::ICallback0& onClickedEvent
+            UIImageButton(IUIRenderableFilter& uiRenderableFilter
+                          , UIQuad* pQuad
+                          , Eegeo::Helpers::ICallback0& onClickedEvent
+                          , const Eegeo::v2& size = Eegeo::v2::One()
+                          , const Eegeo::dv3& ecefPosition = Eegeo::dv3::Zero()
+                          , const Eegeo::v3& scale = Eegeo::v3::One()
+                          , const Eegeo::v4& color = Eegeo::v4::One()
                           );
             
             virtual ~UIImageButton();
-            inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){ m_ButtonImage->SetEcefPosition(ecefPosition); }
-            inline const dv3& GetEcefPosition() const { return m_ButtonImage->GetEcefPosition(); }
-            inline Eegeo::v3 GetScale() { return m_ButtonImage->GetScale(); }
-            inline void SetScale(Eegeo::v3 p_scale) {  m_ButtonImage->SetScale(p_scale); }
-            inline void SetColor(const Eegeo::v4& color) { m_ButtonImage->SetColor(color); }
             
-            // UIInteractableItem interface
+            virtual bool IsCollidingWithPoint(const Eegeo::v2& screenPoint, IUICameraProvider& cameraProvider);
+            
             virtual void OnItemClicked();
             virtual void OnFocusGained();
             virtual void OnFocusLost();
             
-            virtual void Update(float dt);
-            
-            const virtual float GetItemRadius() { return m_Radius; }
-            const virtual Eegeo::dv3& GetItemEcefPosition() { return m_ButtonImage->GetEcefPosition(); }
+            const virtual float GetItemRadius() { return m_radius; }
         };
         
     }

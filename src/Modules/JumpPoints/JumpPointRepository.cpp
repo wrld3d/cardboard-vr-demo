@@ -42,8 +42,20 @@ namespace Eegeo
                     }
                 }
             }
+
+            void JumpPointRepository::RemoveAllJumpPoints()
+            {
+                while (m_jumpPoint.size()>0) {
+                    JumpPoint* pJumpPointToRemove = m_jumpPoint.back();
+                    m_jumpPoint.pop_back();
+
+                    for (int i = 0; i < m_observers.size(); i++) {
+                        m_observers[i]->OnJumpPointRemoved(*pJumpPointToRemove);
+                    }
+                }
+            }
             
-            int JumpPointRepository::GetNumOfJumpPoints() const
+            size_t JumpPointRepository::GetNumOfJumpPoints() const
             {
                 return m_jumpPoint.size();
             }
@@ -64,14 +76,14 @@ namespace Eegeo
                 return NULL;
             }
             
-            void JumpPointRepository::AddJumpPointObserver(IJumpPointObserver* observerToAdd)
+            void JumpPointRepository::AddJumpPointObserver(IJumpPointObserver* pObserverToAdd)
             {
-                m_observers.push_back(observerToAdd);
+                m_observers.push_back(pObserverToAdd);
             }
             
-            void JumpPointRepository::RemoveJumpPointObserver(IJumpPointObserver* observerToRemove)
+            void JumpPointRepository::RemoveJumpPointObserver(IJumpPointObserver* pObserverToRemove)
             {
-                std::vector<IJumpPointObserver*>::iterator position = std::find(m_observers.begin(), m_observers.end(), observerToRemove);
+                std::vector<IJumpPointObserver*>::iterator position = std::find(m_observers.begin(), m_observers.end(), pObserverToRemove);
                 if (position != m_observers.end())
                     m_observers.erase(position);
             }

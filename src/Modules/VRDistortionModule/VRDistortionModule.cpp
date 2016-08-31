@@ -1,9 +1,4 @@
-//
-//  VRDistortionModule
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 3/21/16.
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include <vector>
 #include "Mesh.h"
@@ -17,7 +12,6 @@
 #include "RenderableFilters.h"
 #include "VertexBindingPool.h"
 #include "ScreenProperties.h"
-//#include "GeometryHelpers.h"
 #include "LayerIds.h"
 #include "VRDistortionMeshHelper.h"
 #include "VRDistortionShader.h"
@@ -83,23 +77,33 @@ namespace Eegeo
                                         Eegeo::Rendering::RenderableFilters& renderableFilters,
                                         Eegeo::Rendering::GlBufferPool& glBufferPool)
             : m_screenProperties(screenProperties)
-            ,m_vertexLayoutPool(vertexLayoutPool)
-            ,m_vertexBindingPool(vertexBindingPool)
-            ,m_shaderIdGenerator(shaderIdGenerator)
-            ,m_materialIdGenerator(materialIdGenerator)
-            ,m_renderableFilters(renderableFilters)
-            ,m_glBufferPool(glBufferPool)
-            ,m_pVRDistortionShader(NULL)
-            ,m_pVRDistortionMaterial(NULL)
-            ,m_pRenderable(NULL)
-            ,m_pVRDistortionRenderer(NULL)
-            ,m_pRenderTexture(NULL),
-            m_MeshUpdateRequried(false)
+            , m_vertexLayoutPool(vertexLayoutPool)
+            , m_vertexBindingPool(vertexBindingPool)
+            , m_shaderIdGenerator(shaderIdGenerator)
+            , m_materialIdGenerator(materialIdGenerator)
+            , m_renderableFilters(renderableFilters)
+            , m_glBufferPool(glBufferPool)
+            , m_pVRDistortionShader(NULL)
+            , m_pVRDistortionMaterial(NULL)
+            , m_pRenderable(NULL)
+            , m_pVRDistortionRenderer(NULL)
+            , m_pRenderTexture(NULL)
+            , m_meshUpdateRequried(false)
+            , m_visibilityParamChangedCallback(this, &VRDistortionModule::UpdateMaterialFadeMultiplier)
             {
-                m_cardboardProfile = new VRCardboardDeviceProfile();
+                m_pCardboardProfile = Eegeo_NEW(VRCardboardDeviceProfile)();
                 m_pPositionUvVertexLayout = CreatePositionUvVertexLayout();
+
+                m_pTransitionModel = Eegeo_NEW(VRDistortionTransitionModel)();
             }
-            
+
+            VRDistortionModule::~VRDistortionModule()
+            {
+                Eegeo_DELETE m_pTransitionModel;
+
+                Eegeo_DELETE m_pCardboardProfile;
+            }
+
             Eegeo::Rendering::Mesh* CreateUnlitDistortionMesh(float width, float height, const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout, Eegeo::Rendering::GlBufferPool& glBufferPool, VRCardboardDeviceProfile& cardboardProfile)
             {
                 std::vector<Eegeo::VR::Distortion::Vertex> boxVertices;
@@ -135,14 +139,14 @@ namespace Eegeo
                                                                               true);
                 
                 m_pVRDistortionShader = VRDistortionShader::Create(m_shaderIdGenerator.GetNextId());
-                
+
                 m_pVRDistortionMaterial = Eegeo_NEW(VRDistortionMaterial)(m_materialIdGenerator.GetNextId(),
                                                                              "VRDistortionMaterial",
                                                                              *m_pVRDistortionShader,
                                                                              *m_pRenderTexture,
                                                                              m_screenProperties);
                 
-                Eegeo::Rendering::Mesh* pRenderableMesh = CreateUnlitDistortionMesh(m_screenProperties.GetScreenWidth()*2.f, m_screenProperties.GetScreenHeight(), *m_pPositionUvVertexLayout, m_glBufferPool, *m_cardboardProfile);
+                Eegeo::Rendering::Mesh* pRenderableMesh = CreateUnlitDistortionMesh(m_screenProperties.GetScreenWidth()*2.f, m_screenProperties.GetScreenHeight(), *m_pPositionUvVertexLayout, m_glBufferPool, *m_pCardboardProfile);
                 
                 const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout = pRenderableMesh->GetVertexLayout();
                 const Eegeo::Rendering::VertexLayouts::VertexAttribs& vertexAttributes = m_pVRDistortionShader->GetVertexAttributes();
@@ -154,12 +158,14 @@ namespace Eegeo
                                                                          pRenderableMesh);
                 
                 m_pVRDistortionRenderer = Eegeo_NEW(VRDistortionRenderer)(*m_pRenderable);
-                
+                m_pRenderable->SetFadeModifier(m_pTransitionModel->GetVisibilityParam());
+                m_pTransitionModel->RegisterVisibilityChangedCallback(m_visibilityParamChangedCallback);
             }
             
             void VRDistortionModule::Suspend()
             {
-                
+                m_pTransitionModel->UnregisterVisibilityChangedCallback(m_visibilityParamChangedCallback);
+
                 Eegeo_DELETE m_pVRDistortionRenderer;
                 m_pVRDistortionRenderer = NULL;
                 
@@ -191,20 +197,20 @@ namespace Eegeo
             
             void VRDistortionModule::UpdateCardboardProfile(float cardboardProfile[])
             {
-                m_cardboardProfile->SetupProfile(cardboardProfile);
-                m_MeshUpdateRequried = true;
+                m_pCardboardProfile->SetupProfile(cardboardProfile);
+                m_meshUpdateRequried = true;
             }
             
             void VRDistortionModule::BeginRendering()
             {
-                if(m_MeshUpdateRequried)
+                if(m_meshUpdateRequried)
                 {
                     Suspend();
                     Initialize();
-                    m_MeshUpdateRequried = false;
+                    m_meshUpdateRequried = false;
                 }
                 
-                m_pVRDistortionMaterial->setIsRenderingEnded(false);
+                m_pVRDistortionMaterial->SetIsRenderingEnded(false);
                 m_pRenderTexture->BeginRendering();
             }
             
@@ -217,27 +223,20 @@ namespace Eegeo
             void VRDistortionModule::UnRegisterRenderable()
             {
                 m_renderableFilters.RemoveRenderableFilter(*m_pVRDistortionRenderer);
-                if(!m_pVRDistortionMaterial->isRenderingEnded()){
-//                    EXAMPLE_LOG("SKIPPED RENDERING FRAME!!!");
+                if(!m_pVRDistortionMaterial->IsRenderingEnded())
+                {
                     m_pRenderTexture->EndRendering();
                 }
             }
-            
-            VRDistortionModule::~VRDistortionModule(){
-                
-//                if(!m_pVRDistortionMaterial->isRenderingEnded()){
-//                    m_renderableFilters.RemoveRenderableFilter(*m_pVRDistortionRenderer);
-//                }
-//                
-//                Eegeo_DELETE m_pVRDistortionMaterial;
-//                m_pVRDistortionMaterial = NULL;
-//                
-//                Eegeo_DELETE m_pVRDistortionShader;
-//                m_pVRDistortionShader = NULL;
-//                
-////                Suspend();
-//                Eegeo_DELETE m_cardboardProfile;
-//                m_cardboardProfile = NULL;
+
+            VRDistortionTransitionModel& VRDistortionModule::GetTransionModel() const
+            {
+                return *m_pTransitionModel;
+            }
+
+            void VRDistortionModule::UpdateMaterialFadeMultiplier()
+            {
+                m_pRenderable->SetFadeModifier(m_pTransitionModel->GetVisibilityParam());
             }
             
         }

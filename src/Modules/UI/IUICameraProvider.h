@@ -1,10 +1,4 @@
-//
-//  IUICameraProvider.h
-//  SDKSamplesApp
-//
-//  Created by Ali on 5/16/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #pragma once
 
@@ -22,7 +16,11 @@ namespace Eegeo
         class IUICameraProvider
         {
         public:
-            virtual Eegeo::Camera::RenderCamera* GetRenderCameraForUI() = 0;
+            virtual Eegeo::Camera::RenderCamera& GetRenderCameraForUI() = 0;
+            virtual const Eegeo::m33& GetOrientation() = 0;
+            virtual const Eegeo::m33& GetBaseOrientation() = 0;
+            virtual const Eegeo::m33& GetHeadTrackerOrientation() = 0;
+            virtual ~IUICameraProvider(){};
         };
         
     }

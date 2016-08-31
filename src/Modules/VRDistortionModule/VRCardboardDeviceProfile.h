@@ -1,13 +1,6 @@
-//
-//  CardboardDeviceProfile.hpp
-//  SDKSamplesApp
-//
-//  Created by Ali on 3/31/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-#ifndef CardboardDeviceProfile_h
-#define CardboardDeviceProfile_h
+#pragma once
 
 #include "VectorMath.h"
 
@@ -66,10 +59,10 @@ namespace Eegeo
                 void SetupProfile(float profileData[]);
                 float Distort(float r, float k1, float k2);
                 float DistortInv(float radius, float k1, float k2);
-                void SolveLeastSquares(double **matA, double vecY[], int numSamples, const int numCoefficients, double vecX[]);
-                void GetLeftEyeVisibleScreenRect(float undistortedFrustum[], float *rect);
-                void GetLeftEyeVisibleTanAngles(float* result);
-                void GetLeftEyeNoLensTanAngles(float* result);
+                void SolveLeastSquares(double **ppMatA, double vecY[], int numSamples, const int numCoefficients, double vecX[]);
+                void GetLeftEyeVisibleScreenRect(float undistortedFrustum[], float *pRect);
+                void GetLeftEyeVisibleTanAngles(float* pResult);
+                void GetLeftEyeNoLensTanAngles(float* pResult);
                 float GetVerticalLensOffset();
                 Eegeo::v2 GetScreenMeshCenter(float width, float height);
                 VRDevice GetDevice();
@@ -80,6 +73,4 @@ namespace Eegeo
         }
     }
 }
- 
 
-#endif /* CardboardDeviceProfile_h */

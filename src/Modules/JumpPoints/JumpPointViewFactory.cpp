@@ -10,10 +10,16 @@ namespace Eegeo
         namespace JumpPoints
         {
             
-            JumpPointViewFactory::JumpPointViewFactory(IUIQuadFactory& p_IUIQuadFactory
-                                                       , IUICameraProvider& p_UICameraProvider)
-            : m_IUIQuadFactory(p_IUIQuadFactory)
-            , m_UICameraProvider(p_UICameraProvider)
+            JumpPointViewFactory::JumpPointViewFactory(IUIRenderableFilter& uiRenderableFilter
+                                                       , IUIQuadFactory& uiQuadFactory
+                                                       , IUICameraProvider& uiCameraProvider
+                                                       , const UIProgressBarConfig& progressBarConfig
+                                                       , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected)
+            : m_uiRenderableFilter(uiRenderableFilter)
+            , m_uiQuadFactory(uiQuadFactory)
+            , m_uiCameraProvider(uiCameraProvider)
+            , m_progressBarConfig(progressBarConfig)
+            , m_onJumpPointSelected(onJumpPointSelected)
             {
                 
             }
@@ -25,17 +31,16 @@ namespace Eegeo
             
             JumpPointView* JumpPointViewFactory::CreateViewForJumpPoint(JumpPoint& jumpPointModel)
             {
-                
-                JumpPointView* jumpPointView = Eegeo_NEW(JumpPointView)(jumpPointModel
-                                                                        , m_IUIQuadFactory.CreateUIQuad(jumpPointModel.GetFileName()
-                                                                                                        , jumpPointModel.GetDimensions()
-                                                                                                        , jumpPointModel.GetUVMin()
-                                                                                                        , jumpPointModel.GetUVMax()
-                                                                                                        , jumpPointModel.GetEcefPosition()
-                                                                                                        , jumpPointModel.GetColor())
-                                                                        , m_UICameraProvider
+                JumpPointView* pJumpPointView = Eegeo_NEW(JumpPointView)(jumpPointModel
+                                                                        , m_uiRenderableFilter
+                                                                        , m_uiQuadFactory
+                                                                        , m_progressBarConfig
+                                                                        , m_uiCameraProvider
+                                                                        , m_onJumpPointSelected
                                                                         );
-                return jumpPointView;
+                pJumpPointView->SetFadeTransitionSpeed(2.f);
+                pJumpPointView->SetColor(Eegeo::v4(1.f,1.f,1.f,0.f));
+                return pJumpPointView;
             }
             
         }

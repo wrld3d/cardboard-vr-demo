@@ -8,15 +8,22 @@ namespace Eegeo
     {
         namespace JumpPoints
         {
-            JumpPointsModule::JumpPointsModule(IUIQuadFactory& p_IUIQuadFactory
-                                               , IUIInteractionObservable& p_IUIInteractionObservable
-                                               , IUICameraProvider& p_UICameraProvider
+            JumpPointsModule::JumpPointsModule(IUIRenderableFilter& uiRenderableFilter
+                                               , IUIQuadFactory& uiQuadFactory
+                                               , IUIInteractionObservable& uiInteractionObservable
+                                               , IUICameraProvider& uiCameraProvider
+                                               , const UIProgressBarConfig& progressBarConfig
+                                               , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected
                                                )
             {
-                m_pViewFactory = new JumpPointViewFactory(p_IUIQuadFactory
-                                                          , p_UICameraProvider);
-                m_pRepository = new JumpPointRepository();
-                m_pController = new JumpPointController(*m_pRepository, *m_pViewFactory, p_IUIInteractionObservable);
+                m_pViewFactory = Eegeo_NEW(JumpPointViewFactory)(uiRenderableFilter
+                                                                , uiQuadFactory
+                                                                , uiCameraProvider
+                                                                , progressBarConfig
+                                                                , onJumpPointSelected);
+                
+                m_pRepository = Eegeo_NEW(JumpPointRepository)();
+                m_pController = Eegeo_NEW(JumpPointController)(*m_pRepository, *m_pViewFactory, uiInteractionObservable);
             }
             
             JumpPointsModule::~JumpPointsModule()

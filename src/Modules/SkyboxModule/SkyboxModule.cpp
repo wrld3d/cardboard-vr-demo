@@ -1,10 +1,4 @@
-//
-//  SkyboxModule.cpp
-//  SDKSamplesApp
-//
-//  Created by Ali on 4/6/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include "SkyboxModule.h"
 #include "RenderingModule.h"
@@ -25,19 +19,19 @@ namespace Eegeo
 {
     namespace Skybox
     {
-        SkyboxModule::SkyboxModule(Eegeo::Modules::Core::RenderingModule& p_RenderingModule,
-                                   Eegeo::Rendering::GlBufferPool& p_glBufferPool,
-                                   Eegeo::Rendering::VertexLayouts::VertexBindingPool& p_VertexBindingPool,
-                                   Eegeo::Rendering::VertexLayouts::VertexLayoutPool& p_VertexLayoutPool,
-                                   Eegeo::Rendering::RenderableFilters& p_RenderableFilters):
-        m_renderingModule(p_RenderingModule),
-        m_glBufferPool(p_glBufferPool),
-        m_vertexLayoutPool(p_VertexLayoutPool),
-        m_vertexBindingPool(p_VertexBindingPool),
-        m_renderableFilters(p_RenderableFilters),
+        SkyboxModule::SkyboxModule(Eegeo::Modules::Core::RenderingModule& renderingModule,
+                                   Eegeo::Rendering::GlBufferPool& glBufferPool,
+                                   Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
+                                   Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
+                                   Eegeo::Rendering::RenderableFilters& renderableFilters):
+        m_renderingModule(renderingModule),
+        m_glBufferPool(glBufferPool),
+        m_vertexLayoutPool(vertexLayoutPool),
+        m_vertexBindingPool(vertexBindingPool),
+        m_renderableFilters(renderableFilters),
         m_pRenderable(NULL)
         {
-            backgroundColor = Eegeo::v4(0.0f/255.f,24.0f/255.f,72.0f/255.f,1.0f);
+            m_backgroundColor = Eegeo::v4(0.0f/255.f,24.0f/255.f,72.0f/255.f,1.0f);
         }
         
         SkyboxModule::~SkyboxModule()
@@ -45,28 +39,28 @@ namespace Eegeo
             Eegeo::Rendering::RenderableFilters& platformRenderableFilters = m_renderingModule.GetRenderableFilters();
             platformRenderableFilters.RemoveRenderableFilter(*this);
             
-            Eegeo_DELETE m_Material;
-            Eegeo_DELETE m_Shader;
+            Eegeo_DELETE m_pMaterial;
+            Eegeo_DELETE m_pShader;
         }
         
         void SkyboxModule::Start()
         {
-            m_Shader = Eegeo::Rendering::Shaders::ColorShader::Create(m_renderingModule.GetShaderIdGenerator().GetNextId());
-            m_Material = new (Eegeo::Rendering::Materials::ColorMaterial) (
+            m_pShader = Eegeo::Rendering::Shaders::ColorShader::Create(m_renderingModule.GetShaderIdGenerator().GetNextId());
+            m_pMaterial = new (Eegeo::Rendering::Materials::ColorMaterial) (
                                                                            m_renderingModule.GetMaterialIdGenerator().GetNextId(),
                                                                            "SkyboxMat",
-                                                                           *m_Shader,
-                                                                           backgroundColor
+                                                                           *m_pShader,
+                                                                           m_backgroundColor
                                                                            );
             
             Eegeo::Rendering::Mesh* pRenderableMesh = Eegeo::Rendering::Geometry::CreatePositionQuad(1.0f, m_glBufferPool, m_vertexLayoutPool);
             const Eegeo::Rendering::VertexLayouts::VertexLayout& vertexLayout = pRenderableMesh->GetVertexLayout();
-            const Eegeo::Rendering::VertexLayouts::VertexAttribs& vertexAttributes = m_Shader->GetVertexAttributes();
+            const Eegeo::Rendering::VertexLayouts::VertexAttribs& vertexAttributes = m_pShader->GetVertexAttributes();
             const Eegeo::Rendering::VertexLayouts::VertexBinding& vertexBinding = m_vertexBindingPool.GetVertexBinding(vertexLayout, vertexAttributes);
             
             m_pRenderable = Eegeo_NEW(Eegeo::Rendering::Renderables::MeshRenderable)(Eegeo::Rendering::LayerIds::BeforeWorldTranslucency,
                                                                                      Eegeo::dv3(),
-                                                                                     m_Material,
+                                                                                     m_pMaterial,
                                                                                      pRenderableMesh,
                                                                                      vertexBinding
                                                                                      );
@@ -75,8 +69,8 @@ namespace Eegeo
         
         void SkyboxModule::UpdateSkyColor(Eegeo::v3 color)
         {
-            backgroundColor.Set(color.GetX(), color.GetY(), color.GetZ(), 1.0f);
-            m_Material->SetColor(backgroundColor);
+            m_backgroundColor.Set(color.GetX(), color.GetY(), color.GetZ(), 1.0f);
+            m_pMaterial->SetColor(m_backgroundColor);
         }
         
         void SkyboxModule::Update(float dt){}

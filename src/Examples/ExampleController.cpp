@@ -83,7 +83,26 @@ void ExampleController::UpdateSelectedExample()
 		}
 	}
 }
+    
+    
+void ExampleController::RestartExample()
+{
+    RefreshExample();
+}
  
+void ExampleController::ActivateExample(std::string selectedExampleName)
+{
+    for(int i = 0; i < m_factories.size(); ++ i)
+    {
+        if(m_factories[i]->ExampleName() == selectedExampleName && i != m_currentExampleFactoryIndex)
+        {
+            m_currentExampleFactoryIndex = i;
+            RefreshExample();
+            return;
+        }
+    }
+}
+    
     
 void ExampleController::ActivatePrevious()
 {
@@ -173,11 +192,22 @@ void ExampleController::DestroyCurrentExample()
 		m_pCurrentExample = NULL;
 	}
 }
-    Eegeo::m33& ExampleController::GetOrientation(){
+    const Eegeo::m33& ExampleController::GetOrientation()
+    {
         return m_pCurrentExample->getCurrentCameraOrientation();
     }
     
-    Eegeo::Camera::RenderCamera* ExampleController::GetRenderCamera(){
+    const Eegeo::m33& ExampleController::GetBaseOrientation()
+    {
+        return m_pCurrentExample->GetBaseOrientation();
+    }
+    
+    const Eegeo::m33& ExampleController::GetHeadTrackerOrientation()
+    {
+        return m_pCurrentExample->GetHeadTrackerOrientation();
+    }
+    
+    Eegeo::Camera::RenderCamera& ExampleController::GetRenderCamera(){
         return m_pCurrentExample->GetRenderCamera();
     }
     
@@ -325,6 +355,11 @@ void ExampleController::Event_TouchUp(const AppInterface::TouchData& data)
 	{
 		m_pCurrentExample->Event_TouchUp(data);
 	}
+}
+    
+Eegeo::Camera::RenderCamera& ExampleController::GetRenderCameraForUI()
+{
+        return GetRenderCamera();
 }
 
 }

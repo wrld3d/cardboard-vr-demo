@@ -1,19 +1,13 @@
-//
-//  VRDistortionModule
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 3/21/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-#ifndef __ExampleApp__VRDistortionModule__
-#define __ExampleApp__VRDistortionModule__
+#pragma once
 
 #include "Rendering.h"
 #include "RenderTexture.h"
 #include "ScreenProperties.h"
+#include "ICallback.h"
 #include "VRDistortionIncludes.h"
-
+#include "VRDistortionTransitionModel.h"
 
 namespace Eegeo
 {
@@ -41,11 +35,15 @@ namespace Eegeo
                 Eegeo::Rendering::VertexLayouts::VertexLayout* m_pPositionUvVertexLayout;
                 Eegeo::Rendering::ScreenProperties m_screenProperties;
                 
-                VRCardboardDeviceProfile* m_cardboardProfile;
-                bool m_MeshUpdateRequried;
+                VRCardboardDeviceProfile* m_pCardboardProfile;
+                bool m_meshUpdateRequried;
+
+                VRDistortionTransitionModel* m_pTransitionModel;
+                Eegeo::Helpers::TCallback0<VRDistortionModule> m_visibilityParamChangedCallback;
                 
                 void HandleScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
-                
+                void UpdateMaterialFadeMultiplier();
+
             public:
                 
                 VRDistortionModule(const Eegeo::Rendering::ScreenProperties& screenProperties,
@@ -54,17 +52,19 @@ namespace Eegeo
                                        Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
                                        Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
                                        Eegeo::Rendering::RenderableFilters& renderableFilters,
-                                       Eegeo::Rendering::GlBufferPool& m_glBufferPool);
+                                       Eegeo::Rendering::GlBufferPool& glBufferPool);
                 virtual ~VRDistortionModule();
                 void Initialize();
                 void Suspend();
                 
                 void UpdateCardboardProfile(float cardboardProfile[]);
-                VRCardboardDeviceProfile& GetCardboardProfile() { return *m_cardboardProfile; }
+                VRCardboardDeviceProfile& GetCardboardProfile() { return *m_pCardboardProfile; }
                 
                 void BeginRendering();
                 void RegisterRenderable();
                 void UnRegisterRenderable();
+
+                VRDistortionTransitionModel& GetTransionModel() const;
                 
                 void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
             };
@@ -73,4 +73,3 @@ namespace Eegeo
 }
 
 
-#endif /* defined(__ExampleApp__VRDistortionModule__) */

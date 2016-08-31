@@ -1,10 +1,4 @@
-//
-//  UIQuad.cpp
-//  SDKSamplesApp
-//
-//  Created by Ali on 4/6/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
 #include "UIQuad.h"
 #include "RenderingModule.h"
@@ -89,9 +83,9 @@ namespace Eegeo
         
         
         UIQuad::UIQuad(
-                       Eegeo::Rendering::Materials::TexturedUniformColoredMaterial& material,
+                       const std::string& name,
+                       Eegeo::Rendering::Materials::UITexturedUniformColoredMaterial& material,
                        Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-                       Eegeo::Rendering::RenderableFilters& renderableFilters,
                        Eegeo::Rendering::GlBufferPool& glBufferPool,
                        const Eegeo::v2& dimension,
                        const Eegeo::v2& uvMin,
@@ -100,61 +94,47 @@ namespace Eegeo
                        const Eegeo::v4& initialColor,
                        const Eegeo::Rendering::LayerIds::Values renderLayer
                        )
-        : m_Material(material)
-        , m_VertexBindingPool(vertexBindingPool)
-        , m_RenderableFilters(renderableFilters)
-        , m_GlBufferPool(glBufferPool)
-        , m_RenderLayer(renderLayer)
-        , m_Renderable(NULL)
+        : m_material(material)
+        , m_vertexBindingPool(vertexBindingPool)
+        , m_glBufferPool(glBufferPool)
+        , m_renderLayer(renderLayer)
+        , m_pRenderable(NULL)
         {
+            m_name = name;
             
-            m_Dimension = Eegeo::v2(dimension);
-            m_EcefPosition = Eegeo::dv3(ecefPosition);
+            m_dimension = Eegeo::v2(dimension);
+            m_ecefPosition = Eegeo::dv3(ecefPosition);
             
-            m_RenderableMesh = CreateUnlitQuadMesh(m_Dimension, uvMin, uvMax, *CreatePositionUvVertexLayout(), m_GlBufferPool);
-            m_Renderable = CreateUIMeshRenderable(*m_RenderableMesh, m_Material, m_VertexBindingPool, m_EcefPosition, m_RenderLayer);
+            m_pRenderableMesh = CreateUnlitQuadMesh(m_dimension, uvMin, uvMax, *CreatePositionUvVertexLayout(), m_glBufferPool);
+            m_pRenderable = CreateUIMeshRenderable(*m_pRenderableMesh, m_material, m_vertexBindingPool, m_ecefPosition, m_renderLayer);
             
-            m_RenderableFilters.AddRenderableFilter(*this);
+            SetItemShouldRender(true);
         }
-
         
         UIQuad::~UIQuad()
         {
-            m_RenderableFilters.RemoveRenderableFilter(*this);
             
-            Eegeo_DELETE m_RenderableMesh;
-            Eegeo_DELETE m_Renderable;
+            EXAMPLE_LOG("logs:: deleting quad: %s", m_name.c_str());
+            
+            Eegeo_DELETE m_pRenderableMesh;
+            Eegeo_DELETE m_pRenderable;
         }
         
         // IRenderableFilter interface
-        void UIQuad::EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue)
+        Eegeo::Rendering::RenderableBase& UIQuad::GetUpdatedRenderable(const Eegeo::Rendering::RenderContext& renderContext)
         {
             const Eegeo::Camera::RenderCamera& renderCamera = renderContext.GetRenderCamera();
             
-            if(m_Renderable->GetEcefPosition().SquareDistanceTo(renderCamera.GetEcefLocation()) < 1)
-                return;
-            
-            m33 orientation = GetLookAtOrientationMatrix(renderCamera.GetEcefLocation().ToSingle(), m_Renderable->GetEcefPosition().ToSingle(), renderCamera.GetEcefLocation().ToSingle().Norm());
-            m_Renderable->SetOrientationEcef(orientation);
+            m33 orientation = GetLookAtOrientationMatrix(renderCamera.GetEcefLocation().ToSingle(), m_pRenderable->GetEcefPosition().ToSingle(), renderCamera.GetEcefLocation().ToSingle().Norm());
+            m_pRenderable->SetOrientationEcef(orientation);
             
             const Eegeo::m44& viewProjection = renderCamera.GetViewProjectionMatrix();
             const Eegeo::dv3& ecefCameraPosition = renderCamera.GetEcefLocation();
             
-            const Eegeo::m44& mvp = m_Renderable->CalcModelViewProjection(ecefCameraPosition, viewProjection);
-            m_Renderable->SetModelViewProjection(mvp);
+            const Eegeo::m44& mvp = m_pRenderable->CalcModelViewProjection(ecefCameraPosition, viewProjection);
+            m_pRenderable->SetModelViewProjection(mvp);
             
-            renderQueue.EnqueueRenderable(m_Renderable);
-            
-        }
-        
-        void UIQuad::UpdateUVs(Eegeo::v2& min, Eegeo::v2& max)
-        {
-            Eegeo_DELETE m_RenderableMesh;
-            Eegeo_DELETE m_Renderable;
-            m_RenderableMesh = CreateUnlitQuadMesh(m_Dimension, min, max, *CreatePositionUvVertexLayout(), m_GlBufferPool);
-            m_Renderable = CreateUIMeshRenderable(*m_RenderableMesh, m_Material, m_VertexBindingPool, m_EcefPosition, m_RenderLayer);
-            
-            
+            return *m_pRenderable;
         }
     }
 }

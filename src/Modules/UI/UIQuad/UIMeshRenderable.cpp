@@ -27,11 +27,8 @@ namespace Eegeo
         , m_mesh(mesh)
         , m_color(initialColor)
         , m_scale(initialScale)
-        , m_depthTest(depthTest)
-        , m_alphaBlend(alphaBlend)
         , m_orientationEcef(Eegeo::m44::CreateIdentity())
-        {
-            
+        {   
         }
         
         void UIMeshRenderable::OnMaterialChanged(const Eegeo::Rendering::Materials::IMaterial* pMaterial, Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool)
@@ -69,6 +66,16 @@ namespace Eegeo
             Eegeo::m44 modelViewProjection;
             Eegeo::m44::Mul(modelViewProjection, viewProjection, orientedCameraRelativeModel);
             return modelViewProjection;
+        }
+
+        void UIMeshRenderable::SetAlpha(float alpha)
+        {
+            m_color.SetW(Eegeo::Math::Clamp01(alpha));
+        }
+
+        float UIMeshRenderable::GetAlpha() const
+        {
+            return m_color.GetW();
         }
     }
 }

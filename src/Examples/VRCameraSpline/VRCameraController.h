@@ -44,7 +44,7 @@ namespace Eegeo
             , m_ecefPosition(0.0, 0.0, 0.0)
             , m_falling(false)
             , m_time(0.0f)
-            , m_stopTime(3.0f)
+            , m_stopTime(20.0f)
             , m_stopTimeElapsed(0.0f)
             , m_splineEndPauseTime(10.0f)
             , m_splineEndPauseTimeElapsed(0.0f)
@@ -52,15 +52,16 @@ namespace Eegeo
             , m_shiftDown(false)
             , m_nearMultiplier(0.1f)
             , m_pHeadTracker(headTracker)
+            , m_isPlaying(true)
             {
                 m_renderCamera = new Camera::RenderCamera();
                 m_orientation.Identity();
                 m_currentOrientation.Identity();
-                
+                m_headTrackerOrientation.Identity();
                 m_renderCamera->SetViewport(0,0,screenWidth, screenHeight);
                 m_renderCamera->SetProjection(0.7, 0.1, 4000);
                 
-                m_VRCameraPositionSpline.Start();
+                m_vrCameraPositionSpline.Start();
 
             }
             
@@ -69,20 +70,20 @@ namespace Eegeo
             Eegeo::dv3 GetEcefInterestPoint() const;
             double GetAltitudeAboveSeaLevel() const;
 
-            Eegeo::Camera::RenderCamera* GetCamera() { return m_renderCamera; }
+            Eegeo::Camera::RenderCamera& GetCamera() { return *m_renderCamera; }
             const bool IsMoving() const { return m_moving; }
             const bool IsFalling() const { return m_falling; }
-            const bool IsFollowingSpline() const { return m_VRCameraPositionSpline.IsPlaying(); }
+            const bool IsFollowingSpline() const { return m_vrCameraPositionSpline.IsPlaying(); }
             const dv3& GetCameraPosition() const { return m_ecefPosition; }
             const m33& GetCameraOrientation() const { return m_orientation; }
-            
+            const Eegeo::m33& GetHeadTrackerOrientation() { return m_headTrackerOrientation; };
             void SetNearMultiplier(float p_nearMultiplier) { m_nearMultiplier = p_nearMultiplier; }
             
             const v3 GetRight() const { return m_orientation.GetRow(0); }
             const v3 GetUp() const { return m_orientation.GetRow(1); }
             const v3 GetForward() const { return m_orientation.GetRow(2); }
             
-            VRCameraPositionSpline& GetVRCameraPositionSpline() { return m_VRCameraPositionSpline; }
+            VRCameraPositionSpline& GetVRCameraPositionSpline() { return m_vrCameraPositionSpline; }
             
             void SetProjectionMatrix(Eegeo::m44& projection);
             void UpdateFromPose(const Eegeo::m33& orientation, float eyeDistance);
@@ -108,6 +109,13 @@ namespace Eegeo
             void SetShiftDown(bool down) { m_shiftDown = down; }
             
             m33& GetOrientation();
+            
+            void PlaySpline(int splineID);
+
+            void PlayNextSpline();
+
+            void RegisterSplineFinishedCallback(Helpers::ICallback0 &callback);
+            void UnregisterSplineFinishedCallback(Helpers::ICallback0 &callback);
             
         private:
             bool CanAcceptUserInput() const;
@@ -137,7 +145,7 @@ namespace Eegeo
             Eegeo::Camera::RenderCamera* m_renderCamera;
             Eegeo::Resources::Terrain::Heights::TerrainHeightProvider * m_pTerrainHeightProvider;
             
-            VRCameraPositionSpline m_VRCameraPositionSpline;
+            VRCameraPositionSpline m_vrCameraPositionSpline;
             
             bool m_shiftDown;
             
@@ -145,7 +153,11 @@ namespace Eegeo
             dv3 m_ecefPosition;
             m33 m_orientation;
             m33 m_currentOrientation;
+            m33 m_headTrackerOrientation;
             float m_nearMultiplier;
+
+            Helpers::CallbackCollection0 m_splineEndedCallbacks;
+            bool m_isPlaying;
 
         };
     }

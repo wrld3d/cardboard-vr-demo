@@ -1,13 +1,6 @@
-//
-//  VRDistortionMaterial
-//  SDKSamplesApp
-//
-//  Created by Aqif Hamid on 3/21/16.
-//
-//
+// Copyright eeGeo Ltd (2012-2016), All Rights Reserved
 
-#ifndef __ExampleApp__VRDistortionShader__
-#define __ExampleApp__VRDistortionShader__
+#pragma once
 
 #include "Shader.h"
 #include "Rendering.h"
@@ -26,15 +19,15 @@ namespace Eegeo
                 void Use(Eegeo::Rendering::GLState& glState) const;
                 GLuint GetDiffuseSamplerId() const;
                 void SetMVP(const m44& mvp) const;
-                
+                void SetFadeMultiplier(float fadeMultiplier);
 
             private:
                 VRDistortionShader(const Eegeo::Rendering::TShaderId shaderId, const std::string& vertexCode, const std::string& fragmentCode);
                 GLuint m_diffuseTextureSamplerUniformLocation;
+                GLuint m_fadeMultiplierUniform;
             };
             
         }
     }
 }
 
-#endif /* defined(__ExampleApp__VRDistortionShader__) */

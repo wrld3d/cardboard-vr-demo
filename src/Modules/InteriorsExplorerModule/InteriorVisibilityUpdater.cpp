@@ -30,6 +30,11 @@
         m_interiorShouldDisplay = shouldDisplay;
     }
     
+    bool InteriorVisibilityUpdater::GetInteriorHasLoaded() const
+    {
+        return m_interiorSelectionModel.IsInteriorSelected() && m_interiorInteractionModel.HasInteriorModel();
+    }
+    
     void InteriorVisibilityUpdater::UpdateVisiblityImmediately()
     {
         const bool shouldDisplay = m_interiorShouldDisplay && m_interiorSelectionModel.IsInteriorSelected() && m_interiorInteractionModel.HasInteriorModel();

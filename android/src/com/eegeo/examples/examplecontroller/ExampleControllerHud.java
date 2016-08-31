@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.eegeo.mobilesdkharness.MainActivity;
-import com.eegeo.mobilesdkharness.R;
+import com.eegeo.cardboardvrdemo.R;
 
 public class ExampleControllerHud
 {
