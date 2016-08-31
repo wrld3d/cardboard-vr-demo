@@ -7,8 +7,8 @@ if(NOT ${IOS})
 	message(FATAL_ERROR "Incorrect toolchain set: ${CMAKE_TOOLCHAIN_FILE}")
 endif(NOT ${IOS})
 
-project(SDKSamplesApp)
-set(executable_name SDKSamplesApp)
+project(CardboardVrDemo)
+set(executable_name CardboardVrDemo)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Include/eegeo/CMakeLists.txt")
   include("${CMAKE_CURRENT_SOURCE_DIR}/Include/eegeo/CMakeLists.txt")
@@ -26,9 +26,9 @@ set(storyboards
 
 # plist settings
 set(EEGEO_PLIST_BUNDLE_EXECUTABLE "\${EXECUTABLE_NAME}")
-set(EEGEO_PLIST_BUNDLE_IDENTIFIER "eegeo.\${PRODUCT_NAME:rfc1034identifier}")
+set(EEGEO_PLIST_BUNDLE_IDENTIFIER "com.eegeo.\${PRODUCT_NAME:rfc1034identifier}")
 set(EEGEO_PLIST_BUNDLE_SHORT_VERSION_STRING "\${PRODUCT_VERSION}")
-set(EEGEO_PLIST_BUNDLE_DISPLAY_NAME "SDK Samples")
+set(EEGEO_PLIST_BUNDLE_DISPLAY_NAME "Cardboard VR Demo")
 set(EEGEO_PLIST_BUNDLE_NAME "\${PRODUCT_NAME}")
 
 # compiler/linker settings
@@ -94,7 +94,7 @@ set_xcode_property (${executable_name} ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME "L
 set_xcode_property (${executable_name} COMBINE_HIDPI_IMAGES "No")
 
 set_xcode_property(${executable_name} GCC_PRECOMPILE_PREFIX_HEADER "YES")
-set_xcode_property(${executable_name} GCC_PREFIX_HEADER "ExampleApp/SDKSamplesApp-Prefix.pch")
+set_xcode_property(${executable_name} GCC_PREFIX_HEADER "ExampleApp/CardboardVrDemo-Prefix.pch")
 
 
 if(${COMPILE_CPP_03})

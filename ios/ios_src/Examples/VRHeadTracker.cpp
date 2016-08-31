@@ -48,18 +48,19 @@ namespace Examples
         profileValue[2] = fov->right();
         profileValue[3] = fov->bottom();
         profileValue[4] = screenParams->widthInMeters();
-        profileValue[5] = screenParams->widthInMeters();
+        profileValue[5] = screenParams->heightInMeters();
         profileValue[6] = screenParams->borderSizeInMeters();
         profileValue[7] = cardboardDeviceParams->interLensDistance();
         profileValue[8] = cardboardDeviceParams->verticalDistanceToLensCenter();
         profileValue[9] = cardboardDeviceParams->screenToLensDistance();
-        profileValue[10] = 1;
+        profileValue[10] = -1;
         profileValue[11] = distCoef->coefficients()[0];
         profileValue[12] = distCoef->coefficients()[1];
         profileValue[13] = fov->left();
         profileValue[14] = fov->left();
         profileValue[15] = fov->left();
         
+        Eegeo_DELETE hMDManager;
         
     }
     

@@ -237,6 +237,13 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 	m_piOSExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 
 	m_pApp->GetExampleController().ActivatePrevious();
+    
+    if (m_pvrHeadTracker != NULL)
+    {
+        float profileValue[16];
+        m_pvrHeadTracker->UpdatedCardboardProfile(profileValue);
+        m_pApp->UpdateCardboardProfile(profileValue);
+    }
 }
 
 void AppHost::RegisteriOSSpecificExamples()
