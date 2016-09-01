@@ -19,6 +19,7 @@
 
 //example app includes
 #include "ExampleApp.h"
+#include "CardboardSDKService.h"
 #include "VRHeadTracker.h"
 #include "ExampleController.h"
 #include "iOSExampleControllerView.h"
@@ -71,12 +72,19 @@ private:
 	Examples::iOSRouteMatchingExampleViewFactory* m_piOSRouteMatchingExampleViewFactory;
 	Examples::iOSRouteSimulationExampleViewFactory* m_piOSRouteSimulationExampleViewFactory;
     Examples::IVRHeadTracker *m_pVrHeadTracker;
+    Examples::CardboardSDKService *m_pCardBoardService;
+    Eegeo::Helpers::TCallback0<AppHost> m_cardboardMagnetTriggerCallback;
+
 
 
     
     void ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs);
 	void DestroyExamples();
 	void RegisteriOSSpecificExamples();
+    void OnCardboardMagnetLinkTrigger();
+    void UpdateCardboarProfile();
+
+
 };
 
 #endif

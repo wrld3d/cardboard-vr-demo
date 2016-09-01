@@ -6,6 +6,7 @@ set(currsources
   ios_src/Examples/iOSExampleControllerView.mm
   ios_src/Examples/iOSUIHelpers.h
   ios_src/Examples/VRHeadTracker.cpp  ios_src/Examples/VRHeadTracker.h
+  ios_src/Examples/CardboardSDKService.h  ios_src/Examples/CardboardSDKService.mm
 )
 set(sources ${sources} ${currsources})
 source_group(\\ios_src\\Examples FILES ${currsources})

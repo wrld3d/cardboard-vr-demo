@@ -11,10 +11,6 @@ namespace Examples
     public:
         virtual ~IVRHeadTracker(){}
         virtual void ResetTracker() = 0;
-        virtual void HeadViewValue(float value[]) = 0;
-        virtual void UpdatedCardboardProfile(float profileValue[]) = 0;
-
-
     };
 }
 

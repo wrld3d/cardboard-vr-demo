@@ -78,6 +78,7 @@ AppHost::AppHost(
     ,m_pCollisionVisualizationModule(NULL)
     ,m_pBuildingFootprintsModule(NULL)
     ,m_applicationConfiguration(applicationConfiguration)
+    ,m_cardboardMagnetTriggerCallback(this, &AppHost::OnCardboardMagnetLinkTrigger)
 {
 	m_piOSLocationService = new iOSLocationService();
 	   
@@ -156,6 +157,8 @@ AppHost::~AppHost()
     m_pJpegLoader = NULL;
     
     Eegeo_DELETE m_pVrHeadTracker;
+    m_pCardBoardService->UnRegisterMagnetTrigreedCallBack(m_cardboardMagnetTriggerCallback);
+    Eegeo_DELETE m_pCardBoardService;
     
 	Eegeo::EffectHandler::Reset();
 	Eegeo::EffectHandler::Shutdown();
@@ -164,12 +167,7 @@ AppHost::~AppHost()
 void AppHost::OnResume()
 {
 	m_pApp->OnResume();
-    if (m_pVrHeadTracker != NULL)
-    {
-        float profileValue[13];
-        m_pVrHeadTracker->UpdatedCardboardProfile(profileValue);
-        m_pApp->UpdateCardboardProfile(profileValue);
-    }
+    UpdateCardboarProfile();
 }
 
 void AppHost::OnPause()
@@ -198,7 +196,7 @@ void AppHost::Update(float dt)
     if (m_pVrHeadTracker != NULL)
     {
         float items[16];
-        m_pVrHeadTracker->HeadViewValue(items);
+        m_pCardBoardService->HeadViewValue(items);
         m_pApp->Update(dt, items);
     }
     else
@@ -215,7 +213,7 @@ void AppHost::Draw(float dt)
     if (m_pVrHeadTracker != NULL)
     {
         float items[16];
-        m_pVrHeadTracker->HeadViewValue(items);
+        m_pCardBoardService->HeadViewValue(items);
         m_pApp->Draw(dt,items);
     }
     else
@@ -230,21 +228,33 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 	m_piOSExampleControllerView = new Examples::iOSExampleControllerView([&m_viewController view]);
     
     m_pVrHeadTracker = Eegeo_NEW(Examples::VRHeadTracker)();
-    
-    
+    m_pCardBoardService = Eegeo_NEW(Examples::CardboardSDKService)();
+    m_pCardBoardService->RegisterMagnetTrigreedCallBack(m_cardboardMagnetTriggerCallback);
     m_pApp = Eegeo_NEW(ExampleApp)(m_pWorld,deviceSpecs ,*m_piOSExampleControllerView, *m_pVrHeadTracker,screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule,m_applicationConfiguration);
 
 	m_piOSExampleControllerView->PopulateExampleList(m_pApp->GetExampleController().GetExampleNames());
 
 	m_pApp->GetExampleController().ActivatePrevious();
-    
-    if (m_pVrHeadTracker != NULL)
+    UpdateCardboarProfile();
+}
+void AppHost::OnCardboardMagnetLinkTrigger()
+{
+    if (m_pApp != NULL)
+    {
+        m_pApp->MagnetTriggered();
+    }
+
+}
+void AppHost::UpdateCardboarProfile()
+{
+    if (m_pCardBoardService != NULL)
     {
         float profileValue[13];
-        m_pVrHeadTracker->UpdatedCardboardProfile(profileValue);
+        m_pCardBoardService->UpdatedCardboardProfile(profileValue);
         m_pApp->UpdateCardboardProfile(profileValue);
     }
 }
+
 
 void AppHost::RegisteriOSSpecificExamples()
 {

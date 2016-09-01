@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "HeadTracker.h"
 #include "IVRHeadTracker.h"
 
 namespace Examples
@@ -14,10 +13,6 @@ namespace Examples
         VRHeadTracker();
         ~VRHeadTracker();
         void ResetTracker();
-        void HeadViewValue(float value[]);
-        void UpdatedCardboardProfile(float profileValue[]);
-
     private:
-        CardboardSDK::HeadTracker *m_pCardBoardHeadTracker;
     };
 }
