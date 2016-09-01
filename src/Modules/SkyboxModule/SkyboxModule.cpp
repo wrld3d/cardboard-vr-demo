@@ -67,7 +67,7 @@ namespace Eegeo
             m_renderableFilters.AddRenderableFilter(*this);
         }
         
-        void SkyboxModule::UpdateSkyColor(Eegeo::v3 color)
+        void SkyboxModule::UpdateSkyColor(const Eegeo::v3& color)
         {
             m_backgroundColor.Set(color.GetX(), color.GetY(), color.GetZ(), 1.0f);
             m_pMaterial->SetColor(m_backgroundColor);

@@ -19,12 +19,12 @@ namespace Eegeo
             WorldMenuItemRepository::~WorldMenuItemRepository()
             {
                 m_observers.clear();
-                m_WorldMenuItem.clear();
+                m_worldMenuItem.clear();
             }
             
             void WorldMenuItemRepository::AddWorldMenuItem(WorldMenuItem* pWorldMenuItemToAdd)
             {
-                m_WorldMenuItem.push_back(pWorldMenuItemToAdd);
+                m_worldMenuItem.push_back(pWorldMenuItemToAdd);
                 
                 for (int i = 0; i < m_observers.size(); i++) {
                     m_observers[i]->OnWorldMenuItemAdded(*pWorldMenuItemToAdd);
@@ -33,9 +33,9 @@ namespace Eegeo
             
             void WorldMenuItemRepository::RemoveWorldMenuItem(WorldMenuItem* pWorldMenuItemToRemove)
             {
-                std::vector<WorldMenuItem*>::iterator position = std::find(m_WorldMenuItem.begin(), m_WorldMenuItem.end(), pWorldMenuItemToRemove);
-                if (position != m_WorldMenuItem.end()) {
-                    m_WorldMenuItem.erase(position);
+                std::vector<WorldMenuItem*>::iterator position = std::find(m_worldMenuItem.begin(), m_worldMenuItem.end(), pWorldMenuItemToRemove);
+                if (position != m_worldMenuItem.end()) {
+                    m_worldMenuItem.erase(position);
                     
                     for (int i = 0; i < m_observers.size(); i++) {
                         m_observers[i]->OnWorldMenuItemRemoved(*pWorldMenuItemToRemove);
@@ -45,19 +45,19 @@ namespace Eegeo
             
             int WorldMenuItemRepository::GetNumOfWorldMenuItems() const
             {
-                return (int)m_WorldMenuItem.size();
+                return (int)m_worldMenuItem.size();
             }
             
             WorldMenuItem* WorldMenuItemRepository::GetWorldMenuItemAtIndex(int worldMenuItemIndex) const
             {
-                return m_WorldMenuItem[worldMenuItemIndex];
+                return m_worldMenuItem[worldMenuItemIndex];
             }
             
             WorldMenuItem* WorldMenuItemRepository::GetWorldMenuItemById(TWorldMenuItemId id) const
             {
                 for (int i=0; i<GetNumOfWorldMenuItems(); i++) {
-                    if (m_WorldMenuItem[i]->GetId() == id) {
-                        return m_WorldMenuItem[i];
+                    if (m_worldMenuItem[i]->GetId() == id) {
+                        return m_worldMenuItem[i];
                     }
                 }
                 
@@ -79,7 +79,7 @@ namespace Eegeo
             bool WorldMenuItemRepository::ContainsWorldMenuItem(const WorldMenuItem* pWorldMenuItemToCheck) const
             {
                 for (int i=0; i<GetNumOfWorldMenuItems(); i++) {
-                    if (m_WorldMenuItem[i] == pWorldMenuItemToCheck) {
+                    if (m_worldMenuItem[i] == pWorldMenuItemToCheck) {
                         return true;
                     }
                 }

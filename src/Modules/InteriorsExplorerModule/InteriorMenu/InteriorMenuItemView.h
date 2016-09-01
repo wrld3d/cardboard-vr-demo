@@ -24,7 +24,7 @@ namespace InteriorsExplorer
         class InteriorMenuItemView : protected Eegeo::NonCopyable , public InteriorMenuUIButton
         {
         public:
-            InteriorMenuItemView(InteriorMenuItem& InteriorMenuItem
+            InteriorMenuItemView(InteriorMenuItem& interiorMenuItem
                                  , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
                                  , Eegeo::UI::IUIQuadFactory& quadFactory
                                  , const std::string& assetPath
@@ -38,7 +38,7 @@ namespace InteriorsExplorer
              */
             InteriorMenuItem& GetInteriorMenuItem() const
             {
-                return m_InteriorMenuItem;
+                return m_interiorMenuItem;
             }
             
             virtual bool IsCollidingWithPoint(const Eegeo::v2& screenPoint, Eegeo::UI::IUICameraProvider& cameraProvider);
@@ -46,7 +46,7 @@ namespace InteriorsExplorer
             
             
         private:
-            InteriorMenuItem& m_InteriorMenuItem;
+            InteriorMenuItem& m_interiorMenuItem;
         };
     }
 }

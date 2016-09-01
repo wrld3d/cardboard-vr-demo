@@ -17,12 +17,12 @@ namespace InteriorsExplorer
         InteriorMenuItemRepository::~InteriorMenuItemRepository()
         {
             m_observers.clear();
-            m_InteriorMenuItem.clear();
+            m_interiorMenuItem.clear();
         }
         
         void InteriorMenuItemRepository::AddInteriorMenuItem(InteriorMenuItem* pInteriorMenuItemToAdd)
         {
-            m_InteriorMenuItem.push_back(pInteriorMenuItemToAdd);
+            m_interiorMenuItem.push_back(pInteriorMenuItemToAdd);
             
             for (int i = 0; i < m_observers.size(); i++) {
                 m_observers[i]->OnInteriorMenuItemAdded(*pInteriorMenuItemToAdd);
@@ -31,9 +31,9 @@ namespace InteriorsExplorer
         
         void InteriorMenuItemRepository::RemoveInteriorMenuItem(InteriorMenuItem* pInteriorMenuItemToRemove)
         {
-            std::vector<InteriorMenuItem*>::iterator position = std::find(m_InteriorMenuItem.begin(), m_InteriorMenuItem.end(), pInteriorMenuItemToRemove);
-            if (position != m_InteriorMenuItem.end()) {
-                m_InteriorMenuItem.erase(position);
+            std::vector<InteriorMenuItem*>::iterator position = std::find(m_interiorMenuItem.begin(), m_interiorMenuItem.end(), pInteriorMenuItemToRemove);
+            if (position != m_interiorMenuItem.end()) {
+                m_interiorMenuItem.erase(position);
                 
                 for (int i = 0; i < m_observers.size(); i++) {
                     m_observers[i]->OnInteriorMenuItemRemoved(*pInteriorMenuItemToRemove);
@@ -43,19 +43,19 @@ namespace InteriorsExplorer
         
         int InteriorMenuItemRepository::GetNumOfInteriorMenuItems() const
         {
-            return (int)m_InteriorMenuItem.size();
+            return (int)m_interiorMenuItem.size();
         }
         
-        InteriorMenuItem* InteriorMenuItemRepository::GetInteriorMenuItemAtIndex(int InteriorMenuItemIndex) const
+        InteriorMenuItem* InteriorMenuItemRepository::GetInteriorMenuItemAtIndex(int interiorMenuItemIndex) const
         {
-            return m_InteriorMenuItem[InteriorMenuItemIndex];
+            return m_interiorMenuItem[interiorMenuItemIndex];
         }
         
         InteriorMenuItem* InteriorMenuItemRepository::GetInteriorMenuItemById(TInteriorMenuItemId id) const
         {
             for (int i=0; i<GetNumOfInteriorMenuItems(); i++) {
-                if (m_InteriorMenuItem[i]->GetId() == id) {
-                    return m_InteriorMenuItem[i];
+                if (m_interiorMenuItem[i]->GetId() == id) {
+                    return m_interiorMenuItem[i];
                 }
             }
             
@@ -77,7 +77,7 @@ namespace InteriorsExplorer
         bool InteriorMenuItemRepository::ContainsInteriorMenuItem(const InteriorMenuItem* pInteriorMenuItemToCheck) const
         {
             for (int i=0; i<GetNumOfInteriorMenuItems(); i++) {
-                if (m_InteriorMenuItem[i] == pInteriorMenuItemToCheck) {
+                if (m_interiorMenuItem[i] == pInteriorMenuItemToCheck) {
                     return true;
                 }
             }
@@ -85,9 +85,9 @@ namespace InteriorsExplorer
             return false;
         }
         
-        bool InteriorMenuItemRepository::ContainsInteriorMenuItemId(TInteriorMenuItemId InteriorMenuItemId) const
+        bool InteriorMenuItemRepository::ContainsInteriorMenuItemId(TInteriorMenuItemId interiorMenuItemId) const
         {
-            if (GetInteriorMenuItemById(InteriorMenuItemId) != NULL) {
+            if (GetInteriorMenuItemById(interiorMenuItemId) != NULL) {
                 return true;
             }
             

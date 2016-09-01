@@ -30,7 +30,7 @@ namespace Eegeo
                 virtual float GetProgress();
                 
             private:
-                IAnimationObserver* m_animationObserver;
+                IAnimationObserver* m_pAnimationObserver;
                 IDv3Animateable& m_dv3Animateable;
                 const Eegeo::dv3 m_startValue;
                 const Eegeo::dv3 m_endValue;

@@ -29,11 +29,11 @@ namespace Eegeo
                 };
                 SetupProfile(profileData);
                 
-                EXAMPLE_LOG("Creating native profile for %.2f, %.2f, %.2f",device.maxFOV.outer, device.distortion.k1, device.distortion.k2);
+                EXAMPLE_LOG("Creating native profile for %.2f, %.2f, %.2f",m_device.maxFOV.outer, m_device.distortion.k1, m_device.distortion.k2);
             }
             
             VRDevice VRCardboardDeviceProfile::GetDevice() {
-                return device;
+                return m_device;
             }
             
             float VRCardboardDeviceProfile::Distort(float r, float k1, float k2) {
@@ -57,20 +57,20 @@ namespace Eegeo
             }
             
             void VRCardboardDeviceProfile::SetupProfile(float profileData[]) {
-                device.maxFOV.outer = profileData[0];
-                device.maxFOV.upper = profileData[1];
-                device.maxFOV.inner = profileData[2];
-                device.maxFOV.lower = profileData[3];
-                screen.width = profileData[4];
-                screen.height = profileData[5];
-                screen.border = profileData[6];
-                device.lenses.separation = profileData[7];
-                device.lenses.offset = profileData[8];
-                device.lenses.screenDistance = profileData[9];
-                device.lenses.alignment = (int)profileData[10];
-                device.distortion.k1 = profileData[11];
-                device.distortion.k2 = profileData[12];
-                device.inverse = ApproximateInverse(device.distortion);
+                m_device.maxFOV.outer = profileData[0];
+                m_device.maxFOV.upper = profileData[1];
+                m_device.maxFOV.inner = profileData[2];
+                m_device.maxFOV.lower = profileData[3];
+                m_screen.width = profileData[4];
+                m_screen.height = profileData[5];
+                m_screen.border = profileData[6];
+                m_device.lenses.separation = profileData[7];
+                m_device.lenses.offset = profileData[8];
+                m_device.lenses.screenDistance = profileData[9];
+                m_device.lenses.alignment = (int)profileData[10];
+                m_device.distortion.k1 = profileData[11];
+                m_device.distortion.k2 = profileData[12];
+                m_device.inverse = ApproximateInverse(m_device.distortion);
             }
             
             VRDistortionCoeff VRCardboardDeviceProfile::ApproximateInverse(VRDistortionCoeff distort, float maxRadius, const int numSamples) {
@@ -163,24 +163,24 @@ namespace Eegeo
             
             /// The vertical offset of the lens centers from the screen center.
             float VRCardboardDeviceProfile::GetVerticalLensOffset() {
-                    return (device.lenses.offset - screen.border - screen.height/2) * device.lenses.alignment;
+                    return (m_device.lenses.offset - m_screen.border - m_screen.height/2) * m_device.lenses.alignment;
             }
             
             /// Calculates the tan-angles from the maximum FOV for the left eye for the
             /// current device and screen parameters, assuming no lenses.
             void VRCardboardDeviceProfile::GetLeftEyeNoLensTanAngles(float* pResult) {
                 // Tan-angles from the max FOV.
-                float fovLeft = DistortInv(Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(-device.maxFOV.outer)), device.distortion.k1, device.distortion.k2);
-                float fovTop = DistortInv(Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(device.maxFOV.upper)), device.distortion.k1, device.distortion.k2);
-                float fovRight = DistortInv(Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(device.maxFOV.inner)), device.distortion.k1, device.distortion.k2);
-                float fovBottom = DistortInv(Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(-device.maxFOV.lower)), device.distortion.k1, device.distortion.k2);
+                float fovLeft = DistortInv(Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(-m_device.maxFOV.outer)), m_device.distortion.k1, m_device.distortion.k2);
+                float fovTop = DistortInv(Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(m_device.maxFOV.upper)), m_device.distortion.k1, m_device.distortion.k2);
+                float fovRight = DistortInv(Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(m_device.maxFOV.inner)), m_device.distortion.k1, m_device.distortion.k2);
+                float fovBottom = DistortInv(Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(-m_device.maxFOV.lower)), m_device.distortion.k1, m_device.distortion.k2);
                 // Viewport size.
-                float halfWidth = screen.width / 4;
-                float halfHeight = screen.height / 2;
+                float halfWidth = m_screen.width / 4;
+                float halfHeight = m_screen.height / 2;
                 // Viewport center, measured from left lens position.
-                float centerX = device.lenses.separation / 2 - halfWidth;
+                float centerX = m_device.lenses.separation / 2 - halfWidth;
                 float centerY = -GetVerticalLensOffset();
-                float centerZ = device.lenses.screenDistance;
+                float centerZ = m_device.lenses.screenDistance;
                 // Tan-angles of the viewport edges, as seen through the lens.
                 float screenLeft = (centerX - halfWidth) / centerZ;
                 float screenTop = (centerY + halfHeight) / centerZ;
@@ -198,22 +198,22 @@ namespace Eegeo
             void VRCardboardDeviceProfile::GetLeftEyeVisibleTanAngles(float* pResult) {
                 // Tan-angles from the max FOV.
                 
-                float fovLeft = Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(-device.maxFOV.outer));
-                float fovTop = Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(device.maxFOV.upper));
-                float fovRight = Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(device.maxFOV.inner));
-                float fovBottom = Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(-device.maxFOV.lower));
+                float fovLeft = Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(-m_device.maxFOV.outer));
+                float fovTop = Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(m_device.maxFOV.upper));
+                float fovRight = Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(m_device.maxFOV.inner));
+                float fovBottom = Eegeo::Math::Tan(Eegeo::Math::Deg2Rad(-m_device.maxFOV.lower));
                 // Viewport size.
-                float halfWidth = screen.width / 4;
-                float halfHeight = screen.height / 2;
+                float halfWidth = m_screen.width / 4;
+                float halfHeight = m_screen.height / 2;
                 // Viewport center, measured from left lens position.
-                float centerX = device.lenses.separation / 2 - halfWidth;
+                float centerX = m_device.lenses.separation / 2 - halfWidth;
                 float centerY = -1 * GetVerticalLensOffset();
-                float centerZ = device.lenses.screenDistance;
+                float centerZ = m_device.lenses.screenDistance;
                 // Tan-angles of the viewport edges, as seen through the lens.
-                float screenLeft = Distort((centerX - halfWidth) / centerZ, device.distortion.k1, device.distortion.k2);
-                float screenTop = Distort((centerY + halfHeight) / centerZ, device.distortion.k1, device.distortion.k2);
-                float screenRight = Distort((centerX + halfWidth) / centerZ, device.distortion.k1, device.distortion.k2);
-                float screenBottom = Distort((centerY - halfHeight) / centerZ, device.distortion.k1, device.distortion.k2);
+                float screenLeft = Distort((centerX - halfWidth) / centerZ, m_device.distortion.k1, m_device.distortion.k2);
+                float screenTop = Distort((centerY + halfHeight) / centerZ, m_device.distortion.k1, m_device.distortion.k2);
+                float screenRight = Distort((centerX + halfWidth) / centerZ, m_device.distortion.k1, m_device.distortion.k2);
+                float screenBottom = Distort((centerY - halfHeight) / centerZ, m_device.distortion.k1, m_device.distortion.k2);
                 // Compare the two sets of tan-angles and take the value closer to zero on each side.
 
                 pResult[0] = Eegeo::Max<float>(fovLeft, screenLeft);
@@ -223,13 +223,13 @@ namespace Eegeo
             }
             
             void VRCardboardDeviceProfile::GetLeftEyeVisibleScreenRect(float undistortedFrustum[], float *pRect) {
-                float dist = device.lenses.screenDistance;
-                float eyeX = (screen.width - device.lenses.separation) / 2;
-                float eyeY = GetVerticalLensOffset() + screen.height / 2;
-                float left = (undistortedFrustum[0] * dist + eyeX) / screen.width;
-                float top = (undistortedFrustum[1] * dist + eyeY) / screen.height;
-                float right = (undistortedFrustum[2] * dist + eyeX) / screen.width;
-                float bottom = (undistortedFrustum[3] * dist + eyeY) / screen.height;
+                float dist = m_device.lenses.screenDistance;
+                float eyeX = (m_screen.width - m_device.lenses.separation) / 2;
+                float eyeY = GetVerticalLensOffset() + m_screen.height / 2;
+                float left = (undistortedFrustum[0] * dist + eyeX) / m_screen.width;
+                float top = (undistortedFrustum[1] * dist + eyeY) / m_screen.height;
+                float right = (undistortedFrustum[2] * dist + eyeX) / m_screen.width;
+                float bottom = (undistortedFrustum[3] * dist + eyeY) / m_screen.height;
                 
                 pRect[0] = left;
                 pRect[1] = bottom;

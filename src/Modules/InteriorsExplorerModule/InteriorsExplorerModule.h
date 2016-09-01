@@ -72,7 +72,7 @@ namespace InteriorsExplorer
         Eegeo::Helpers::CallbackCollection1<InteriorMenu::InteriorMenuItem&> m_menuItemCallbacks;
 
         typedef std::vector<InteriorMenu::InteriorMenuItem*> TInteriorMenuItems;
-        TInteriorMenuItems  m_pInteriorMenuItems;
+        TInteriorMenuItems  m_interiorMenuItems;
         
         InteriorMenu::InteriorMenuModule* m_pInteriorMenuModule;
         InteriorsExplorerModel* m_pModel;

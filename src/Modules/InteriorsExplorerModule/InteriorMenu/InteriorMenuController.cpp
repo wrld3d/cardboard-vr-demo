@@ -11,12 +11,12 @@ namespace InteriorsExplorer
     namespace InteriorMenu
     {
         
-        InteriorMenuController::InteriorMenuController(IInteriorMenuItemObservable& InteriorMenuItemObservable, IInteriorMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable , Eegeo::UI::IUICameraProvider& uiCameraProvider,
+        InteriorMenuController::InteriorMenuController(IInteriorMenuItemObservable& interiorMenuItemObservable, IInteriorMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable , Eegeo::UI::IUICameraProvider& uiCameraProvider,
                                                        Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
                                                        , const std::string& spriteFileName)
-        : m_InteriorMenuItemRepository(InteriorMenuItemObservable)
+        : m_interiorMenuItemRepository(interiorMenuItemObservable)
         , m_viewFactory(viewFactory)
-        , m_pIUIInteractionObservable(uiInteractionObservable)
+        , m_uiInteractionObservable(uiInteractionObservable)
         , m_uiCameraProvider(uiCameraProvider)
         , m_marginAngle(75.f)
         {
@@ -34,18 +34,18 @@ namespace InteriorsExplorer
             
             m_menuItemsShouldRender = true;
             m_isMenuShown = false;
-            m_InteriorMenuItemRepository.AddInteriorMenuObserver(this);
+            m_interiorMenuItemRepository.AddInteriorMenuObserver(this);
         }
         
         InteriorMenuController::~InteriorMenuController()
         {
             Eegeo_DELETE(m_pSelectedArrow);
             Eegeo_DELETE(m_pInteriorMenuUpView);
-            m_InteriorMenuItemRepository.RemoveInteriorMenuObserver(this);
+            m_interiorMenuItemRepository.RemoveInteriorMenuObserver(this);
             for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
             {
                 InteriorMenuItemView* pView = it->second;
-                m_pIUIInteractionObservable.UnRegisterInteractableItem(pView);
+                m_uiInteractionObservable.UnRegisterInteractableItem(pView);
             }
             m_viewsByModel.clear();
         }
@@ -117,24 +117,24 @@ namespace InteriorsExplorer
             }
         }
         
-        void InteriorMenuController::OnInteriorMenuItemAdded(InteriorMenuItem& InteriorMenuItem)
+        void InteriorMenuController::OnInteriorMenuItemAdded(InteriorMenuItem& interiorMenuItem)
         {
-            Eegeo_ASSERT(!HasViewForModel(InteriorMenuItem), "Attempt to add duplicate model to InteriorMenuController.");
+            Eegeo_ASSERT(!HasViewForModel(interiorMenuItem), "Attempt to add duplicate model to InteriorMenuController.");
             
-            InteriorMenuItemView* pView = m_viewFactory.CreateViewForInteriorMenuItem(InteriorMenuItem);
-            m_viewsByModel[&InteriorMenuItem] = pView;
+            InteriorMenuItemView* pView = m_viewFactory.CreateViewForInteriorMenuItem(interiorMenuItem);
+            m_viewsByModel[&interiorMenuItem] = pView;
             
-            m_pIUIInteractionObservable.RegisterInteractableItem(pView);
+            m_uiInteractionObservable.RegisterInteractableItem(pView);
             m_isMenuShown = false;
         }
         
-        void InteriorMenuController::OnInteriorMenuItemRemoved(InteriorMenuItem& InteriorMenuItem)
+        void InteriorMenuController::OnInteriorMenuItemRemoved(InteriorMenuItem& interiorMenuItem)
         {
-            Eegeo_ASSERT(HasViewForModel(InteriorMenuItem), "Attempt to remove unknown model from InteriorMenuController.");
-            InteriorMenuItemView* pView = GetViewForModel(InteriorMenuItem);
+            Eegeo_ASSERT(HasViewForModel(interiorMenuItem), "Attempt to remove unknown model from InteriorMenuController.");
+            InteriorMenuItemView* pView = GetViewForModel(interiorMenuItem);
             
-            m_viewsByModel.erase(&InteriorMenuItem);
-            m_pIUIInteractionObservable.UnRegisterInteractableItem(pView);
+            m_viewsByModel.erase(&interiorMenuItem);
+            m_uiInteractionObservable.UnRegisterInteractableItem(pView);
             
         }
         

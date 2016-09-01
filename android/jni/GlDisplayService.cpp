@@ -3,6 +3,7 @@
 #include "GlDisplayService.h"
 #include "AndroidNativeState.h"
 #include "Logger.h"
+#include "AndroidNativeState.h"
 
 GlDisplayService::GlDisplayService()
 	: m_display(EGL_NO_DISPLAY)

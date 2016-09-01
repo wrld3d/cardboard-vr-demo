@@ -38,6 +38,8 @@ namespace Examples
                 bool GetShouldRunVRSpline(){return m_shouldRunVRSpline;}
                 bool GetShouldShowSplash(){return m_shouldShowSplash;}
                 
+                int GetMenuItemGazedId(){return m_lastMenuItemGazedId;}
+                
             private:
                 Eegeo::UI::WorldMenu::WorldMenuItemRepository& m_menuItemRepository;
                 ScreenFadeEffect::SdkModel::IScreenFadeEffectController& m_screenFader;

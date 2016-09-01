@@ -15,6 +15,11 @@ namespace Eegeo
     {
         namespace WorldMenu
         {
+            const float SelectedButtonMaxAlpha = 1.f;
+            const float SelectedButtonFadeSpeed = 2.f;
+            const float UnselectedButtonMaxAlpha = 0.5;
+            const float UnselectedButtonFadeSpeed = 1.f;
+            
             WorldMenuUIButton::WorldMenuUIButton(Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
                                                        , Eegeo::UI::IUIQuadFactory& quadFactory
                                                        , const std::string& assetPath
@@ -133,9 +138,8 @@ namespace Eegeo
             {
                 m_isItemSelected = true;
                 
-                float scale = 1.23f;
-                m_scale = Eegeo::v3(scale, scale, scale);
-                m_pSprite->SetScale(m_scale);
+                m_pSprite->SetMaxAlpha(SelectedButtonMaxAlpha);
+                m_pSprite->SetFadeTransitionSpeed(SelectedButtonFadeSpeed);
                 m_pGazeProgress->SetScale(Eegeo::v3::Zero());
                 
             }
@@ -143,17 +147,15 @@ namespace Eegeo
             void WorldMenuUIButton::SetItemUnselected()
             {
                 m_isItemSelected = false;
-                float scale = 1.f;
-                m_scale = Eegeo::v3(scale, scale, scale);
                 
-                m_pSprite->SetScale(m_scale);
+                m_pSprite->SetMaxAlpha(UnselectedButtonMaxAlpha);
+                m_pSprite->SetFadeTransitionSpeed(UnselectedButtonFadeSpeed);
+                
                 if(m_isFocused)
                     m_pGazeProgress->SetScale(m_scale * PROGRESS_SCALE_MULTIPLIER);
                 else
                     m_pGazeProgress->SetScale(Eegeo::v3::Zero());
             }
-            
         }
     }
-    
 }

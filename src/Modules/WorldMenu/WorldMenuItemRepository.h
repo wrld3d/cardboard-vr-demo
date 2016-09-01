@@ -40,7 +40,7 @@ namespace Eegeo
             private:
                 
                 typedef std::vector<WorldMenuItem*> TWorldMenuItems;
-                TWorldMenuItems m_WorldMenuItem;
+                TWorldMenuItems m_worldMenuItem;
                 
                 typedef std::vector<IWorldMenuItemObserver*> TWorldMenuItemObservers;
                 TWorldMenuItemObservers m_observers;

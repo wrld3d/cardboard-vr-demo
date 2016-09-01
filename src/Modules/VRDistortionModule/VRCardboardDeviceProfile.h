@@ -67,8 +67,8 @@ namespace Eegeo
                 Eegeo::v2 GetScreenMeshCenter(float width, float height);
                 VRDevice GetDevice();
             private:
-                VRDevice device;
-                VRScreen screen;
+                VRDevice m_device;
+                VRScreen m_screen;
             };
         }
     }

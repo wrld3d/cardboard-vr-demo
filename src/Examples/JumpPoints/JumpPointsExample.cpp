@@ -162,14 +162,6 @@ namespace Examples
         LoadExteriorJumpPoints(m_appConfig.GetExteriorJumpPoints());
 
         m_pJumpPointSwitcher = Eegeo_NEW(JumpPointsSwitcher)(m_pJumpPointsModule->GetRepository(), m_interiorsExplorerModule, m_exteriorJumpPoints, m_interiorJumpPoints);
-
-        m_pSPButton1 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 3, m_onSP1SelectedCallback);
-        m_pSPButton2 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 4, m_onSP2SelectedCallback);
-        m_pSPButton3 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 5, m_onSP3SelectedCallback);
-        m_pSPButton4 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 6, m_onSP4SelectedCallback);
-        m_pSPButton5 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 7, m_onSP5SelectedCallback);
-        m_pSPButton6 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 8, m_onSP6SelectedCallback);
-        m_pSPButton7 = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 9, m_onSP7SelectedCallback);
         
         Eegeo::UI::CalculateUV(size, 14, outMin, outMax);
         m_pWestPortInteriorButton = Eegeo_NEW(Eegeo::UI::UIProgressButton)(*m_pUIRenderableFilter,
@@ -238,14 +230,6 @@ namespace Examples
         m_exteriorJumpPoints.clear();
 
         Eegeo_DELETE m_pJumpPointsModule;
-        
-        Eegeo_DELETE m_pSPButton1;
-        Eegeo_DELETE m_pSPButton2;
-        Eegeo_DELETE m_pSPButton3;
-        Eegeo_DELETE m_pSPButton4;
-        Eegeo_DELETE m_pSPButton5;
-        Eegeo_DELETE m_pSPButton6;
-        Eegeo_DELETE m_pSPButton7;
         
         Eegeo_DELETE m_pSplineCameraController;
 

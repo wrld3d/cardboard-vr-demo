@@ -11,7 +11,7 @@ namespace InteriorsExplorer
     namespace InteriorMenu
     {
         
-        InteriorMenuItemView::InteriorMenuItemView(InteriorMenuItem& InteriorMenuItem
+        InteriorMenuItemView::InteriorMenuItemView(InteriorMenuItem& interiorMenuItem
                                                    , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
                                                    , Eegeo::UI::IUIQuadFactory& quadFactory
                                                    , const std::string& assetPath
@@ -30,7 +30,7 @@ namespace InteriorsExplorer
                            , Eegeo::v4::One()
                            , uvMin
                            , uvMax)
-        ,m_InteriorMenuItem(InteriorMenuItem)
+        ,m_interiorMenuItem(interiorMenuItem)
         {}
         
         bool InteriorMenuItemView::IsCollidingWithPoint(const Eegeo::v2& screenPoint, Eegeo::UI::IUICameraProvider& cameraProvider)
@@ -54,7 +54,7 @@ namespace InteriorsExplorer
         
         void InteriorMenuItemView::OnItemClicked()
         {
-            m_InteriorMenuItem.GetCallback()(m_InteriorMenuItem);
+            m_interiorMenuItem.GetCallback()(m_interiorMenuItem);
         }
         
         

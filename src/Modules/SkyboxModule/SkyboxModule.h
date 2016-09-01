@@ -37,7 +37,7 @@ namespace Eegeo
             void Update(float dt);
             void Draw();
             void Suspend();
-            void UpdateSkyColor(Eegeo::v3 color);
+            void UpdateSkyColor(const Eegeo::v3& color);
             
             // IRenderableFilter interface
             void EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue);

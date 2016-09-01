@@ -14,22 +14,22 @@ namespace Eegeo
         {
             
             Dv3PropertyAnimation::Dv3PropertyAnimation(IDv3Animateable& dv3Animateable,
-                                                       IAnimationObserver* animationObserver,
+                                                       IAnimationObserver* pAnimationObserver,
                                                        const Eegeo::dv3& startValue,
                                                        const Eegeo::dv3& endValue,
                                                        float time,
                                                        float (*pEaseFunction)(float, float, float))
             :m_dv3Animateable(dv3Animateable)
-            ,m_animationObserver(animationObserver)
+            ,m_pAnimationObserver(pAnimationObserver)
             ,m_startValue(startValue)
             ,m_endValue(endValue)
             ,m_time(time)
             ,m_pEaseFunction(pEaseFunction)
             ,m_timePassed(0)
             {
-                if(m_animationObserver!=NULL)
+                if(m_pAnimationObserver!=NULL)
                 {
-                    m_animationObserver->OnAnimationAdded(*this);
+                    m_pAnimationObserver->OnAnimationAdded(*this);
                 }
                 
                 m_direction = (m_endValue - m_startValue).Norm();
@@ -37,9 +37,9 @@ namespace Eegeo
             
             Dv3PropertyAnimation::~Dv3PropertyAnimation()
             {
-                if(m_animationObserver!=NULL)
+                if(m_pAnimationObserver!=NULL)
                 {
-                    m_animationObserver->OnAnimationRemoved(*this);
+                    m_pAnimationObserver->OnAnimationRemoved(*this);
                 }
             }
             
@@ -59,9 +59,9 @@ namespace Eegeo
                 Eegeo::dv3 pos = Eegeo::dv3::Lerp(m_startValue, m_endValue, m_pEaseFunction(0, 1, GetProgress()));
                 m_dv3Animateable.OnDv3Updated(pos);
                 
-                if(m_animationObserver!=NULL)
+                if(m_pAnimationObserver!=NULL)
                 {
-                    m_animationObserver->OnAnimationProgress(*this);
+                    m_pAnimationObserver->OnAnimationProgress(*this);
                 }
             }
             
