@@ -29,6 +29,7 @@
 #include "Modules/DeadZoneMenu/DeadZoneMenu.h"
 #include "ApplicationConfiguration.h"
 #include "WorldMenuLoaderModel.h"
+#include "ScreenFadeEffectController.h"
 
 #include "Logger.h"
 #include "ICallback.h"
@@ -47,6 +48,8 @@ private:
     
     Eegeo::UI::SplashScreen::SplashScreen* m_pSplashScreen;
     
+    Examples::IVRHeadTracker& m_headTracker;
+    
     Examples::DefaultCameraControllerFactory* m_pCameraControllerFactory;
 	Eegeo::Camera::GlobeCamera::GlobeCameraTouchController* m_pCameraTouchController;
 	Eegeo::EegeoWorld* m_pWorld;
@@ -56,6 +59,7 @@ private:
     Eegeo::Streaming::CameraFrustumStreamingVolume* m_pStreamingVolume;
     
     Eegeo::VR::Distortion::VRDistortionModule* m_pVRDistortion;
+    Examples::ScreenFadeEffect::SdkModel::ScreenFadeEffectController* m_pScreenFadeEffectController;
     Eegeo::Skybox::SkyboxModule *m_pVRSkybox;
 
     Eegeo::UI::UIInteractionController *m_pUIInteractionController;
@@ -132,7 +136,7 @@ public:
     void Draw (float dt, float headTansform[]);
     void DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld);
     void DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld);
-    
+    void DrawEyeFromCameraState(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld);
     void DrawLoadingScreen ();
     
     void UpdateNightTParam(float dt);

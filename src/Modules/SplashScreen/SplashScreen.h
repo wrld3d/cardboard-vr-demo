@@ -55,7 +55,8 @@ namespace Eegeo
                 
                 
                 virtual ~SplashScreen();
-                
+
+                void SetEcefPosition(const Eegeo::dv3 &ecefPosition);
                 void Update(float dt);
                 
                 void Show();

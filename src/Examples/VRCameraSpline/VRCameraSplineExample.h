@@ -15,6 +15,11 @@
 #include "Modules/DeadZoneMenu/DeadZoneMenuItem.h"
 #include "ICallback.h"
 
+#include "RenderableFilters.h"
+#include "WelcomeNoteViewer.h"
+#include "UIRenderableFilter.h"
+#include "IScreenFadeEffectController.h"
+
 namespace Examples
 {
 /*!
@@ -38,6 +43,23 @@ private:
     Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onSFSplineSelectedCallback;
     Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onNYSplineSelectedCallback;
     Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onWestPortSplineSelectedCallback;
+
+    Eegeo::Rendering::RenderableFilters& m_renderableFilters;
+    Eegeo::UI::IUIQuadFactory& m_uiQuadFactory;
+    Eegeo::UI::UIRenderableFilter* m_pUIRenderableFilter;
+    WelcomeNoteViewer* m_pWelcomeNoteViewer;
+
+    ScreenFadeEffect::SdkModel::IScreenFadeEffectController& m_screenFader;
+    Eegeo::Helpers::TCallback1<VRCameraSplineExample, ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState&> m_screenVisibilityChanged;
+    bool m_splineChanged;
+
+    Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onSplineEndedCallback;
+
+    void OnSplineEnded();
+
+    void ShowWelcomeNote();
+    void OnScreenVisiblityChanged(ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState& visbilityState);
+
 public:
     
     VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
@@ -46,8 +68,10 @@ public:
                           IVRHeadTracker& headTracker,
                           const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
                           InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                          Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository);
-    
+                          Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
+                          Eegeo::UI::IUIQuadFactory& quadFactory,
+                          ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader);
+
     virtual ~VRCameraSplineExample();
     
 	static std::string GetName()
@@ -62,7 +86,7 @@ public:
 	void Start();
     void OrientationUpdate();
 	void EarlyUpdate(float dt);
-	void Update(float dt) { }
+    void Update(float dt);
     void PreWorldDraw() { }
 	void Draw() {}
 	void Suspend();

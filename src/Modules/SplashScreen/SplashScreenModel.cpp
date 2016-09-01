@@ -9,24 +9,35 @@ namespace Eegeo
     {
         namespace SplashScreen
         {
-            SplashScreenModel::SplashScreenModel(Rendering::SceneModels::SceneModel* pModel,
+            SplashScreenModel::SplashScreenModel(Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter,
+                                                 Rendering::SceneModels::SceneModel* pModel,
                                                  TMaterialResources& materialResources,
                                                  const Eegeo::dv3& position,
                                                  float absoluteHeadingDegrees)
-            : m_pModel(pModel)
+            : m_sceneModelRenderableFilter(sceneModelRenderableFilter)
+            , m_pModel(pModel)
             , m_materialResources(materialResources)
             , m_position(position)
             , m_absoluteHeadingDegrees(absoluteHeadingDegrees)
             , m_shouldDisplay(true)
             , m_modelAlpha(0.f)
             , m_fadeTransitionSpeed(1.f)
+            , m_isRendering(true)
             {
                 Eegeo::Rendering::SceneModels::SceneModelTransformHelpers::PositionOnEarthSurface(*m_pModel, m_position, m_absoluteHeadingDegrees);
                 UpdateMaterials();
+
+                m_sceneModelRenderableFilter.AddSceneModel(*m_pModel);
             }
 
             SplashScreenModel::~SplashScreenModel()
             {
+                if (m_isRendering)
+                {
+                    m_isRendering = false;
+                    m_sceneModelRenderableFilter.RemoveSceneModel(*m_pModel);
+                }
+
                 Eegeo_DELETE m_pModel;
 
                 for (TMaterialResources::iterator it = m_materialResources.begin(); it != m_materialResources.end(); ++it)
@@ -46,10 +57,22 @@ namespace Eegeo
                 if (shouldFadeIn)
                 {
                     m_modelAlpha += (dt * m_fadeTransitionSpeed);
+
+                    if (!m_isRendering)
+                    {
+                        m_isRendering = true;
+                        m_sceneModelRenderableFilter.AddSceneModel(*m_pModel);
+                    }
                 }
                 else if (shouldFadeOut)
                 {
                     m_modelAlpha -= (dt * m_fadeTransitionSpeed);
+
+                    if (m_modelAlpha <= 0.f && m_isRendering)
+                    {
+                        m_isRendering = false;
+                        m_sceneModelRenderableFilter.RemoveSceneModel(*m_pModel);
+                    }
                 }
 
                 UpdateMaterials();
@@ -73,6 +96,7 @@ namespace Eegeo
 
             void SplashScreenModel::SetEcefPosition(const dv3& ecefPosition)
             {
+                m_position = ecefPosition;
                 m_pModel->SetEcefPosition(ecefPosition);
             }
 
@@ -84,12 +108,23 @@ namespace Eegeo
                 Eegeo::Rendering::SceneModels::SceneModelTransformHelpers::PositionOnEarthSurface(*m_pModel, m_position, m_absoluteHeadingDegrees, scaleMatrix);
             }
 
-            Rendering::SceneModels::SceneModel& SplashScreenModel::GetSceneModel()
+            float SplashScreenModel::GetAbsoluteHeadingDegrees() const
+            {
+                return m_absoluteHeadingDegrees;
+            }
+
+            void SplashScreenModel::SetAbsoluteHeadingDegrees(float absoluteHeadingDegrees)
+            {
+                m_absoluteHeadingDegrees = absoluteHeadingDegrees;
+                Eegeo::Rendering::SceneModels::SceneModelTransformHelpers::PositionOnEarthSurface(*m_pModel, m_position, m_absoluteHeadingDegrees);
+            }
+
+            Rendering::SceneModels::SceneModel& SplashScreenModel::GetSceneModel() const
             {
                 return *m_pModel;
             }
 
-            bool SplashScreenModel::GetShouldDisplay()
+            bool SplashScreenModel::GetShouldDisplay() const
             {
                 return m_shouldDisplay;
             }

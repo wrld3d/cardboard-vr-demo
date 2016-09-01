@@ -10,9 +10,11 @@ namespace Eegeo
         namespace SplashScreen
         {
             SplashScreenModelFactory::SplashScreenModelFactory(Eegeo::Rendering::SceneModels::SceneModelLoader& sceneModelLoader,
-                                                               Eegeo::Rendering::SceneModels::SceneModelFactory::TMaterialRepo& sceneModelMaterials)
+                                                               Eegeo::Rendering::SceneModels::SceneModelFactory::TMaterialRepo& sceneModelMaterials,
+                                                               Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter)
             : m_sceneModelLoader(sceneModelLoader)
             , m_sceneModelMaterials(sceneModelMaterials)
+            , m_sceneModelRenderableFilter(sceneModelRenderableFilter)
             {
             }
 
@@ -30,7 +32,7 @@ namespace Eegeo
                     materials.push_back(LoadAlphaMaterial(*it));
                 }
 
-                return Eegeo_NEW(SplashScreenModel)(pModel, materials, position, absoluteHeadingDegrees);
+                return Eegeo_NEW(SplashScreenModel)(m_sceneModelRenderableFilter, pModel, materials, position, absoluteHeadingDegrees);
             }
 
             Eegeo::Rendering::SceneModels::SceneModelMaterialResource* SplashScreenModelFactory::LoadAlphaMaterial(const std::string& materialId)

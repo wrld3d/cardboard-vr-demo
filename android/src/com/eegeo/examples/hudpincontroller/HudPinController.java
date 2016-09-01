@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.eegeo.mobilesdkharness.MainActivity;
-import com.eegeo.mobilesdkharness.R;
+import com.eegeo.cardboardvrdemo.R;
 
 
 //this is the java companion type to native PositionJavaPinButtonExample

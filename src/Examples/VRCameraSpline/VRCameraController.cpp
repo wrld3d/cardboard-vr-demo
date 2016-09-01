@@ -120,38 +120,29 @@ namespace Eegeo
             
             if(m_vrCameraPositionSpline.IsStopPoint())
             {
-                m_vrCameraPositionSpline.Update(dt);
-                m_vrCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
                 m_stopTimeElapsed += dt;
-                if(m_stopTimeElapsed>=m_stopTime)
+                if(m_stopTimeElapsed>=m_stopTime && m_isPlaying)
                 {
-                    m_pHeadTracker.ResetTracker();
-                    m_stopTimeElapsed = 0.0f;
-                    m_vrCameraPositionSpline.NextSpline();
-                    m_vrCameraPositionSpline.Start();
+                    m_isPlaying = false;
+                    m_splineEndedCallbacks.ExecuteCallbacks();
+
                 }
             }
-            else if(IsFalling())
-            {
-                Fall(dt);
-            }
-            else if (IsFollowingSpline())
-            {
-                m_vrCameraPositionSpline.Update(dt);
-                m_vrCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
-                
-            }
-            else
+            else if (!IsFollowingSpline())
             {
                 m_splineEndPauseTimeElapsed += dt;
                 if(m_splineEndPauseTimeElapsed > m_splineEndPauseTime || m_vrCameraPositionSpline.GetCurrentSplineID()!=2)
                 {
-                    m_pHeadTracker.ResetTracker();
-                    m_splineEndPauseTimeElapsed = 0.0f;
-                    m_vrCameraPositionSpline.NextSpline();
-                    m_vrCameraPositionSpline.Start();
+                    if (m_isPlaying)
+                    {
+                        m_isPlaying = false;
+                        m_splineEndedCallbacks.ExecuteCallbacks();
+                    }
                 }
             }
+
+            m_vrCameraPositionSpline.Update(dt);
+            m_vrCameraPositionSpline.GetCurrentCameraPosition(m_ecefPosition, m_orientation);
         }
         
         void VRCameraController::PlaySpline(int splineID)
@@ -161,7 +152,27 @@ namespace Eegeo
             m_vrCameraPositionSpline.Start();
             m_splineEndPauseTimeElapsed = 0.0f;
         }
-        
+
+        void VRCameraController::PlayNextSpline()
+        {
+            m_pHeadTracker.ResetTracker();
+            m_stopTimeElapsed = 0.0f;
+            m_splineEndPauseTimeElapsed = 0.0f;
+            m_vrCameraPositionSpline.NextSpline();
+            m_vrCameraPositionSpline.Start();
+            m_isPlaying = true;
+        }
+
+        void VRCameraController::RegisterSplineFinishedCallback(Helpers::ICallback0 &callback)
+        {
+            m_splineEndedCallbacks.AddCallback(callback);
+        }
+
+        void VRCameraController::UnregisterSplineFinishedCallback(Helpers::ICallback0 &callback)
+        {
+            m_splineEndedCallbacks.RemoveCallback(callback);
+        }
+
         bool VRCameraController::CanAcceptUserInput() const
         {
             return (!(IsFalling() || IsFollowingSpline()));

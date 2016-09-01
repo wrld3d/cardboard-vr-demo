@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- BEGIN_INCLUDE(manifest) -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.eegeo.mobilesdkharness"
-        android:versionCode="29"
-        android:versionName="1.28">
+        package="com.eegeo.cardboardvrdemo"
+        android:versionCode="31"
+        android:versionName="1.30">
 
     <uses-sdk android:minSdkVersion="14"
         android:targetSdkVersion="15"/>
@@ -13,7 +13,6 @@
     <!-- Make accelerometer and gyroscope hard requirements for good head tracking. -->
     <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true"/>
     <uses-feature android:name="android.hardware.sensor.gyroscope" android:required="true"/>
-    
     
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -25,10 +24,11 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <application android:label="EegeoDroid" android:theme="@android:style/Theme.NoTitleBar">
+    <application android:label="EegeoDroid" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
        
-        <activity android:name=".BackgroundThreadActivity"
-                  android:label="EegeoCardboard"
+        <activity android:name="com.eegeo.mobilesdkharness.BackgroundThreadActivity"
+                  android:label="Eegeo Cardboard"
+                  android:icon="@drawable/ic_launcher"
                   android:configChanges="orientation|keyboardHidden|screenSize"
               	  android:launchMode="singleInstance"
               	  android:screenOrientation="landscape"

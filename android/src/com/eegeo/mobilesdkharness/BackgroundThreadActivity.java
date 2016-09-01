@@ -14,6 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.eegeo.cardboardvrdemo.R;
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams.VerticalAlignmentType;
 import com.google.vrtoolkit.cardboard.FieldOfView;
@@ -145,10 +146,9 @@ public class BackgroundThreadActivity extends MainActivity
 		
 	}
 	
-	public void ResetTracker(){
-
+	public void ResetTracker()
+	{
 		m_headTracker.resetTracker();
-		
 	}
 	
 	@SuppressLint("InlinedApi") 
@@ -270,14 +270,11 @@ public class BackgroundThreadActivity extends MainActivity
 
 	private class ThreadedUpdateRunner implements Runnable
 	{
-		private final float HEAD_TRANSFORM_SMOOTHING_SPEED = 10f;
-		
 		private long m_endOfLastFrameNano;
 		private boolean m_running;
 		private Handler m_nativeThreadHandler;
 		private float m_frameThrottleDelaySeconds;
 		private boolean m_destroyed;
-		float[] smoothHeadTransform = null;
 		
 		public ThreadedUpdateRunner(boolean running)
 		{
@@ -308,7 +305,6 @@ public class BackgroundThreadActivity extends MainActivity
 		public void start()
 		{
 			m_running = true;
-			smoothHeadTransform = null; //Reset the head transform
 		}
 
 		public void stop()
@@ -340,12 +336,16 @@ public class BackgroundThreadActivity extends MainActivity
 						{
 							if(m_running)
 							{
-								float[] tempHeadTransform = new float[16];
-								m_headTracker.getLastHeadView(tempHeadTransform, 0);
-								if(!Float.isNaN(tempHeadTransform[0])){
-									smoothHeadTransform = exponentialSmoothing(tempHeadTransform, smoothHeadTransform, deltaSeconds * HEAD_TRANSFORM_SMOOTHING_SPEED);
-									NativeJniCalls.updateNativeCode(deltaSeconds, smoothHeadTransform);	
-								}else{
+								float[] headTransform = new float[16];
+								
+								m_headTracker.getLastHeadView(headTransform, 0);
+								
+								if(!Float.isNaN(headTransform[0]))
+								{
+									NativeJniCalls.updateNativeCode(deltaSeconds, headTransform);	
+								}
+								else
+								{
 									System.out.println("Fixing NaN");
 									ResetTracker();
 								}
@@ -364,15 +364,6 @@ public class BackgroundThreadActivity extends MainActivity
 
 				Looper.loop();
 			}
-		}
-		
-		float[] exponentialSmoothing( float[] input, float[] output, float alpha ) {
-	        if ( output == null ) 
-	            return input;
-	        for ( int i=0; i<input.length; i++ ) {
-	             output[i] = output[i] + alpha * (input[i] - output[i]);
-	        }
-	        return output;
 		}
 	}
 }

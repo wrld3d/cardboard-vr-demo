@@ -5,35 +5,29 @@
 #include "Types.h"
 #include "IVRDistortionTransitionModel.h"
 #include "ICallback.h"
+#include "IScreenFadeEffectController.h"
 
 namespace Examples
 {
-    namespace WorldMenuLoader
+    namespace ScreenFadeEffect
     {
         namespace SdkModel
         {
-            class WorldMenuScreenFader : private Eegeo::NonCopyable
+            class ScreenFadeEffectController : public IScreenFadeEffectController, protected Eegeo::NonCopyable
             {
             public:
 
-                enum VisibilityState
-                {
-                    FullyFaded,
-                    Transitioning,
-                    FullyVisible
-                };
-
-                WorldMenuScreenFader(Eegeo::VR::Distortion::IVRDistortionTransitionModel& screenTransitionModel,
+                ScreenFadeEffectController(Eegeo::VR::Distortion::IVRDistortionTransitionModel& screenTransitionModel,
                                      float transitionTimeSeconds);
-                ~WorldMenuScreenFader();
+                virtual ~ScreenFadeEffectController();
 
-                void SetShouldFadeToBlack(bool shouldFade);
-                bool GetShouldFadeToBlack() const { return m_shouldFadeToBlack; }
+                virtual void SetShouldFadeToBlack(bool shouldFade);
+                virtual bool GetShouldFadeToBlack() const { return m_shouldFadeToBlack; }
 
                 void Update(float dt);
 
-                void RegisterVisibilityChangedCallback(Eegeo::Helpers::ICallback1<VisibilityState&>& callback);
-                void UnregisterVisibilityChangedCallback(Eegeo::Helpers::ICallback1<VisibilityState&>& callback);
+                virtual void RegisterVisibilityChangedCallback(Eegeo::Helpers::ICallback1<VisibilityState&>& callback);
+                virtual void UnregisterVisibilityChangedCallback(Eegeo::Helpers::ICallback1<VisibilityState&>& callback);
 
             private:
 

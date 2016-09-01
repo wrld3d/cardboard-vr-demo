@@ -10,7 +10,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.eegeo.mobilesdkharness.MainActivity;
-import com.eegeo.mobilesdkharness.R;
+import com.eegeo.cardboardvrdemo.R;
 
 //this is the java companion type to native JavaHudCrossThreadCommunicationExample
 //

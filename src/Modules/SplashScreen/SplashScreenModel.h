@@ -8,6 +8,7 @@
 #include "SceneModel.h"
 #include "SceneModelFactory.h"
 #include "SceneModelMaterialResource.h"
+#include "SceneModelRenderableFilter.h"
 
 namespace Eegeo
 {
@@ -20,19 +21,22 @@ namespace Eegeo
             class SplashScreenModel : protected Eegeo::NonCopyable
             {
             private:
+                Eegeo::Rendering::Filters::SceneModelRenderableFilter& m_sceneModelRenderableFilter;
                 Rendering::SceneModels::SceneModel* m_pModel;
                 Eegeo::dv3 m_position;
                 float m_absoluteHeadingDegrees;
                 bool m_shouldDisplay;
                 float m_modelAlpha;
                 float m_fadeTransitionSpeed;
+                bool m_isRendering;
 
                 TMaterialResources m_materialResources;
 
                 void UpdateMaterials();
 
             public:
-                SplashScreenModel(Rendering::SceneModels::SceneModel* pModel,
+                SplashScreenModel(Eegeo::Rendering::Filters::SceneModelRenderableFilter& sceneModelRenderableFilter,
+                                  Rendering::SceneModels::SceneModel* pModel,
                                   TMaterialResources& materialResources,
                                   const Eegeo::dv3& position,
                                   float absoluteHeadingDegrees);
@@ -47,9 +51,13 @@ namespace Eegeo
 
                 void SetScale(float scale);
 
-                Rendering::SceneModels::SceneModel& GetSceneModel();
+                float GetAbsoluteHeadingDegrees() const;
 
-                bool GetShouldDisplay();
+                void SetAbsoluteHeadingDegrees(float absoluteHeadingDegrees);
+
+                Rendering::SceneModels::SceneModel& GetSceneModel() const;
+
+                bool GetShouldDisplay() const;
 
                 void SetShouldDisplay(bool shouldDisplay);
 

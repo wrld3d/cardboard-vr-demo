@@ -139,6 +139,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_startClearColor(0.f/255.f,24.f/255.f,72.f/255.f)
     , m_destClearColor(135.f/255.0f, 206.f/255.0f, 235.f/255.0f)
     , m_screenPropertiesProvider(screenProperties)
+    , m_headTracker(headTracker)
     , m_splashPlayButtonCallback(this, &ExampleApp::SplashPlayButtonCallback)
     , m_toggleDayNightClickedCallback(this, &ExampleApp::ToggleNight)
     , m_splineExampleButtonClickedCallback(this, &ExampleApp::LoadSplineExample)
@@ -146,6 +147,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     , m_worldMenuItemGazeCallback(this, &ExampleApp::OnWorldMenuItemGazed)
     , m_getJumpPointStartPositionOrientation(this, &ExampleApp::GetJumpPointStartPositionOrientation)
     , m_locationChangedCallback(this, &ExampleApp::OnLocationChanged)
+    , m_pScreenFadeEffectController(NULL)
 {
 	Eegeo::EegeoWorld& eegeoWorld = *pWorld;
 
@@ -260,18 +262,13 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     
     m_pWorldMenuModule = Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuModule)(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController,*m_pExampleController, appConfig.JumpPointsSpriteSheet(), m_progressBarConfig, appConfig.JumpPointsSpriteSheetSize());
-    m_pWorldMenuModule->SetMenuShouldDisplay(true);
-    
+    m_pWorldMenuModule->SetMenuShouldDisplay(false);
 
-    m_pWorldMenuLoaderModel = Eegeo_NEW(Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel)(m_pWorldMenuModule->GetRepository(), m_pVRDistortion->GetTransionModel(), appConfig);
+    m_pScreenFadeEffectController = Eegeo_NEW(Examples::ScreenFadeEffect::SdkModel::ScreenFadeEffectController)(m_pVRDistortion->GetTransionModel(), 1.f);
+
+    m_pWorldMenuLoaderModel = Eegeo_NEW(Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel)(m_pWorldMenuModule->GetRepository(), *m_pScreenFadeEffectController, appConfig);
     m_pWorldMenuLoaderModel->RegisterLocationChangedCallback(m_locationChangedCallback);
     
-
-    m_worldMenuItemSelected = 1;
-
-    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, *m_pWorldMenuLoaderModel, headTracker, appConfig);
-
-    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider, *m_pInteriorExplorerModule, headTracker, m_pDeadZoneMenuModule->GetRepository());
     
     m_pUIGazeView->HideView();
 
@@ -287,6 +284,16 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                        appConfig.JumpPointsSpriteSheet(),
                                                                        m_progressBarConfig,
                                                                        m_splashPlayButtonCallback);
+    
+    m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider,
+                                                                                                            *m_pInteriorExplorerModule,
+                                                                                                            headTracker,
+                                                                                                            m_pDeadZoneMenuModule->GetRepository(),
+                                                                                                            *m_pQuadFactory,
+                                                                                                            *m_pScreenFadeEffectController);
+
+    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, *m_pWorldMenuLoaderModel, headTracker, appConfig);
+    
     
 }
 
@@ -322,6 +329,8 @@ ExampleApp::~ExampleApp()
     Eegeo_DELETE m_pWorldMenuLoaderModel;
 
     Eegeo_DELETE m_pWorldMenuModule;
+
+    Eegeo_DELETE m_pScreenFadeEffectController;
 
     Eegeo_DELETE m_pDeadZoneMenuModule;
     Eegeo_DELETE m_pMenuItem1;
@@ -398,7 +407,7 @@ void ExampleApp::Update (float dt, float headTansform[])
         Eegeo::v2 center = m_pVRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
         m_pUIInteractionController->Event_ScreenInteractionMoved(center);
         m_pInteriorExplorerModule ->Update(dt);
-        m_pWorldMenuLoaderModel->Update(dt);
+        m_pScreenFadeEffectController->Update(dt);
     }
     
     UpdateNightTParam(dt);
@@ -406,7 +415,8 @@ void ExampleApp::Update (float dt, float headTansform[])
     UpdateLoadingScreen(dt);
 }
 
-void ExampleApp::Draw (float dt, float headTansform[]){
+void ExampleApp::Draw (float dt, float headTansform[])
+{
     Eegeo::EegeoWorld& eegeoWorld = World();
     if(eegeoWorld.Validated())
     {
@@ -421,64 +431,52 @@ void ExampleApp::Draw (float dt, float headTansform[]){
     
 }
 
-void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld){
+void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld)
+{
     
     m_pExampleController->PreWorldDraw();
     
     glViewport(0, 0, m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(), m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentLeftCameraState(headTansform));
-    Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
-                                              cameraState.InterestPointEcef(),
-                                              cameraState.ViewMatrix(),
-                                              cameraState.ProjectionMatrix(),
-                                              m_screenPropertiesProvider.GetScreenProperties());
     
-    
-    Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
-    Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
-    m_pUIGazeView->Update(dt);
-    m_pUIGazeView->SetEcefPosition(position);
-    
-    if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed()){
-        m_pWorldMenuModule->Update(dt);
-        m_pInteriorExplorerModule ->Update(dt);
-    }
-    eegeoWorld.Draw(drawParameters);
-    
-    m_pExampleController->Draw();
-    
-    
+    DrawEyeFromCameraState(dt, cameraState, eegeoWorld);
 }
 
-void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld){
+void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld)
+{
     
     m_pExampleController->PreWorldDraw();
     
     glViewport(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(), 0, m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentRightCameraState(headTansform));
+    
+    DrawEyeFromCameraState(dt, cameraState, eegeoWorld);
+}
+
+void ExampleApp::DrawEyeFromCameraState(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld)
+{
     Eegeo::EegeoDrawParameters drawParameters(cameraState.LocationEcef(),
                                                cameraState.InterestPointEcef(),
                                                cameraState.ViewMatrix(),
                                                cameraState.ProjectionMatrix(),
                                                m_screenPropertiesProvider.GetScreenProperties());
-    
+
     Eegeo::v3 forward(m_pExampleController->GetOrientation().GetRow(2));
     Eegeo::dv3 position(cameraState.LocationEcef() + (forward*50));
     m_pUIGazeView->Update(dt);
     m_pUIGazeView->SetEcefPosition(position);
-    
+    m_pSplashScreen->SetEcefPosition(cameraState.LocationEcef());
+
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed()){
         m_pWorldMenuModule->Update(dt);
         m_pInteriorExplorerModule ->Update(dt);
     }
-    eegeoWorld.Draw(drawParameters);
-    
-    m_pExampleController->Draw();
-    
-}
 
+    eegeoWorld.Draw(drawParameters);
+    m_pExampleController->Draw();
+}
 
 void ExampleApp::DrawLoadingScreen ()
 {
@@ -496,15 +494,28 @@ void ExampleApp::OnLocationChanged(std::string &location)
 {
     m_pAnimationController->ClearAllAnimations();
     if(m_pWorldMenuLoaderModel->GetShouldRunVRSpline())
+    {
         m_pExampleController->ActivateExample("VRCameraSplineExample");
-    else
+    }
+    else if(m_pWorldMenuLoaderModel->GetShouldShowSplash())
+    {
+        m_headTracker.ResetTracker();
+        m_pWorldMenuModule->SetMenuShouldDisplay(false);
+        m_pSplashScreen->Show();
         m_pExampleController->ActivateExample("JumpPointsExample");
+    }
+    else
+    {
+        m_pExampleController->ActivateExample("JumpPointsExample");
+    }
 }
 
 
 void ExampleApp::SplashPlayButtonCallback()
 {
-    
+    m_pSplashScreen->Hide();
+    m_pWorldMenuModule->SetMenuShouldDisplay(true);
+    m_pWorldMenuLoaderModel->OnPlayButtonGazed();
 }
 
 void ExampleApp::OnWorldMenuItemGazed(Eegeo::UI::WorldMenu::WorldMenuItem& menuItem)
@@ -704,6 +715,8 @@ void ExampleApp::UpdateLoadingScreen(float dt)
     
     if (!eegeoWorld.Initialising() && !m_pLoadingScreen->IsDismissed())
     {
+        m_headTracker.ResetTracker();
+        m_pSplashScreen->Show();
         m_pLoadingScreen->Dismiss();
         Eegeo::TtyHandler::TtyEnabled = true;
     }

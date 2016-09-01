@@ -316,6 +316,19 @@
          }
       },
       "Exterior":{
+
+         "Dundee_Splash":{
+            "LocationID":0,
+            "LocationIcon":2,
+            "StartLocationLatitude":56.456160,
+            "StartLocationLongitude":-2.966101,
+            "StartLocationAltitude":250,
+            "StartLocationOrientationDegrees":300.0,
+            "WelcomeMessage":"mesh_example/welcome_dundee.png",
+            "InteriorPOIs":[],
+            "JumpPoints":[
+            ]
+         },
          "Dundee":{
             "LocationID":1,
             "LocationIcon":17,

@@ -25,6 +25,7 @@
 #include <string>
 #include "ApplicationConfiguration.h"
 #include "WorldMenuLoaderModel.h"
+#include "IScreenFadeEffectController.h"
 
 namespace Examples
 {
@@ -121,11 +122,21 @@ namespace Examples
         
         
         template <typename TExampleFactory>
-        void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider, InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
+        void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider,
+                                                       InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                        Examples::IVRHeadTracker& headTracker,
-                                                       Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository)
+                                                       Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
+                                                       Eegeo::UI::IUIQuadFactory& quadFactory,
+                                                       ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader)
         {
-            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, headTracker, screenPropertiesProvider, interiorsExplorerModule, deadZoneRepository)));
+            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world,
+                                                              m_defaultCameraControllerFactory,
+                                                              headTracker,
+                                                              screenPropertiesProvider,
+                                                              interiorsExplorerModule,
+                                                              deadZoneRepository,
+                                                              quadFactory,
+                                                              screenFader)));
         }
         
         template <typename TExampleFactory>

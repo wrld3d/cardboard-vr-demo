@@ -25,9 +25,11 @@ namespace Eegeo
                                                        , const Eegeo::v4& color
                                                        , const Eegeo::v2& uvMin
                                                        , const Eegeo::v2& uvMax)
+            : m_radius((size.x > size.y ? size.x : size.y)/2.0f)
+            , m_isFocused(false)
+            , m_isItemSelected(false)
+            , m_scale(scale)
             {
-                m_scale = scale;
-                m_radius = (size.x > size.y ? size.x : size.y)/2.0f;
                 Init(quadFactory, uiRenderableFilter, assetPath, progressBarConfig, size, ecefPosition, scale, color, uvMin, uvMax);
             }
             

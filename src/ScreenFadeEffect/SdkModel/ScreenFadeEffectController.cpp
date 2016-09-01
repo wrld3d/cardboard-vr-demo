@@ -1,15 +1,15 @@
 // Copyright eeGeo Ltd (2012-2015), All Rights Reserved
 
-#include "WorldMenuScreenFader.h"
+#include "ScreenFadeEffectController.h"
 #include "MathFunc.h"
 
 namespace Examples
 {
-    namespace WorldMenuLoader
+    namespace ScreenFadeEffect
     {
         namespace SdkModel
         {
-            WorldMenuScreenFader::WorldMenuScreenFader(Eegeo::VR::Distortion::IVRDistortionTransitionModel& screenTransitionModel,
+            ScreenFadeEffectController::ScreenFadeEffectController(Eegeo::VR::Distortion::IVRDistortionTransitionModel& screenTransitionModel,
                                                        float transitionTimeSeconds)
             : m_screenTransitionModel(screenTransitionModel)
             , m_shouldFadeToBlack(false)
@@ -20,15 +20,15 @@ namespace Examples
 
             }
 
-            WorldMenuScreenFader::~WorldMenuScreenFader()
+            ScreenFadeEffectController::~ScreenFadeEffectController()
             {}
 
-            void WorldMenuScreenFader::SetShouldFadeToBlack(bool shouldFade)
+            void ScreenFadeEffectController::SetShouldFadeToBlack(bool shouldFade)
             {
                 m_shouldFadeToBlack = shouldFade;
             }
 
-            void WorldMenuScreenFader::Update(float dt)
+            void ScreenFadeEffectController::Update(float dt)
             {
                 const float transitionTarget = m_shouldFadeToBlack ? 0.f : 1.f;
 
@@ -69,17 +69,17 @@ namespace Examples
                 }
             }
 
-            void WorldMenuScreenFader::NotifyStateChange()
+            void ScreenFadeEffectController::NotifyStateChange()
             {
                 m_visibilityChangedCallbacks.ExecuteCallbacks(m_currentVisibiltyState);
             }
             
-            void WorldMenuScreenFader::RegisterVisibilityChangedCallback(Eegeo::Helpers::ICallback1<VisibilityState&>& callback)
+            void ScreenFadeEffectController::RegisterVisibilityChangedCallback(Eegeo::Helpers::ICallback1<VisibilityState&>& callback)
             {
                 m_visibilityChangedCallbacks.AddCallback(callback);
             }
             
-            void WorldMenuScreenFader::UnregisterVisibilityChangedCallback(Eegeo::Helpers::ICallback1<VisibilityState&>& callback)
+            void ScreenFadeEffectController::UnregisterVisibilityChangedCallback(Eegeo::Helpers::ICallback1<VisibilityState&>& callback)
             {
                 m_visibilityChangedCallbacks.RemoveCallback(callback);
             }

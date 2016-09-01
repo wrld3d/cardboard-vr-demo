@@ -15,13 +15,17 @@ namespace Examples
                                                                IVRHeadTracker& headTracker,
                                                                const IScreenPropertiesProvider& screenPropertiesProvider,
                                                                InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                                                               Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository)
+                                                               Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
+                                                               Eegeo::UI::IUIQuadFactory& quadFactory,
+                                                               ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader)
     : m_world(world)
     , m_headTracker(headTracker)
     , m_screenPropertiesProvider(screenPropertiesProvider)
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_interiorsExplorerModule(interiorsExplorerModule)
     , m_deadZoneRepository(deadZoneRepository)
+    , m_quadFactory(quadFactory)
+    , m_screenFader(screenFader)
 {
     
 }
@@ -38,7 +42,9 @@ IExample* VRCameraSplineExampleFactory::CreateExample() const
                                                 m_headTracker,
                                                 initialScreenProperties,
                                                 m_interiorsExplorerModule,
-                                                m_deadZoneRepository);
+                                                m_deadZoneRepository,
+                                                m_quadFactory,
+                                                m_screenFader);
 }
 
 std::string VRCameraSplineExampleFactory::ExampleName() const
