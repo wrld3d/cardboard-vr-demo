@@ -29,7 +29,7 @@
 
 const float WelcomeMessageFadeSpeed = 0.5f;
 const float WelcomeMessageFadeDelay = 4.0f;
-const Eegeo::v2 WelcomeMessageSize = Eegeo::v2(48,3);
+const Eegeo::v2 WelcomeMessageSize = Eegeo::v2(48,48);
 
 const float InteriorMenuFloorAngleThreshold = 70.f;
 const float InteriorMenuHighPositionAngleThreshold = 100.f;
