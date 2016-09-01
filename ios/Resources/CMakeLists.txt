@@ -29,6 +29,7 @@ set(resources ${resources}
 		Resources/SplashScreen-1024x768.png
 		Resources/Textures
 		Resources/vr_splash_screen
+		Resources/vr_splash_screen/alpha_alt_text.pvr		Resources/vr_splash_screen/alpha_eeGeo_logo.pvr		Resources/vr_splash_screen/alpha_mesh_gradient.pvr		Resources/vr_splash_screen/WelcomeScreen.POD
 		ExampleApp/Images.xcassets
 
 )
