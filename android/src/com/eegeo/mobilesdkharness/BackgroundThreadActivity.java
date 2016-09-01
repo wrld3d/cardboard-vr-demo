@@ -338,7 +338,8 @@ public class BackgroundThreadActivity extends MainActivity
 							{
 								float[] headTransform = new float[16];
 								
-								m_headTracker.getLastHeadView(headTransform, 0);
+								if(m_headTracker!=null)
+									m_headTracker.getLastHeadView(headTransform, 0);
 								
 								if(!Float.isNaN(headTransform[0]))
 								{
@@ -346,7 +347,6 @@ public class BackgroundThreadActivity extends MainActivity
 								}
 								else
 								{
-									System.out.println("Fixing NaN");
 									ResetTracker();
 								}
 							}
