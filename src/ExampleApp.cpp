@@ -268,7 +268,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
     m_pWorldMenuLoaderModel = Eegeo_NEW(Examples::WorldMenuLoader::SdkModel::WorldMenuLoaderModel)(m_pWorldMenuModule->GetRepository(), *m_pScreenFadeEffectController, appConfig);
     m_pWorldMenuLoaderModel->RegisterLocationChangedCallback(m_locationChangedCallback);
-    
+    m_pWorldMenuModule->GetController().SetSelectedMenuItemId(m_pWorldMenuLoaderModel->GetMenuItemGazedId());
     
     m_pUIGazeView->HideView();
 
@@ -508,6 +508,9 @@ void ExampleApp::OnLocationChanged(std::string &location)
     {
         m_pExampleController->ActivateExample("JumpPointsExample");
     }
+    
+    m_pWorldMenuModule->GetController().SetSelectedMenuItemId(m_pWorldMenuLoaderModel->GetMenuItemGazedId());
+    
 }
 
 

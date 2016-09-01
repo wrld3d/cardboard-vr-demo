@@ -57,38 +57,14 @@ namespace Eegeo
             v3 eyeOffsetModified = dv3::ToSingle(m_ecefPosition.Norm()*eyeDistance);
             v3 rotatedEyeOffset = v3::Mul(eyeOffsetModified, orientationMatrix);
             
-            v3 rA = m_orientation.GetRow(0);
-            v3 rB = orientationMatrix.GetRow(0);
-            
-            v3 uA = m_orientation.GetRow(1);
-            v3 uB = orientationMatrix.GetRow(1);
-            
-            v3 fA = m_orientation.GetRow(2) * -1;
-            v3 fB = orientationMatrix.GetRow(2) * -1;
-            
-            float rAngle = Math::Rad2Deg(Math::ACos(v3::Dot(rA, rB) / (rA.Length() * rB.Length())));
-            float uAngle = Math::Rad2Deg(Math::ACos(v3::Dot(uA, uB) / (uA.Length() * uB.Length())));
-            float fAngle = Math::Rad2Deg(Math::ACos(v3::Dot(fA, fB) / (fA.Length() * fB.Length())));
-            
-            float factor = 1.0f;
-            if(uAngle<100.f && fAngle<100.f){
-                factor = 1.f - (uAngle/90.f + fAngle/90.f)/2.f;
-            }else{
-                factor = rAngle / 90.f;
-                if(factor > 0.9f)
-                    factor = 0.9f;
-            }
-            
             m_currentOrientation = Eegeo::m33(orientationMatrix);
             
             float near, far;
             GetNearFarPlaneDistances(near,far);
-            if(!std::isnan(factor)){
-                m_vrCameraPositionSpline.setSlowDownFactor(1.f - factor);
-                m_pRenderCamera->SetOrientationMatrix(orientationMatrix);
-                m_pRenderCamera->SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
-                m_pRenderCamera->SetProjection(0.7f, near*m_nearMultiplier, far);
-            }
+            
+            m_pRenderCamera->SetOrientationMatrix(orientationMatrix);
+            m_pRenderCamera->SetEcefLocation(dv3(m_ecefPosition.x + rotatedEyeOffset.x, m_ecefPosition.y + rotatedEyeOffset.y, m_ecefPosition.z + rotatedEyeOffset.z));
+            m_pRenderCamera->SetProjection(0.7f, near*m_nearMultiplier, far);
             
         }
         

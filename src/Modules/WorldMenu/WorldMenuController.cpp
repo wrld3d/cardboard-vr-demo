@@ -83,15 +83,15 @@ namespace Eegeo
                 
             }
             
-            void WorldMenuController::SetSelectedFloorId(int floorId)
+            void WorldMenuController::SetSelectedMenuItemId(int menuItemId)
             {
                 
-                m_floorId = floorId;
+                m_menuItemId = menuItemId;
                 
                 for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
                 {
                     WorldMenuItemView* pView = it->second;
-                    if(pView->GetWorldMenuItem().GetId()==m_floorId)
+                    if(pView->GetWorldMenuItem().GetId()==m_menuItemId)
                     {
                         pView->SetItemSelected();
                     }
