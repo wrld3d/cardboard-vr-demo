@@ -227,8 +227,8 @@ void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screen
 {
 	m_piOSExampleControllerView = new Examples::iOSExampleControllerView([&m_viewController view]);
     
-    m_pVrHeadTracker = Eegeo_NEW(Examples::VRHeadTracker)();
     m_pCardBoardService = Eegeo_NEW(Examples::CardboardSDKService)();
+    m_pVrHeadTracker = Eegeo_NEW(Examples::VRHeadTracker)(*m_pCardBoardService);
     m_pCardBoardService->RegisterMagnetTrigreedCallBack(m_cardboardMagnetTriggerCallback);
     m_pApp = Eegeo_NEW(ExampleApp)(m_pWorld,deviceSpecs ,*m_piOSExampleControllerView, *m_pVrHeadTracker,screenProperties, *m_pCollisionVisualizationModule, *m_pBuildingFootprintsModule,m_applicationConfiguration);
 
