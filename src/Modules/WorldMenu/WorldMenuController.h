@@ -45,7 +45,7 @@ namespace Eegeo
                 
                 void SetMenuItemsShouldRender(bool menuItemsShouldRender);
                 
-                void SetSelectedFloorId(int floorId);
+                void SetSelectedMenuItemId(int menuItemId);
                 
             protected:
                 void PositionItems();
@@ -54,15 +54,15 @@ namespace Eegeo
                 
                 WorldMenuUpView* m_pWorldMenuUpView;
                 
-                IWorldMenuItemObservable& m_WorldMenuItemRepository;
+                IWorldMenuItemObservable& m_worldMenuItemRepository;
                 IWorldMenuItemViewFactory& m_viewFactory;
-                Eegeo::UI::IUIInteractionObservable& m_pIUIInteractionObservable;
+                Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
                 Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
                 Eegeo::dv3 m_cachedCenter;
                 Eegeo::dv3 m_cameraLastPosition;
                 Eegeo::m33 m_cachedHeadTracker;
                 
-                int m_floorId;
+                int m_menuItemId;
                 bool m_isMenuShown;
                 bool m_menuItemsShouldRender;
                 typedef std::map<WorldMenuItem*, WorldMenuItemView*> TViewsByModel;

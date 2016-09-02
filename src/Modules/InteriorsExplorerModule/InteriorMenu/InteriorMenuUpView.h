@@ -25,7 +25,7 @@ namespace InteriorsExplorer
             
             void Update(float dt);
             void SetEcefPosition(const Eegeo::dv3& position);
-            bool isShown(){return m_isShown;}
+            bool IsShown(){return m_isShown;}
             
             
             void ShowView();

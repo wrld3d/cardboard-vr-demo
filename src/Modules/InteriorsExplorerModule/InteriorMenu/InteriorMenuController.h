@@ -26,7 +26,7 @@ namespace InteriorsExplorer
         class InteriorMenuController : protected Eegeo::NonCopyable, public IInteriorMenuItemObserver
         {
         public:
-            InteriorMenuController(IInteriorMenuItemObservable& InteriorMenuItemObservable, IInteriorMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
+            InteriorMenuController(IInteriorMenuItemObservable& interiorMenuItemObservable, IInteriorMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
                                    , Eegeo::UI::IUICameraProvider& uiCameraProvider
                                    , Eegeo::UI::IUIQuadFactory& quadFactory
                                    , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
@@ -36,9 +36,9 @@ namespace InteriorsExplorer
             
             void Update(float deltaTime);
             
-            virtual void OnInteriorMenuItemAdded(InteriorMenuItem& InteriorMenuItem);
+            virtual void OnInteriorMenuItemAdded(InteriorMenuItem& interiorMenuItem);
             
-            virtual void OnInteriorMenuItemRemoved(InteriorMenuItem& InteriorMenuItem);
+            virtual void OnInteriorMenuItemRemoved(InteriorMenuItem& interiorMenuItem);
             
             void SetMenuItemsShouldRender(bool menuItemsShouldRender);
             
@@ -55,9 +55,9 @@ namespace InteriorsExplorer
             
             Eegeo::UI::UISprite* m_pSelectedArrow;
             InteriorMenuUpView* m_pInteriorMenuUpView;
-            IInteriorMenuItemObservable& m_InteriorMenuItemRepository;
+            IInteriorMenuItemObservable& m_interiorMenuItemRepository;
             IInteriorMenuItemViewFactory& m_viewFactory;
-            Eegeo::UI::IUIInteractionObservable& m_pIUIInteractionObservable;
+            Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
             Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
             Eegeo::dv3 m_cachedCenter;
             Eegeo::dv3 m_cameraLastPosition;

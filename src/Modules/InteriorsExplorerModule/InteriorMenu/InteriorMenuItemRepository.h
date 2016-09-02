@@ -27,7 +27,7 @@ namespace InteriorsExplorer
             
             int GetNumOfInteriorMenuItems() const;
             
-            InteriorMenuItem* GetInteriorMenuItemAtIndex(int InteriorMenuItemIndex) const;
+            InteriorMenuItem* GetInteriorMenuItemAtIndex(int interiorMenuItemIndex) const;
             
             InteriorMenuItem* GetInteriorMenuItemById(TInteriorMenuItemId id) const;
             
@@ -38,13 +38,13 @@ namespace InteriorsExplorer
         private:
             
             typedef std::vector<InteriorMenuItem*> TInteriorMenuItems;
-            TInteriorMenuItems m_InteriorMenuItem;
+            TInteriorMenuItems m_interiorMenuItem;
             
             typedef std::vector<IInteriorMenuItemObserver*> TInteriorMenuItemObservers;
             TInteriorMenuItemObservers m_observers;
             
             bool ContainsInteriorMenuItem(const InteriorMenuItem* pInteriorMenuItemToCheck) const;
-            bool ContainsInteriorMenuItemId(TInteriorMenuItemId InteriorMenuItemId) const;
+            bool ContainsInteriorMenuItemId(TInteriorMenuItemId interiorMenuItemId) const;
         };
     }
 }

@@ -43,8 +43,8 @@ namespace Eegeo
             {
                 m_shader.SetMVP(pRenderableBase->GetModelViewProjection());
 
-                const UI::UIMeshRenderable* renderable = static_cast<const UI::UIMeshRenderable*>(pRenderableBase);
-                m_shader.SetColor(renderable->GetColor());
+                const UI::UIMeshRenderable* pRenderable = static_cast<const UI::UIMeshRenderable*>(pRenderableBase);
+                m_shader.SetColor(pRenderable->GetColor());
             }
         }
     }

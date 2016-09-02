@@ -18,7 +18,7 @@ private:
 	Eegeo::DebugRendering::DebugRenderer& m_debugRenderer;
     Eegeo::Location::ILocationService& m_locationService;
     
-    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_cameraController;
+    Eegeo::Camera::GlobeCamera::GlobeCameraController* m_pCameraController;
 
 public:
     ReadHeadingExample(

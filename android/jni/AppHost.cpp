@@ -158,6 +158,17 @@ AppHost::AppHost(
 	config.CoverageTreeConfig.ManifestUrl = appConfig.CoverageTreeManifestURL();
 	config.CityThemesConfig.StreamedManifestUrl = appConfig.ThemeManifestURL();
 
+	// Remove the selected floor scaling.
+	config.MapLayersConfig.Interiors.FloorAnimatorConfiguration.FloorScaleWhenSelected = 1.0f;
+
+	// Reduce the gap between floors while keeping the floors above the selected one high enough to 'fall' into place.
+	config.MapLayersConfig.Interiors.FloorAnimatorConfiguration.ExpandedFloorSpacingFactor = 0.01f;
+	config.MapLayersConfig.Interiors.FloorAnimatorConfiguration.ExpandedSelectedFloorGapFactor = 100.0f;
+
+	// Remove the brightness changing.
+	config.MapLayersConfig.Interiors.FloorAnimatorConfiguration.ExpandedSelectedFloorBrightness = 1.0f;
+	config.MapLayersConfig.Interiors.FloorAnimatorConfiguration.ExpandedUnselectedFloorBrightness = 1.0f;
+
 	m_pWorld = new Eegeo::EegeoWorld(
 		appConfig.EegeoApiKey(),
 	    *m_pAndroidPlatformAbstractionModule,

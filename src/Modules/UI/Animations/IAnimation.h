@@ -19,7 +19,7 @@ namespace Eegeo
                 
             public:
                 
-                void SetAnimationObserver(IAnimationObserver* animationObserver){m_pAnimationObserver = animationObserver;}
+                void SetAnimationObserver(IAnimationObserver* pAnimationObserver){m_pAnimationObserver = pAnimationObserver;}
                 IAnimationObserver* GetAnimationObserver(){return m_pAnimationObserver;}
                 
                 void SetTag(int tag){m_tag = tag;}

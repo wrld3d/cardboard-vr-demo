@@ -32,7 +32,7 @@ namespace Eegeo
                                    , Eegeo::v4::One()
                                    , uvMin
                                    , uvMax)
-            ,m_WorldMenuItem(worldMenuItem)
+            ,m_worldMenuItem(worldMenuItem)
             {}
             
             bool WorldMenuItemView::IsCollidingWithPoint(const Eegeo::v2& screenPoint, Eegeo::UI::IUICameraProvider& cameraProvider)
@@ -56,7 +56,7 @@ namespace Eegeo
             
             void WorldMenuItemView::OnItemClicked()
             {
-                m_WorldMenuItem.GetCallback()(m_WorldMenuItem);
+                m_worldMenuItem.GetCallback()(m_worldMenuItem);
             }
             
             
