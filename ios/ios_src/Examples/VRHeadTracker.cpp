@@ -4,7 +4,7 @@
 
 namespace Examples
 {
-    VRHeadTracker::VRHeadTracker()
+    VRHeadTracker::VRHeadTracker(Examples::CardboardSDKService &cardboardService):m_cardboardService(cardboardService)
     {
     }
     
@@ -13,5 +13,7 @@ namespace Examples
     }
     void VRHeadTracker::ResetTracker()
     {
+        m_cardboardService.GetHeadTracker().stopTracking();
+        m_cardboardService.GetHeadTracker().stopTracking();
     }
 }

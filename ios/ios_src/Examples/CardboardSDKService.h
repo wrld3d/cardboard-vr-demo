@@ -20,6 +20,7 @@ namespace Examples
         void UpdatedCardboardProfile(float profileValue[]);
         void RegisterMagnetTrigreedCallBack(Eegeo::Helpers::ICallback0& callback);
         void UnRegisterMagnetTrigreedCallBack(Eegeo::Helpers::ICallback0& callback);
+        CardboardSDK::HeadTracker & GetHeadTracker();
 
     private:
         CardboardSDK::MagnetSensor *m_pMangnetSensor;

@@ -34,6 +34,10 @@ namespace Examples
         m_pMangnetSensor->stop();
         Eegeo_DELETE m_pMangnetSensor;
     }
+    CardboardSDK::HeadTracker &CardboardSDKService::GetHeadTracker()
+    {
+        return *m_pCardBoardHeadTracker;
+    }
     void CardboardSDKService::RegisterMagnetTrigreedCallBack(Eegeo::Helpers::ICallback0& callback)
     {
         m_appModeChangedCallbacks.AddCallback(callback);
