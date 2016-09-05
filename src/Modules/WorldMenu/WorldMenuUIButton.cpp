@@ -15,10 +15,10 @@ namespace Eegeo
     {
         namespace WorldMenu
         {
-            const float SelectedButtonMaxAlpha = 1.f;
-            const float SelectedButtonFadeSpeed = 2.f;
-            const float UnselectedButtonMaxAlpha = 0.5;
-            const float UnselectedButtonFadeSpeed = 1.f;
+            const float SelectedButtonMaxAlpha = 0.5f;
+            const float SelectedButtonFadeSpeed = 1.f;
+            const float UnselectedButtonMaxAlpha = 1.f;
+            const float UnselectedButtonFadeSpeed = 2.f;
             
             WorldMenuUIButton::WorldMenuUIButton(Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
                                                        , Eegeo::UI::IUIQuadFactory& quadFactory
