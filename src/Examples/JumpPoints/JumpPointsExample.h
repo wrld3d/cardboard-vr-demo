@@ -37,6 +37,7 @@
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
 #include "InteriorCameraAnimationPositionProvider.h"
 #include "FloorSwitchCameraAnimator.h"
+#include "InteriorDistanceVisibilityUpdater.h"
 
 namespace Examples
 {
@@ -54,9 +55,10 @@ namespace Examples
         Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
 
         bool m_isAtFloorLevel;
-        InteriorsExplorer::InteriorsExplorerModule* m_pInteriorExplorerModule;
         InteriorCameraAnimationPositionProvider* m_pInteriorCameraAnimationPositionProvider;
         FloorSwitchCameraAnimator* m_pFloorSwitchCameraAnimator;
+
+        InteriorsExplorer::InteriorDistanceVisibilityUpdater* m_pInteriorDistanceVisibilityUpdater;
         
         Eegeo::Rendering::RenderableFilters& m_renderableFilters;
         InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;

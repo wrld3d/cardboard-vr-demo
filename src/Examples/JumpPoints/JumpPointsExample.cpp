@@ -36,6 +36,8 @@ const float InteriorMenuHighPositionAngleThreshold = 100.f;
 
 const float WelcomeNoteDistanceFromCamera = 50.f;
 
+const float InteriorEntryDistance = 250.f;
+
 #include "Logger.h"
 
 namespace Examples
@@ -111,9 +113,9 @@ namespace Examples
     , m_isInInterior(false)
     , m_isAtFloorLevel(false)
     , m_placeNameController(m_world.GetMapModule().GetPlaceNamesPresentationModule().GetPlaceNamesController())
-    , m_pInteriorExplorerModule(NULL)
     , m_pFloorSwitchCameraAnimator(NULL)
     , m_pInteriorCameraAnimationPositionProvider(NULL)
+    , m_pInteriorDistanceVisibilityUpdater(NULL)
     {
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
@@ -189,10 +191,13 @@ namespace Examples
                                                                                                         m_world.GetMapModule().GetEnvironmentFlatteningService());
         const Eegeo::dv3 cameraInteriorBasePos = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 40).ToECEF();
         m_pFloorSwitchCameraAnimator = Eegeo_NEW(FloorSwitchCameraAnimator)(m_interiorsExplorerModule, *m_pSplineCameraController, *m_pInteriorCameraAnimationPositionProvider, cameraInteriorBasePos);
+
+        m_pInteriorDistanceVisibilityUpdater = Eegeo_NEW(InteriorsExplorer::InteriorDistanceVisibilityUpdater)(m_interiorsExplorerModule, m_world.GetMapModule().GetInteriorsPresentationModule().GetInteriorInteractionModel(), InteriorEntryDistance);
     }
     
     void JumpPointsExample::Suspend()
     {
+        Eegeo_DELETE m_pInteriorDistanceVisibilityUpdater;
         Eegeo_DELETE m_pFloorSwitchCameraAnimator;
         Eegeo_DELETE m_pInteriorCameraAnimationPositionProvider;
         Eegeo_DELETE m_pWelcomeNoteViewer;
@@ -475,7 +480,6 @@ namespace Examples
             return;
         
         m_isInInterior = true;
-        m_interiorsExplorerModule.ShowInteriors();
         m_pWestPortInteriorButton->SetItemShouldRender(false);
         m_worldMenuModule.SetMenuShouldDisplay(false);
         m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
@@ -491,7 +495,14 @@ namespace Examples
         m_pWestPortInteriorButton->SetItemShouldRender(true);
     }
     
-    void JumpPointsExample::OnAnimationProgress(Eegeo::UI::Animations::IAnimation& animation){}
+    void JumpPointsExample::OnAnimationProgress(Eegeo::UI::Animations::IAnimation& animation)
+    {
+        if (m_isInInterior)
+        {
+            m_pInteriorDistanceVisibilityUpdater->UpdateVisiblity(m_pSplineCameraController->GetCameraPosition());
+        }
+    }
+
     void JumpPointsExample::OnAnimationAdded(Eegeo::UI::Animations::IAnimation& animation)
     {
         m_isCameraAnimating = true;
