@@ -15,13 +15,17 @@ namespace InteriorsExplorer
         void InteriorMenuUpView::Init(Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter)
         {
             
-            
+            Eegeo::v2 size(6,6);
+            Eegeo::v2 outMin;
+            Eegeo::v2 outMax;
+            Eegeo::UI::CalculateUV(size, 21, outMin, outMax);
+
             Eegeo::v2 dimension = Eegeo::v2(9.f,9.f);
             m_pPointer = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter,
                                                         quadFactory.CreateUIQuad("mesh_example/PinIconTexturePage.png",
                                                                                  dimension,
-                                                                                 Eegeo::v2(1.f/5.f, 4.f/5.f),
-                                                                                 Eegeo::v2(2.f/5.f, 1.f),
+                                                                                 outMin,
+                                                                                 outMax,
                                                                                  Eegeo::Rendering::LayerIds::Values::AfterAll),
                                                         dimension);
             m_isShown = true;

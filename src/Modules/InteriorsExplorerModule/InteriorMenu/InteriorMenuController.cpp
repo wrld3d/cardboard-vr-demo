@@ -13,7 +13,8 @@ namespace InteriorsExplorer
         
         InteriorMenuController::InteriorMenuController(IInteriorMenuItemObservable& interiorMenuItemObservable, IInteriorMenuItemViewFactory& viewFactory, Eegeo::UI::IUIInteractionObservable& uiInteractionObservable , Eegeo::UI::IUICameraProvider& uiCameraProvider,
                                                        Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
-                                                       , const std::string& spriteFileName)
+                                                       , const std::string& spriteFileName
+                                                       , int numberOfTilesAlong1Axis)
         : m_interiorMenuItemRepository(interiorMenuItemObservable)
         , m_viewFactory(viewFactory)
         , m_uiInteractionObservable(uiInteractionObservable)
@@ -21,13 +22,18 @@ namespace InteriorsExplorer
         , m_marginAngle(75.f)
         {
             m_pInteriorMenuUpView = Eegeo_NEW(InteriorMenuUpView)(quadFactory, uiRenderableFilter);
-            
+
+            Eegeo::v2 size(numberOfTilesAlong1Axis,numberOfTilesAlong1Axis);
+            Eegeo::v2 outMin;
+            Eegeo::v2 outMax;
+            Eegeo::UI::CalculateUV(size, 20, outMin, outMax);
+
             Eegeo::v2 dimension = Eegeo::v2(50.f,50.f);
             m_pSelectedArrow = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter,
                                                         quadFactory.CreateUIQuad(spriteFileName,
                                                                                  dimension,
-                                                                                 Eegeo::v2(.0f, 4.f/5.f),
-                                                                                 Eegeo::v2(1.f/5.f, 1.f),
+                                                                                 outMin,
+                                                                                 outMax,
                                                                                  Eegeo::Rendering::LayerIds::Values::AfterAll),
                                                         dimension);
             

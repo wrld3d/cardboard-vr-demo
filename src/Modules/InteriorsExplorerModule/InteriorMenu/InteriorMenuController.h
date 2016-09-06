@@ -30,8 +30,9 @@ namespace InteriorsExplorer
                                    , Eegeo::UI::IUICameraProvider& uiCameraProvider
                                    , Eegeo::UI::IUIQuadFactory& quadFactory
                                    , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
-                                   , const std::string& spriteFileName);
-            
+                                   , const std::string& spriteFileName
+                                   , int numberOfTilesAlong1Axis);
+
             ~InteriorMenuController();
             
             void Update(float deltaTime);

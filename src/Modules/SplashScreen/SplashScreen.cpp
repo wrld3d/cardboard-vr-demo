@@ -37,13 +37,13 @@ namespace Eegeo
                 
                 Eegeo::v2 size(16.f, 16.f);
                 
-                m_pStateButtonLocation = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 23, 24, 5, config, m_stateButtonClicked, size);
-                m_pStateButtonBuilding = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 14, 13, 5, config, m_stateButtonClicked, size);
-                m_pStateButtonPOI = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 0, 22, 5, config, m_stateButtonClicked, size);
+                m_pStateButtonLocation = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 23, 24, 6, config, m_stateButtonClicked, size);
+                m_pStateButtonBuilding = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 14, 13, 6, config, m_stateButtonClicked, size);
+                m_pStateButtonPOI = Eegeo_NEW(Eegeo::UI::SplashScreen::StateButton)(uiRenderableFilter, quadFactory, assetPath, 0, 22, 6, config, m_stateButtonClicked, size);
                 
-                int row = 16%5;
-                int col = 16/5;
-                float fraction = 1.f/5;
+                int row = 16%6;
+                int col = 16/6;
+                float fraction = 1.f/6;
                 
                 Eegeo::v2 outMinUV (fraction*row, fraction*col);
                 Eegeo::v2 outMaxUV (fraction*(row+1), fraction*(col+1));

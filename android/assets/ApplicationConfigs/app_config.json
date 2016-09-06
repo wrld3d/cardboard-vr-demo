@@ -9,7 +9,7 @@
    "ThemeManifestURL":"http://d2xvsc8j92rfya.cloudfront.net/mobile-themes-new/v674/manifest.txt.gz",
    "JumpPointsData":{
       "SpriteSheet":"mesh_example/PinIconTexturePage.png",
-      "NumberOfTilesAlong1Axis":5,
+      "NumberOfTilesAlong1Axis":6,
       "Interior":{
          "westport_house":{
             "FloorCount":7,
