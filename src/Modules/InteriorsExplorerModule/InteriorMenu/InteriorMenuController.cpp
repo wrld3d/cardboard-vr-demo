@@ -8,6 +8,9 @@
 
 namespace InteriorsExplorer
 {
+    const float InteriorMenuFloorAngleThreshold = 70.f;
+    const float InteriorMenuHighPositionAngleThreshold = 100.f;
+    
     namespace InteriorMenu
     {
         
@@ -96,7 +99,9 @@ namespace InteriorsExplorer
             for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
             {
                 InteriorMenuItemView* pView = it->second;
-                pView->SetItemShouldRender(m_menuItemsShouldRender && m_isMenuShown);
+                bool shouldOutButtonRender = !((m_marginAngle < InteriorMenuHighPositionAngleThreshold && it->first->GetId() == -1) ||
+                                               (m_marginAngle > InteriorMenuFloorAngleThreshold && it->first->GetId() == -2));
+                pView->SetItemShouldRender(m_menuItemsShouldRender && m_isMenuShown && shouldOutButtonRender);
                 m_pSelectedArrow->SetItemShouldRender(m_menuItemsShouldRender && m_isMenuShown);
                 pView->Update(deltaTime);
             }
@@ -154,9 +159,6 @@ namespace InteriorsExplorer
             Eegeo::m33 headTrackedOrientation;
             Eegeo::m33::Mul(headTrackedOrientation, m_uiCameraProvider.GetBaseOrientation(), m_cachedHeadTracker);
             
-            float halfCount = m_viewsByModel.size()/2;
-            if(m_viewsByModel.size()%2==0)
-                halfCount-=0.5f;
             
             Eegeo::dv3 center = m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation();
             
@@ -196,6 +198,13 @@ namespace InteriorsExplorer
                 std::vector<InteriorMenuItemView*> items;
                 for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
                 {
+                    
+                    if((m_marginAngle < InteriorMenuHighPositionAngleThreshold && it->first->GetId() == -1) ||
+                       (m_marginAngle > InteriorMenuFloorAngleThreshold && it->first->GetId() == -2))
+                    {
+                        continue;
+                    }
+                    
                     std::vector<InteriorMenuItemView*>::iterator itItems = items.begin();
                     for(; itItems != items.end(); ++itItems)
                     {
@@ -206,6 +215,10 @@ namespace InteriorsExplorer
                     }
                     items.insert(itItems, it->second);
                 }
+                
+                float halfCount = items.size()/2;
+                if(items.size()%2==0)
+                    halfCount-=0.5f;
                 
                 for(std::vector<InteriorMenuItemView*>::iterator it = items.begin(); it != items.end(); ++it)
                 {

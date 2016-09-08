@@ -44,11 +44,19 @@ namespace InteriorsExplorer
         m_pInteriorMenuModule = Eegeo_NEW(InteriorMenu::InteriorMenuModule)(uiRenderableFilter, uiQuadFactory, uiInteractionObservable,uiCameraProvider, uiQuadFactory, menuTextureFileName, progressBarConfig, numberOfTilesAlong1Axis);
         m_pInteriorMenuModule->SetMenuShouldDisplay(m_pVisibilityUpdater->GetInteriorShouldDisplay());
         
-        for (int lop=-1; lop<7; lop++)
+        for (int lop=-2; lop<7; lop++)
         {
             int iconId = lop+3;
-            if(lop==-1)
+            
+            if(lop==-2)
+            {
+                iconId = 25;
+            }
+            else if(lop==-1)
+            {
                 iconId = 15;
+            }
+            
             InteriorMenu::InteriorMenuItem* pMenuItem =  Eegeo_NEW(InteriorMenu::InteriorMenuItem)(lop, iconId, m_interiorMenuItemGazeCallback);
             m_pInteriorMenuModule->GetRepository().AddInteriorMenuItem(pMenuItem);
             m_interiorMenuItems.push_back(pMenuItem);
