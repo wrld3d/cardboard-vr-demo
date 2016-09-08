@@ -116,6 +116,8 @@ namespace Examples
     , m_pFloorSwitchCameraAnimator(NULL)
     , m_pInteriorCameraAnimationPositionProvider(NULL)
     , m_pInteriorDistanceVisibilityUpdater(NULL)
+    , m_shouldAnimateFloor(false)
+    , m_targetFloor(0)
     {
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
@@ -267,8 +269,6 @@ namespace Examples
         m_pWelcomeNoteViewer->Update(dt);
 
         m_pJumpPointSwitcher->Update(dt);
-
-        m_pFloorSwitchCameraAnimator->Update(dt);
     }
 
     void JumpPointsExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)
@@ -511,6 +511,22 @@ namespace Examples
     void JumpPointsExample::OnAnimationRemoved(Eegeo::UI::Animations::IAnimation& animation)
     {
         m_isCameraAnimating = false;
+
+        if (m_shouldAnimateFloor)
+        {
+            m_shouldAnimateFloor = false;
+            int delta = Eegeo::Math::Abs(m_interiorsExplorerModule.GetSelectedFloor() - m_targetFloor);
+            m_interiorsExplorerModule.SelectFloor(m_targetFloor, true);
+
+            if(m_interiorsExplorerModule.GetSelectedFloor()>=0)
+            {
+                m_animationsController.RemoveAnimationsForTag(0);
+                m_isAtFloorLevel = false;
+                m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
+
+                AnimateCameraToInteriorFloor(m_interiorsExplorerModule.GetSelectedFloor(), delta, &Eegeo::UI::AnimationEase::Linear);
+            }
+        }
     }
     
     void JumpPointsExample::OnJumpPointSelected(Eegeo::UI::JumpPoints::JumpPoint& jumpPoint)
@@ -583,11 +599,8 @@ namespace Examples
         {
             if (m_isAtFloorLevel)
             {
-                Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 40+(5*m_interiorsExplorerModule.GetSelectedFloor())).ToECEF();
-                m_animationsController.RemoveAnimationsForTag(0);
-                Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 3.5f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
-                animation->SetTag(0);
-                m_animationsController.AddAnimation(animation);
+                AnimateCameraToInteriorFloor(m_interiorsExplorerModule.GetSelectedFloor(), 3.5f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
+
                 m_isAtFloorLevel = false;
                 m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
                 m_pJumpPointSwitcher->ReloadJumpPoints();
@@ -612,18 +625,42 @@ namespace Examples
         }
         else
         {
-            m_interiorsExplorerModule.SelectFloor(menuItem.GetId(), true);
-
-            if(m_interiorsExplorerModule.GetSelectedFloor()>=0)
+            if (m_isAtFloorLevel)
             {
-                m_animationsController.RemoveAnimationsForTag(0);
+                AnimateCameraToInteriorFloor(m_interiorsExplorerModule.GetSelectedFloor(), 3.5f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
+
                 m_isAtFloorLevel = false;
                 m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
+                m_pJumpPointSwitcher->ReloadJumpPoints();
+                m_shouldAnimateFloor = true;
+                m_targetFloor = menuItem.GetId();
+            }
+            else
+            {
+                int delta = Eegeo::Math::Abs(m_interiorsExplorerModule.GetSelectedFloor() - menuItem.GetId());
+                m_interiorsExplorerModule.SelectFloor(menuItem.GetId(), true);
+
+                if(m_interiorsExplorerModule.GetSelectedFloor()>=0)
+                {
+                    m_isAtFloorLevel = false;
+                    m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
+
+                    AnimateCameraToInteriorFloor(m_interiorsExplorerModule.GetSelectedFloor(), delta, &Eegeo::UI::AnimationEase::Linear);
+                }
             }
         }
 
         m_placeNameController.SetTargetAlpha(1.f);
         m_pJumpPointsModule->GetController().ResetVisibility();
+    }
+
+    void JumpPointsExample::AnimateCameraToInteriorFloor(int floor, float time, float (*pEaseFunction)(float, float, float))
+    {
+        Eegeo::dv3 westportHouseCameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 40+(5*floor)).ToECEF();
+        m_animationsController.RemoveAnimationsForTag(0);
+        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pSplineCameraController, this, m_pSplineCameraController->GetCameraPosition(), westportHouseCameraPoint, time, pEaseFunction);
+        animation->SetTag(0);
+        m_animationsController.AddAnimation(animation);
     }
 
 }

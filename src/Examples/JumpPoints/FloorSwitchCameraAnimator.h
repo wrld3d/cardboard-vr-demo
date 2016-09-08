@@ -32,8 +32,6 @@ namespace Examples
 
         ~FloorSwitchCameraAnimator();
 
-        void Update(float dt);
-
         void SetCameraBasePosition(const Eegeo::dv3& cameraPosBase);
 
         void FloorAnimationStateChanged(InteriorsExplorer::InteriorsExplorerFloorAnimationState& state);

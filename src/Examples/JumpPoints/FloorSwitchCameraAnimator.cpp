@@ -23,20 +23,6 @@ namespace Examples
         m_interiorsExplorerModule.UnregisterInteriorAnimationCallback(m_animationCallback);
     }
 
-    void FloorSwitchCameraAnimator::Update(float dt)
-    {
-        if (m_isAnimating)
-        {
-            Eegeo::dv3 camPos = m_cameraPosBase + (m_cameraPositionProvider.GetInteriorFocusPosition() - m_cameraPositionProvider.GetBasePositionForFloor(0));
-
-            //Workaround for crash when camera is too high
-            if (!std::isnan(camPos.GetX()) && !std::isnan(camPos.GetY()) && !std::isnan(camPos.GetZ()))
-            {
-                m_vrCamera.SetEcefPosition(camPos);
-            }
-        }
-    }
-
     void FloorSwitchCameraAnimator::SetCameraBasePosition(const Eegeo::dv3 &cameraPosBase)
     {
         m_cameraPosBase = cameraPosBase;

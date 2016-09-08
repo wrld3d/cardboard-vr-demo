@@ -95,6 +95,8 @@ namespace Examples
         void MoveCameraToStopPoint(const Eegeo::dv3 &cameraPoint, float cameraHeading);
         bool m_isInInterior;
         bool m_isCameraAnimating;
+        bool m_shouldAnimateFloor;
+        int m_targetFloor;
 
         WelcomeNoteViewer* m_pWelcomeNoteViewer;
 
@@ -193,6 +195,7 @@ namespace Examples
         void OnJumpPointSelected(Eegeo::UI::JumpPoints::JumpPoint& jumpPoint);
 
         void ChangeLocation(const std::string& location);
+        void AnimateCameraToInteriorFloor(int floor, float time, float (*pEaseFunction)(float, float, float));
     };
 }
 
