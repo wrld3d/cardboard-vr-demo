@@ -15,11 +15,15 @@ namespace Eegeo
         {
             UI::UISprite* m_pPointer;
             
-            void Init(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter);
+            void Init(Eegeo::UI::IUIQuadFactory& quadFactory,
+                      UI::IUIRenderableFilter& uiRenderableFilter,
+                      const std::string& gazePointerAsset);
             
         public:
             
-            UIGazeView(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter);
+            UIGazeView(Eegeo::UI::IUIQuadFactory& quadFactory,
+                       UI::IUIRenderableFilter& uiRenderableFilter,
+                       const std::string& gazePointerAsset);
             ~UIGazeView();
             
             void Update(float dt);

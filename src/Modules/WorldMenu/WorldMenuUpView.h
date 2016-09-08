@@ -18,11 +18,19 @@ namespace Eegeo
                 Eegeo::UI::UISprite* m_pPointer;
                 bool m_isShown;
                 
-                void Init(Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter);
-                
+                void Init(Eegeo::UI::IUIQuadFactory& quadFactory,
+                          Eegeo::UI::IUIRenderableFilter& uiRenderableFilter,
+                          std::string texture,
+                          int spriteID,
+                          int numTilesAlong1Axes);
+
             public:
-                
-                WorldMenuUpView(Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter);
+
+                WorldMenuUpView(Eegeo::UI::IUIQuadFactory& quadFactory,
+                                Eegeo::UI::IUIRenderableFilter& uiRenderableFilter,
+                                std::string texture,
+                                int spriteID,
+                                int numTilesAlong1Axes);
                 ~WorldMenuUpView();
                 
                 void Update(float dt);

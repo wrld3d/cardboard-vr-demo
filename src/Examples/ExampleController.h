@@ -127,7 +127,8 @@ namespace Examples
                                                        Examples::IVRHeadTracker& headTracker,
                                                        Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                                                        Eegeo::UI::IUIQuadFactory& quadFactory,
-                                                       ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader)
+                                                       ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
+                                                       const ApplicationConfig::ApplicationConfiguration& appConfig)
         {
             m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world,
                                                               m_defaultCameraControllerFactory,
@@ -136,7 +137,8 @@ namespace Examples
                                                               interiorsExplorerModule,
                                                               deadZoneRepository,
                                                               quadFactory,
-                                                              screenFader)));
+                                                              screenFader,
+                                                              appConfig)));
         }
         
         template <typename TExampleFactory>

@@ -138,9 +138,9 @@ namespace Examples
     {
         m_isCameraAnimating = false;
         
-        m_progressBarConfig.textureFilename = "mesh_example/gaze_loader.png";
+        m_progressBarConfig.textureFilename = m_appConfig.GazeLoaderTexturePath();
         m_progressBarConfig.frameRate = 12.5f;
-        m_progressBarConfig.spriteGridSize = Eegeo::v2(5,5);
+        m_progressBarConfig.spriteGridSize = Eegeo::v2(m_appConfig.GazeLoaderNumberOfTilesAlong1Axis(),m_appConfig.GazeLoaderNumberOfTilesAlong1Axis());
         m_progressBarConfig.spriteId = 0;
         m_progressBarConfig.color = Eegeo::v4::One();
         m_progressBarConfig.renderLayer = Eegeo::Rendering::LayerIds::Values::AfterAll;

@@ -17,7 +17,8 @@ namespace Examples
                                                                InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                                Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                                                                Eegeo::UI::IUIQuadFactory& quadFactory,
-                                                               ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader)
+                                                               ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
+                                                               const ApplicationConfig::ApplicationConfiguration& appConfig)
     : m_world(world)
     , m_headTracker(headTracker)
     , m_screenPropertiesProvider(screenPropertiesProvider)
@@ -26,6 +27,7 @@ namespace Examples
     , m_deadZoneRepository(deadZoneRepository)
     , m_quadFactory(quadFactory)
     , m_screenFader(screenFader)
+    , m_appConfig(appConfig)
 {
     
 }
@@ -44,7 +46,8 @@ IExample* VRCameraSplineExampleFactory::CreateExample() const
                                                 m_interiorsExplorerModule,
                                                 m_deadZoneRepository,
                                                 m_quadFactory,
-                                                m_screenFader);
+                                                m_screenFader,
+                                                m_appConfig);
 }
 
 std::string VRCameraSplineExampleFactory::ExampleName() const

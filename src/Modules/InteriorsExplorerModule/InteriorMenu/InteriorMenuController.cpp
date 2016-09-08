@@ -24,7 +24,8 @@ namespace InteriorsExplorer
         , m_uiCameraProvider(uiCameraProvider)
         , m_marginAngle(75.f)
         {
-            m_pInteriorMenuUpView = Eegeo_NEW(InteriorMenuUpView)(quadFactory, uiRenderableFilter);
+            const int InteriorUpIconSpriteID = 21;
+            m_pInteriorMenuUpView = Eegeo_NEW(InteriorMenuUpView)(quadFactory, uiRenderableFilter, spriteFileName, InteriorUpIconSpriteID, numberOfTilesAlong1Axis);
 
             Eegeo::v2 size(numberOfTilesAlong1Axis,numberOfTilesAlong1Axis);
             Eegeo::v2 outMin;

@@ -33,7 +33,10 @@ namespace Eegeo
                                     , Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
                                     , Eegeo::UI::IUICameraProvider& uiCameraProvider
                                     , Eegeo::UI::IUIQuadFactory& quadFactory
-                                    , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter);
+                                    , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
+                                    , std::string texture
+                                    , int topSpriteID
+                                    , int numTilesAlong1Axes);
                 
                 ~WorldMenuController();
                 

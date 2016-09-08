@@ -231,13 +231,13 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     
     m_pQuadFactory = Eegeo_NEW(Eegeo::UI::UIQuadFactory)(renderingModule, m_pWorld->GetPlatformAbstractionModule().GetTextureFileLoader());
 
-    m_pUIGazeView = new Eegeo::UIGaze::UIGazeView(*m_pQuadFactory, *m_pUIRenderableFilter);
+    m_pUIGazeView = new Eegeo::UIGaze::UIGazeView(*m_pQuadFactory, *m_pUIRenderableFilter, appConfig.GazePointTexturePath());
     
     m_pUIInteractionController = Eegeo_NEW(Eegeo::UI::UIInteractionController)(*m_pExampleController, *m_pUIGazeView);
     
-    m_progressBarConfig.textureFilename = "mesh_example/gaze_loader.png";
-    m_progressBarConfig.frameRate = 4.2f;
-    m_progressBarConfig.spriteGridSize = Eegeo::v2(5,5);
+    m_progressBarConfig.textureFilename = appConfig.GazeLoaderTexturePath();
+    m_progressBarConfig.frameRate = appConfig.GazeLoaderFrameRate();
+    m_progressBarConfig.spriteGridSize = Eegeo::v2(appConfig.GazeLoaderNumberOfTilesAlong1Axis(),appConfig.GazeLoaderNumberOfTilesAlong1Axis());
     m_progressBarConfig.spriteId = 0;
     m_progressBarConfig.color = Eegeo::v4::One();
     m_progressBarConfig.renderLayer = Eegeo::Rendering::LayerIds::Values::AfterAll;
@@ -290,7 +290,8 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                                                             headTracker,
                                                                                                             m_pDeadZoneMenuModule->GetRepository(),
                                                                                                             *m_pQuadFactory,
-                                                                                                            *m_pScreenFadeEffectController);
+                                                                                                            *m_pScreenFadeEffectController,
+                                                                                                            appConfig);
 
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, *m_pWorldMenuLoaderModel, headTracker, appConfig);
     

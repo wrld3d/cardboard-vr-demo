@@ -23,9 +23,17 @@ namespace Examples
                 float m_orientationDegrees;
                 std::string m_coverageTreeManifestURL;
                 std::string m_themeManifestURL;
+                std::string m_gazePointTexturePath;
+                std::string m_gazeLoaderTexturePath;
+                int m_gazeLoaderNumberOfTilesAlong1Axis;
+                float m_gazeLoaderFrameRate;
                 std::string m_productVersion;
                 std::string m_buildNumber;
                 std::string m_combinedVersionString;
+
+                std::string m_sfWelcomeNotePath;
+                std::string m_ukWelcomeNotePath;
+                std::string m_nyWelcomeNotePath;
 
                 std::string m_jumpPointsSpriteSheet;
                 int m_jumpPointsSpriteSheetSize;
@@ -51,11 +59,25 @@ namespace Examples
 
                 IApplicationConfigurationBuilder& SetThemeManifestURL(const std::string& themesManifestUrl);
 
+                IApplicationConfigurationBuilder& SetGazePointTexturePath(const std::string& gazePointTexture);
+
+                IApplicationConfigurationBuilder& SetGazeLoaderTexturePath(const std::string& gazeLoaderTexture);
+
+                IApplicationConfigurationBuilder& SetGazeLoaderNumberOfTilesAlong1Axis(int gazeLoaderNumberOfTilesAlong1Axis);
+
+                IApplicationConfigurationBuilder& SetGazeLoaderFrameRate(double gazeLoaderFrameRate);
+
                 IApplicationConfigurationBuilder& SetProductVersion(const std::string& productVersion);
 
                 IApplicationConfigurationBuilder& SetBuildNumber(const std::string& buildNumber);
 
                 IApplicationConfigurationBuilder& SetCombinedVersionString(const std::string& combinedVersionString);
+
+                IApplicationConfigurationBuilder& SetSFWelcomeNotePath(const std::string& sfWelcomeNote);
+
+                IApplicationConfigurationBuilder& SetUKWelcomeNotePath(const std::string& ukWelcomeNote);
+
+                IApplicationConfigurationBuilder& SetNYWelcomeNotePath(const std::string& nyWelcomeNote);
 
                 IApplicationConfigurationBuilder& SetJumpPointSpriteSheet(const std::string& spriteSheet);
 

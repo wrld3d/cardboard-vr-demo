@@ -20,6 +20,8 @@
 #include "UIRenderableFilter.h"
 #include "IScreenFadeEffectController.h"
 
+#include "ApplicationConfiguration.h"
+
 namespace Examples
 {
 /*!
@@ -70,7 +72,8 @@ public:
                           InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                           Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                           Eegeo::UI::IUIQuadFactory& quadFactory,
-                          ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader);
+                          ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
+                          const ApplicationConfig::ApplicationConfiguration& appConfig);
 
     virtual ~VRCameraSplineExample();
     

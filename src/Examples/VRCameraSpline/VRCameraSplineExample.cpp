@@ -14,6 +14,7 @@
 #include "InteriorsExplorerModule.h"
 #include "IInteriorsExplorerModule.h"
 #include "IVRHeadTracker.h"
+#include "WorldLocationData.h"
 
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
@@ -35,7 +36,8 @@ namespace Examples
                                                  InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                  Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                                                  Eegeo::UI::IUIQuadFactory& quadFactory,
-                                                 ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader)
+                                                 ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
+                                                 const ApplicationConfig::ApplicationConfiguration& appConfig)
     : m_world(eegeoWorld),
       m_interiorsExplorerModule(interiorsExplorerModule),
       m_deadZoneRepository(deadZoneRepository),
@@ -53,7 +55,7 @@ namespace Examples
     {
         NotifyScreenPropertiesChanged(initialScreenProperties);
         Eegeo::m44 projectionMatrix = Eegeo::m44(pCameraController->GetRenderCamera().GetProjectionMatrix());
-        m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight(), headTracker);
+        m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight(), headTracker, appConfig.UKWelcomeNotePath(), appConfig.SFWelcomeNotePath(), appConfig.NYWelcomeNotePath());
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
 
@@ -63,6 +65,10 @@ namespace Examples
         m_pSFSplineButton = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 3, m_onSFSplineSelectedCallback);
         m_pNYSplineButton = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(11, 4, m_onNYSplineSelectedCallback);
         m_pWPSplineButton = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(12, 5, m_onWestPortSplineSelectedCallback);
+
+        Eegeo::VR::VRCameraPositionSpline& vrCameraPositionSpline = m_pSplineCameraController->GetVRCameraPositionSpline();
+
+        vrCameraPositionSpline.Start();
     }
     
     VRCameraSplineExample::~VRCameraSplineExample()

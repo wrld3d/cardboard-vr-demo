@@ -7,16 +7,20 @@ namespace Eegeo
 {
     namespace UIGaze
     {
-        UIGazeView::UIGazeView(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter)
+        UIGazeView::UIGazeView(Eegeo::UI::IUIQuadFactory& quadFactory,
+                               UI::IUIRenderableFilter& uiRenderableFilter,
+                               const std::string& gazePointerAsset)
         {
-            Init(quadFactory, uiRenderableFilter);
+            Init(quadFactory, uiRenderableFilter, gazePointerAsset);
         }
         
-        void UIGazeView::Init(Eegeo::UI::IUIQuadFactory& quadFactory, UI::IUIRenderableFilter& uiRenderableFilter)
+        void UIGazeView::Init(Eegeo::UI::IUIQuadFactory& quadFactory,
+                              UI::IUIRenderableFilter& uiRenderableFilter,
+                              const std::string& gazePointerAsset)
         {
             Eegeo::v2 dimension = Eegeo::v2(0.075f,0.075f)*3.f;
             m_pPointer = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter,
-                                                       quadFactory.CreateUIQuad("mesh_example/gaze_point.png",
+                                                       quadFactory.CreateUIQuad(gazePointerAsset,
                                                                                 dimension,
                                                                                 Eegeo::v2::Zero(),
                                                                                 Eegeo::v2::One(),

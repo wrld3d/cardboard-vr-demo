@@ -15,9 +15,16 @@ namespace Examples
             , m_orientationDegrees(0.f)
             , m_coverageTreeManifestURL("")
             , m_themeManifestURL("")
+            , m_gazePointTexturePath("")
+            , m_gazeLoaderTexturePath("")
+            , m_gazeLoaderNumberOfTilesAlong1Axis(1)
+            , m_gazeLoaderFrameRate(1.f)
             , m_productVersion("")
             , m_buildNumber("")
             , m_combinedVersionString("")
+            , m_sfWelcomeNotePath("")
+            , m_ukWelcomeNotePath("")
+            , m_nyWelcomeNotePath("")
             , m_jumpPointsSpriteSheet("")
             , m_jumpPointsSpriteSheetSize(1)
             {
@@ -60,6 +67,31 @@ namespace Examples
                 return *this;
             }
 
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetGazePointTexturePath(const std::string& gazePointTexture)
+            {
+                m_gazePointTexturePath = gazePointTexture;
+                return *this;
+            }
+
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetGazeLoaderTexturePath(const std::string& gazeLoaderTexture)
+            {
+                m_gazeLoaderTexturePath = gazeLoaderTexture;
+                return *this;
+            }
+
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetGazeLoaderNumberOfTilesAlong1Axis(int gazeLoaderNumberOfTilesAlong1Axis)
+            {
+                m_gazeLoaderNumberOfTilesAlong1Axis = gazeLoaderNumberOfTilesAlong1Axis;
+                return *this;
+            }
+
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetGazeLoaderFrameRate(double gazeLoaderFrameRate)
+            {
+                m_gazeLoaderFrameRate = gazeLoaderFrameRate;
+                return *this;
+            }
+
+
             IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetProductVersion(const std::string& productVersion)
             {
                 m_productVersion = productVersion;
@@ -75,6 +107,24 @@ namespace Examples
             IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetCombinedVersionString(const std::string& combinedVersionString)
             {
                 m_combinedVersionString = combinedVersionString;
+                return *this;
+            }
+
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetSFWelcomeNotePath(const std::string& sfWelcomeNote)
+            {
+                m_sfWelcomeNotePath = sfWelcomeNote;
+                return *this;
+            }
+
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetUKWelcomeNotePath(const std::string& ukWelcomeNote)
+            {
+                m_ukWelcomeNotePath = ukWelcomeNote;
+                return *this;
+            }
+
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetNYWelcomeNotePath(const std::string& nyWelcomeNote)
+            {
+                m_nyWelcomeNotePath = nyWelcomeNote;
                 return *this;
             }
 
@@ -116,9 +166,16 @@ namespace Examples
                                                 m_orientationDegrees,
                                                 m_coverageTreeManifestURL,
                                                 m_themeManifestURL,
+                                                m_gazePointTexturePath,
+                                                m_gazeLoaderTexturePath,
+                                                m_gazeLoaderNumberOfTilesAlong1Axis,
+                                                m_gazeLoaderFrameRate,
                                                 m_productVersion,
                                                 m_buildNumber,
                                                 m_combinedVersionString,
+                                                m_sfWelcomeNotePath,
+                                                m_ukWelcomeNotePath,
+                                                m_nyWelcomeNotePath,
                                                 m_jumpPointsSpriteSheet,
                                                 m_jumpPointsSpriteSheetSize,
                                                 m_exteriorLocations,

@@ -12,9 +12,16 @@ namespace Examples
                                                            float orientationDegrees,
                                                            const std::string& coverageTreeManifestURL,
                                                            const std::string& themeManifestURL,
+                                                           const std::string& gazePointTexture,
+                                                           const std::string& gazeLoaderTexture,
+                                                           int gazeLoaderNumberOfTilesAlong1Axis,
+                                                           float gazeLoaderFrameRate,
                                                            const std::string& productVersion,
                                                            const std::string& buildNumber,
                                                            const std::string& combinedVersionString,
+                                                           const std::string& sfWelcomeNote,
+                                                           const std::string& ukWelcomeNote,
+                                                           const std::string& nyWelcomeNote,
                                                            const std::string& jumpPointsSpriteSheet,
                                                            const int jumpPointsSpriteSheetSize,
                                                            const TWorldLocations& worldLocations,
@@ -27,9 +34,16 @@ namespace Examples
         , m_orientationDegrees(orientationDegrees)
         , m_coverageTreeManifestURL(coverageTreeManifestURL)
         , m_themeManifestURL(themeManifestURL)
+        , m_gazePointTexturePath(gazePointTexture)
+        , m_gazeLoaderTexturePath(gazeLoaderTexture)
+        , m_gazeLoaderNumberOfTilesAlong1Axis(gazeLoaderNumberOfTilesAlong1Axis)
+        , m_gazeLoaderFrameRate(gazeLoaderFrameRate)
         , m_productVersion(productVersion)
         , m_buildNumber(buildNumber)
         , m_combinedVersionString(combinedVersionString)
+        , m_sfWelcomeNotePath(sfWelcomeNote)
+        , m_ukWelcomeNotePath(ukWelcomeNote)
+        , m_nyWelcomeNotePath(nyWelcomeNote)
         , m_jumpPointsSpriteSheet(jumpPointsSpriteSheet)
         , m_jumpPointsSpriteSheetSize(jumpPointsSpriteSheetSize)
         , m_worldLocations(worldLocations)
@@ -69,6 +83,26 @@ namespace Examples
             return m_themeManifestURL;
         }
         
+        const std::string& ApplicationConfiguration::GazePointTexturePath() const
+        {
+            return m_gazePointTexturePath;
+        }
+
+        const std::string& ApplicationConfiguration::GazeLoaderTexturePath() const
+        {
+            return m_gazeLoaderTexturePath;
+        }
+
+        int ApplicationConfiguration::GazeLoaderNumberOfTilesAlong1Axis() const
+        {
+            return m_gazeLoaderNumberOfTilesAlong1Axis;
+        }
+
+        float ApplicationConfiguration::GazeLoaderFrameRate() const
+        {
+            return m_gazeLoaderFrameRate;
+        }
+
         const std::string& ApplicationConfiguration::ProductVersion() const
         {
             return m_productVersion;
@@ -82,6 +116,21 @@ namespace Examples
         const std::string& ApplicationConfiguration::CombinedVersionString() const
         {
             return m_combinedVersionString;
+        }
+
+        const std::string& ApplicationConfiguration::SFWelcomeNotePath() const
+        {
+            return m_sfWelcomeNotePath;
+        }
+
+        const std::string& ApplicationConfiguration::UKWelcomeNotePath() const
+        {
+            return m_ukWelcomeNotePath;
+        }
+
+        const std::string& ApplicationConfiguration::NYWelcomeNotePath() const
+        {
+            return m_nyWelcomeNotePath;
         }
 
         const std::string& ApplicationConfiguration::JumpPointsSpriteSheet() const

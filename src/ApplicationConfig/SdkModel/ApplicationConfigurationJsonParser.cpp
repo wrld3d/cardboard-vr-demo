@@ -9,6 +9,7 @@
 #include <vector>
 #include <map>
 #include <sstream>
+#include <string>
 
 namespace Examples
 {
@@ -127,6 +128,38 @@ namespace Examples
 
                 Eegeo_ASSERT(document.HasMember("ThemeManifestURL"), "ThemeManifestURL config not found");
                 m_builder.SetThemeManifestURL(document["ThemeManifestURL"].GetString());
+
+
+                Eegeo_ASSERT(document.HasMember("GazePointTexturePath"), "GazePointTexturePath config not found");
+                std::string gazePointTexturePath = document["GazePointTexturePath"].GetString();
+                Eegeo_ASSERT(gazePointTexturePath != "", "GazePointTexturePath must not be empty");
+                m_builder.SetGazePointTexturePath(document["GazePointTexturePath"].GetString());
+
+                Eegeo_ASSERT(document.HasMember("GazeLoaderTexturePath"), "GazeLoaderTexturePath config not found");
+                std::string gazeLoaderTexturePath = document["GazeLoaderTexturePath"].GetString();
+                Eegeo_ASSERT(gazeLoaderTexturePath != "", "GazeLoaderTexturePath must not be empty");
+                m_builder.SetGazeLoaderTexturePath(gazeLoaderTexturePath);
+
+                Eegeo_ASSERT(document.HasMember("GazeLoaderNumberOfTilesAlong1Axis"), "GazeLoaderNumberOfTilesAlong1Axis config not found");
+                m_builder.SetGazeLoaderNumberOfTilesAlong1Axis(document["GazeLoaderNumberOfTilesAlong1Axis"].GetInt());
+                
+                Eegeo_ASSERT(document.HasMember("GazeLoaderFrameRate"), "GazeLoaderFrameRate config not found");
+                m_builder.SetGazeLoaderFrameRate(document["GazeLoaderFrameRate"].GetDouble());
+
+                Eegeo_ASSERT(document.HasMember("SFWelcomeNotePath"));
+                std::string sfWelcomeNotePath = document["SFWelcomeNotePath"].GetString();
+                Eegeo_ASSERT(sfWelcomeNotePath != "", "SFWelcomeNotePath must not be empty");
+                m_builder.SetSFWelcomeNotePath(sfWelcomeNotePath);
+
+                Eegeo_ASSERT(document.HasMember("UKWelcomeNotePath"));
+                std::string ukWelcomePath = document["UKWelcomeNotePath"].GetString();
+                Eegeo_ASSERT(ukWelcomePath != "", "UKWelcomeNotePath must not be empty");
+                m_builder.SetUKWelcomeNotePath(ukWelcomePath);
+
+                Eegeo_ASSERT(document.HasMember("NYWelcomeNotePath"));
+                std::string nyWelcomeNotePath = document["NYWelcomeNotePath"].GetString();
+                Eegeo_ASSERT(nyWelcomeNotePath != "", "NYWelcomeNotePath must not be empty");
+                m_builder.SetNYWelcomeNotePath(nyWelcomeNotePath);
 
                 Eegeo_ASSERT(document.HasMember("JumpPointsData"));
                 const TGenericValue& jumpPointsData = document["JumpPointsData"];

@@ -19,13 +19,16 @@ namespace Eegeo
                                                      , Eegeo::UI::IUIInteractionObservable& uiInteractionObservable
                                                      , Eegeo::UI::IUICameraProvider& uiCameraProvider
                                                      , Eegeo::UI::IUIQuadFactory& quadFactory
-                                                     , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter)
+                                                     , Eegeo::UI::IUIRenderableFilter& uiRenderableFilter
+                                                     , std::string texture
+                                                     , int topSpriteID
+                                                     , int numTilesAlong1Axes)
             : m_worldMenuItemRepository(worldMenuItemObservable)
             , m_viewFactory(viewFactory)
             , m_uiInteractionObservable(uiInteractionObservable)
             , m_uiCameraProvider(uiCameraProvider)
             {
-                m_pWorldMenuUpView = Eegeo_NEW(WorldMenuUpView)(quadFactory, uiRenderableFilter);
+                m_pWorldMenuUpView = Eegeo_NEW(WorldMenuUpView)(quadFactory, uiRenderableFilter, texture, topSpriteID, numTilesAlong1Axes);
                 m_menuItemsShouldRender = true;
                 m_isMenuShown = false;
                 m_worldMenuItemRepository.AddWorldMenuObserver(this);

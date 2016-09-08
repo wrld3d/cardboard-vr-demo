@@ -11,6 +11,7 @@
 #include "Modules/DeadZoneMenu/DeadZoneMenuItemRepository.h"
 #include "IUIQuadFactory.h"
 #include "IScreenFadeEffectController.h"
+#include "ApplicationConfiguration.h"
 
 namespace Examples
 {
@@ -24,7 +25,8 @@ namespace Examples
         IVRHeadTracker& m_headTracker;
         Eegeo::UI::IUIQuadFactory& m_quadFactory;
         ScreenFadeEffect::SdkModel::IScreenFadeEffectController& m_screenFader;
-        
+        const ApplicationConfig::ApplicationConfiguration m_appConfig;
+
     public:
         VRCameraSplineExampleFactory( Eegeo::EegeoWorld& world,
                                       DefaultCameraControllerFactory& defaultCameraControllerFactory,
@@ -33,7 +35,8 @@ namespace Examples
                                       InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                       Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                                       Eegeo::UI::IUIQuadFactory& quadFactory,
-                                      ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader);
+                                     ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
+                                     const ApplicationConfig::ApplicationConfiguration& appConfig);
 
         std::string ExampleName() const;
         

@@ -29,11 +29,25 @@ namespace Examples
 
                 virtual IApplicationConfigurationBuilder& SetThemeManifestURL(const std::string& themesManifestUrl) = 0;
 
+                virtual IApplicationConfigurationBuilder& SetGazePointTexturePath(const std::string& gazePointTexture) = 0;
+
+                virtual IApplicationConfigurationBuilder& SetGazeLoaderTexturePath(const std::string& gazeLoaderTexture) = 0;
+
+                virtual IApplicationConfigurationBuilder& SetGazeLoaderNumberOfTilesAlong1Axis(int gazeLoaderNumberOfTilesAlong1Axis) = 0;
+
+                virtual IApplicationConfigurationBuilder& SetGazeLoaderFrameRate(double gazeLoaderFrameRate) = 0;
+
                 virtual IApplicationConfigurationBuilder& SetProductVersion(const std::string& productVersion) = 0;
 
                 virtual IApplicationConfigurationBuilder& SetBuildNumber(const std::string& buildNumber) = 0;
 
                 virtual IApplicationConfigurationBuilder& SetCombinedVersionString(const std::string& combinedVersionString) = 0;
+
+                virtual IApplicationConfigurationBuilder& SetSFWelcomeNotePath(const std::string& sfWelcomeNote) = 0;
+
+                virtual IApplicationConfigurationBuilder& SetUKWelcomeNotePath(const std::string& ukWelcomeNote) = 0;
+
+                virtual IApplicationConfigurationBuilder& SetNYWelcomeNotePath(const std::string& nyWelcomeNote) = 0;
 
                 virtual IApplicationConfigurationBuilder& SetJumpPointSpriteSheet(const std::string& spriteSheet) = 0;
 

@@ -7,6 +7,13 @@
    "EegeoApiKey":"INSERT_API_KEY_HERE",
    "CoverageTreeManifestURL":"http://cdn1.eegeo.com/coverage-trees/vprivateglobal/v465/manifest.bin.gz",
    "ThemeManifestURL":"http://d2xvsc8j92rfya.cloudfront.net/mobile-themes-new/v674/manifest.txt.gz",
+   "GazePointTexturePath":"mesh_example/gaze_point.png",
+   "GazeLoaderTexturePath":"mesh_example/gaze_loader.png",
+   "GazeLoaderNumberOfTilesAlong1Axis":5,
+   "GazeLoaderFrameRate":4.2,
+   "SFWelcomeNotePath":"mesh_example/welcome_sanfrancisco.png",
+   "UKWelcomeNotePath":"mesh_example/welcome_dundee.png",
+   "NYWelcomeNotePath":"mesh_example/welcome_newyork.png",
    "JumpPointsData":{
       "SpriteSheet":"mesh_example/PinIconTexturePage.png",
       "NumberOfTilesAlong1Axis":6,

@@ -7,22 +7,30 @@ namespace InteriorsExplorer
 {
     namespace InteriorMenu
     {
-        InteriorMenuUpView::InteriorMenuUpView(Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter)
+        InteriorMenuUpView::InteriorMenuUpView(Eegeo::UI::IUIQuadFactory& quadFactory,
+                                               Eegeo::UI::IUIRenderableFilter& uiRenderableFilter,
+                                               std::string texture,
+                                               int spriteID,
+                                               int numTilesAlong1Axes)
         {
-            Init(quadFactory, uiRenderableFilter);
+            Init(quadFactory, uiRenderableFilter, texture, spriteID, numTilesAlong1Axes);
         }
         
-        void InteriorMenuUpView::Init(Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter)
+        void InteriorMenuUpView::Init(Eegeo::UI::IUIQuadFactory& quadFactory,
+                                      Eegeo::UI::IUIRenderableFilter& uiRenderableFilter,
+                                      std::string texture,
+                                      int spriteID,
+                                      int numTilesAlong1Axes)
         {
             
-            Eegeo::v2 size(6,6);
+            Eegeo::v2 size(numTilesAlong1Axes,numTilesAlong1Axes);
             Eegeo::v2 outMin;
             Eegeo::v2 outMax;
-            Eegeo::UI::CalculateUV(size, 21, outMin, outMax);
+            Eegeo::UI::CalculateUV(size, spriteID, outMin, outMax);
 
             Eegeo::v2 dimension = Eegeo::v2(9.f,9.f);
             m_pPointer = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter,
-                                                        quadFactory.CreateUIQuad("mesh_example/PinIconTexturePage.png",
+                                                        quadFactory.CreateUIQuad(texture,
                                                                                  dimension,
                                                                                  outMin,
                                                                                  outMax,

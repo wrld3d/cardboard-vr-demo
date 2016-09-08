@@ -99,6 +99,21 @@ namespace Eegeo
             return m_welcomeNote;
         }
 
+        void VRCameraPositionSpline::SetUKWelcomeNote(const std::string& note)
+        {
+            m_welcomeNoteUK = note;
+        }
+
+        void VRCameraPositionSpline::SetSFWelcomeNote(const std::string& note)
+        {
+            m_welcomeNoteSF = note;
+        }
+
+        void VRCameraPositionSpline::SetNYWelcomeNote(const std::string& note)
+        {
+            m_welcomeNoteNY = note;
+        }
+
         void VRCameraPositionSpline::GetCurrentCameraPosition(dv3& interpolatedPositionEcef, m33& interpolatedOrientation) const
         {
             m_positionSpline.GetInterpolatedPositionInPlace(m_time, interpolatedPositionEcef);
@@ -139,7 +154,7 @@ namespace Eegeo
                 case 0: // 1 STOP POINT
                 {
                     m_currentSplineHasWelcomeNote = true;
-                    m_welcomeNote = "mesh_example/welcome_sanfrancisco.png";
+                    m_welcomeNote = m_welcomeNoteSF;
 
                     std::vector<Eegeo::dv3> points;
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(37.795185, -122.402780, 305).ToECEF());
@@ -247,7 +262,7 @@ namespace Eegeo
                 case 3: // 3 STOP POINT
                 {
                     m_currentSplineHasWelcomeNote = true;
-                    m_welcomeNote = "mesh_example/welcome_dundee.png";
+                    m_welcomeNote = m_welcomeNoteUK;
 
                     Eegeo::dv3 p = Eegeo::Space::LatLongAltitude::FromDegrees(56.456870, -2.957510, 304).ToECEF();
                     Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(p, 294.33133, basis);
@@ -333,7 +348,7 @@ namespace Eegeo
                 case 7: // 6 STOP POINT
                 {
                     m_currentSplineHasWelcomeNote = true;
-                    m_welcomeNote = "mesh_example/welcome_newyork.png";
+                    m_welcomeNote = m_welcomeNoteNY;
 
                     std::vector<Eegeo::dv3> points;
                     points.push_back(Eegeo::Space::LatLongAltitude::FromDegrees(40.699799, -74.021058, 380).ToECEF());

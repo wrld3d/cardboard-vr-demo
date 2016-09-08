@@ -16,11 +16,19 @@ namespace InteriorsExplorer
             Eegeo::UI::UISprite* m_pPointer;
             bool m_isShown;
             
-            void Init(Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter);
-            
+            void Init(Eegeo::UI::IUIQuadFactory& quadFactory,
+                      Eegeo::UI::IUIRenderableFilter& uiRenderableFilter,
+                      std::string texture,
+                      int spriteID,
+                      int numTilesAlong1Axes);
+
         public:
             
-            InteriorMenuUpView(Eegeo::UI::IUIQuadFactory& quadFactory, Eegeo::UI::IUIRenderableFilter& uiRenderableFilter);
+            InteriorMenuUpView(Eegeo::UI::IUIQuadFactory& quadFactory,
+                               Eegeo::UI::IUIRenderableFilter& uiRenderableFilter,
+                               std::string texture,
+                               int spriteID,
+                               int numTilesAlong1Axes);
             ~InteriorMenuUpView();
             
             void Update(float dt);
