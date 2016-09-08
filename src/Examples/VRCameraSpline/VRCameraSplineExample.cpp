@@ -25,7 +25,7 @@ namespace Examples
 {
     const float WelcomeMessageFadeSpeed = 0.5f;
     const float WelcomeMessageFadeDelay = 4.0f;
-    const Eegeo::v2 WelcomeMessageSize = Eegeo::v2(48,3);
+    const Eegeo::v2 WelcomeMessageSize = Eegeo::v2(48,5);
     const float WelcomeNoteDistanceFromCamera = 50.f;
 
     VRCameraSplineExample::VRCameraSplineExample(Eegeo::EegeoWorld& eegeoWorld,
@@ -51,11 +51,21 @@ namespace Examples
       m_screenVisibilityChanged(this, &VRCameraSplineExample::OnScreenVisiblityChanged),
       m_splineChanged(false),
       m_pUIRenderableFilter(NULL),
-      m_pWelcomeNoteViewer(NULL)
+      m_pWelcomeNoteViewer(NULL),
+      m_welcomeNoteEcefPosition(Eegeo::dv3::Zero()),
+      m_cameraCachedPosition(Eegeo::dv3::Zero())
     {
         NotifyScreenPropertiesChanged(initialScreenProperties);
         Eegeo::m44 projectionMatrix = Eegeo::m44(pCameraController->GetRenderCamera().GetProjectionMatrix());
-        m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight(), headTracker, appConfig.UKWelcomeNotePath(), appConfig.SFWelcomeNotePath(), appConfig.NYWelcomeNotePath());
+        m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(),
+                                                                      initialScreenProperties.GetScreenHeight(),
+                                                                      headTracker,
+                                                                      appConfig.UKWelcomeNotePath(),
+                                                                      appConfig.SFWelcomeNotePath(),
+                                                                      appConfig.NYWelcomeNotePath(),
+                                                                      appConfig.UKSplineWelcomeNotePath(),
+                                                                      appConfig.SFSplineWelcomeNotePath(),
+                                                                      appConfig.NYSplineWelcomeNotePath());
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
         m_eyeDistance = 0.03f;
 
@@ -123,8 +133,9 @@ namespace Examples
                                                   WelcomeMessageFadeDelay,
                                                   WelcomeMessageSize);
             Eegeo::v3 forward = Eegeo::v3::Cross(m_pSplineCameraController->GetOrientation().GetRow(0), m_pSplineCameraController->GetCameraPosition().ToSingle().Norm());
-            Eegeo::dv3 position(m_pSplineCameraController->GetCameraPosition() + (forward*WelcomeNoteDistanceFromCamera));
-            m_pWelcomeNoteViewer->SetPosition(position);
+            m_cameraCachedPosition = m_pSplineCameraController->GetCameraPosition();
+            m_welcomeNoteEcefPosition = (m_pSplineCameraController->GetCameraPosition() + (forward*WelcomeNoteDistanceFromCamera));
+            m_pWelcomeNoteViewer->SetPosition(m_welcomeNoteEcefPosition);
         }
     }
     
@@ -154,6 +165,9 @@ namespace Examples
     void VRCameraSplineExample::Update(float dt)
     {
         m_pWelcomeNoteViewer->Update(dt);
+        m_welcomeNoteEcefPosition += m_pSplineCameraController->GetCameraPosition() - m_cameraCachedPosition;
+        m_cameraCachedPosition = m_pSplineCameraController->GetCameraPosition();
+        m_pWelcomeNoteViewer->SetPosition(m_welcomeNoteEcefPosition);
     }
 
     void VRCameraSplineExample::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)

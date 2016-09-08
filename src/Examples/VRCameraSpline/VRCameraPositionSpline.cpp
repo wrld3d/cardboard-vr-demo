@@ -183,7 +183,9 @@ namespace Eegeo
                     
                 case 2: // SF
                 {
-                    
+                    m_currentSplineHasWelcomeNote = true;
+                    m_welcomeNote = m_welcomeNoteSFSpline;
+
                     orientation.SetFromBasis(Eegeo::v3(0.449058,0.122659,0.885043),Eegeo::v3(0.667273,0.612706,-0.423481),Eegeo::v3(0.594215,-0.780735,-0.193294));
                     Eegeo::dv3 pt;
                     
@@ -273,7 +275,9 @@ namespace Eegeo
                     
                 case 4: // Westport House
                 {
-                    
+                    m_currentSplineHasWelcomeNote = true;
+                    m_welcomeNote = m_welcomeNoteUKSpline;
+
                     std::vector<Eegeo::dv3> points;
                     const double alt = 35.0;
                     
@@ -367,7 +371,9 @@ namespace Eegeo
                     
                 case 8: // NY
                 {
-                    
+                    m_currentSplineHasWelcomeNote = true;
+                    m_welcomeNote = m_welcomeNoteNYSpline;
+
                     orientation.SetFromBasis(Eegeo::v3(-0.003297,-0.301644,0.953413),Eegeo::v3(0.728825,0.652078,0.208825),Eegeo::v3(0.684698,-0.695559,-0.217691));
                     Eegeo::dv3 pt = Eegeo::dv3(4645944.411084, 4162311.163091, 1332741.260517);
                     pt += pt.Norm() * p;

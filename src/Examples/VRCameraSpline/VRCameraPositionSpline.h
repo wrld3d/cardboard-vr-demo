@@ -15,9 +15,12 @@ namespace Eegeo
         class VRCameraPositionSpline : protected Eegeo::NonCopyable
         {
         public:
-            VRCameraPositionSpline(std::string welcomeNoteUK,
-                                   std::string welcomeNoteSF,
-                                   std::string welcomeNoteNY)
+            VRCameraPositionSpline(const std::string& welcomeNoteUK,
+                                   const std::string& welcomeNoteSF,
+                                   const std::string& welcomeNoteNY,
+                                   const std::string& welcomeNoteUKSpline,
+                                   const std::string& welcomeNoteSFSpline,
+                                   const std::string& welcomeNoteNYSpline)
             : m_playbackSpeed(0.03)
             , m_playing(false)
             , m_time(0.0)
@@ -27,6 +30,9 @@ namespace Eegeo
             , m_welcomeNoteUK(welcomeNoteUK)
             , m_welcomeNoteSF(welcomeNoteSF)
             , m_welcomeNoteNY(welcomeNoteNY)
+            , m_welcomeNoteUKSpline(welcomeNoteUKSpline)
+            , m_welcomeNoteSFSpline(welcomeNoteSFSpline)
+            , m_welcomeNoteNYSpline(welcomeNoteNYSpline)
             {
                 SetSpline(m_currentSpline);
             }
@@ -84,6 +90,9 @@ namespace Eegeo
             std::string m_welcomeNoteUK;
             std::string m_welcomeNoteSF;
             std::string m_welcomeNoteNY;
+            std::string m_welcomeNoteUKSpline;
+            std::string m_welcomeNoteSFSpline;
+            std::string m_welcomeNoteNYSpline;
         };
     }
 }

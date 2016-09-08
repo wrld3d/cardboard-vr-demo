@@ -22,6 +22,9 @@ namespace Examples
                                                            const std::string& sfWelcomeNote,
                                                            const std::string& ukWelcomeNote,
                                                            const std::string& nyWelcomeNote,
+                                                           const std::string& sfSplineWelcomeNote,
+                                                           const std::string& ukSplineWelcomeNote,
+                                                           const std::string& nySplineWelcomeNote,
                                                            const std::string& jumpPointsSpriteSheet,
                                                            const int jumpPointsSpriteSheetSize,
                                                            const TWorldLocations& worldLocations,
@@ -44,6 +47,9 @@ namespace Examples
         , m_sfWelcomeNotePath(sfWelcomeNote)
         , m_ukWelcomeNotePath(ukWelcomeNote)
         , m_nyWelcomeNotePath(nyWelcomeNote)
+        , m_sfSplineWelcomeNotePath(sfSplineWelcomeNote)
+        , m_ukSplineWelcomeNotePath(ukSplineWelcomeNote)
+        , m_nySplineWelcomeNotePath(nySplineWelcomeNote)
         , m_jumpPointsSpriteSheet(jumpPointsSpriteSheet)
         , m_jumpPointsSpriteSheetSize(jumpPointsSpriteSheetSize)
         , m_worldLocations(worldLocations)
@@ -131,6 +137,21 @@ namespace Examples
         const std::string& ApplicationConfiguration::NYWelcomeNotePath() const
         {
             return m_nyWelcomeNotePath;
+        }
+
+        const std::string& ApplicationConfiguration::SFSplineWelcomeNotePath() const
+        {
+            return m_sfSplineWelcomeNotePath;
+        }
+
+        const std::string& ApplicationConfiguration::UKSplineWelcomeNotePath() const
+        {
+            return m_ukSplineWelcomeNotePath;
+        }
+
+        const std::string& ApplicationConfiguration::NYSplineWelcomeNotePath() const
+        {
+            return m_nySplineWelcomeNotePath;
         }
 
         const std::string& ApplicationConfiguration::JumpPointsSpriteSheet() const

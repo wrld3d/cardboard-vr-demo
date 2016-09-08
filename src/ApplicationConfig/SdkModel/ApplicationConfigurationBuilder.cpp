@@ -25,6 +25,9 @@ namespace Examples
             , m_sfWelcomeNotePath("")
             , m_ukWelcomeNotePath("")
             , m_nyWelcomeNotePath("")
+            , m_sfSplineWelcomeNotePath("")
+            , m_ukSplineWelcomeNotePath("")
+            , m_nySplineWelcomeNotePath("")
             , m_jumpPointsSpriteSheet("")
             , m_jumpPointsSpriteSheetSize(1)
             {
@@ -128,6 +131,24 @@ namespace Examples
                 return *this;
             }
 
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetSFSplineWelcomeNotePath(const std::string& sfSplineWelcomeNote)
+            {
+                m_sfSplineWelcomeNotePath = sfSplineWelcomeNote;
+                return *this;
+            }
+
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetUKSplineWelcomeNotePath(const std::string& ukSplineWelcomeNote)
+            {
+                m_ukSplineWelcomeNotePath = ukSplineWelcomeNote;
+                return *this;
+            }
+
+            IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetNYSplineWelcomeNotePath(const std::string& nySplineWelcomeNote)
+            {
+                m_nySplineWelcomeNotePath = nySplineWelcomeNote;
+                return *this;
+            }
+
             IApplicationConfigurationBuilder& ApplicationConfigurationBuilder::SetJumpPointSpriteSheet(const std::string& spriteSheet)
             {
                 m_jumpPointsSpriteSheet = spriteSheet;
@@ -176,6 +197,9 @@ namespace Examples
                                                 m_sfWelcomeNotePath,
                                                 m_ukWelcomeNotePath,
                                                 m_nyWelcomeNotePath,
+                                                m_sfSplineWelcomeNotePath,
+                                                m_ukSplineWelcomeNotePath,
+                                                m_nySplineWelcomeNotePath,
                                                 m_jumpPointsSpriteSheet,
                                                 m_jumpPointsSpriteSheetSize,
                                                 m_exteriorLocations,

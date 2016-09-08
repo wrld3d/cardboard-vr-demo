@@ -38,6 +38,10 @@ namespace Examples
             const std::string m_ukWelcomeNotePath;
             const std::string m_nyWelcomeNotePath;
 
+            const std::string m_sfSplineWelcomeNotePath;
+            const std::string m_ukSplineWelcomeNotePath;
+            const std::string m_nySplineWelcomeNotePath;
+
             const std::string m_jumpPointsSpriteSheet;
             const int m_jumpPointsSpriteSheetSize;
 
@@ -62,6 +66,9 @@ namespace Examples
                                      const std::string& sfWelcomeNote,
                                      const std::string& ukWelcomeNote,
                                      const std::string& nyWelcomeNote,
+                                     const std::string& sfSplineWelcomeNote,
+                                     const std::string& ukSplineWelcomeNote,
+                                     const std::string& nySplineWelcomeNote,
                                      const std::string& jumpPointsSpriteSheet,
                                      const int jumpPointsSpriteSheetSize,
                                      const TWorldLocations& worldLocations,
@@ -100,6 +107,12 @@ namespace Examples
             const std::string& UKWelcomeNotePath() const;
 
             const std::string& NYWelcomeNotePath() const;
+
+            const std::string& SFSplineWelcomeNotePath() const;
+
+            const std::string& UKSplineWelcomeNotePath() const;
+
+            const std::string& NYSplineWelcomeNotePath() const;
 
             const std::string& JumpPointsSpriteSheet() const;
 

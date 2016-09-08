@@ -34,6 +34,9 @@ namespace Examples
                 std::string m_sfWelcomeNotePath;
                 std::string m_ukWelcomeNotePath;
                 std::string m_nyWelcomeNotePath;
+                std::string m_sfSplineWelcomeNotePath;
+                std::string m_ukSplineWelcomeNotePath;
+                std::string m_nySplineWelcomeNotePath;
 
                 std::string m_jumpPointsSpriteSheet;
                 int m_jumpPointsSpriteSheetSize;
@@ -78,6 +81,12 @@ namespace Examples
                 IApplicationConfigurationBuilder& SetUKWelcomeNotePath(const std::string& ukWelcomeNote);
 
                 IApplicationConfigurationBuilder& SetNYWelcomeNotePath(const std::string& nyWelcomeNote);
+
+                IApplicationConfigurationBuilder& SetSFSplineWelcomeNotePath(const std::string& sfWelcomeNote);
+
+                IApplicationConfigurationBuilder& SetUKSplineWelcomeNotePath(const std::string& ukWelcomeNote);
+
+                IApplicationConfigurationBuilder& SetNYSplineWelcomeNotePath(const std::string& nyWelcomeNote);
 
                 IApplicationConfigurationBuilder& SetJumpPointSpriteSheet(const std::string& spriteSheet);
 

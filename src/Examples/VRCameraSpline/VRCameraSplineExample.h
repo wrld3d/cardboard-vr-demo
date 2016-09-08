@@ -50,6 +50,8 @@ private:
     Eegeo::UI::IUIQuadFactory& m_uiQuadFactory;
     Eegeo::UI::UIRenderableFilter* m_pUIRenderableFilter;
     WelcomeNoteViewer* m_pWelcomeNoteViewer;
+    Eegeo::dv3 m_welcomeNoteEcefPosition;
+    Eegeo::dv3 m_cameraCachedPosition;
 
     ScreenFadeEffect::SdkModel::IScreenFadeEffectController& m_screenFader;
     Eegeo::Helpers::TCallback1<VRCameraSplineExample, ScreenFadeEffect::SdkModel::IScreenFadeEffectController::VisibilityState&> m_screenVisibilityChanged;

@@ -38,9 +38,12 @@ namespace Eegeo
             VRCameraController(float screenWidth,
                                float screenHeight,
                                Examples::IVRHeadTracker& headTracker,
-                               std::string welcomeNoteUK,
-                               std::string welcomeNoteSF,
-                               std::string welcomeNoteNY)
+                               const std::string& welcomeNoteUK,
+                               const std::string& welcomeNoteSF,
+                               const std::string& welcomeNoteNY,
+                               const std::string& welcomeNoteUKSpline,
+                               const std::string& welcomeNoteSFSpline,
+                               const std::string& welcomeNoteNYSpline)
             : m_moving(false)
             , m_screenHeight(screenHeight)
             , m_screenWidth(screenWidth)
@@ -48,7 +51,7 @@ namespace Eegeo
             , m_ecefPosition(0.0, 0.0, 0.0)
             , m_falling(false)
             , m_time(0.0f)
-            , m_stopTime(20.0f)
+            , m_stopTime(10.0f)
             , m_stopTimeElapsed(0.0f)
             , m_splineEndPauseTime(10.0f)
             , m_splineEndPauseTimeElapsed(0.0f)
@@ -57,7 +60,7 @@ namespace Eegeo
             , m_nearMultiplier(0.1f)
             , m_pHeadTracker(headTracker)
             , m_isPlaying(true)
-            , m_vrCameraPositionSpline(welcomeNoteUK, welcomeNoteSF, welcomeNoteNY)
+            , m_vrCameraPositionSpline(welcomeNoteUK, welcomeNoteSF, welcomeNoteNY, welcomeNoteUKSpline, welcomeNoteSFSpline, welcomeNoteNYSpline)
             {
                 m_pRenderCamera = new Camera::RenderCamera();
                 m_orientation.Identity();

@@ -49,6 +49,12 @@ namespace Examples
 
                 virtual IApplicationConfigurationBuilder& SetNYWelcomeNotePath(const std::string& nyWelcomeNote) = 0;
 
+                virtual IApplicationConfigurationBuilder& SetSFSplineWelcomeNotePath(const std::string& sfWelcomeNote) = 0;
+
+                virtual IApplicationConfigurationBuilder& SetUKSplineWelcomeNotePath(const std::string& ukWelcomeNote) = 0;
+
+                virtual IApplicationConfigurationBuilder& SetNYSplineWelcomeNotePath(const std::string& nyWelcomeNote) = 0;
+
                 virtual IApplicationConfigurationBuilder& SetJumpPointSpriteSheet(const std::string& spriteSheet) = 0;
 
                 virtual IApplicationConfigurationBuilder& SetJumpPointSpriteSheetSize(const int spriteSheetSize) = 0;

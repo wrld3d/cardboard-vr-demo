@@ -161,6 +161,21 @@ namespace Examples
                 Eegeo_ASSERT(nyWelcomeNotePath != "", "NYWelcomeNotePath must not be empty");
                 m_builder.SetNYWelcomeNotePath(nyWelcomeNotePath);
 
+                Eegeo_ASSERT(document.HasMember("SFSplineWelcomeNotePath"));
+                std::string sfSplineWelcomeNotePath = document["SFSplineWelcomeNotePath"].GetString();
+                Eegeo_ASSERT(sfSplineWelcomeNotePath != "", "SFSplineWelcomeNotePath must not be empty");
+                m_builder.SetSFSplineWelcomeNotePath(sfSplineWelcomeNotePath);
+
+                Eegeo_ASSERT(document.HasMember("UKSplineWelcomeNotePath"));
+                std::string ukSplineWelcomePath = document["UKSplineWelcomeNotePath"].GetString();
+                Eegeo_ASSERT(ukSplineWelcomePath != "", "UKSplineWelcomeNotePath must not be empty");
+                m_builder.SetUKSplineWelcomeNotePath(ukSplineWelcomePath);
+
+                Eegeo_ASSERT(document.HasMember("NYSplineWelcomeNotePath"));
+                std::string nySplineWelcomeNotePath = document["NYSplineWelcomeNotePath"].GetString();
+                Eegeo_ASSERT(nySplineWelcomeNotePath != "", "NYSplineWelcomeNotePath must not be empty");
+                m_builder.SetNYSplineWelcomeNotePath(nySplineWelcomeNotePath);
+
                 Eegeo_ASSERT(document.HasMember("JumpPointsData"));
                 const TGenericValue& jumpPointsData = document["JumpPointsData"];
 
