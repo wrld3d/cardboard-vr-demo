@@ -150,7 +150,7 @@ AppHost::AppHost(
 
 	config.GraphicsConfig.AlwaysUseHighFidelityWaterShader = true;
     config.OptionsConfig.GenerateCollisionForAllResources = true;
-	config.CityThemesConfig.EmbeddedThemeManifestFile = "embedded_manifest.txt";
+	config.CityThemesConfig.EmbeddedThemeManifestFile = "embedded_manifest.bin";
 	config.CityThemesConfig.EmbeddedThemeTexturePath = "Textures";
 	config.CityThemesConfig.EmbeddedThemeNameContains = "Summer";
 	config.CityThemesConfig.EmbeddedThemeStateName = "DayDefault";

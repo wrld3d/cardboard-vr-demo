@@ -6,7 +6,7 @@
    "StartLocationOrientationDegrees":0.0,
    "EegeoApiKey":"INSERT_API_KEY_HERE",
    "CoverageTreeManifestURL":"http://cdn1.eegeo.com/coverage-trees/vprivateglobal/v465/manifest.bin.gz",
-   "ThemeManifestURL":"http://d2xvsc8j92rfya.cloudfront.net/mobile-themes-new/v674/manifest.txt.gz",
+   "ThemeManifestURL":"http://d2xvsc8j92rfya.cloudfront.net/mobile-themes-new/v736/manifest.bin.gz",
    "GazePointTexturePath":"mesh_example/gaze_point.png",
    "GazeLoaderTexturePath":"mesh_example/gaze_loader.png",
    "GazeLoaderNumberOfTilesAlong1Axis":5,

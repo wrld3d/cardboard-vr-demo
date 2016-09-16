@@ -1,7 +1,7 @@
 set(resources ${resources}
 		Resources/DejaVuSansBold.fnt
 		Resources/DejaVuSansBold_0.png
-		Resources/embedded_manifest.txt
+		Resources/embedded_manifest.bin
 		Resources/firework_01.png
 		Resources/FrankBold50_A8_icons.fnt
 		Resources/FrankBold50_A8_icons_0.png
@@ -15,6 +15,6 @@ set(resources ${resources}
 		Resources/route_simulation_animation_example
 		Resources/route_simulation_example
 		Resources/SplashScreen-1024x768.png
-		Resources/Textures
+		Resources/EmbeddedTheme
 		ExampleApp/Images.xcassets
 )
