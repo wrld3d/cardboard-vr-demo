@@ -94,7 +94,7 @@ private:
 	Eegeo::Rendering::Shaders::ShaderIdGenerator& m_shaderIdGenerator;
 	Eegeo::Rendering::Materials::MaterialIdGenerator& m_materialIdGenerator;
     Eegeo::Rendering::VertexLayouts::VertexBindingPool& m_vertexBindingPool;
-	const Eegeo::Helpers::GLHelpers::TextureInfo& m_placeHolderTexture;
+	Eegeo::Rendering::AsyncTexturing::IAsyncTexture& m_placeHolderTexture;
 
 	Eegeo::Lighting::GlobalLighting* m_pAlternativeLighting;
 	Eegeo::Rendering::Shaders::PackedDiffuseShader* m_pAlternativeShader;
@@ -113,7 +113,7 @@ public:
 	                         Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
 	                         Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
                              Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-	                         const Eegeo::Helpers::GLHelpers::TextureInfo& placeHolderTexture,
+	                         Eegeo::Rendering::AsyncTexturing::IAsyncTexture& placeHolderTexture,
 	                         Eegeo::Camera::GlobeCamera::GlobeCameraController* pCameraController,
 	                         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& cameraTouchController
 	                        );
