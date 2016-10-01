@@ -203,4 +203,4 @@ This is a default 4x4 grid that is being used by the sdk to draw the icons. In o
 
 ## License
 
-The eeGeo 3D Maps SDK is released under the Eegeo Platform SDK Evaluation license. See the [LICENSE.md](https://github.com/eegeo/cardboard-vr-integration/blob/master/LICENSE.md) file for details.
+The eeGeo 3D Maps Cardboard SDK is released under the Simplified BSD License. See the [LICENSE.md](https://github.com/eegeo/cardboard-vr-integration/blob/master/LICENSE.md) file for details.
