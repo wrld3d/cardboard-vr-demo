@@ -462,6 +462,10 @@ namespace Examples
     
     void JumpPointsExample::OnWestportInteriorButtonSelected()
     {
+        
+        if(m_pWestPortInteriorButton->GetColor().w < 0.9f)
+            return;
+        
         ShowInteriors();
         
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 40).ToECEF();
