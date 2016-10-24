@@ -32,10 +32,25 @@ namespace Eegeo
                 m_menuItemsShouldRender = true;
                 m_isMenuShown = false;
                 m_worldMenuItemRepository.AddWorldMenuObserver(this);
+                Eegeo::v2 size(numTilesAlong1Axes,numTilesAlong1Axes);
+                Eegeo::v2 outMin;
+                Eegeo::v2 outMax;
+                Eegeo::UI::CalculateUV(size, 20, outMin, outMax);
+
+                Eegeo::v2 dimension = Eegeo::v2(50.f,50.f);
+                m_pSelectedArrow = Eegeo_NEW(Eegeo::UI::UISprite)(uiRenderableFilter,
+                                                                  quadFactory.CreateUIQuad(texture,
+                                                                                           dimension,
+                                                                                           outMin,
+                                                                                           outMax,
+                                                                                           Eegeo::Rendering::LayerIds::Values::AfterAll),
+                                                                  dimension);
+                m_pSelectedArrow->SetMaxAlpha(0.5f);
             }
             
             WorldMenuController::~WorldMenuController()
             {
+                Eegeo_DELETE(m_pSelectedArrow);
                 Eegeo_DELETE(m_pWorldMenuUpView);
                 m_worldMenuItemRepository.RemoveWorldMenuObserver(this);
                 for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
@@ -50,6 +65,12 @@ namespace Eegeo
             {
                 
                 m_menuItemsShouldRender = menuItemsShouldRender;
+                for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
+                {
+                    WorldMenuItemView* pView = it->second;
+                    pView->SetItemShouldRender(menuItemsShouldRender);
+                    m_pSelectedArrow->SetItemShouldRender(menuItemsShouldRender);
+                }
 
             }
             
@@ -57,6 +78,7 @@ namespace Eegeo
             {
                 PositionItems();
                 
+                m_pSelectedArrow->Update(deltaTime);
                 Eegeo::m33 headTrackedOrientation  = m_uiCameraProvider.GetOrientation();
                 Eegeo::v3 top(headTrackedOrientation.GetRow(1));
                 Eegeo::v3 forward(headTrackedOrientation.GetRow(2));
@@ -81,6 +103,7 @@ namespace Eegeo
                 {
                     WorldMenuItemView* pView = it->second;
                     pView->SetItemShouldRender(m_menuItemsShouldRender && m_isMenuShown);
+                    m_pSelectedArrow->SetItemShouldRender(m_menuItemsShouldRender && m_isMenuShown);
                     pView->Update(deltaTime);
                 }
                 
@@ -199,6 +222,7 @@ namespace Eegeo
                         if(!m_isMenuShown)
                         {
                             pView->SetItemShouldRender(false);
+                            m_pSelectedArrow->SetItemShouldRender(false);
                             continue;
                         }
                         margin += pView->GetWorldMenuItem().GetMarginRight();
@@ -206,6 +230,11 @@ namespace Eegeo
                         Eegeo::dv3 position(center + (forward*PositionMultiplier) + (top*45) + ((right*55*halfCount)-(right*margin)));
                         pView->SetEcefPosition(position);
                         pView->SetItemShouldRender(true);
+                        m_pSelectedArrow->SetItemShouldRender(true);
+                        if(m_menuItemId==pView->GetWorldMenuItem().GetId())
+                        {
+                            m_pSelectedArrow->SetEcefPosition(center + (forward*PositionMultiplier) + (top*92) + (right*55*halfCount)-(right*margin));
+                        }
                         halfCount-=1;
                         
                         margin += pView->GetWorldMenuItem().GetMarginLeft();

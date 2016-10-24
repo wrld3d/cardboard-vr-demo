@@ -57,6 +57,7 @@ namespace Eegeo
                 
                 WorldMenuUpView* m_pWorldMenuUpView;
                 
+                Eegeo::UI::UISprite* m_pSelectedArrow;
                 IWorldMenuItemObservable& m_worldMenuItemRepository;
                 IWorldMenuItemViewFactory& m_viewFactory;
                 Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
