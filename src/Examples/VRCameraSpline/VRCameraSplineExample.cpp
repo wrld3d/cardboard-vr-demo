@@ -165,8 +165,9 @@ namespace Examples
     void VRCameraSplineExample::Update(float dt)
     {
         m_pWelcomeNoteViewer->Update(dt);
-        m_welcomeNoteEcefPosition += m_pSplineCameraController->GetCameraPosition() - m_cameraCachedPosition;
         m_cameraCachedPosition = m_pSplineCameraController->GetCameraPosition();
+        Eegeo::v3 forward = m_pSplineCameraController->GetOrientation().GetRow(2);
+        m_welcomeNoteEcefPosition = (m_pSplineCameraController->GetCameraPosition() + (forward*WelcomeNoteDistanceFromCamera));
         m_pWelcomeNoteViewer->SetPosition(m_welcomeNoteEcefPosition);
     }
 
