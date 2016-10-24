@@ -96,6 +96,7 @@ namespace Examples
         bool m_isInInterior;
         bool m_isCameraAnimating;
         bool m_shouldAnimateFloor;
+        bool m_shouldMakeInteriorMarkerVisible;
         int m_targetFloor;
 
         WelcomeNoteViewer* m_pWelcomeNoteViewer;

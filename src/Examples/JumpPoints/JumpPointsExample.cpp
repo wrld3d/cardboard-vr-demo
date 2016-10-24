@@ -117,6 +117,7 @@ namespace Examples
     , m_pInteriorCameraAnimationPositionProvider(NULL)
     , m_pInteriorDistanceVisibilityUpdater(NULL)
     , m_shouldAnimateFloor(false)
+    , m_shouldMakeInteriorMarkerVisible(false)
     , m_targetFloor(0)
     {
         
@@ -531,6 +532,12 @@ namespace Examples
                 AnimateCameraToInteriorFloor(m_interiorsExplorerModule.GetSelectedFloor(), delta, &Eegeo::UI::AnimationEase::Linear);
             }
         }
+
+        if (m_shouldMakeInteriorMarkerVisible)
+        {
+            m_shouldMakeInteriorMarkerVisible = false;
+            m_pWestPortInteriorButton->SetItemShouldRender(true);
+        }
     }
     
     void JumpPointsExample::OnJumpPointSelected(Eegeo::UI::JumpPoints::JumpPoint& jumpPoint)
@@ -613,8 +620,8 @@ namespace Examples
             {
                 m_isAtFloorLevel = false;
                 m_isInInterior = false;
-                m_pWestPortInteriorButton->SetItemShouldRender(true);
 
+                m_shouldMakeInteriorMarkerVisible = true;
                 m_worldMenuModule.SetMenuShouldDisplay(true);
 
                 Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459156, -2.975320, 300).ToECEF();
