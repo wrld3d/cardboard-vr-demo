@@ -68,14 +68,14 @@ namespace Eegeo
             }
             
             
-            VRDistortionModule::VRDistortionModule(
-                                        const Eegeo::Rendering::ScreenProperties& screenProperties,
-                                        Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
-                                        Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-                                        Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
-                                        Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
-                                        Eegeo::Rendering::RenderableFilters& renderableFilters,
-                                        Eegeo::Rendering::GlBufferPool& glBufferPool)
+            VRDistortionModule::VRDistortionModule(const Eegeo::Rendering::ScreenProperties& screenProperties,
+                                                   Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
+                                                   Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
+                                                   Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
+                                                   Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
+                                                   Eegeo::Rendering::RenderableFilters& renderableFilters,
+                                                   Eegeo::Rendering::GlBufferPool& glBufferPool,
+                                                   Eegeo::VR::Distortion::IVRCardboardDeviceProfileFactory& vrCardboardDeviceProfileFactory)
             : m_screenProperties(screenProperties)
             , m_vertexLayoutPool(vertexLayoutPool)
             , m_vertexBindingPool(vertexBindingPool)
@@ -91,7 +91,7 @@ namespace Eegeo
             , m_meshUpdateRequried(false)
             , m_visibilityParamChangedCallback(this, &VRDistortionModule::UpdateMaterialFadeMultiplier)
             {
-                m_pCardboardProfile = Eegeo_NEW(VRCardboardDeviceProfile)();
+                m_pCardboardProfile = vrCardboardDeviceProfileFactory.GetCardboardDeviceProfile();
                 m_pPositionUvVertexLayout = CreatePositionUvVertexLayout();
 
                 m_pTransitionModel = Eegeo_NEW(VRDistortionTransitionModel)();

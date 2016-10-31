@@ -36,15 +36,6 @@ private:
     
     Eegeo::VR::VRCameraController* m_pSplineCameraController;
     InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneRepository;
-    
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pSFSplineButton;
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pNYSplineButton;
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pWPSplineButton;
-    
-    Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onSFSplineSelectedCallback;
-    Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onNYSplineSelectedCallback;
-    Eegeo::Helpers::TCallback0<VRCameraSplineExample> m_onWestPortSplineSelectedCallback;
 
     Eegeo::Rendering::RenderableFilters& m_renderableFilters;
     Eegeo::UI::IUIQuadFactory& m_uiQuadFactory;
@@ -72,7 +63,6 @@ public:
                           IVRHeadTracker& headTracker,
                           const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
                           InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                          Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                           Eegeo::UI::IUIQuadFactory& quadFactory,
                           ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
                           const ApplicationConfig::ApplicationConfiguration& appConfig);

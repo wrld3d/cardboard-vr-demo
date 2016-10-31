@@ -168,7 +168,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     const float cameraControllerOrientationDegrees = 0.0f;
     const float cameraControllerDistanceFromInterestPointMeters = 1781.0f;
     
-    
+    m_pVRCardboardV1ProfileFactory = Eegeo_NEW(Eegeo::VR::Distortion::VRCardboardV1ProfileFactory)();
     m_pStreamingVolume = Eegeo_NEW(Eegeo::Streaming::CameraFrustumStreamingVolume)(mapModule.GetResourceCeilingProvider(),
                                                                                    Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
                                                                                    Eegeo::Streaming::QuadTreeCube::MAX_DEPTH_TO_VISIT,
@@ -205,12 +205,13 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
 
     Eegeo::Modules::Core::RenderingModule& renderingModule = m_pWorld->GetRenderingModule();
     m_pVRDistortion = Eegeo_NEW(Eegeo::VR::Distortion::VRDistortionModule)(m_screenPropertiesProvider.GetScreenProperties(),
-                                                renderingModule.GetVertexLayoutPool(),
-                                                renderingModule.GetVertexBindingPool(),
-                                                renderingModule.GetShaderIdGenerator(),
-                                                renderingModule.GetMaterialIdGenerator(),
-                                                renderingModule.GetRenderableFilters(),
-                                             renderingModule.GetGlBufferPool());
+                                                                           renderingModule.GetVertexLayoutPool(),
+                                                                           renderingModule.GetVertexBindingPool(),
+                                                                           renderingModule.GetShaderIdGenerator(),
+                                                                           renderingModule.GetMaterialIdGenerator(),
+                                                                           renderingModule.GetRenderableFilters(),
+                                                                           renderingModule.GetGlBufferPool(),
+                                                                           *m_pVRCardboardV1ProfileFactory);
     m_pVRDistortion->Initialize();
     
     m_pVRSkybox = Eegeo_NEW(Eegeo::Skybox::SkyboxModule)(renderingModule,
@@ -254,13 +255,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                                       appConfig.JumpPointsSpriteSheet(),
                                                                                       appConfig.JumpPointsSpriteSheetSize());
     
-    m_pDeadZoneMenuModule = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, appConfig.JumpPointsSpriteSheet(), m_progressBarConfig, appConfig.JumpPointsSpriteSheetSize());
-    
-    m_pMenuItem1 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(1, 0, m_jumpPointExampleButtonClickedCallback);
-    m_pMenuItem2 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(2, 1, m_toggleDayNightClickedCallback);
-    m_pMenuItem3 = new Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem(3, 2, m_splineExampleButtonClickedCallback);
-    
-    
     m_pWorldMenuModule = Eegeo_NEW(Eegeo::UI::WorldMenu::WorldMenuModule)(*m_pUIRenderableFilter, *m_pQuadFactory, *m_pUIInteractionController,*m_pExampleController, appConfig.JumpPointsSpriteSheet(), m_progressBarConfig, appConfig.JumpPointsSpriteSheetSize());
     m_pWorldMenuModule->SetMenuShouldDisplay(false);
 
@@ -288,12 +282,20 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_pExampleController->RegisterScreenPropertiesProviderVRExample<Examples::VRCameraSplineExampleFactory>(m_screenPropertiesProvider,
                                                                                                             *m_pInteriorExplorerModule,
                                                                                                             headTracker,
-                                                                                                            m_pDeadZoneMenuModule->GetRepository(),
                                                                                                             *m_pQuadFactory,
                                                                                                             *m_pScreenFadeEffectController,
                                                                                                             appConfig);
 
-    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider, *m_pQuadFactory, *m_pUIInteractionController, *m_pExampleController, *m_pInteriorExplorerModule, m_pDeadZoneMenuModule->GetRepository(), *m_pAnimationController, *m_pWorldMenuModule, *m_pWorldMenuLoaderModel, headTracker, appConfig);
+    m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider,
+                                                                                         *m_pQuadFactory,
+                                                                                         *m_pUIInteractionController,
+                                                                                         *m_pExampleController,
+                                                                                         *m_pInteriorExplorerModule,
+                                                                                         *m_pAnimationController,
+                                                                                         *m_pWorldMenuModule,
+                                                                                         *m_pWorldMenuLoaderModel,
+                                                                                         headTracker,
+                                                                                         appConfig);
     
     
 }
@@ -332,11 +334,6 @@ ExampleApp::~ExampleApp()
     Eegeo_DELETE m_pWorldMenuModule;
 
     Eegeo_DELETE m_pScreenFadeEffectController;
-
-    Eegeo_DELETE m_pDeadZoneMenuModule;
-    Eegeo_DELETE m_pMenuItem1;
-    Eegeo_DELETE m_pMenuItem2;
-    Eegeo_DELETE m_pMenuItem3;
     
     Eegeo_DELETE m_pInteriorExplorerModule;
     Eegeo_DELETE m_pUIInteractionController;
@@ -344,6 +341,7 @@ ExampleApp::~ExampleApp()
     m_pWorld->GetRenderingModule().GetRenderableFilters().RemoveRenderableFilter(*m_pUIRenderableFilter);
     Eegeo_DELETE m_pUIRenderableFilter;
     Eegeo_DELETE m_pAnimationController;
+    Eegeo_DELETE m_pVRCardboardV1ProfileFactory;
 }
 
 void ExampleApp::OnPause()
@@ -401,8 +399,6 @@ void ExampleApp::Update (float dt, float headTansform[])
         m_pWorldMenuModule->Update(dt);
         m_pAnimationController->Update(dt);
         m_pExampleController->Update(dt);
-    
-        m_pDeadZoneMenuModule->Update(dt);
         m_pUIInteractionController->Update(dt);
     
         Eegeo::v2 center = m_pVRDistortion->GetCardboardProfile().GetScreenMeshCenter(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());

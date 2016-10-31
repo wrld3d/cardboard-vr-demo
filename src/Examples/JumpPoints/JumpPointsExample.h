@@ -62,7 +62,6 @@ namespace Examples
         
         Eegeo::Rendering::RenderableFilters& m_renderableFilters;
         InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
-        Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneMenuRepository;
         Eegeo::UI::Animations::AnimationsController& m_animationsController;
         IVRHeadTracker& m_headTracker;
         const Examples::ApplicationConfig::ApplicationConfiguration& m_appConfig;
@@ -70,7 +69,6 @@ namespace Examples
         Eegeo::UI::UIRenderableFilter* m_pUIRenderableFilter;
         Eegeo::Resources::PlaceNames::PlaceNamesController& m_placeNameController;
 
-        Eegeo::Helpers::TCallback0<JumpPointsExample> m_onSP1SelectedCallback, m_onSP2SelectedCallback, m_onSP3SelectedCallback, m_onSP4SelectedCallback, m_onSP5SelectedCallback, m_onSP6SelectedCallback, m_onSP7SelectedCallback;
         Eegeo::Helpers::TCallback0<JumpPointsExample> m_onWestPortEntryButtonCallback;
 
         Eegeo::VR::JumpPointsCameraController* m_pSplineCameraController;
@@ -118,7 +116,6 @@ namespace Examples
                           Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
                           Eegeo::UI::IUICameraProvider& uiCameraProvider,
                           InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                          Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                           Eegeo::UI::Animations::AnimationsController& animationsController,
                           Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
                           WorldMenuLoader::SdkModel::WorldMenuLoaderModel& menuLoader,
@@ -180,14 +177,6 @@ namespace Examples
         void Event_TouchDown 			(const AppInterface::TouchData& data) { }
         void Event_TouchMove 			(const AppInterface::TouchData& data) { }
         void Event_TouchUp 				(const AppInterface::TouchData& data) { }
-        
-        void OnStopPoint1Selected();
-        void OnStopPoint2Selected();
-        void OnStopPoint3Selected();
-        void OnStopPoint4Selected();
-        void OnStopPoint5Selected();
-        void OnStopPoint6Selected();
-        void OnStopPoint7Selected();
         
         void ShowInteriors();
         void HideInteriors();

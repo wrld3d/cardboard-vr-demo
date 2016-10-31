@@ -34,16 +34,11 @@ namespace Examples
                                                  IVRHeadTracker& headTracker,
                                                  const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
                                                  InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                                                 Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                                                  Eegeo::UI::IUIQuadFactory& quadFactory,
                                                  ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
                                                  const ApplicationConfig::ApplicationConfiguration& appConfig)
     : m_world(eegeoWorld),
       m_interiorsExplorerModule(interiorsExplorerModule),
-      m_deadZoneRepository(deadZoneRepository),
-      m_onSFSplineSelectedCallback(this, &VRCameraSplineExample::OnSFSplineSelected),
-      m_onNYSplineSelectedCallback(this, &VRCameraSplineExample::OnNYSplineSelected),
-      m_onWestPortSplineSelectedCallback(this, &VRCameraSplineExample::OnWestPortSplineSelected),
       m_uiQuadFactory(quadFactory),
       m_screenFader(screenFader),
       m_renderableFilters(eegeoWorld.GetRenderingModule().GetRenderableFilters()),
@@ -72,10 +67,6 @@ namespace Examples
         m_pUIRenderableFilter = Eegeo_NEW(Eegeo::UI::UIRenderableFilter)();
         m_pWelcomeNoteViewer = Eegeo_NEW(WelcomeNoteViewer)(m_uiQuadFactory, *m_pUIRenderableFilter);
 
-        m_pSFSplineButton = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(10, 3, m_onSFSplineSelectedCallback);
-        m_pNYSplineButton = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(11, 4, m_onNYSplineSelectedCallback);
-        m_pWPSplineButton = Eegeo_NEW(Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem)(12, 5, m_onWestPortSplineSelectedCallback);
-
         Eegeo::VR::VRCameraPositionSpline& vrCameraPositionSpline = m_pSplineCameraController->GetVRCameraPositionSpline();
 
         vrCameraPositionSpline.Start();
@@ -84,10 +75,6 @@ namespace Examples
     VRCameraSplineExample::~VRCameraSplineExample()
     {
         Eegeo_DELETE m_pWelcomeNoteViewer;
-
-        Eegeo_DELETE m_pSFSplineButton;
-        Eegeo_DELETE m_pNYSplineButton;
-        Eegeo_DELETE m_pWPSplineButton;
 
         Eegeo_DELETE m_pUIRenderableFilter;
 

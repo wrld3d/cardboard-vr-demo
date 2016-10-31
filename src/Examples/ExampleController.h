@@ -125,7 +125,6 @@ namespace Examples
         void RegisterScreenPropertiesProviderVRExample(const ScreenPropertiesProvider& screenPropertiesProvider,
                                                        InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                        Examples::IVRHeadTracker& headTracker,
-                                                       Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                                                        Eegeo::UI::IUIQuadFactory& quadFactory,
                                                        ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
                                                        const ApplicationConfig::ApplicationConfiguration& appConfig)
@@ -135,7 +134,6 @@ namespace Examples
                                                               headTracker,
                                                               screenPropertiesProvider,
                                                               interiorsExplorerModule,
-                                                              deadZoneRepository,
                                                               quadFactory,
                                                               screenFader,
                                                               appConfig)));
@@ -147,14 +145,24 @@ namespace Examples
                                                 Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
                                                 Eegeo::UI::IUICameraProvider& uICameraProvider,
                                         		InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                                        		Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                         		Eegeo::UI::Animations::AnimationsController& animationsController,
                                                 Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
                                                 WorldMenuLoader::SdkModel::WorldMenuLoaderModel& menuLoader,
                                                 IVRHeadTracker& headTracker,
                                                 Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
         {
-            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world, m_defaultCameraControllerFactory, screenPropertiesProvider, quadFactory, uIInteractionObservable, uICameraProvider, interiorsExplorerModule, deadZoneMenuRepository,animationsController, worldMenuModule, menuLoader, headTracker, appConfig)));
+            m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world,
+                                                              m_defaultCameraControllerFactory,
+                                                              screenPropertiesProvider,
+                                                              quadFactory,
+                                                              uIInteractionObservable,
+                                                              uICameraProvider,
+                                                              interiorsExplorerModule,
+                                                              animationsController,
+                                                              worldMenuModule,
+                                                              menuLoader,
+                                                              headTracker,
+                                                              appConfig)));
         }
         
         

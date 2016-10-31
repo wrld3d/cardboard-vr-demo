@@ -16,6 +16,8 @@ namespace Eegeo
             class VRCardboardDeviceProfile;
             class IVRDistortionTransitionModel;
             class VRDistortionTransitionModel;
+            class IVRCardboardDeviceProfileFactory;
+            class VRCardboardV1ProfileFactory;
         }
     }
 }

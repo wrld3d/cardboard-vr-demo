@@ -27,7 +27,6 @@ class JumpPointsExampleFactory : public IExampleFactory
     const IScreenPropertiesProvider& m_screenPropertiesProvider;
     DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
     InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneMenuRepository;
     Eegeo::UI::WorldMenu::WorldMenuModule& m_worldMenuModule;
     IVRHeadTracker& m_headTracker;
     
@@ -42,7 +41,6 @@ public:
                              Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
                              Eegeo::UI::IUICameraProvider& uiCameraProvider,
                              InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                             Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                              Eegeo::UI::Animations::AnimationsController& animationsController,
                              Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
                              WorldMenuLoader::SdkModel::WorldMenuLoaderModel& menuLoader,

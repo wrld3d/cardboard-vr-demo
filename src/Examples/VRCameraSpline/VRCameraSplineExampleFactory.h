@@ -21,7 +21,6 @@ namespace Examples
         const IScreenPropertiesProvider& m_screenPropertiesProvider;
         DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
         InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
-        Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& m_deadZoneRepository;
         IVRHeadTracker& m_headTracker;
         Eegeo::UI::IUIQuadFactory& m_quadFactory;
         ScreenFadeEffect::SdkModel::IScreenFadeEffectController& m_screenFader;
@@ -33,7 +32,6 @@ namespace Examples
                                       IVRHeadTracker& headTracker,
                                       const IScreenPropertiesProvider& screenPropertiesProvider,
                                       InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                                      Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneRepository,
                                       Eegeo::UI::IUIQuadFactory& quadFactory,
                                      ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
                                      const ApplicationConfig::ApplicationConfiguration& appConfig);

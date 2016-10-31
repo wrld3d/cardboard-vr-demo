@@ -35,17 +35,12 @@
 #include "ICallback.h"
 
 #include "SplashScreen.h"
+#include "VRCardboardV1ProfileFactory.h"
 
 class ExampleApp : private Eegeo::NonCopyable
 {
 private:
-    
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuModule* m_pDeadZoneMenuModule;
-    
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pMenuItem1;
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pMenuItem2;
-    Eegeo::UI::DeadZoneMenu::DeadZoneMenuItem* m_pMenuItem3;
-    
+
     Eegeo::UI::SplashScreen::SplashScreen* m_pSplashScreen;
     
     Examples::IVRHeadTracker& m_headTracker;
@@ -61,6 +56,7 @@ private:
     Eegeo::VR::Distortion::VRDistortionModule* m_pVRDistortion;
     Examples::ScreenFadeEffect::SdkModel::ScreenFadeEffectController* m_pScreenFadeEffectController;
     Eegeo::Skybox::SkyboxModule *m_pVRSkybox;
+    Eegeo::VR::Distortion::VRCardboardV1ProfileFactory* m_pVRCardboardV1ProfileFactory;
 
     Eegeo::UI::UIInteractionController *m_pUIInteractionController;
     Eegeo::UI::UIRenderableFilter *m_pUIRenderableFilter;

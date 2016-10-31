@@ -8,6 +8,7 @@
 #include "ICallback.h"
 #include "VRDistortionIncludes.h"
 #include "VRDistortionTransitionModel.h"
+#include "IVRCardboardDeviceProfileFactory.h"
 
 namespace Eegeo
 {
@@ -47,12 +48,13 @@ namespace Eegeo
             public:
                 
                 VRDistortionModule(const Eegeo::Rendering::ScreenProperties& screenProperties,
-                                       Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
-                                       Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
-                                       Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
-                                       Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
-                                       Eegeo::Rendering::RenderableFilters& renderableFilters,
-                                       Eegeo::Rendering::GlBufferPool& glBufferPool);
+                                   Eegeo::Rendering::VertexLayouts::VertexLayoutPool& vertexLayoutPool,
+                                   Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool,
+                                   Eegeo::Rendering::Shaders::ShaderIdGenerator& shaderIdGenerator,
+                                   Eegeo::Rendering::Materials::MaterialIdGenerator& materialIdGenerator,
+                                   Eegeo::Rendering::RenderableFilters& renderableFilters,
+                                   Eegeo::Rendering::GlBufferPool& glBufferPool,
+                                   Eegeo::VR::Distortion::IVRCardboardDeviceProfileFactory& vrCardboardDeviceProfileFactory);
                 virtual ~VRDistortionModule();
                 void Initialize();
                 void Suspend();

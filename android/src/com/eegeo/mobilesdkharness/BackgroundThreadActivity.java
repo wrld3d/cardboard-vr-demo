@@ -9,36 +9,21 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.eegeo.cardboardvrdemo.R;
-import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
-import com.google.vrtoolkit.cardboard.CardboardDeviceParams.VerticalAlignmentType;
-import com.google.vrtoolkit.cardboard.FieldOfView;
-import com.google.vrtoolkit.cardboard.HeadMountedDisplayManager;
-import com.google.vrtoolkit.cardboard.ScreenParams;
-import com.google.vrtoolkit.cardboard.sensors.HeadTracker;
-import com.google.vrtoolkit.cardboard.sensors.MagnetSensor;
-import com.google.vrtoolkit.cardboard.sensors.MagnetSensor.OnCardboardTriggerListener;
-import com.google.vrtoolkit.cardboard.sensors.NfcSensor;
-import com.google.vrtoolkit.cardboard.sensors.NfcSensor.OnCardboardNfcListener;
 
 public class BackgroundThreadActivity extends MainActivity
 {
-
 	private EegeoSurfaceView m_surfaceView;
 	private SurfaceHolder m_surfaceHolder;
 	private long m_nativeAppWindowPtr;
 	private ThreadedUpdateRunner m_threadedRunner;
 	private Thread m_updater;
+	private VRModule m_vrModule;
 
-	private HeadTracker m_headTracker; 
-	private MagnetSensor m_magnetSensor;
-	
-	private NfcSensor mNfcSensor;
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
 	}
@@ -49,44 +34,16 @@ public class BackgroundThreadActivity extends MainActivity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
-		
-		DisplayMetrics dm = getResources().getDisplayMetrics();
-		final float dpi = dm.ydpi;
-		final Activity activity = this;
 
 		m_surfaceView = (EegeoSurfaceView)findViewById(R.id.surface);
 		m_surfaceView.getHolder().addCallback(this);
 		m_surfaceView.setActivity(this);
 
-		m_headTracker = HeadTracker.createFromContext(this);
-		m_headTracker.setGyroBiasEstimationEnabled(true);
-		m_headTracker.startTracking();
-		
-		m_magnetSensor = new MagnetSensor(this);
-		m_magnetSensor.setOnCardboardTriggerListener(new OnCardboardTriggerListener() {
-			
-			@Override
-			public void onCardboardTrigger() {
-				runOnNativeThread(new Runnable() {
-					public void run() {
-						NativeJniCalls.magnetTriggered();
-					}
-				});
-			}
-		});
-		m_magnetSensor.start();
+		m_vrModule = new VRModule(this);
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		final float dpi = dm.ydpi;
+		final Activity activity = this;
 
-		mNfcSensor = NfcSensor.getInstance(this);
-		mNfcSensor.addOnCardboardNfcListener(new OnCardboardNfcListener() {
-			@Override
-			public void onRemovedFromCardboard() {
-			}
-			
-			@Override
-			public void onInsertedIntoCardboard(CardboardDeviceParams params) {
-			}
-		});
-		
 		m_threadedRunner = new ThreadedUpdateRunner(false);
 		m_updater = new Thread(m_threadedRunner);
 		m_updater.start();
@@ -98,6 +55,7 @@ public class BackgroundThreadActivity extends MainActivity
 			public void run()
 			{
 				m_nativeAppWindowPtr = NativeJniCalls.createNativeCode(activity, getAssets(), dpi);
+
 				if(m_nativeAppWindowPtr == 0)
 				{
 					throw new RuntimeException("Failed to start native code.");
@@ -105,56 +63,15 @@ public class BackgroundThreadActivity extends MainActivity
 			}
 		});
 	}
-
-	private float[] getUpdatedCardboardProfile(){
-		HeadMountedDisplayManager hMDManager = new HeadMountedDisplayManager(this);
-		ScreenParams screenParams = hMDManager.getHeadMountedDisplay().getScreenParams();
-		CardboardDeviceParams cardboardDeviceParams = hMDManager.getHeadMountedDisplay().getCardboardDeviceParams();
-		FieldOfView fov = cardboardDeviceParams.getLeftEyeMaxFov();
-		float[] distCoef = cardboardDeviceParams.getDistortion().getCoefficients();
-		
-		int verticalAlign = 0; //Default bottom
-		
-		if (cardboardDeviceParams.getVerticalAlignment() == VerticalAlignmentType.TOP)
-			verticalAlign = -1;
-		else if (cardboardDeviceParams.getVerticalAlignment() == VerticalAlignmentType.BOTTOM)
-			verticalAlign = 1;
-		
-		float cardboardProperties[] = {
-                fov.getLeft(), //Outer
-                fov.getTop(), //Upper
-                fov.getRight(), //Inner
-                fov.getBottom(), //Lower
-                screenParams.getWidthMeters(), //Width
-                screenParams.getHeightMeters(), //Height
-                screenParams.getBorderSizeMeters(), //Border
-                cardboardDeviceParams.getInterLensDistance(), //Separation
-                cardboardDeviceParams.getVerticalDistanceToLensCenter(), //Offset
-                cardboardDeviceParams.getScreenToLensDistance(), //Screen Distance
-                verticalAlign, //Alignment
-                distCoef[0], //K1
-                distCoef[1]  //K2
-            };
-		
-		Log.i("Eegeo VR", "Cardboard profile for " + cardboardDeviceParams.getModel() + " by " + cardboardDeviceParams.getVendor() + "has been loaded.");
-		
-		return cardboardProperties;
-
-	}
-	
-	public void SetHeadMountedDisplayResolution(int width, int height) {
-		
-	}
-	
 	public void ResetTracker()
 	{
-		m_headTracker.resetTracker();
+		m_vrModule.resetTracker();
 	}
 	
 	@SuppressLint("InlinedApi") 
 	private void setScreenSettings(){
 		
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		if(android.os.Build.VERSION.SDK_INT<16)
 			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 		else if(android.os.Build.VERSION.SDK_INT<19)
@@ -173,9 +90,8 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onResume()
 	{
 		super.onResume();
-
-		setScreenSettings();
 		
+		setScreenSettings();
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
@@ -186,9 +102,8 @@ public class BackgroundThreadActivity extends MainActivity
 				if(m_surfaceHolder != null && m_surfaceHolder.getSurface() != null)
 				{
 					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
-					NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
+					NativeJniCalls.updateCardboardProfile(m_vrModule.getUpdatedCardboardProfile());
 				}
-					
 			}
 		});
 	}
@@ -211,13 +126,12 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onDestroy()
 	{
 		super.onDestroy();
-		m_headTracker.stopTracking();
-		m_headTracker = null;
+		
+		m_vrModule.stopTracker();
 		runOnNativeThread(new Runnable()
 		{
 			public void run()
 			{
-				
 				m_threadedRunner.stop();
 				NativeJniCalls.destroyNativeCode();
 				m_threadedRunner.destroyed();
@@ -261,8 +175,7 @@ public class BackgroundThreadActivity extends MainActivity
 				{
 					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
 					m_threadedRunner.start();
-					
-					NativeJniCalls.updateCardboardProfile(getUpdatedCardboardProfile());
+					NativeJniCalls.updateCardboardProfile(m_vrModule.getUpdatedCardboardProfile());
 				}
 			}
 		});
@@ -336,19 +249,7 @@ public class BackgroundThreadActivity extends MainActivity
 						{
 							if(m_running)
 							{
-								float[] headTransform = new float[16];
-								
-								if(m_headTracker!=null)
-									m_headTracker.getLastHeadView(headTransform, 0);
-								
-								if(!Float.isNaN(headTransform[0]))
-								{
-									NativeJniCalls.updateNativeCode(deltaSeconds, headTransform);	
-								}
-								else
-								{
-									ResetTracker();
-								}
+								m_vrModule.updateNativeCode(deltaSeconds);
 							}
 							else
 							{

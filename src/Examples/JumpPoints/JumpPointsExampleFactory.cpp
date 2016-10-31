@@ -16,7 +16,6 @@ namespace Examples
                                                        Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
                                                        Eegeo::UI::IUICameraProvider& uiCameraProvider,
                                                        InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                                                       Eegeo::UI::DeadZoneMenu::DeadZoneMenuItemRepository& deadZoneMenuRepository,
                                                        Eegeo::UI::Animations::AnimationsController& animationsController,
                                                        Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
                                                        WorldMenuLoader::SdkModel::WorldMenuLoaderModel& menuLoader,
@@ -30,7 +29,6 @@ namespace Examples
     , m_screenPropertiesProvider(screenPropertiesProvider)
     , m_defaultCameraControllerFactory(defaultCameraControllerFactory)
     , m_interiorsExplorerModule(interiorsExplorerModule)
-    , m_deadZoneMenuRepository(deadZoneMenuRepository)
     , m_worldMenuModule(worldMenuModule)
     , m_menuLoader(menuLoader)
     , m_headTracker(headTracker)
@@ -53,7 +51,6 @@ namespace Examples
                                                m_uiInteractionObservable,
                                                m_uiCameraProvider,
                                                m_interiorsExplorerModule,
-                                               m_deadZoneMenuRepository,
                                                m_animationsController,
                                                m_worldMenuModule,
                                                m_menuLoader,

@@ -4,6 +4,9 @@ set(currsources  ../src/Modules/VRDistortionModule/VRDistortionMaterial.cpp  .
   ../src/Modules/VRDistortionModule/VRDistortionIncludes.h
   ../src/Modules/VRDistortionModule/VRCardboardDeviceProfile.cpp
   ../src/Modules/VRDistortionModule/VRCardboardDeviceProfile.h
+  ../src/Modules/VRDistortionModule/IVRCardboardDeviceProfileFactory.h
+  ../src/Modules/VRDistortionModule/VRCardboardV1ProfileFactory.cpp
+  ../src/Modules/VRDistortionModule/VRCardboardV1ProfileFactory.h
   ../src/Modules/VRDistortionModule/VRDistortionMeshHelper.cpp
   ../src/Modules/VRDistortionModule/VRDistortionMeshHelper.h
   ../src/Modules/VRDistortionModule/IVRDistortionTransitionModel.h
