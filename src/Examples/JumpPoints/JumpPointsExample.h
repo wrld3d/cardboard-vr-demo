@@ -38,6 +38,7 @@
 #include "InteriorCameraAnimationPositionProvider.h"
 #include "FloorSwitchCameraAnimator.h"
 #include "InteriorDistanceVisibilityUpdater.h"
+#include "VRRenderCamera.h"
 
 namespace Examples
 {
@@ -47,8 +48,7 @@ namespace Examples
     class JumpPointsExample : public IExample, Eegeo::NonCopyable, public Eegeo::UI::Animations::IAnimationObserver
     {
     private:
-        
-        float m_eyeDistance;
+
         Eegeo::EegeoWorld& m_world;
         Eegeo::UI::IUIQuadFactory& m_uiQuadFactory;
         Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
@@ -71,7 +71,7 @@ namespace Examples
 
         Eegeo::Helpers::TCallback0<JumpPointsExample> m_onWestPortEntryButtonCallback;
 
-        Eegeo::VR::JumpPointsCameraController* m_pSplineCameraController;
+        Eegeo::VR::JumpPointsCameraController* m_pVRCameraController;
 
         TExteriorJumpPointsData m_exteriorJumpPoints;
         TInteriorJumpPointsData m_interiorJumpPoints;
@@ -137,20 +137,16 @@ namespace Examples
         void OrientationUpdate();
         void EarlyUpdate(float dt);
         void Update(float dt);
+        void UpdateHeadOrientation(const float headTansform[]);
         void PreWorldDraw() { }
         void Draw();
         void Suspend();
         
-        const Eegeo::m33& getCurrentCameraOrientation();
-        const Eegeo::m33& GetBaseOrientation();
-        const Eegeo::m33& GetHeadTrackerOrientation();
-        
-        void UpdateCardboardProfile(float cardboardProfile[]);
+        void UpdateCardboardProfile(const float cardboardProfile[]);
         
         virtual Eegeo::Camera::RenderCamera& GetRenderCamera();
-        virtual Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const;
-        virtual Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const;
         virtual Eegeo::Camera::CameraState GetCurrentCameraState() const;
+        virtual const Eegeo::VRCamera::VRCameraState& GetCurrentVRCameraState();
         
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
         

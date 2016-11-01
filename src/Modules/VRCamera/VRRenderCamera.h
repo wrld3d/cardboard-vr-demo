@@ -58,7 +58,7 @@ namespace Eegeo
             const v3 GetUp() const { return m_orientation.GetRow(1); }
             const v3 GetForward() const { return m_orientation.GetRow(2); }
             
-            
+            void UpdateCachedState();
             void SetProjectionMatrix(Eegeo::m44& projection);
             void UpdateFromPose(float eyeDistanceMultiplier);
             void SetEcefPosition(const Eegeo::dv3& ecef);

@@ -157,6 +157,11 @@ void ExampleController::Update(float dt)
 	}
 }
 
+void ExampleController::UpdateHeadOrientation(const float headTansform[])
+{
+   m_pCurrentExample->UpdateHeadOrientation(headTansform);
+}
+
 void ExampleController::PreWorldDraw()
 {
 	if(m_pCurrentExample != NULL)
@@ -173,7 +178,7 @@ void ExampleController::Draw()
 	}
 }
     
-void ExampleController::UpdateCardboardProfile(float cardboardProfile[]){
+void ExampleController::UpdateCardboardProfile(const float cardboardProfile[]){
     m_pCurrentExample->UpdateCardboardProfile(cardboardProfile);
 }
 
@@ -192,35 +197,30 @@ void ExampleController::DestroyCurrentExample()
 		m_pCurrentExample = NULL;
 	}
 }
-    const Eegeo::m33& ExampleController::GetOrientation()
-    {
-        return m_pCurrentExample->getCurrentCameraOrientation();
-    }
+
+const Eegeo::m33& ExampleController::GetOrientation()
+{
+    return GetCurrentVRCameraState().CurrentCameraOrientation();
+}
     
-    const Eegeo::m33& ExampleController::GetBaseOrientation()
-    {
-        return m_pCurrentExample->GetBaseOrientation();
-    }
+const Eegeo::m33& ExampleController::GetBaseOrientation()
+{
+    return GetCurrentVRCameraState().BaseOrientation();
+}
     
-    const Eegeo::m33& ExampleController::GetHeadTrackerOrientation()
-    {
-        return m_pCurrentExample->GetHeadTrackerOrientation();
-    }
+const Eegeo::m33& ExampleController::GetHeadTrackerOrientation()
+{
+    return GetCurrentVRCameraState().HeadTrackerOrientation();
+}
     
-    Eegeo::Camera::RenderCamera& ExampleController::GetRenderCamera(){
-        return m_pCurrentExample->GetRenderCamera();
-    }
-    
-    Eegeo::Camera::CameraState ExampleController::GetCurrentLeftCameraState(float headTansform[]) const
-    {
-        return m_pCurrentExample->GetCurrentLeftCameraState(headTansform);
-    }
-    
-    Eegeo::Camera::CameraState ExampleController::GetCurrentRightCameraState(float headTansform[]) const
-    {
-        return m_pCurrentExample->GetCurrentRightCameraState(headTansform);
-    }
-    
+Eegeo::Camera::RenderCamera& ExampleController::GetRenderCamera(){
+    return m_pCurrentExample->GetRenderCamera();
+}
+
+const Eegeo::VRCamera::VRCameraState& ExampleController::GetCurrentVRCameraState()
+{
+    return m_pCurrentExample->GetCurrentVRCameraState();
+}    
 
 Eegeo::Camera::CameraState ExampleController::GetCurrentCameraState() const
 {

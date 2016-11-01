@@ -38,7 +38,7 @@ namespace Examples
         bool m_uiVisible;
         DefaultCameraControllerFactory& m_defaultCameraControllerFactory;
         Eegeo::Camera::GlobeCamera::GlobeCameraTouchController& m_globeCameraTouchController;
-        
+
         IExampleControllerView& m_view;
         UIActionHandler<ExampleController> m_nextExampleHandler;
         UIActionHandler<ExampleController> m_previousExampleHandler;
@@ -76,7 +76,7 @@ namespace Examples
         
         void Draw();
         
-        void UpdateCardboardProfile(float cardboardProfile[]);
+        void UpdateCardboardProfile(const float cardboardProfile[]);
         
         void RegisterExample(IExampleFactory* pFactory);
         
@@ -85,10 +85,11 @@ namespace Examples
         const Eegeo::m33& GetHeadTrackerOrientation();
         
         Eegeo::Camera::RenderCamera& GetRenderCamera();
+
+        void UpdateHeadOrientation(const float headTansform[]);
         
-        Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const;
-        Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const;
         Eegeo::Camera::CameraState GetCurrentCameraState() const;
+        const Eegeo::VRCamera::VRCameraState& GetCurrentVRCameraState();
         
         Eegeo::Streaming::IStreamingVolume& GetCurrentStreamingVolume() const;
         

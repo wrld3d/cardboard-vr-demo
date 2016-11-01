@@ -127,11 +127,11 @@ public:
 	void OnResume();
 
     
-	void Update (float dt, float headTansform[]);
+	void Update (float dt, const float headTansform[]);
     
-    void Draw (float dt, float headTansform[]);
-    void DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld);
-    void DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld);
+    void Draw (float dt);
+    void DrawLeftEye (float dt, Eegeo::EegeoWorld& eegeoWorld, const Eegeo::Camera::CameraState& leftCameraState);
+    void DrawRightEye (float dt, Eegeo::EegeoWorld& eegeoWorld, const Eegeo::Camera::CameraState& rightCameraState);
     void DrawEyeFromCameraState(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld);
     void DrawLoadingScreen ();
     
@@ -143,7 +143,7 @@ public:
     void LoadSplineExample();
     void LoadJumpPointExample();
     
-    void UpdateCardboardProfile(float cardboardProfile[]);
+    void UpdateCardboardProfile(const float cardboardProfile[]);
     void MagnetTriggered();
     
     void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);

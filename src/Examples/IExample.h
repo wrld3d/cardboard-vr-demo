@@ -8,6 +8,7 @@
 #include "Rendering.h"
 #include "RenderCamera.h"
 #include "CameraState.h"
+#include "VRCameraState.h"
 #include "../Modules/UI/Animations/IDv3Animateable.h"
 #include <string>
 
@@ -28,12 +29,8 @@ namespace Examples
         virtual void Draw() = 0;
         virtual void Suspend()= 0;
         virtual void AfterCameraUpdate() { }
-        
-        virtual const Eegeo::m33& getCurrentCameraOrientation(){return *(new Eegeo::m33());}
-        virtual const Eegeo::m33& GetBaseOrientation(){return *(new Eegeo::m33());}
-        virtual const Eegeo::m33& GetHeadTrackerOrientation(){return *(new Eegeo::m33());}
-        
-        virtual void UpdateCardboardProfile(float cardboardProfile[]){}
+        virtual void UpdateHeadOrientation(const float headTansform[]) { }
+        virtual void UpdateCardboardProfile(const float cardboardProfile[]){}
         
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties) = 0;
         
@@ -41,8 +38,7 @@ namespace Examples
         virtual Eegeo::Camera::RenderCamera& GetRenderCamera(){return m_RenderCamera;}
         
         virtual Eegeo::Camera::CameraState GetCurrentCameraState() const = 0;
-        virtual Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const {return GetCurrentCameraState();}
-        virtual Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const{return GetCurrentCameraState();}
+        virtual const Eegeo::VRCamera::VRCameraState& GetCurrentVRCameraState() { return *(new Eegeo::VRCamera::VRCameraState(Eegeo::dv3::Zero(), GetCurrentCameraState(), GetCurrentCameraState(), Eegeo::m33::CreateIdentity(), Eegeo::m33::CreateIdentity(), Eegeo::m33::CreateIdentity())); }
 
         virtual void NotifyViewNeedsLayout() = 0;
         

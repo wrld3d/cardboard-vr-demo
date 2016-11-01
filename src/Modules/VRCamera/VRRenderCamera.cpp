@@ -40,7 +40,7 @@ namespace Eegeo
                                        m_pRenderCamera->GetProjectionMatrix());
         }
 
-        const Eegeo::VRCamera::VRCameraState& VRRenderCamera::GetVRCameraState()
+        void VRRenderCamera::UpdateCachedState()
         {
             UpdateFromPose(-1.f);
             Camera::CameraState leftCameraState = GetCameraState();
@@ -54,7 +54,10 @@ namespace Eegeo
                                             GetOrientation(),
                                             GetCameraOrientation(),
                                             GetHeadTrackerOrientation());
+        }
 
+        const Eegeo::VRCamera::VRCameraState& VRRenderCamera::GetVRCameraState()
+        {
             return m_cachedVRState;
         }
 
@@ -82,8 +85,6 @@ namespace Eegeo
             m_pRenderCamera->SetOrientationMatrix(orientationMatrix);
             m_pRenderCamera->SetEcefLocation(targetPos);
             m_pRenderCamera->SetProjection(0.7f, near*m_nearMultiplier, far);
-            
-            
         }
         
         void VRRenderCamera::SetEcefPosition(const Eegeo::dv3& ecef)
@@ -109,12 +110,14 @@ namespace Eegeo
 
             m_pRenderCamera->SetOrientationMatrix(m_currentOrientation);
             m_pRenderCamera->SetEcefLocation(m_ecefPosition);
+            UpdateCachedState();
         }
         
         void VRRenderCamera::SetStartPositionAndOrientation(const Eegeo::dv3& position, const Eegeo::m33& orientation)
         {
             m_pRenderCamera->SetEcefLocation(position);
             m_orientation = orientation;
+            UpdateCachedState();
         }
         
         void VRRenderCamera::Update(float dt)
@@ -146,6 +149,8 @@ namespace Eegeo
             m_headTrackerOrientation.SetRow(0, right);
             m_headTrackerOrientation.SetRow(1, up);
             m_headTrackerOrientation.SetRow(2, forward);
+
+            UpdateCachedState();
         }
             
     }

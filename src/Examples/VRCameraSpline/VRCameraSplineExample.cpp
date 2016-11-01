@@ -54,6 +54,7 @@ namespace Examples
         Eegeo::m44 projectionMatrix = Eegeo::m44(pCameraController->GetRenderCamera().GetProjectionMatrix());
         m_pSplineCameraController = new Eegeo::VR::VRCameraController(initialScreenProperties.GetScreenWidth(),
                                                                       initialScreenProperties.GetScreenHeight(),
+                                                                      0.03f,
                                                                       headTracker,
                                                                       appConfig.UKWelcomeNotePath(),
                                                                       appConfig.SFWelcomeNotePath(),
@@ -62,7 +63,6 @@ namespace Examples
                                                                       appConfig.SFSplineWelcomeNotePath(),
                                                                       appConfig.NYSplineWelcomeNotePath());
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
-        m_eyeDistance = 0.03f;
 
         m_pUIRenderableFilter = Eegeo_NEW(Eegeo::UI::UIRenderableFilter)();
         m_pWelcomeNoteViewer = Eegeo_NEW(WelcomeNoteViewer)(m_uiQuadFactory, *m_pUIRenderableFilter);
@@ -86,7 +86,7 @@ namespace Examples
         m_renderableFilters.AddRenderableFilter(*m_pUIRenderableFilter);
         
         Eegeo::Space::LatLongAltitude eyePosLla = Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250);
-        m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla);
+        m_pSplineCameraController->SetStartLatLongAltitude(eyePosLla, 0.f);
 
         m_pSplineCameraController->RegisterSplineFinishedCallback(m_onSplineEndedCallback);
         m_screenFader.RegisterVisibilityChangedCallback(m_screenVisibilityChanged);
@@ -126,10 +126,10 @@ namespace Examples
         }
     }
     
-    void VRCameraSplineExample::UpdateCardboardProfile(float cardboardProfile[])
+    void VRCameraSplineExample::UpdateCardboardProfile(const float cardboardProfile[])
     {
         //9th parameter is eye distance in meters.
-        m_eyeDistance = cardboardProfile[9]/2.0f;
+        m_pSplineCameraController->SetEyeDistance(cardboardProfile[9]/2.0f);
     }
     
     void VRCameraSplineExample::EarlyUpdate(float dt)
@@ -162,60 +162,23 @@ namespace Examples
     {
     }
     
-    
-    const Eegeo::m33& VRCameraSplineExample::getCurrentCameraOrientation()
-    {
-        return m_pSplineCameraController->GetOrientation();
-    }
-    
-    const Eegeo::m33& VRCameraSplineExample::GetBaseOrientation()
-    {
-        return m_pSplineCameraController->GetCameraOrientation();
-    }
-    
-    const Eegeo::m33& VRCameraSplineExample::GetHeadTrackerOrientation()
-    {
-        return m_pSplineCameraController->GetHeadTrackerOrientation();
-    }
-    
     Eegeo::Camera::RenderCamera& VRCameraSplineExample::GetRenderCamera(){
         return m_pSplineCameraController->GetCamera();
     }
-    
-    Eegeo::Camera::CameraState VRCameraSplineExample::GetCurrentLeftCameraState(float headTansform[]) const
-    {
-        
-        Eegeo::m33 orientation;
-        Eegeo::v3 right = Eegeo::v3(headTansform[0],headTansform[4],headTansform[8]);
-        Eegeo::v3 up = Eegeo::v3(headTansform[1],headTansform[5],headTansform[9]);
-        Eegeo::v3 forward = Eegeo::v3(-headTansform[2],-headTansform[6],-headTansform[10]);
-        orientation.SetRow(0, right);
-        orientation.SetRow(1, up);
-        orientation.SetRow(2, forward);
-        
-        m_pSplineCameraController->UpdateFromPose(orientation, -m_eyeDistance);
-        
-        return m_pSplineCameraController->GetCameraState();
-    }
-    
-    Eegeo::Camera::CameraState VRCameraSplineExample::GetCurrentRightCameraState(float headTansform[]) const
-    {
-        Eegeo::m33 orientation;
-        Eegeo::v3 right = Eegeo::v3(headTansform[0],headTansform[4],headTansform[8]);
-        Eegeo::v3 up = Eegeo::v3(headTansform[1],headTansform[5],headTansform[9]);
-        Eegeo::v3 forward = Eegeo::v3(-headTansform[2],-headTansform[6],-headTansform[10]);
-        orientation.SetRow(0, right);
-        orientation.SetRow(1, up);
-        orientation.SetRow(2, forward);
 
-        m_pSplineCameraController->UpdateFromPose(orientation, m_eyeDistance);
-        
-        return m_pSplineCameraController->GetCameraState();
+    void VRCameraSplineExample::UpdateHeadOrientation(const float headTansform[])
+    {
+        m_pSplineCameraController->UpdateHeadOrientation(headTansform);
     }
     
     Eegeo::Camera::CameraState VRCameraSplineExample::GetCurrentCameraState() const
     {
         return m_pSplineCameraController->GetCameraState();
+    }
+
+    const Eegeo::VRCamera::VRCameraState& VRCameraSplineExample::GetCurrentVRCameraState()
+    {
+        return m_pSplineCameraController->GetVRCameraState();
     }
     
     void VRCameraSplineExample::OnWestPortSplineSelected()

@@ -59,7 +59,7 @@ namespace Eegeo
                 void Initialize();
                 void Suspend();
                 
-                void UpdateCardboardProfile(float cardboardProfile[]);
+                void UpdateCardboardProfile(const float cardboardProfile[]);
                 VRCardboardDeviceProfile& GetCardboardProfile() { return *m_pCardboardProfile; }
                 
                 void BeginRendering();

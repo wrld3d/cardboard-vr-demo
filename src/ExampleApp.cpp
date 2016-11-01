@@ -357,10 +357,8 @@ void ExampleApp::OnResume()
 }
 
 
-void ExampleApp::Update (float dt, float headTansform[])
+void ExampleApp::Update (float dt, const float headTansform[])
 {
-    
-    
     const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
     Eegeo::Camera::RenderCamera& renderCamera = m_pExampleController->GetRenderCamera();
@@ -405,6 +403,8 @@ void ExampleApp::Update (float dt, float headTansform[])
         m_pUIInteractionController->Event_ScreenInteractionMoved(center);
         m_pInteriorExplorerModule ->Update(dt);
         m_pScreenFadeEffectController->Update(dt);
+
+        m_pExampleController->UpdateHeadOrientation(headTansform);
     }
     
     UpdateNightTParam(dt);
@@ -412,15 +412,17 @@ void ExampleApp::Update (float dt, float headTansform[])
     UpdateLoadingScreen(dt);
 }
 
-void ExampleApp::Draw (float dt, float headTansform[])
+void ExampleApp::Draw (float dt)
 {
     Eegeo::EegeoWorld& eegeoWorld = World();
     if(eegeoWorld.Validated())
     {
+        Eegeo::VRCamera::VRCameraState vrCameraState = m_pExampleController->GetCurrentVRCameraState();
+
         m_pVRDistortion->BeginRendering();
-        DrawLeftEye(dt, headTansform, eegeoWorld);
+        DrawLeftEye(dt, eegeoWorld, vrCameraState.LeftCameraState());
         m_pVRDistortion->RegisterRenderable();
-        DrawRightEye(dt, headTansform, eegeoWorld);
+        DrawRightEye(dt, eegeoWorld, vrCameraState.RightCameraState());
         m_pVRDistortion->UnRegisterRenderable();
     }
     
@@ -428,28 +430,24 @@ void ExampleApp::Draw (float dt, float headTansform[])
     
 }
 
-void ExampleApp::DrawLeftEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld)
+void ExampleApp::DrawLeftEye (float dt, Eegeo::EegeoWorld& eegeoWorld, const Eegeo::Camera::CameraState& leftCameraState)
 {
     
     m_pExampleController->PreWorldDraw();
     
     glViewport(0, 0, m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(), m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     
-    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentLeftCameraState(headTansform));
-    
-    DrawEyeFromCameraState(dt, cameraState, eegeoWorld);
+    DrawEyeFromCameraState(dt, leftCameraState, eegeoWorld);
 }
 
-void ExampleApp::DrawRightEye (float dt, float headTansform[], Eegeo::EegeoWorld& eegeoWorld)
+void ExampleApp::DrawRightEye (float dt, Eegeo::EegeoWorld& eegeoWorld, const Eegeo::Camera::CameraState& rightCameraState)
 {
     
     m_pExampleController->PreWorldDraw();
     
     glViewport(m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(), 0, m_screenPropertiesProvider.GetScreenProperties().GetScreenWidth(),m_screenPropertiesProvider.GetScreenProperties().GetScreenHeight());
     
-    Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentRightCameraState(headTansform));
-    
-    DrawEyeFromCameraState(dt, cameraState, eegeoWorld);
+    DrawEyeFromCameraState(dt, rightCameraState, eegeoWorld);
 }
 
 void ExampleApp::DrawEyeFromCameraState(float dt, const Eegeo::Camera::CameraState& cameraState, Eegeo::EegeoWorld& eegeoWorld)
@@ -671,7 +669,7 @@ void ExampleApp::LoadJumpPointExample()
     m_pExampleController->ActivateExample("JumpPointsExample");
 }
 
-void ExampleApp::UpdateCardboardProfile(float cardboardProfile[])
+void ExampleApp::UpdateCardboardProfile(const float cardboardProfile[])
 {
     m_pExampleController->UpdateCardboardProfile(cardboardProfile);
     m_pVRDistortion->UpdateCardboardProfile(cardboardProfile);

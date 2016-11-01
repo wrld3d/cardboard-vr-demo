@@ -52,8 +52,8 @@ public:
 	);
 	~AppHost();
 
-	void Update(float dt, float headTansform[]);
-	void Draw(float dt, float headTansform[]);
+	void Update(float dt, const float headTansform[]);
+	void Draw(float dt);
 
 	void OnPause();
 	void OnResume();
@@ -62,7 +62,7 @@ public:
 
 	void HandleTouchInputEvent(const Eegeo::Android::Input::TouchInputEvent& event);
     
-    void UpdateCardboardProfile(float cardboardProfile[]);
+    void UpdateCardboardProfile(const float cardboardProfile[]);
     void MagnetTriggered();
     
 	void SetEnvironmentFlatten(bool flattenState);

@@ -19,11 +19,11 @@ public:
 	void Pause();
 	void Resume();
 	void ActivateSurface();
-	void Update(float deltaSeconds, float headTansform[]);
+	void Update(float deltaSeconds, const float headTansform[]);
 
     void HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& message);
     
-    void UpdateCardboardProfile(float cardboardProfile[]);
+    void UpdateCardboardProfile(const float cardboardProfile[]);
     void MagnetTriggered();
     
 private:

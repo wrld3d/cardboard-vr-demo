@@ -195,7 +195,7 @@ namespace Eegeo
                 }
             }
             
-            void VRDistortionModule::UpdateCardboardProfile(float cardboardProfile[])
+            void VRDistortionModule::UpdateCardboardProfile(const float cardboardProfile[])
             {
                 m_pCardboardProfile->SetupProfile(cardboardProfile);
                 m_meshUpdateRequried = true;

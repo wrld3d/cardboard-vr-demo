@@ -30,8 +30,6 @@ namespace Examples
 class VRCameraSplineExample : public IExample, Eegeo::NonCopyable
 {
 private:
-	
-    float m_eyeDistance;
     Eegeo::EegeoWorld& m_world;
     
     Eegeo::VR::VRCameraController* m_pSplineCameraController;
@@ -82,20 +80,16 @@ public:
     void OrientationUpdate();
 	void EarlyUpdate(float dt);
     void Update(float dt);
+    void UpdateHeadOrientation(const float headTansform[]);
     void PreWorldDraw() { }
 	void Draw() {}
 	void Suspend();
     
-    const Eegeo::m33& getCurrentCameraOrientation();
-    const Eegeo::m33& GetBaseOrientation();
-    const Eegeo::m33& GetHeadTrackerOrientation();
-    
-    void UpdateCardboardProfile(float cardboardProfile[]);
+    void UpdateCardboardProfile(const float cardboardProfile[]);
     
     virtual Eegeo::Camera::RenderCamera& GetRenderCamera();
-    virtual Eegeo::Camera::CameraState GetCurrentLeftCameraState(float headTansform[]) const;
-    virtual Eegeo::Camera::CameraState GetCurrentRightCameraState(float headTansform[]) const;
     virtual Eegeo::Camera::CameraState GetCurrentCameraState() const;
+    virtual const Eegeo::VRCamera::VRCameraState& GetCurrentVRCameraState();
     
     virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
 

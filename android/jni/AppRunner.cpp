@@ -83,7 +83,7 @@ void AppRunner::HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& e
     }
 }
 
-void AppRunner::UpdateCardboardProfile(float cardboardProfile[])
+void AppRunner::UpdateCardboardProfile(const float cardboardProfile[])
 {
     if(m_pAppHost != NULL)
     {
@@ -131,7 +131,7 @@ bool AppRunner::TryBindDisplay()
 	return false;
 }
 
-void AppRunner::Update(float deltaSeconds, float headTansform[])
+void AppRunner::Update(float deltaSeconds, const float headTansform[])
 {
 	if(m_pAppHost != NULL && m_displayService.IsDisplayAvailable())
 	{
@@ -147,7 +147,7 @@ void AppRunner::Update(float deltaSeconds, float headTansform[])
         Eegeo::Helpers::GLHelpers::ClearBuffers();
         
         // engine draw call
-        m_pAppHost->Draw(deltaSeconds, headTansform);
+        m_pAppHost->Draw(deltaSeconds);
         
         
 	}

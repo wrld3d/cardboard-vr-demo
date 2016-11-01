@@ -181,9 +181,7 @@ void AppHost::Update(float dt)
 
 void AppHost::Draw(float dt)
 {
-    // identity matrix, this should be coming from head tracking.
-    float items[] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
-	m_pApp->Draw(dt,items);
+	m_pApp->Draw(dt);
 }
 
 void AppHost::ConfigureExamples(const Eegeo::Rendering::ScreenProperties& screenProperties, Eegeo::Config::DeviceSpec deviceSpecs)

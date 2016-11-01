@@ -6,7 +6,7 @@
 #include "ICallback.h"
 #include "VectorMath.h"
 #include "IInteriorsExplorerModule.h"
-#include "JumpPointsCameraController.h"
+#include "VRRenderCamera.h"
 #include "InteriorCameraAnimationPositionProvider.h"
 
 namespace Examples
@@ -16,7 +16,7 @@ namespace Examples
     private:
 
         InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
-        Eegeo::VR::JumpPointsCameraController& m_vrCamera;
+        Eegeo::VRCamera::VRRenderCamera& m_vrCamera;
         InteriorCameraAnimationPositionProvider m_cameraPositionProvider;
         Eegeo::dv3 m_cameraPosBase;
 
@@ -26,7 +26,7 @@ namespace Examples
     public:
 
         FloorSwitchCameraAnimator(InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                                  Eegeo::VR::JumpPointsCameraController& vrCamera,
+                                  Eegeo::VRCamera::VRRenderCamera& vrCamera,
                                   InteriorCameraAnimationPositionProvider cameraPositionProvider,
                                   const Eegeo::dv3& cameraPosBase);
 

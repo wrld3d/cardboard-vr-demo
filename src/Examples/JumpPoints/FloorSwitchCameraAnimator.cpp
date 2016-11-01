@@ -5,7 +5,7 @@
 namespace Examples
 {
     FloorSwitchCameraAnimator::FloorSwitchCameraAnimator(InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
-                                                         Eegeo::VR::JumpPointsCameraController& vrCamera,
+                                                         Eegeo::VRCamera::VRRenderCamera& vrCamera,
                                                          InteriorCameraAnimationPositionProvider cameraPositionProvider,
                                                          const Eegeo::dv3& cameraPosBase)
     : m_interiorsExplorerModule(interiorsExplorerModule)
