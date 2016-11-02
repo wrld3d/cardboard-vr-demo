@@ -2,6 +2,8 @@ set(headers ${headers} ../src/Modules/VRCamera/
 )
 set(currsources
   ../src/Modules/VRCamera/VRCamera.h
+  ../src/Modules/VRCamera/VRCameraStreamingController.cpp
+  ../src/Modules/VRCamera/VRCameraStreamingController.h
   ../src/Modules/VRCamera/VRRenderCamera.cpp
   ../src/Modules/VRCamera/VRRenderCamera.h
   ../src/Modules/VRCamera/VRCameraState.h

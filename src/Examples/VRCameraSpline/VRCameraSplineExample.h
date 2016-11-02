@@ -4,6 +4,7 @@
 #define __ExampleApp__VRCameraSplineExample__
 
 #include "VRCameraController.h"
+#include "VRCameraStreamingController.h"
 #include "IExample.h"
 #include "Camera.h"
 #include "Geometry.h"
@@ -33,6 +34,7 @@ private:
     Eegeo::EegeoWorld& m_world;
     
     Eegeo::VR::VRCameraController* m_pSplineCameraController;
+    Eegeo::VRCamera::VRCameraStreamingController* m_pVRCameraStreamingController;
     InteriorsExplorer::IInteriorsExplorerModule& m_interiorsExplorerModule;
 
     Eegeo::Rendering::RenderableFilters& m_renderableFilters;
@@ -63,7 +65,8 @@ public:
                           InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                           Eegeo::UI::IUIQuadFactory& quadFactory,
                           ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
-                          const ApplicationConfig::ApplicationConfiguration& appConfig);
+                          const ApplicationConfig::ApplicationConfiguration& appConfig,
+                          const Eegeo::Config::DeviceSpec& deviceSpecs);
 
     virtual ~VRCameraSplineExample();
     
@@ -84,6 +87,7 @@ public:
     void PreWorldDraw() { }
 	void Draw() {}
 	void Suspend();
+    Eegeo::Streaming::IStreamingVolume& GetCurrentStreamingVolume(const Eegeo::Modules::Map::MapModule& mapModule) const;
     
     void UpdateCardboardProfile(const float cardboardProfile[]);
     

@@ -169,14 +169,6 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     const float cameraControllerDistanceFromInterestPointMeters = 1781.0f;
     
     m_pVRCardboardV1ProfileFactory = Eegeo_NEW(Eegeo::VR::Distortion::VRCardboardV1ProfileFactory)();
-    m_pStreamingVolume = Eegeo_NEW(Eegeo::Streaming::CameraFrustumStreamingVolume)(mapModule.GetResourceCeilingProvider(),
-                                                                                   Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
-                                                                                   Eegeo::Streaming::QuadTreeCube::MAX_DEPTH_TO_VISIT,
-                                                                                   mapModule.GetEnvironmentFlatteningService());
-    
-    m_pStreamingVolume->setDeepestLevelForAltitudeLodRefinement(11);
-    m_pStreamingVolume->SetForceMaximumRefinement(true);
-    
     m_pCameraControllerFactory = new Examples::DefaultCameraControllerFactory(
                                                                     terrainModelModule,
                                                                     mapModule,
@@ -284,12 +276,13 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
                                                                                                             headTracker,
                                                                                                             *m_pQuadFactory,
                                                                                                             *m_pScreenFadeEffectController,
-                                                                                                            appConfig);
+                                                                                                            appConfig,
+                                                                                                            deviceSpecs);
 
     m_pExampleController->RegisterJumpPointVRExample<Examples::JumpPointsExampleFactory>(m_screenPropertiesProvider,
                                                                                          *m_pQuadFactory,
                                                                                          *m_pUIInteractionController,
-                                                                                         *m_pExampleController,
+                                                                                         deviceSpecs,
                                                                                          *m_pInteriorExplorerModule,
                                                                                          *m_pAnimationController,
                                                                                          *m_pWorldMenuModule,
@@ -323,7 +316,6 @@ ExampleApp::~ExampleApp()
     Eegeo_DELETE m_pVRSkybox;
     Eegeo_DELETE m_pVRDistortion;
     
-    Eegeo_DELETE m_pStreamingVolume;
     Eegeo_DELETE m_pCameraControllerFactory;
     Eegeo_DELETE m_pCameraTouchController;
     Eegeo_DELETE m_pExampleController;
@@ -361,31 +353,19 @@ void ExampleApp::Update (float dt, const float headTansform[])
 {
     const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
     Eegeo::Camera::CameraState cameraState(m_pExampleController->GetCurrentCameraState());
-    Eegeo::Camera::RenderCamera& renderCamera = m_pExampleController->GetRenderCamera();
     Eegeo::EegeoWorld& eegeoWorld(World());
     
     eegeoWorld.EarlyUpdate(dt);
     
     if(m_pLoadingScreen==NULL || m_pLoadingScreen->IsDismissed())
         m_pExampleController->EarlyUpdate(dt);
-    
-    std::vector<Eegeo::Geometry::Plane> frustumPlanes(Eegeo::Geometry::Frustum::PLANES_COUNT);
-    BuildFrustumPlanesFromViewProjection(frustumPlanes, renderCamera.GetViewProjectionMatrix());
-    const double d = renderCamera.GetAltitude() * Eegeo::Streaming::StreamingVolumeController::CAMERA_ALTITUDE_TO_FAR_PLANE_DISTANCE_MULTIPLIER;
-    const double cameraFarPlaneD = fmin(fmax(d, Eegeo::Streaming::StreamingVolumeController::MIN_STREAMING_FAR_PLANE_DISTANCE), frustumPlanes[Eegeo::Geometry::Frustum::PLANE_FAR].d);
-    frustumPlanes[Eegeo::Geometry::Frustum::PLANE_FAR].d = static_cast<float>(cameraFarPlaneD);
-    
-//    Workaround: added 100.0f to FOV to load textures for surroundings even when camera is not looking at it to fix interior loading crash.
-//    m_pStreamingVolume->updateStreamingVolume(renderCamera.GetEcefLocation(), frustumPlanes, renderCamera.GetFOV());
-    m_pStreamingVolume->updateStreamingVolume(renderCamera.GetEcefLocation(), frustumPlanes, renderCamera.GetFOV()+100.0f);
-    m_pStreamingVolume->ResetVolume(cameraState.InterestPointEcef());
-    
+
     Eegeo::EegeoUpdateParameters updateParameters(dt,
                                                   cameraState.LocationEcef(),
                                                   cameraState.InterestPointEcef(),
                                                   cameraState.ViewMatrix(),
                                                   cameraState.ProjectionMatrix(),
-                                                  *m_pStreamingVolume,
+                                                  m_pExampleController->GetCurrentStreamingVolume(),
                                                   screenProperties);
     
     eegeoWorld.Update(updateParameters);

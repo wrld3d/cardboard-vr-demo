@@ -8,5 +8,6 @@ namespace Eegeo
     {
         class VRRenderCamera;
         class VRCameraState;
+        class VRCameraStreamingController;
     }
 }

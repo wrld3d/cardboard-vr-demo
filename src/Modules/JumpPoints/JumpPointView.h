@@ -31,7 +31,6 @@ namespace Eegeo
                               , IUIRenderableFilter& uiRenderableFilter
                               , Eegeo::UI::IUIQuadFactory& quadFactory
                               , const UIProgressBarConfig& progressBarConfig
-                              , IUICameraProvider& uiCameraProvider
                               , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected);
 
                 virtual ~JumpPointView(){}
@@ -50,7 +49,6 @@ namespace Eegeo
             private:
                 
                 JumpPoint& m_jumpPoint;
-                IUICameraProvider& m_uiCameraProvider;
                 Eegeo::Helpers::TCallback0<JumpPointView> m_jumpPointGazed;
                 Eegeo::Helpers::ICallback1<JumpPoint&>& m_onJumpPointSelected;
                 

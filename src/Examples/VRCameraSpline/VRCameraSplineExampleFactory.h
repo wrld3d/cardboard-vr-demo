@@ -12,6 +12,7 @@
 #include "IUIQuadFactory.h"
 #include "IScreenFadeEffectController.h"
 #include "ApplicationConfiguration.h"
+#include "ConfigSections.h"
 
 namespace Examples
 {
@@ -25,6 +26,7 @@ namespace Examples
         Eegeo::UI::IUIQuadFactory& m_quadFactory;
         ScreenFadeEffect::SdkModel::IScreenFadeEffectController& m_screenFader;
         const ApplicationConfig::ApplicationConfiguration m_appConfig;
+        const Eegeo::Config::DeviceSpec m_deviceSpecs;
 
     public:
         VRCameraSplineExampleFactory( Eegeo::EegeoWorld& world,
@@ -34,7 +36,8 @@ namespace Examples
                                       InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                       Eegeo::UI::IUIQuadFactory& quadFactory,
                                      ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
-                                     const ApplicationConfig::ApplicationConfiguration& appConfig);
+                                     const ApplicationConfig::ApplicationConfiguration& appConfig,
+                                     const Eegeo::Config::DeviceSpec& deviceSpecs);
 
         std::string ExampleName() const;
         

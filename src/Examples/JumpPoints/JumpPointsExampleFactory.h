@@ -20,7 +20,7 @@ class JumpPointsExampleFactory : public IExampleFactory
 {
     Eegeo::UI::IUIQuadFactory& m_uiQuadFactory;
     Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
-    Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
+    Eegeo::Config::DeviceSpec m_deviceSpecs;
     Examples::ApplicationConfig::ApplicationConfiguration m_appConfig;
     
     Eegeo::EegeoWorld& m_world;
@@ -39,7 +39,7 @@ public:
                              const IScreenPropertiesProvider& screenPropertiesProvider,
                              Eegeo::UI::IUIQuadFactory& quadFactory,
                              Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
-                             Eegeo::UI::IUICameraProvider& uiCameraProvider,
+                             const Eegeo::Config::DeviceSpec& deviceSpecs,
                              InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                              Eegeo::UI::Animations::AnimationsController& animationsController,
                              Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,

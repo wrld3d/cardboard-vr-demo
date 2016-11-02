@@ -128,7 +128,8 @@ namespace Examples
                                                        Examples::IVRHeadTracker& headTracker,
                                                        Eegeo::UI::IUIQuadFactory& quadFactory,
                                                        ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
-                                                       const ApplicationConfig::ApplicationConfiguration& appConfig)
+                                                       const ApplicationConfig::ApplicationConfiguration& appConfig,
+                                                       const Eegeo::Config::DeviceSpec& deviceSpecs)
         {
             m_factories.push_back(Eegeo_NEW((TExampleFactory)(m_world,
                                                               m_defaultCameraControllerFactory,
@@ -137,14 +138,15 @@ namespace Examples
                                                               interiorsExplorerModule,
                                                               quadFactory,
                                                               screenFader,
-                                                              appConfig)));
+                                                              appConfig,
+                                                              deviceSpecs)));
         }
         
         template <typename TExampleFactory>
         void RegisterJumpPointVRExample(const IScreenPropertiesProvider& screenPropertiesProvider,
                                                 Eegeo::UI::IUIQuadFactory& quadFactory,
                                                 Eegeo::UI::IUIInteractionObservable& uIInteractionObservable,
-                                                Eegeo::UI::IUICameraProvider& uICameraProvider,
+                                                const Eegeo::Config::DeviceSpec& deviceSpecs,
                                         		InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                         		Eegeo::UI::Animations::AnimationsController& animationsController,
                                                 Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
@@ -157,7 +159,7 @@ namespace Examples
                                                               screenPropertiesProvider,
                                                               quadFactory,
                                                               uIInteractionObservable,
-                                                              uICameraProvider,
+                                                              deviceSpecs,
                                                               interiorsExplorerModule,
                                                               animationsController,
                                                               worldMenuModule,

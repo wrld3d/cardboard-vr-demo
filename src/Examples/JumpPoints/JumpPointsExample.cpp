@@ -20,6 +20,7 @@
 #include "Modules/UI/Animations/AnimationEase.h"
 #include "Modules/InteriorsExplorerModule/InteriorsExplorerModule.h"
 #include "Modules/WorldMenu/WorldMenuModule.h"
+#include "LodRefinementConfig.h"
 
 #include "WorldMenuController.h"
 #include "JumpPointConfigData.h"
@@ -78,7 +79,7 @@ namespace Examples
                                          const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
                                          Eegeo::UI::IUIQuadFactory& quadFactory,
                                          Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
-                                         Eegeo::UI::IUICameraProvider& uiCameraProvider,
+                                         const Eegeo::Config::DeviceSpec& deviceSpecs,
                                          InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                          Eegeo::UI::Animations::AnimationsController& animationsController,
                                          Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
@@ -88,7 +89,6 @@ namespace Examples
     : m_world(eegeoWorld)
     , m_uiQuadFactory(quadFactory)
     , m_uiInteractionObservable(uiInteractionObservable)
-    , m_uiCameraProvider(uiCameraProvider)
     , m_renderableFilters(eegeoWorld.GetRenderingModule().GetRenderableFilters())
     , m_interiorsExplorerModule(interiorsExplorerModule)
     , m_animationsController(animationsController)
@@ -114,8 +114,15 @@ namespace Examples
         
         NotifyScreenPropertiesChanged(initialScreenProperties);
         Eegeo::m44 projectionMatrix = Eegeo::m44(pCameraController->GetRenderCamera().GetProjectionMatrix());
-        m_pVRCameraController = Eegeo_NEW(Eegeo::VR::JumpPointsCameraController)(initialScreenProperties.GetScreenWidth(), initialScreenProperties.GetScreenHeight(), 0.03f);
+        m_pVRCameraController = Eegeo_NEW(Eegeo::VR::JumpPointsCameraController)(initialScreenProperties.GetScreenWidth(),
+                                                                                 initialScreenProperties.GetScreenHeight(),
+                                                                                 0.03f);
         m_pVRCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
+
+        m_pVRCameraStreamingController = Eegeo_NEW(Eegeo::VRCamera::VRCameraStreamingController)(*m_pVRCameraController,
+                                                                                                 resourceCeilingProvider,
+                                                                                                 Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
+                                                                                                 m_world.GetMapModule().GetEnvironmentFlatteningService());
         
         m_pUIRenderableFilter = Eegeo_NEW(Eegeo::UI::UIRenderableFilter)();
         m_renderableFilters.AddRenderableFilter(*m_pUIRenderableFilter);
@@ -147,11 +154,10 @@ namespace Examples
         dimension = Eegeo::v2(50,50);
         
         m_pJumpPointsModule = Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPointsModule)(*m_pUIRenderableFilter,
-                                                                          m_uiQuadFactory,
-                                                                          m_uiInteractionObservable,
-                                                                          m_uiCameraProvider,
-                                                                          m_progressBarConfig,
-                                                                          m_onJumpPointSelected);
+                                                                                 m_uiQuadFactory,
+                                                                                 m_uiInteractionObservable,
+                                                                                 m_progressBarConfig,
+                                                                                 m_onJumpPointSelected);
         
         LoadInteriorJumpPoints(m_appConfig.GetInteriorJumpPoints());
         LoadExteriorJumpPoints(m_appConfig.GetExteriorJumpPoints());
@@ -228,11 +234,16 @@ namespace Examples
         m_exteriorJumpPoints.clear();
 
         Eegeo_DELETE m_pJumpPointsModule;
-        
+        Eegeo_DELETE m_pVRCameraStreamingController;
         Eegeo_DELETE m_pVRCameraController;
 
         m_renderableFilters.RemoveRenderableFilter(*m_pUIRenderableFilter);
         Eegeo_DELETE m_pUIRenderableFilter;
+    }
+
+    Eegeo::Streaming::IStreamingVolume& JumpPointsExample::GetCurrentStreamingVolume(const Eegeo::Modules::Map::MapModule& mapModule) const
+    {
+        return m_pVRCameraStreamingController->GetStreamingVolume();
     }
     
     void JumpPointsExample::UpdateCardboardProfile(const float cardboardProfile[])
@@ -243,7 +254,7 @@ namespace Examples
     
     void JumpPointsExample::EarlyUpdate(float dt)
     {
-
+        m_pVRCameraStreamingController->UpdateStreamingVolume();
     }
 
     void JumpPointsExample::Draw()
@@ -338,7 +349,7 @@ namespace Examples
         Eegeo::Space::EcefTangentBasis basis = Eegeo::Space::EcefTangentBasis(cameraPoint, Eegeo::v3(point.GetX(), point.GetY(), point.GetZ()));
         Eegeo::m33 orientation;
         orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
-        m_uiCameraProvider.GetRenderCameraForUI().SetEcefLocation(cameraPoint);
+        m_pVRCameraController->SetEcefPosition(cameraPoint);
         m_pVRCameraController->SetCameraOrientation(orientation);
         m_headTracker.ResetTracker();
     }
@@ -349,7 +360,7 @@ namespace Examples
         Eegeo::Space::EcefTangentBasis basis;
         Eegeo::Camera::CameraHelpers::EcefTangentBasisFromPointAndHeading(cameraPoint, cameraHeading, basis);
         orientation.SetFromBasis(basis.GetRight(), basis.GetUp(), -basis.GetForward());
-        m_uiCameraProvider.GetRenderCameraForUI().SetEcefLocation(cameraPoint);
+        m_pVRCameraController->SetEcefPosition(cameraPoint);
         m_pVRCameraController->SetCameraOrientation(orientation);
         m_headTracker.ResetTracker();
     }
@@ -365,7 +376,7 @@ namespace Examples
         Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459809, -2.977735, 40).ToECEF();
         
         m_animationsController.RemoveAnimationsForTag(0);
-        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pVRCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 5.0f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
+        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pVRCameraController, this, m_pVRCameraController->GetCamera().GetEcefLocation(), cameraPoint, 5.0f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
         animation->SetTag(0);
         m_animationsController.AddAnimation(animation);
         
@@ -449,7 +460,7 @@ namespace Examples
         jumpPoint.SetVisibilityStatus(false);
 
         m_animationsController.RemoveAnimationsForTag(0);
-        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pVRCameraController, this,m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), jumpPoint.GetEcefPosition(), time, &Eegeo::UI::AnimationEase::EaseInOutCubic);
+        Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pVRCameraController, this, m_pVRCameraController->GetCamera().GetEcefLocation(), jumpPoint.GetEcefPosition(), time, &Eegeo::UI::AnimationEase::EaseInOutCubic);
         animation->SetTag(0);
         m_animationsController.AddAnimation(animation);
 
@@ -520,7 +531,7 @@ namespace Examples
                 Eegeo::dv3 cameraPoint = Eegeo::Space::LatLongAltitude::FromDegrees(56.459156, -2.975320, 300).ToECEF();
 
                 m_animationsController.RemoveAnimationsForTag(0);
-                Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pVRCameraController, this, m_uiCameraProvider.GetRenderCameraForUI().GetEcefLocation(), cameraPoint, 3.5f, &Eegeo::UI::AnimationEase::EaseInOutExpo);
+                Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pVRCameraController, this, m_pVRCameraController->GetCamera().GetEcefLocation(), cameraPoint, 3.5f, &Eegeo::UI::AnimationEase::EaseInOutExpo);
                 animation->SetTag(0);
                 m_animationsController.AddAnimation(animation);
                 m_interiorsExplorerModule.UnregisterVisibilityChangedCallback(m_onInteriorFloorChanged);

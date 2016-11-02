@@ -39,6 +39,7 @@
 #include "FloorSwitchCameraAnimator.h"
 #include "InteriorDistanceVisibilityUpdater.h"
 #include "VRRenderCamera.h"
+#include "VRCameraStreamingController.h"
 
 namespace Examples
 {
@@ -52,7 +53,6 @@ namespace Examples
         Eegeo::EegeoWorld& m_world;
         Eegeo::UI::IUIQuadFactory& m_uiQuadFactory;
         Eegeo::UI::IUIInteractionObservable& m_uiInteractionObservable;
-        Eegeo::UI::IUICameraProvider& m_uiCameraProvider;
 
         bool m_isAtFloorLevel;
         InteriorCameraAnimationPositionProvider* m_pInteriorCameraAnimationPositionProvider;
@@ -72,6 +72,7 @@ namespace Examples
         Eegeo::Helpers::TCallback0<JumpPointsExample> m_onWestPortEntryButtonCallback;
 
         Eegeo::VR::JumpPointsCameraController* m_pVRCameraController;
+        Eegeo::VRCamera::VRCameraStreamingController* m_pVRCameraStreamingController;
 
         TExteriorJumpPointsData m_exteriorJumpPoints;
         TInteriorJumpPointsData m_interiorJumpPoints;
@@ -114,7 +115,7 @@ namespace Examples
                           const Eegeo::Rendering::ScreenProperties& initialScreenProperties,
                           Eegeo::UI::IUIQuadFactory& quadFactory,
                           Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
-                          Eegeo::UI::IUICameraProvider& uiCameraProvider,
+                          const Eegeo::Config::DeviceSpec& deviceSpecs,
                           InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                           Eegeo::UI::Animations::AnimationsController& animationsController,
                           Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
@@ -141,6 +142,7 @@ namespace Examples
         void PreWorldDraw() { }
         void Draw();
         void Suspend();
+        Eegeo::Streaming::IStreamingVolume& GetCurrentStreamingVolume(const Eegeo::Modules::Map::MapModule& mapModule) const;
         
         void UpdateCardboardProfile(const float cardboardProfile[]);
         

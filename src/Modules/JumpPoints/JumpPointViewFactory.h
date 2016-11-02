@@ -22,7 +22,6 @@ namespace Eegeo
             public:
                 JumpPointViewFactory(IUIRenderableFilter& p_UIRenderableFilter
                                      , IUIQuadFactory& p_IUIQuadFactory
-                                     , IUICameraProvider& p_UICameraProvider
                                      , const UIProgressBarConfig& progressBarConfig
                                      , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected);
                 
@@ -31,7 +30,6 @@ namespace Eegeo
                 virtual JumpPointView* CreateViewForJumpPoint(JumpPoint& jumpPointModel);
                 
             private:
-                IUICameraProvider& m_uiCameraProvider;
                 IUIQuadFactory& m_uiQuadFactory;
                 IUIRenderableFilter& m_uiRenderableFilter;
                 const UIProgressBarConfig& m_progressBarConfig;

@@ -213,7 +213,8 @@ const Eegeo::m33& ExampleController::GetHeadTrackerOrientation()
     return GetCurrentVRCameraState().HeadTrackerOrientation();
 }
     
-Eegeo::Camera::RenderCamera& ExampleController::GetRenderCamera(){
+Eegeo::Camera::RenderCamera& ExampleController::GetRenderCamera()
+{
     return m_pCurrentExample->GetRenderCamera();
 }
 
@@ -229,7 +230,7 @@ Eegeo::Camera::CameraState ExampleController::GetCurrentCameraState() const
     
 Eegeo::Streaming::IStreamingVolume& ExampleController::GetCurrentStreamingVolume() const
 {
-    return m_world.GetMapModule().GetStreamingVolume();
+    return m_pCurrentExample->GetCurrentStreamingVolume(m_world.GetMapModule());
 }
     
 void ExampleController::NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties)

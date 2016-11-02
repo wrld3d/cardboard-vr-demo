@@ -14,7 +14,7 @@ namespace Examples
                                                        const IScreenPropertiesProvider& screenPropertiesProvider,
                                                        Eegeo::UI::IUIQuadFactory& quadFactory,
                                                        Eegeo::UI::IUIInteractionObservable& uiInteractionObservable,
-                                                       Eegeo::UI::IUICameraProvider& uiCameraProvider,
+                                                       const Eegeo::Config::DeviceSpec& deviceSpecs,
                                                        InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                        Eegeo::UI::Animations::AnimationsController& animationsController,
                                                        Eegeo::UI::WorldMenu::WorldMenuModule& worldMenuModule,
@@ -23,7 +23,7 @@ namespace Examples
                                                        Examples::ApplicationConfig::ApplicationConfiguration& appConfig)
     : m_uiQuadFactory(quadFactory)
     , m_uiInteractionObservable(uiInteractionObservable)
-    , m_uiCameraProvider(uiCameraProvider)
+    , m_deviceSpecs(deviceSpecs)
     , m_world(world)
     , m_animationsController(animationsController)
     , m_screenPropertiesProvider(screenPropertiesProvider)
@@ -49,7 +49,7 @@ namespace Examples
                                                initialScreenProperties,
                                                m_uiQuadFactory,
                                                m_uiInteractionObservable,
-                                               m_uiCameraProvider,
+                                               m_deviceSpecs,
                                                m_interiorsExplorerModule,
                                                m_animationsController,
                                                m_worldMenuModule,

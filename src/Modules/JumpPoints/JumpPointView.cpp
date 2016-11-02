@@ -14,11 +14,9 @@ namespace Eegeo
                                          , IUIRenderableFilter& uiRenderableFilter
                                          , Eegeo::UI::IUIQuadFactory& quadFactory
                                          , const UIProgressBarConfig& progressBarConfig
-                                         , IUICameraProvider& uiCameraProvider
                                          , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected
                                          )
             : m_jumpPoint(jumpPoint)
-            , m_uiCameraProvider(uiCameraProvider)
             , m_jumpPointGazed(this, &JumpPointView::JumpPointGazed)
             , m_onJumpPointSelected(onJumpPointSelected)
             , UIProgressButton(uiRenderableFilter

@@ -15,6 +15,7 @@
 #include "IInteriorsExplorerModule.h"
 #include "IVRHeadTracker.h"
 #include "WorldLocationData.h"
+#include "LodRefinementConfig.h"
 
 #define INTERIOR_NEAR_MULTIPLIER 0.025f
 #define EXTERIOR_NEAR_MULTIPLIER 0.1f
@@ -36,7 +37,8 @@ namespace Examples
                                                  InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                  Eegeo::UI::IUIQuadFactory& quadFactory,
                                                  ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
-                                                 const ApplicationConfig::ApplicationConfiguration& appConfig)
+                                                 const ApplicationConfig::ApplicationConfiguration& appConfig,
+                                                 const Eegeo::Config::DeviceSpec& deviceSpecs)
     : m_world(eegeoWorld),
       m_interiorsExplorerModule(interiorsExplorerModule),
       m_uiQuadFactory(quadFactory),
@@ -64,6 +66,11 @@ namespace Examples
                                                                       appConfig.NYSplineWelcomeNotePath());
         m_pSplineCameraController->GetCamera().SetProjectionMatrix(projectionMatrix);
 
+        m_pVRCameraStreamingController = Eegeo_NEW(Eegeo::VRCamera::VRCameraStreamingController)(*m_pSplineCameraController,
+                                                                                                 resourceCeilingProvider,
+                                                                                                 Eegeo::Config::LodRefinementConfig::GetLodRefinementAltitudesForDeviceSpec(deviceSpecs),
+                                                                                                 eegeoWorld.GetMapModule().GetEnvironmentFlatteningService());
+
         m_pUIRenderableFilter = Eegeo_NEW(Eegeo::UI::UIRenderableFilter)();
         m_pWelcomeNoteViewer = Eegeo_NEW(WelcomeNoteViewer)(m_uiQuadFactory, *m_pUIRenderableFilter);
 
@@ -77,6 +84,8 @@ namespace Examples
         Eegeo_DELETE m_pWelcomeNoteViewer;
 
         Eegeo_DELETE m_pUIRenderableFilter;
+
+        Eegeo_DELETE m_pVRCameraStreamingController;
 
         Eegeo_DELETE m_pSplineCameraController;
     }
@@ -103,6 +112,11 @@ namespace Examples
 
         m_renderableFilters.RemoveRenderableFilter(*m_pUIRenderableFilter);
 
+    }
+
+    Eegeo::Streaming::IStreamingVolume& VRCameraSplineExample::GetCurrentStreamingVolume(const Eegeo::Modules::Map::MapModule& mapModule) const
+    {
+        return m_pVRCameraStreamingController->GetStreamingVolume();
     }
 
     void VRCameraSplineExample::OnSplineEnded()
@@ -146,6 +160,8 @@ namespace Examples
             m_pSplineCameraController->SetNearMultiplier(EXTERIOR_NEAR_MULTIPLIER);
             m_interiorsExplorerModule.ForceLeaveInterior();
         }
+
+        m_pVRCameraStreamingController->UpdateStreamingVolume();
 
     }
 

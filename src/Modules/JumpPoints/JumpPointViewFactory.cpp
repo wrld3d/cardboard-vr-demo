@@ -12,12 +12,10 @@ namespace Eegeo
             
             JumpPointViewFactory::JumpPointViewFactory(IUIRenderableFilter& uiRenderableFilter
                                                        , IUIQuadFactory& uiQuadFactory
-                                                       , IUICameraProvider& uiCameraProvider
                                                        , const UIProgressBarConfig& progressBarConfig
                                                        , Eegeo::Helpers::ICallback1<JumpPoint&>& onJumpPointSelected)
             : m_uiRenderableFilter(uiRenderableFilter)
             , m_uiQuadFactory(uiQuadFactory)
-            , m_uiCameraProvider(uiCameraProvider)
             , m_progressBarConfig(progressBarConfig)
             , m_onJumpPointSelected(onJumpPointSelected)
             {
@@ -35,7 +33,6 @@ namespace Eegeo
                                                                         , m_uiRenderableFilter
                                                                         , m_uiQuadFactory
                                                                         , m_progressBarConfig
-                                                                        , m_uiCameraProvider
                                                                         , m_onJumpPointSelected
                                                                         );
                 pJumpPointView->SetFadeTransitionSpeed(2.f);

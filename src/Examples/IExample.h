@@ -9,6 +9,8 @@
 #include "RenderCamera.h"
 #include "CameraState.h"
 #include "VRCameraState.h"
+#include "MapModule.h"
+#include "CameraFrustumStreamingVolume.h"
 #include "../Modules/UI/Animations/IDv3Animateable.h"
 #include <string>
 
@@ -31,6 +33,7 @@ namespace Examples
         virtual void AfterCameraUpdate() { }
         virtual void UpdateHeadOrientation(const float headTansform[]) { }
         virtual void UpdateCardboardProfile(const float cardboardProfile[]){}
+        virtual Eegeo::Streaming::IStreamingVolume& GetCurrentStreamingVolume(const Eegeo::Modules::Map::MapModule& mapModule) const { return mapModule.GetStreamingVolume(); }
         
         virtual void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties) = 0;
         

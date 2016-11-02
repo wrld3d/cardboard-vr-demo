@@ -17,7 +17,8 @@ namespace Examples
                                                                InteriorsExplorer::IInteriorsExplorerModule& interiorsExplorerModule,
                                                                Eegeo::UI::IUIQuadFactory& quadFactory,
                                                                ScreenFadeEffect::SdkModel::IScreenFadeEffectController& screenFader,
-                                                               const ApplicationConfig::ApplicationConfiguration& appConfig)
+                                                               const ApplicationConfig::ApplicationConfiguration& appConfig,
+                                                               const Eegeo::Config::DeviceSpec& deviceSpecs)
     : m_world(world)
     , m_headTracker(headTracker)
     , m_screenPropertiesProvider(screenPropertiesProvider)
@@ -26,6 +27,7 @@ namespace Examples
     , m_quadFactory(quadFactory)
     , m_screenFader(screenFader)
     , m_appConfig(appConfig)
+    , m_deviceSpecs(deviceSpecs)
 {
     
 }
@@ -37,14 +39,15 @@ IExample* VRCameraSplineExampleFactory::CreateExample() const
     const Eegeo::Rendering::ScreenProperties& initialScreenProperties = m_screenPropertiesProvider.GetScreenProperties();
     
     return new Examples::VRCameraSplineExample(m_world,
-                                                mapModule.GetResourceCeilingProvider(),
-                                                m_defaultCameraControllerFactory.Create(),
-                                                m_headTracker,
-                                                initialScreenProperties,
-                                                m_interiorsExplorerModule,
-                                                m_quadFactory,
-                                                m_screenFader,
-                                                m_appConfig);
+                                               mapModule.GetResourceCeilingProvider(),
+                                               m_defaultCameraControllerFactory.Create(),
+                                               m_headTracker,
+                                               initialScreenProperties,
+                                               m_interiorsExplorerModule,
+                                               m_quadFactory,
+                                               m_screenFader,
+                                               m_appConfig,
+                                               m_deviceSpecs);
 }
 
 std::string VRCameraSplineExampleFactory::ExampleName() const

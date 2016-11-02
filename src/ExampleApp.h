@@ -51,7 +51,6 @@ private:
     Eegeo::Rendering::LoadingScreen* m_pLoadingScreen;
 	Examples::ExampleController* m_pExampleController;
     Examples::ScreenPropertiesProvider m_screenPropertiesProvider;
-    Eegeo::Streaming::CameraFrustumStreamingVolume* m_pStreamingVolume;
     
     Eegeo::VR::Distortion::VRDistortionModule* m_pVRDistortion;
     Examples::ScreenFadeEffect::SdkModel::ScreenFadeEffectController* m_pScreenFadeEffectController;
