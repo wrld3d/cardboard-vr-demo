@@ -410,6 +410,12 @@ namespace Examples
         {
             m_pInteriorDistanceVisibilityUpdater->UpdateVisiblity(m_pVRCameraController->GetCameraPosition());
         }
+
+        if (m_shouldMakeInteriorMarkerVisible && animation.GetProgress() > 0.5f)
+        {
+            m_shouldMakeInteriorMarkerVisible = false;
+            m_pWestPortInteriorButton->SetItemShouldRender(true);
+        }
     }
 
     void JumpPointsExample::OnAnimationAdded(Eegeo::UI::Animations::IAnimation& animation)
@@ -435,12 +441,6 @@ namespace Examples
 
                 AnimateCameraToInteriorFloor(m_interiorsExplorerModule.GetSelectedFloor(), delta, &Eegeo::UI::AnimationEase::Linear);
             }
-        }
-
-        if (m_shouldMakeInteriorMarkerVisible)
-        {
-            m_shouldMakeInteriorMarkerVisible = false;
-            m_pWestPortInteriorButton->SetItemShouldRender(true);
         }
     }
     
