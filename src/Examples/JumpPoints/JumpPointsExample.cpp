@@ -379,7 +379,7 @@ namespace Examples
         Eegeo::UI::Animations::Dv3PropertyAnimation* animation = Eegeo_NEW(Eegeo::UI::Animations::Dv3PropertyAnimation)(*m_pVRCameraController, this, m_pVRCameraController->GetCamera().GetEcefLocation(), cameraPoint, 5.0f, &Eegeo::UI::AnimationEase::EaseInOutCubic);
         animation->SetTag(0);
         m_animationsController.AddAnimation(animation);
-        
+        m_interiorsExplorerModule.SetShouldShowExitButton(true);
         m_interiorsExplorerModule.RegisterVisibilityChangedCallback(m_onInteriorFloorChanged);
     }
     
@@ -392,6 +392,7 @@ namespace Examples
         m_pWestPortInteriorButton->SetItemShouldRender(false);
         m_worldMenuModule.SetMenuShouldDisplay(false);
         m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
+        m_interiorsExplorerModule.SetShouldShowExitButton(true);
     }
     
     void JumpPointsExample::HideInteriors()
@@ -438,7 +439,7 @@ namespace Examples
                 m_animationsController.RemoveAnimationsForTag(0);
                 m_isAtFloorLevel = false;
                 m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
-
+                m_interiorsExplorerModule.SetShouldShowExitButton(true);
                 AnimateCameraToInteriorFloor(m_interiorsExplorerModule.GetSelectedFloor(), delta, &Eegeo::UI::AnimationEase::Linear);
             }
         }
@@ -475,11 +476,13 @@ namespace Examples
         {
             m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuFloorAngleThreshold);
             m_placeNameController.SetTargetAlpha(0.f);
+            m_interiorsExplorerModule.SetShouldShowExitButton(false);
         }
         else
         {
             m_placeNameController.SetTargetAlpha(1.f);
             m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
+            m_interiorsExplorerModule.SetShouldShowExitButton(true);
         }
     }
     
@@ -518,6 +521,7 @@ namespace Examples
 
                 m_isAtFloorLevel = false;
                 m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
+                m_interiorsExplorerModule.SetShouldShowExitButton(true);
                 m_pJumpPointSwitcher->ReloadJumpPoints();
             }
             else
@@ -546,6 +550,7 @@ namespace Examples
 
                 m_isAtFloorLevel = false;
                 m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
+                m_interiorsExplorerModule.SetShouldShowExitButton(true);
                 m_pJumpPointSwitcher->ReloadJumpPoints();
                 m_shouldAnimateFloor = true;
                 m_targetFloor = menuItem.GetId();
@@ -559,7 +564,7 @@ namespace Examples
                 {
                     m_isAtFloorLevel = false;
                     m_interiorsExplorerModule.SetMenuVisibilityThresholdAngle(InteriorMenuHighPositionAngleThreshold);
-
+                    m_interiorsExplorerModule.SetShouldShowExitButton(true);
                     AnimateCameraToInteriorFloor(m_interiorsExplorerModule.GetSelectedFloor(), delta, &Eegeo::UI::AnimationEase::Linear);
                 }
             }

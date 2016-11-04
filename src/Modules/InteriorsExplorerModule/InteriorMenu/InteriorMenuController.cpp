@@ -23,6 +23,8 @@ namespace InteriorsExplorer
         , m_uiInteractionObservable(uiInteractionObservable)
         , m_uiCameraProvider(uiCameraProvider)
         , m_marginAngle(75.f)
+        , m_shouldShowExitButton(true)
+        , m_exitButtonDelayTimer(0.f)
         {
             const int InteriorUpIconSpriteID = 21;
             m_pInteriorMenuUpView = Eegeo_NEW(InteriorMenuUpView)(quadFactory, uiRenderableFilter, spriteFileName, InteriorUpIconSpriteID, numberOfTilesAlong1Axis);
@@ -71,6 +73,19 @@ namespace InteriorsExplorer
                 m_pSelectedArrow->SetItemShouldRender(menuItemsShouldRender);
             }
         }
+
+        void InteriorMenuController::SetShouldShowExitButton(bool shouldShowExitButton)
+        {
+            if (shouldShowExitButton)
+            {
+                if (!m_shouldShowExitButton)
+                {
+                    m_exitButtonDelayTimer = 5.f;
+                }
+            }
+
+            m_shouldShowExitButton = shouldShowExitButton;
+        }
         
         void InteriorMenuController::Update(float deltaTime)
         {
@@ -96,13 +111,31 @@ namespace InteriorsExplorer
             }
             
             m_pInteriorMenuUpView->Update(deltaTime);
+
+            bool timerRunning = false;
+            if (m_exitButtonDelayTimer > 0.f)
+            {
+                m_exitButtonDelayTimer -= deltaTime;
+                timerRunning = true;
+            }
             
             for(TViewsByModel::iterator it = m_viewsByModel.begin(); it != m_viewsByModel.end(); ++it)
             {
                 InteriorMenuItemView* pView = it->second;
-                bool shouldOutButtonRender = !((m_marginAngle < InteriorMenuHighPositionAngleThreshold && it->first->GetId() == -1) ||
-                                               (m_marginAngle > InteriorMenuFloorAngleThreshold && it->first->GetId() == -2));
-                pView->SetItemShouldRender(m_menuItemsShouldRender && m_isMenuShown && shouldOutButtonRender);
+
+                bool buttonShouldShow = true;
+
+                if (it->first->GetId() == -2 && m_shouldShowExitButton)
+                {
+                    buttonShouldShow = false;
+                }
+
+                if (it->first->GetId() == -1 && ((!m_shouldShowExitButton) || timerRunning))
+                {
+                    buttonShouldShow = false;
+                }
+
+                pView->SetItemShouldRender(m_menuItemsShouldRender && m_isMenuShown && buttonShouldShow);
                 m_pSelectedArrow->SetItemShouldRender(m_menuItemsShouldRender && m_isMenuShown);
                 pView->Update(deltaTime);
             }

@@ -225,4 +225,9 @@ namespace InteriorsExplorer
     {
         return m_pInteriorMenuModule->GetController().GetMenuVisibilityThresholdAngle();
     }
+
+    void InteriorsExplorerModule::SetShouldShowExitButton(bool shouldShowExitButton)
+    {
+        m_pInteriorMenuModule->GetController().SetShouldShowExitButton(shouldShowExitButton);
+    }
 }

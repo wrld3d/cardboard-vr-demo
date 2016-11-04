@@ -38,6 +38,8 @@ namespace InteriorsExplorer
         virtual void SetMenuVisibilityThresholdAngle(float angle) = 0;
         virtual float GetMenuVisibilityThresholdAngle() = 0;
 
+        virtual void SetShouldShowExitButton(bool shouldShowExitButton) = 0;
+
         virtual void RegisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback) = 0;
         virtual void UnregisterMenuItemGazedCallback(Eegeo::Helpers::ICallback1<InteriorMenu::InteriorMenuItem&>& callback) = 0;
 

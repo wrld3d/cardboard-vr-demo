@@ -48,6 +48,8 @@ namespace InteriorsExplorer
             void SetMenuVisibilityThresholdAngle(float angle);
 
             float GetMenuVisibilityThresholdAngle();
+
+            void SetShouldShowExitButton(bool shouldShowExitButton);
             
         protected:
             void PositionItems();
@@ -68,6 +70,8 @@ namespace InteriorsExplorer
             int m_floorId;
             bool m_isMenuShown;
             bool m_menuItemsShouldRender;
+            bool m_shouldShowExitButton;
+            float m_exitButtonDelayTimer;
             typedef std::map<InteriorMenuItem*, InteriorMenuItemView*> TViewsByModel;
             Eegeo::dv3 m_lastCameraPosition;
             TViewsByModel m_viewsByModel;
