@@ -30,6 +30,7 @@ namespace Eegeo
             virtual void OnMaterialChanged(const Eegeo::Rendering::Materials::IMaterial* pMaterial, Eegeo::Rendering::VertexLayouts::VertexBindingPool& vertexBindingPool);
             
             void SetOrientationEcef(const Eegeo::m33& orientationEcef) { m_orientationEcef = orientationEcef.ToM44(); }
+            const Eegeo::m44& GetOrientationEcef() { return m_orientationEcef; }
             void SetColor(const Eegeo::v4& color) { m_color = color; }
             const Eegeo::v4& GetColor() const { return m_color; }
 

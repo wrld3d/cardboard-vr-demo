@@ -72,6 +72,7 @@ namespace Eegeo
             {
                 m_pGazeProgress->Update(dt);
                 m_pSprite->Update(dt);
+                m_pGazeProgress->SetEcefPosition(Eegeo::dv3(m_pSprite->GetOrientationMatrix().GetRow(2)) + m_pSprite->GetEcefPosition());
             }
             
             
@@ -98,7 +99,6 @@ namespace Eegeo
             void WorldMenuUIButton::SetEcefPosition(const Eegeo::dv3& position)
             {
                 m_pSprite->SetEcefPosition(position);
-                m_pGazeProgress->SetEcefPosition(position);
             }
             
             Eegeo::dv3 WorldMenuUIButton::GetEcefPosition()

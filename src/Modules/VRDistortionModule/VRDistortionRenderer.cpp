@@ -19,6 +19,7 @@ namespace Eegeo
             void VRDistortionRenderer::EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext,
                                                           Eegeo::Rendering::RenderQueue& renderQueue)
             {
+                m_renderable.SetDepth(renderQueue.GetNumOfRenders());
                 renderQueue.EnqueueRenderable(m_renderable);
             }
         }

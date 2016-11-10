@@ -141,7 +141,7 @@ namespace Examples
         m_progressBarConfig.spriteGridSize = Eegeo::v2(m_appConfig.GazeLoaderNumberOfTilesAlong1Axis(),m_appConfig.GazeLoaderNumberOfTilesAlong1Axis());
         m_progressBarConfig.spriteId = 0;
         m_progressBarConfig.color = Eegeo::v4::One();
-        m_progressBarConfig.renderLayer = Eegeo::Rendering::LayerIds::Values::AfterAll;
+        m_progressBarConfig.renderLayer = Eegeo::Rendering::LayerIds::Values::AfterWorld;
 
         m_pVRCameraController->SetNearMultiplier(INTERIOR_NEAR_MULTIPLIER);
         

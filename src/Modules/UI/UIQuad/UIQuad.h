@@ -55,6 +55,7 @@ namespace Eegeo
             virtual ~UIQuad();
             inline void SetEcefPosition(const Eegeo::dv3& ecefPosition){ m_pRenderable->SetEcefPosition(ecefPosition); }
             inline const dv3& GetEcefPosition() const { return m_pRenderable->GetEcefPosition(); }
+            inline const Eegeo::m44& GetOrientationMatrix() { return m_pRenderable->GetOrientationEcef(); }
             inline const Eegeo::v3& GetScale() { return m_pRenderable->GetScale(); }
             inline void SetScale(const Eegeo::v3& scale) { m_pRenderable->SetScale(scale); }
             inline void SetColor(const Eegeo::v4& color) { m_pRenderable->SetColor(color); }

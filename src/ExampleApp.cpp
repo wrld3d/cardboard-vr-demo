@@ -233,7 +233,7 @@ ExampleApp::ExampleApp(Eegeo::EegeoWorld* pWorld,
     m_progressBarConfig.spriteGridSize = Eegeo::v2(appConfig.GazeLoaderNumberOfTilesAlong1Axis(),appConfig.GazeLoaderNumberOfTilesAlong1Axis());
     m_progressBarConfig.spriteId = 0;
     m_progressBarConfig.color = Eegeo::v4::One();
-    m_progressBarConfig.renderLayer = Eegeo::Rendering::LayerIds::Values::AfterAll;
+    m_progressBarConfig.renderLayer = Eegeo::Rendering::LayerIds::Values::AfterWorld;
 
     m_pInteriorExplorerModule = Eegeo_NEW(InteriorsExplorer::InteriorsExplorerModule)(
                                                                                       *m_pUIRenderableFilter,

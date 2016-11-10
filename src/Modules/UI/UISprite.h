@@ -37,6 +37,8 @@ namespace Eegeo
             
             void SetEcefPosition(const Eegeo::dv3& position);
             Eegeo::dv3 GetEcefPosition();
+
+            inline const Eegeo::m44& GetOrientationMatrix() { return m_pQuad->GetOrientationMatrix(); }
             
             void SetSize(const Eegeo::v2& size);
             Eegeo::v2 GetSize();

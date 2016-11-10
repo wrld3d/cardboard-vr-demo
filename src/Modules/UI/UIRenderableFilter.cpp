@@ -10,6 +10,11 @@ namespace Eegeo
 {
     namespace UI
     {
+        bool OrderBySecondDescending(const std::pair<Eegeo::Rendering::RenderableBase*, float>& a, const std::pair<Eegeo::Rendering::RenderableBase*, float>& b)
+        {
+            return a.second > b.second;
+        }
+
         UIRenderableFilter::~UIRenderableFilter()
         {
             m_renderables.clear();
@@ -29,16 +34,35 @@ namespace Eegeo
         
         void UIRenderableFilter::EnqueueRenderables(const Eegeo::Rendering::RenderContext& renderContext, Eegeo::Rendering::RenderQueue& renderQueue)
         {
+            typedef std::vector<std::pair<Eegeo::Rendering::RenderableBase*, float> > RenderablDepthPairVector;
+            RenderablDepthPairVector renderableDepthPairs;
+
             for (UIRenderableVector::const_iterator iter = m_renderables.begin(); iter != m_renderables.end(); ++iter)
             {
                 IUIRenderable& uiRenderable = (**iter);
                 if (uiRenderable.GetItemShouldRender())
                 {
                     Eegeo::Rendering::RenderableBase& renderable = uiRenderable.GetUpdatedRenderable(renderContext);
-                
-                    if(renderable.GetEcefPosition().SquareDistanceTo(renderContext.GetRenderCamera().GetEcefLocation()) >= 1)
-                        renderQueue.EnqueueRenderable(renderable);
+
+                    const float squareDrawDistance = renderable.GetEcefPosition().SquareDistanceTo(renderContext.GetRenderCamera().GetEcefLocation());
+                    if( squareDrawDistance >= 1)
+                    {
+                        renderableDepthPairs.emplace_back(&renderable, squareDrawDistance);
+                    }
                 }
+            }
+
+            std::sort(renderableDepthPairs.begin(), renderableDepthPairs.end(), OrderBySecondDescending);
+                
+            u64 depthKey = 0;
+                
+            for (RenderablDepthPairVector::const_iterator iter = renderableDepthPairs.begin();
+                    iter != renderableDepthPairs.end();
+                    ++iter, ++depthKey)
+            {
+                Eegeo::Rendering::RenderableBase* renderable = iter->first;
+                renderable->SetDepth(depthKey);
+                renderQueue.EnqueueRenderable(renderable);
             }
         }
     }
