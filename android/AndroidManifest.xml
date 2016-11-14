@@ -31,7 +31,7 @@
                   android:icon="@drawable/ic_launcher"
                   android:configChanges="orientation|keyboardHidden|screenSize"
               	  android:launchMode="singleInstance"
-              	  android:screenOrientation="landscape"
+              	  android:screenOrientation="userLandscape"
               	  android:hardwareAccelerated="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
