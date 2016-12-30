@@ -15,4 +15,5 @@ public class NativeJniCalls
 	public static native void updateNativeCode(float deltaTimeSeconds, float[] headTransform);
 	public static native void updateCardboardProfile(float[] profileParams);
 	public static native void magnetTriggered();
+	public static native void toggleNightMode(boolean turnOn);
 }

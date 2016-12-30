@@ -9,10 +9,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.eegeo.bluetooth.controller.BluetoothInputController;
 import com.eegeo.cardboardvrdemo.R;
 
 public class BackgroundThreadActivity extends MainActivity
@@ -23,6 +26,7 @@ public class BackgroundThreadActivity extends MainActivity
 	private ThreadedUpdateRunner m_threadedRunner;
 	private Thread m_updater;
 	private VRModule m_vrModule;
+	private BluetoothInputController m_bluetoothInputController;
 
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
@@ -40,6 +44,7 @@ public class BackgroundThreadActivity extends MainActivity
 		m_surfaceView.setActivity(this);
 
 		m_vrModule = new VRModule(this);
+		m_bluetoothInputController = new BluetoothInputController(this);
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		final float dpi = dm.ydpi;
 		final Activity activity = this;
@@ -90,7 +95,7 @@ public class BackgroundThreadActivity extends MainActivity
 	protected void onResume()
 	{
 		super.onResume();
-		
+		m_bluetoothInputController.reset();
 		setScreenSettings();
 		runOnNativeThread(new Runnable()
 		{
@@ -266,5 +271,17 @@ public class BackgroundThreadActivity extends MainActivity
 				Looper.loop();
 			}
 		}
+	}
+	
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event)
+	{
+		return m_bluetoothInputController.dispatchKeyEvent(event);
+	}
+	
+	@Override
+	public boolean dispatchGenericMotionEvent(MotionEvent event)
+	{
+		return m_bluetoothInputController.onGenericMotionEvent(event);
 	}
 }

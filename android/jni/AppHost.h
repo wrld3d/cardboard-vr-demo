@@ -64,6 +64,7 @@ public:
     
     void UpdateCardboardProfile(const float cardboardProfile[]);
     void MagnetTriggered();
+    void ToggleNightMode(const bool turnOn);
     
 	void SetEnvironmentFlatten(bool flattenState);
 	void SetCameraLocation(const Eegeo::Space::LatLongAltitude& interestPoint, double distanceToInterestPoint, double orientationInDegrees);

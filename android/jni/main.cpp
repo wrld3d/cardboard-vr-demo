@@ -134,6 +134,11 @@ JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_magnetTrig
     g_pAppRunner->MagnetTriggered();
 }
 
+JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_toggleNightMode(JNIEnv* jenv, jobject obj, jboolean turnOn)
+{
+    g_pAppRunner->ToggleNightMode(turnOn);
+}
+
 JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_EegeoSurfaceView_processNativePointerDown(JNIEnv* jenv, jobject obj,
         jint primaryActionIndex,
         jint primaryActionIdentifier,

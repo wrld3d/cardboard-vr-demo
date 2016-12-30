@@ -99,6 +99,14 @@ void AppRunner::MagnetTriggered()
     }
 }
 
+void AppRunner::ToggleNightMode(const bool turnOn)
+{
+    if(m_pAppHost != NULL)
+    {
+        m_pAppHost->ToggleNightMode(turnOn);
+    }
+}
+
 void AppRunner::ReleaseDisplay()
 {
 	if(m_displayService.IsDisplayAvailable())

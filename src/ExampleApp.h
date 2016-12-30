@@ -144,6 +144,7 @@ public:
     
     void UpdateCardboardProfile(const float cardboardProfile[]);
     void MagnetTriggered();
+    void ToggleNightMode(const bool turnOn);
     
     void NotifyScreenPropertiesChanged(const Eegeo::Rendering::ScreenProperties& screenProperties);
     

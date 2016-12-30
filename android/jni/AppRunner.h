@@ -25,6 +25,7 @@ public:
     
     void UpdateCardboardProfile(const float cardboardProfile[]);
     void MagnetTriggered();
+    void ToggleNightMode(const bool turnOn);
     
 private:
 	AndroidNativeState* m_pNativeState;

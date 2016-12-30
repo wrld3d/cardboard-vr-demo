@@ -655,11 +655,17 @@ void ExampleApp::UpdateCardboardProfile(const float cardboardProfile[])
     m_pVRDistortion->UpdateCardboardProfile(cardboardProfile);
 }
 
-void ExampleApp::MagnetTriggered(){
+void ExampleApp::MagnetTriggered()
+{
     const Eegeo::Rendering::ScreenProperties& screenProperties = m_screenPropertiesProvider.GetScreenProperties();
     Eegeo::v2 dim = Eegeo::v2(screenProperties.GetScreenWidth(), screenProperties.GetScreenHeight());
     Eegeo::v2 center = m_pVRDistortion->GetCardboardProfile().GetScreenMeshCenter(dim.x,dim.y);
     m_pUIInteractionController->Event_ScreenInteractionClick(center);
+}
+
+void ExampleApp::ToggleNightMode(const bool turnOn)
+{
+	ToggleNight();
 }
 
 void ExampleApp::UpdateFogging(){

@@ -263,8 +263,14 @@ void AppHost::UpdateCardboardProfile(const float cardboardProfile[])
     m_pApp->UpdateCardboardProfile(cardboardProfile);
 }
 
-void AppHost::MagnetTriggered(){
+void AppHost::MagnetTriggered()
+{
     m_pApp->MagnetTriggered();
+}
+
+void AppHost::ToggleNightMode(const bool turnOn)
+{
+    m_pApp->ToggleNightMode(turnOn);
 }
 
 void AppHost::Update(float dt, const float headTansform[])
