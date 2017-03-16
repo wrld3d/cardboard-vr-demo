@@ -70,6 +70,9 @@ namespace Eegeo
                 materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_mesh_gradient");
                 materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_eeGeo_logo");
                 materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_alt_text");
+                materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_arrow03");
+                materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_arrow02");
+                materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_arrow");
 
                 m_pSplashScreenModel = m_pSplashScreenModelFactory->CreateSplashScreenModel("vr_splash_screen/WelcomeScreen.POD", materialNames, Eegeo::Space::LatLongAltitude::FromDegrees(56.456160, -2.966101, 250).ToECEF(), 120);
             }
