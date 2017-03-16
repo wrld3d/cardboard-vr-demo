@@ -41,7 +41,7 @@ This example app demonstrates the use of eeGeo's Cardboard API that allows devel
 This section will walk you through the process of getting up and running quickly on each platform.
 
 1.  Clone this repo: `git clone https://github.com/eegeo/cardboard-vr-integration`
-2.  Obtain an [eeGeo API key](https://www.eegeo.com/developers/apikeys) and place it in the [ApiKey.h](https://github.com/eegeo/cardboard-vr-integration/blob/master/src/ApiKey.h#L11) file.
+2.  Obtain an [eeGeo API key](https://www.eegeo.com/developers/apikeys) and place it in the [app_config.json](https://github.com/eegeo/cardboard-vr-demo/blob/master/android/assets/ApplicationConfigs/app_config.json#L7) file.
 3.  Choose a platform from the below table to see detailed instructions for building the app.
 
 Platform                                        | Languages         
@@ -52,7 +52,7 @@ Platform                                        | Languages
 
 In order to use the eeGeo 3D Maps SDK, you must sign up for a free developer account at https://www.eegeo.com/developers. After signing up, you'll be able to create an [API key](https://www.eegeo.com/developers/apikeys) for your apps. 
 
-To run this example app, you must place the API key in the [ApiKey.h](https://github.com/eegeo/cardboard-vr-integration/blob/master/src/ApiKey.h#L11) file.
+To run this example app, you must place the API key in the [app_config.json](https://github.com/eegeo/cardboard-vr-demo/blob/master/android/assets/ApplicationConfigs/app_config.json#L7) file.
 
 ## eeGeo SDK Documentation
 
@@ -105,7 +105,6 @@ Eegeo_NEW(Eegeo::UI::JumpPoints::JumpPoint) ( jumpPointID
                                             , cutsomUserData);
 ```
 
-Sample usage can be seen in the [Example App Class](https://github.com/eegeo/cardboard-vr-integration/blob/master/src/ExampleApp.cpp#L249).
 
 #### Removing a Jump Point
 
@@ -171,13 +170,12 @@ public:
 };
 ```
 
-Sample usage can be seen in the [Example App Class](https://github.com/eegeo/cardboard-vr-integration/blob/master/src/ExampleApp.cpp#L220).
 
 ### Changing Gaze Icons
 
 In order to change the interaction animation, follow these steps:
 * Replace the loading sprite sheet with the your custom image by replacing [gaze_loader.png](https://github.com/eegeo/cardboard-vr-integration/blob/master/android/assets/mesh_example/gaze_loader.png).
-* Update the following things in the code below located in constructor of [ExampleApp.cpp](https://github.com/eegeo/cardboard-vr-integration/blob/master/src/ExampleApp.cpp#L227)
+* Update the following things in the code below located in constructor of [ExampleApp.cpp](https://github.com/eegeo/cardboard-vr-integration/blob/master/src/ExampleApp.cpp#L231)
     * Change the `spriteSheetGridSize` according to your sprite sheet.
     * Change the last parameter `framesPerSecond` to change the speed of animation.
 
@@ -199,7 +197,7 @@ In order to change the gaze icon replace the gaze icon with the your custom imag
 
 ![Icon Sheet](https://github.com/eegeo/cardboard-vr-integration/blob/master/android/assets/mesh_example/PinIconTexturePage.png)
 
-This is a default 4x4 grid that is being used by the sdk to draw the icons. In order to use different icons either add a new sheet or simply replace an icon from the placeholders provided and use their UVs to draw the appropriate image.
+This is a default 6x6 grid that is being used by the sdk to draw the icons. In order to use different icons either add a new sheet or simply replace an icon from the placeholders provided and use their UVs to draw the appropriate image.
 
 ## License
 
