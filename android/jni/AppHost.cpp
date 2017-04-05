@@ -31,6 +31,7 @@
 #include "IApplicationConfigurationService.h"
 #include "AndroidFileIO.h"
 #include "ApiKey.h"
+#include "AndroidImageNameHelper.h"
 
 namespace
 {
@@ -144,16 +145,26 @@ AppHost::AppHost(
 
 	Eegeo::EffectHandler::Initialise();
 
-	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::JapanPlaceNames;
 	std::string deviceModel = std::string(nativeState.deviceModel, strlen(nativeState.deviceModel));
-	Eegeo::Config::PlatformConfig config = Eegeo::Android::AndroidPlatformConfigBuilder(deviceModel).Build();
+    Eegeo::Android::AndroidImageNameHelper imageHelper(&nativeState);
+	Eegeo::Config::PlatformConfig config = Eegeo::Android::AndroidPlatformConfigBuilder(deviceModel,
+                                                                                        imageHelper.GetImageResolutionSuffix(),
+                                                                                        imageHelper.GetImageResolutionScale()).Build();
 
 	config.GraphicsConfig.AlwaysUseHighFidelityWaterShader = true;
     config.OptionsConfig.GenerateCollisionForAllResources = true;
-	config.CityThemesConfig.EmbeddedThemeManifestFile = "embedded_manifest.bin";
-	config.CityThemesConfig.EmbeddedThemeTexturePath = "Textures";
-	config.CityThemesConfig.EmbeddedThemeNameContains = "Summer";
-	config.CityThemesConfig.EmbeddedThemeStateName = "DayDefault";
+    config.OptionsConfig.EnableLabels = true;
+    config.MapLayersConfig.FontsModuleConfig.EnvironmentFontFilename = "opensans_semibold_sdf.fnt";
+    config.MapLayersConfig.Interiors.UseLegacyLabels = true;
+    config.MapLayersConfig.LabelsModuleConfig.StyleSheetPath = "Labels/label_style_sheet.json";
+    config.MapLayersConfig.LabelsModuleConfig.CategoryIconMapPath = "Labels/label_category_icon_map.json";
+    config.MapLayersConfig.IconsModuleConfig.IconsEnabled = true;
+    config.MapLayersConfig.IconsModuleConfig.IconSetManifestPath = "pin_sheet.json";
+
+    config.CityThemesConfig.EmbeddedThemeManifestFile = "embedded_manifest.bin";
+    config.CityThemesConfig.EmbeddedThemeTexturePath = "Textures";
+    config.CityThemesConfig.EmbeddedThemeNameContains = "Summer";
+    config.CityThemesConfig.EmbeddedThemeStateName = "DayDefault";
 
 	config.CoverageTreeConfig.ManifestUrl = appConfig.CoverageTreeManifestURL();
 	config.CityThemesConfig.StreamedManifestUrl = appConfig.ThemeManifestURL();
@@ -176,7 +187,7 @@ AppHost::AppHost(
 	    screenProperties,
 	    *m_pAndroidLocationService,
 	    m_androidNativeUIFactories,
-	    environmentCharacterSet,
+	    Eegeo::EnvironmentCharacterSet::UseFontModuleConfig,
 	    config,
 	    NULL);
 

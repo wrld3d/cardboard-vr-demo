@@ -85,21 +85,23 @@ AppHost::AppHost(
 
 	Eegeo::EffectHandler::Initialise();
     
-	const Eegeo::EnvironmentCharacterSet::Type environmentCharacterSet = Eegeo::EnvironmentCharacterSet::Latin;
-    
 	Eegeo::Config::PlatformConfig config = Eegeo::iOS::iOSPlatformConfigBuilder(App::GetDevice(), App::IsDeviceMultiCore(), App::GetMajorSystemVersion()).Build();
     
     config.OptionsConfig.StartMapModuleAutomatically = false;
     config.OptionsConfig.GenerateCollisionForAllResources = true;
     config.GraphicsConfig.AlwaysUseHighFidelityWaterShader = true;
     
+    config.MapLayersConfig.LabelsModuleConfig.CategoryIconMapPath = "Labels/label_category_icon_map.json";
+    config.MapLayersConfig.IconsModuleConfig.IconsEnabled = true;
+    config.MapLayersConfig.IconsModuleConfig.IconSetManifestPath = "pin_sheet.json";
+
 	m_pWorld = new Eegeo::EegeoWorld(apiKey,
                                      *m_piOSPlatformAbstractionModule,
                                      *m_pJpegLoader,
                                      screenProperties,
                                      *m_piOSLocationService,
                                      m_iOSNativeUIFactories,
-                                     environmentCharacterSet,
+                                     Eegeo::EnvironmentCharacterSet::UseFontModuleConfig,
                                      config,
                                      NULL);
     
