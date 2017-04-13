@@ -1,15 +1,15 @@
-<a href="http://www.eegeo.com/">
+<a href="http://www.wrld3d.com/">
     <img src="http://cdn2.eegeo.com/wp-content/uploads/2016/03/eegeo_logo_quite_big.png" alt="eeGeo Logo" title="eegeo" align="right" height="80px" />
 </a>
 
-# eeGeo Cardboard API
+# WRLD Cardboard Demo
 
-![eeGeo](http://cdn2.eegeo.com/wp-content/uploads/2016/03/readme-banner.jpg)
+![WRLD](http://cdn2.eegeo.com/wp-content/uploads/2016/03/readme-banner.jpg)
 
 * [Support](#support)
 * [Getting Started](#getting-started)
-    * [eeGeo API Key](#eegeo-api-key)
-* [eeGeo SDK Documentation](#eegeo-sdk-documentation)
+    * [WRLD API Key](#eegeo-api-key)
+* [WRLD SDK Documentation](#eegeo-sdk-documentation)
 * [Cardboard API Documentation](#cardboard-api-documentation)
     * [Jump Points](#jump-points)
         * [Creating a Jump Point](#creating-a-jump-point)  
@@ -20,7 +20,7 @@
     * [Icon Sheet](#icon-sheet)
 * [License](#license)
 
-This example app showcases the [eeGeo SDK's](http://www.eegeo.com/) integration with Google Cardboard for creating map based VR experiences.
+This example app showcases the [WRLD SDK's](http://www.wrld3d.com/) integration with Google Cardboard for creating map based VR experiences.
 
 ### What does the API have to offer?
 
@@ -32,31 +32,31 @@ This example app showcases the [eeGeo SDK's](http://www.eegeo.com/) integration 
 
 ## Support
 
-If you have any questions, bug reports, or feature requests, feel free to submit to the [issue tracker](https://github.com/eegeo/cardboard-vr-integration/issues) for this repository.
+If you have any questions, bug reports, or feature requests, feel free to submit to the [issue tracker](https://github.com/wrld3d/cardboard-vr-integration/issues) for this repository.
 
 ## Getting Started
 
-This example app demonstrates the use of eeGeo's Cardboard API that allows developers to create VR experiences on Android.
+This example app demonstrates the use of WRLD's Cardboard API that allows developers to create VR experiences on Android.
 
 This section will walk you through the process of getting up and running quickly on each platform.
 
-1.  Clone this repo: `git clone https://github.com/eegeo/cardboard-vr-integration`
-2.  Obtain an [eeGeo API key](https://www.eegeo.com/developers/apikeys) and place it in the [app_config.json](https://github.com/eegeo/cardboard-vr-demo/blob/master/android/assets/ApplicationConfigs/app_config.json#L7) file.
+1.  Clone this repo: `git clone https://github.com/wrld3d/cardboard-vr-integration`
+2.  Obtain an [WRLD API key](https://www.wrld3d.com/developers/apikeys) and place it in the [app_config.json](https://github.com/wrld3d/cardboard-vr-demo/blob/master/android/assets/ApplicationConfigs/app_config.json#L7) file.
 3.  Choose a platform from the below table to see detailed instructions for building the app.
 
 Platform                                        | Languages         
 ------------------------------------------------|-------------------
 [Getting started on Android](/android#readme)   | C++, Java         
 
-### eeGeo API Key 
+### WRLD API Key 
 
-In order to use the eeGeo 3D Maps SDK, you must sign up for a free developer account at https://www.eegeo.com/developers. After signing up, you'll be able to create an [API key](https://www.eegeo.com/developers/apikeys) for your apps. 
+In order to use the WRLD 3D Maps SDK, you must sign up for a free developer account at https://www.wrld3d.com/developers. After signing up, you'll be able to create an [API key](https://www.wrld3d.com/developers/apikeys) for your apps. 
 
-To run this example app, you must place the API key in the [app_config.json](https://github.com/eegeo/cardboard-vr-demo/blob/master/android/assets/ApplicationConfigs/app_config.json#L7) file.
+To run this example app, you must place the API key in the [app_config.json](https://github.com/wrld3d/cardboard-vr-demo/blob/master/android/assets/ApplicationConfigs/app_config.json#L7) file.
 
-## eeGeo SDK Documentation
+## WRLD SDK Documentation
 
-See the [eeGeo API reference](http://cdn1.eegeo.com/docs/mobile-sdk/namespaces.html) for documentation on the individual SDK types.
+See the [WRLD API reference](http://cdn1.wrld3d.com/docs/mobile-sdk/namespaces.html) for documentation on the individual SDK types.
 
 ## Cardboard API Documentation
 
@@ -174,8 +174,8 @@ public:
 ### Changing Gaze Icons
 
 In order to change the interaction animation, follow these steps:
-* Replace the loading sprite sheet with the your custom image by replacing [gaze_loader.png](https://github.com/eegeo/cardboard-vr-integration/blob/master/android/assets/mesh_example/gaze_loader.png).
-* Update the following things in the code below located in constructor of [ExampleApp.cpp](https://github.com/eegeo/cardboard-vr-integration/blob/master/src/ExampleApp.cpp#L231)
+* Replace the loading sprite sheet with the your custom image by replacing [gaze_loader.png](https://github.com/wrld3d/cardboard-vr-integration/blob/master/android/assets/mesh_example/gaze_loader.png).
+* Update the following things in the code below located in constructor of [ExampleApp.cpp](https://github.com/wrld3d/cardboard-vr-integration/blob/master/src/ExampleApp.cpp#L231)
     * Change the `spriteSheetGridSize` according to your sprite sheet.
     * Change the last parameter `framesPerSecond` to change the speed of animation.
 
@@ -191,14 +191,14 @@ m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(
 ...    
 ```
 
-In order to change the gaze icon replace the gaze icon with the your custom image by replacing [gaze_point.png](https://github.com/eegeo/cardboard-vr-integration/blob/master/android/assets/mesh_example/gaze_point.png).
+In order to change the gaze icon replace the gaze icon with the your custom image by replacing [gaze_point.png](https://github.com/wrld3d/cardboard-vr-integration/blob/master/android/assets/mesh_example/gaze_point.png).
 
 ## Icon Sheet
 
-![Icon Sheet](https://github.com/eegeo/cardboard-vr-integration/blob/master/android/assets/mesh_example/PinIconTexturePage.png)
+![Icon Sheet](https://github.com/wrld3d/cardboard-vr-integration/blob/master/android/assets/mesh_example/PinIconTexturePage.png)
 
 This is a default 6x6 grid that is being used by the sdk to draw the icons. In order to use different icons either add a new sheet or simply replace an icon from the placeholders provided and use their UVs to draw the appropriate image.
 
 ## License
 
-The eeGeo 3D Maps Cardboard SDK is released under the Simplified BSD License. See the [LICENSE.md](https://github.com/eegeo/cardboard-vr-integration/blob/master/LICENSE.md) file for details.
+The WRLD 3D Maps Cardboard Demo is released under the Simplified BSD License. See the [LICENSE.md](https://github.com/wrld3d/cardboard-vr-integration/blob/master/LICENSE.md) file for details.
