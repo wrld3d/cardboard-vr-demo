@@ -195,7 +195,7 @@ In order to change the gaze icon replace the gaze icon with the your custom imag
 
 ## Icon Sheet
 
-![Icon Sheet](https://github.com/wrld3d/cardboard-vr-integration/blob/master/android/assets/mesh_example/PinIconTexturePage.png)
+![Icon Sheet](https://github.com/eegeo/cardboard-vr-integration/blob/master/android/assets/mesh_example/PinIconTexturePage.png)
 
 This is a default 6x6 grid that is being used by the sdk to draw the icons. In order to use different icons either add a new sheet or simply replace an icon from the placeholders provided and use their UVs to draw the appropriate image.
 
