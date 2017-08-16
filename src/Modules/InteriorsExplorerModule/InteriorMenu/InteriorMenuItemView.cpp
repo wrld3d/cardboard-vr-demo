@@ -35,7 +35,7 @@ namespace InteriorsExplorer
         
         bool InteriorMenuItemView::IsCollidingWithPoint(const Eegeo::v2& screenPoint, Eegeo::UI::IUICameraProvider& cameraProvider)
         {
-            
+
             if(!m_pSprite->GetItemShouldRender())
                 return false;
             
@@ -45,6 +45,11 @@ namespace InteriorsExplorer
                 return false;
             }
             
+            if(m_isItemSelected)
+            {
+            	return false;
+            }
+
             Eegeo::dv3 rayOrigin = renderCamera.GetEcefLocation();
             Eegeo::dv3 rayDirection;
             
