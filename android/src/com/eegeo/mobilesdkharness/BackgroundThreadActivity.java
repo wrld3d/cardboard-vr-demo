@@ -27,7 +27,7 @@ public class BackgroundThreadActivity extends MainActivity
 	private Thread m_updater;
 	private VRModule m_vrModule;
 	private BluetoothInputController m_bluetoothInputController;
-
+	
 	static {
 		System.loadLibrary("eegeo-sdk-samples");
 	}
@@ -97,41 +97,34 @@ public class BackgroundThreadActivity extends MainActivity
 		super.onResume();
 		m_bluetoothInputController.reset();
 		setScreenSettings();
-		runOnNativeThread(new Runnable()
-		{
-			public void run()
-			{
-				NativeJniCalls.resumeNativeCode();
-				m_threadedRunner.start();
-				
-				if(m_surfaceHolder != null && m_surfaceHolder.getSurface() != null)
-				{
-					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
-					NativeJniCalls.updateCardboardProfile(m_vrModule.getUpdatedCardboardProfile());
-				}
-			}
-		});
 	}
 
 	@Override
 	protected void onPause()
 	{
 		super.onPause();
-		runOnNativeThread(new Runnable()
-		{
-			public void run()
-			{
-				m_threadedRunner.stop();
-				NativeJniCalls.pauseNativeCode();
-			}
-		});
 	}
 
 	@Override
 	protected void onDestroy()
 	{
 		super.onDestroy();
+		if(m_threadedRunner == null)
+		{
+			return;
+		}
 		
+		runOnNativeThread(new Runnable()
+        {
+            public void run()
+            {
+                NativeJniCalls.stopUpdatingNativeCode();
+                m_threadedRunner.flagUpdatingNativeCodeStopped();
+            }
+        });
+
+        m_threadedRunner.blockUntilThreadHasStoppedUpdatingPlatform();
+        
 		m_vrModule.stopTracker();
 		runOnNativeThread(new Runnable()
 		{
@@ -162,6 +155,7 @@ public class BackgroundThreadActivity extends MainActivity
 			public void run()
 			{
 				m_threadedRunner.stop();
+				NativeJniCalls.pauseNativeCode();
 			}
 		});
 	}
@@ -178,9 +172,12 @@ public class BackgroundThreadActivity extends MainActivity
 				m_surfaceHolder = h;
 				if(m_surfaceHolder != null) 
 				{
-					NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
+					long oldWindow = NativeJniCalls.setNativeSurface(m_surfaceHolder.getSurface());
 					m_threadedRunner.start();
+					releaseNativeWindowDeferred(oldWindow);
+					
 					NativeJniCalls.updateCardboardProfile(m_vrModule.getUpdatedCardboardProfile());
+					NativeJniCalls.resumeNativeCode();
 				}
 			}
 		});
@@ -193,13 +190,15 @@ public class BackgroundThreadActivity extends MainActivity
 		private Handler m_nativeThreadHandler;
 		private float m_frameThrottleDelaySeconds;
 		private boolean m_destroyed;
-		
+		private boolean m_stoppedUpdatingPlatformBeforeTeardown;
+
 		public ThreadedUpdateRunner(boolean running)
 		{
 			m_endOfLastFrameNano = System.nanoTime();
 			m_running = false;
 			m_destroyed = false;
-
+			m_stoppedUpdatingPlatformBeforeTeardown = false;
+			
 			// We need higher FPS of 60 for better VR
 			float targetFramesPerSecond = 60.f; //30.f;
 			m_frameThrottleDelaySeconds = 1.f/targetFramesPerSecond;
@@ -212,9 +211,20 @@ public class BackgroundThreadActivity extends MainActivity
 
 		synchronized void blockUntilThreadHasDestroyedPlatform()
 		{
-			while(!m_destroyed);
+			while(!m_destroyed)
+			{
+				SystemClock.sleep(200);
+			}
 		}
-
+		
+		synchronized void blockUntilThreadHasStoppedUpdatingPlatform()
+        {
+            while(!m_stoppedUpdatingPlatformBeforeTeardown)
+            {
+                SystemClock.sleep(200);
+            }
+        }
+		
 		public void postTo(Runnable runnable)
 		{
 			m_nativeThreadHandler.post(runnable);
@@ -234,6 +244,11 @@ public class BackgroundThreadActivity extends MainActivity
 		{
 			m_destroyed = true;
 		}
+		
+		void flagUpdatingNativeCodeStopped()
+        {
+            m_stoppedUpdatingPlatformBeforeTeardown = true;
+        }
 
 		public void run()
 		{
@@ -284,4 +299,14 @@ public class BackgroundThreadActivity extends MainActivity
 	{
 		return m_bluetoothInputController.onGenericMotionEvent(event);
 	}
+	
+	public void releaseNativeWindowDeferred(final long oldWindow)
+    {
+        runOnNativeThread(new Runnable() {
+            @Override
+            public void run() {
+                NativeJniCalls.releaseNativeWindow(oldWindow);
+            }
+        });
+    }
 }

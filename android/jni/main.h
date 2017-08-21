@@ -13,7 +13,9 @@ extern "C"
 	JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_destroyNativeCode(JNIEnv* jenv, jobject obj);
 	JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_pauseNativeCode(JNIEnv* jenv, jobject obj);
 	JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_resumeNativeCode(JNIEnv* jenv, jobject obj);
-    JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_setNativeSurface(JNIEnv* jenv, jobject obj, jobject surface);
+	JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_releaseNativeWindow(JNIEnv* jenv, jobject obj, jlong oldWindow);
+    JNIEXPORT jlong JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_setNativeSurface(JNIEnv* jenv, jobject obj, jobject surface);
+	JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_stopUpdatingNativeCode(JNIEnv* jenv, jobject obj);
     JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateNativeCode(JNIEnv* jenv, jobject obj, jfloat deltaSeconds, jfloatArray headTransform);
     JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateCardboardProfile(JNIEnv* jenv, jobject obj, jfloatArray headTransform);
     JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_magnetTriggered(JNIEnv* jenv, jobject obj);

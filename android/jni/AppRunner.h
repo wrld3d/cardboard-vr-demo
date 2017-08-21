@@ -20,7 +20,7 @@ public:
 	void Resume();
 	void ActivateSurface();
 	void Update(float deltaSeconds, const float headTansform[]);
-
+	void StopUpdatingNativeBeforeTeardown();
     void HandleTouchEvent(const Eegeo::Android::Input::TouchInputEvent& message);
     
     void UpdateCardboardProfile(const float cardboardProfile[]);
@@ -33,7 +33,8 @@ private:
 	GlDisplayService m_displayService;
 	void ReleaseDisplay();
 	bool TryBindDisplay();
-    	AppHost* m_pAppHost;
+    AppHost* m_pAppHost;
+    bool m_updatingNative;
 	bool m_isPaused;
 	void CreateAppHost();
 };

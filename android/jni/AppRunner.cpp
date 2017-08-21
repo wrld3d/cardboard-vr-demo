@@ -11,6 +11,7 @@ AppRunner::AppRunner
 )
 	: m_pNativeState(pNativeState)
 	, m_pAppHost(NULL)
+    , m_updatingNative(true)
 	, m_isPaused(false)
 {
 	Eegeo::Helpers::ThreadHelpers::SetThisThreadAsMainThread();
@@ -141,7 +142,7 @@ bool AppRunner::TryBindDisplay()
 
 void AppRunner::Update(float deltaSeconds, const float headTansform[])
 {
-	if(m_pAppHost != NULL && m_displayService.IsDisplayAvailable())
+	if(m_updatingNative && m_pAppHost != NULL && m_displayService.IsDisplayAvailable())
 	{
 		m_pAppHost->Update(deltaSeconds, headTansform);
         
@@ -159,5 +160,10 @@ void AppRunner::Update(float deltaSeconds, const float headTansform[])
         
         
 	}
+}
+
+void AppRunner::StopUpdatingNativeBeforeTeardown()
+{
+    m_updatingNative = false;
 }
 

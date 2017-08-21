@@ -96,6 +96,15 @@ JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_resumeNati
 	g_pAppRunner->Resume();
 }
 
+JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_releaseNativeWindow(JNIEnv* jenv, jobject obj, jlong oldWindow)
+{
+    ANativeWindow* pWindow = reinterpret_cast<ANativeWindow*>(oldWindow);
+    if (pWindow != NULL)
+    {
+        ANativeWindow_release(pWindow);
+    }
+}
+
 JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateNativeCode(JNIEnv* jenv, jobject obj, jfloat deltaSeconds, jfloatArray headTransform)
 {
     jfloat* hT = jenv->GetFloatArrayElements(headTransform, 0);
@@ -103,14 +112,9 @@ JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateNati
     jenv->ReleaseFloatArrayElements(headTransform, hT, 0);
 }
 
-JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_setNativeSurface(JNIEnv* jenv, jobject obj, jobject surface)
+JNIEXPORT jlong JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_setNativeSurface(JNIEnv* jenv, jobject obj, jobject surface)
 {
-	if(g_nativeState.window != NULL)
-	{
-		ANativeWindow_release(g_nativeState.window);
-		g_nativeState.window = NULL;
-	}
-
+    ANativeWindow* pWindow = g_nativeState.window;
 	if (surface != NULL)
 	{
 		g_nativeState.window = ANativeWindow_fromSurface(jenv, surface);
@@ -120,6 +124,12 @@ JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_setNativeS
 			g_pAppRunner->ActivateSurface();
 		}
 	}
+	return reinterpret_cast<jlong>(pWindow);
+}
+
+JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_stopUpdatingNativeCode(JNIEnv* jenv, jobject obj)
+{
+    g_pAppRunner->StopUpdatingNativeBeforeTeardown();
 }
 
 JNIEXPORT void JNICALL Java_com_eegeo_mobilesdkharness_NativeJniCalls_updateCardboardProfile(JNIEnv* jenv, jobject obj, jfloatArray cardboardProfile)
