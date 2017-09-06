@@ -24,11 +24,11 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <application android:label="EegeoDroid" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+    <application android:label="WRLD VR Cardboard" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
        
         <activity android:name="com.eegeo.mobilesdkharness.BackgroundThreadActivity"
-                  android:label="Eegeo Cardboard"
-                  android:icon="@drawable/ic_launcher"
+                  android:label="WRLD VR Cardboard"
+                  android:icon="@drawable/app_icon"
                   android:configChanges="orientation|keyboardHidden|screenSize"
               	  android:launchMode="singleInstance"
               	  android:screenOrientation="userLandscape"
