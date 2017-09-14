@@ -68,7 +68,7 @@ namespace Eegeo
                 TMaterialNames materialNames;
 
                 materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_mesh_gradient");
-                materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_eeGeo_logo");
+                materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_WRLD_logo");
                 materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_alt_text");
                 materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_arrow03");
                 materialNames.push_back("vr_splash_screen/WelcomeScreen.POD/materials/alpha_arrow02");
