@@ -116,6 +116,11 @@ namespace InteriorsExplorer
         }
     }
 
+    void InteriorsExplorerModule::SetMenuFloorItemSelected(int floorId)
+    {
+        m_pInteriorMenuModule->GetController().SetSelectedFloorId(floorId);
+    }
+
     int InteriorsExplorerModule::GetSelectedFloor() const
     {
         return m_floorId;

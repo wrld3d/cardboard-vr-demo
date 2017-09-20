@@ -64,6 +64,8 @@ namespace InteriorsExplorer
         virtual void SetMenuVisibilityThresholdAngle(float angle);
         virtual float GetMenuVisibilityThresholdAngle();
 
+        virtual void SetMenuFloorItemSelected(int floorId);
+
         virtual void SetShouldShowExitButton(bool shouldShowExitButton);
         
     private:

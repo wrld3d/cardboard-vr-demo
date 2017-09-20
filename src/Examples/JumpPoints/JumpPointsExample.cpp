@@ -554,6 +554,7 @@ namespace Examples
                 m_pJumpPointSwitcher->ReloadJumpPoints();
                 m_shouldAnimateFloor = true;
                 m_targetFloor = menuItem.GetId();
+                m_interiorsExplorerModule.SetMenuFloorItemSelected(m_targetFloor);
             }
             else
             {
