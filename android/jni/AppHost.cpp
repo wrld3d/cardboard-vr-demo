@@ -177,8 +177,7 @@ AppHost::AppHost(
 	    *m_pAndroidLocationService,
 	    m_androidNativeUIFactories,
 	    environmentCharacterSet,
-	    config,
-	    NULL);
+	    config);
 
     m_pCollisionVisualizationModule = CreateCollisionVisualizationModule(*m_pWorld);
     m_pBuildingFootprintsModule = CreateBuildingFootprintsModule(*m_pWorld, *m_pCollisionVisualizationModule);
