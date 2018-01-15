@@ -21,6 +21,7 @@
 #include "UIRenderableFilter.h"
 #include "IScreenFadeEffectController.h"
 
+#include "PlatformConfig.h"
 #include "ApplicationConfiguration.h"
 
 namespace Examples
