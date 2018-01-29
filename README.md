@@ -32,7 +32,7 @@ This example app showcases the [WRLD SDK's](http://www.wrld3d.com/) integration 
 
 ## Support
 
-If you have any questions, bug reports, or feature requests, feel free to submit to the [issue tracker](https://github.com/wrld3d/cardboard-vr-integration/issues) for this repository.
+If you have any questions, bug reports, or feature requests, feel free to submit to the [issue tracker](https://github.com/wrld3d/cardboard-vr-demo/issues) for this repository.
 
 ## Getting Started
 
@@ -40,7 +40,7 @@ This example app demonstrates the use of WRLD's Cardboard API that allows develo
 
 This section will walk you through the process of getting up and running quickly on each platform.
 
-1.  Clone this repo: `git clone https://github.com/wrld3d/cardboard-vr-integration`
+1.  Clone this repo: `git clone https://github.com/wrld3d/cardboard-vr-demo`
 2.  Obtain an [WRLD API key](https://www.wrld3d.com/developers/apikeys) and place it in the [app_config.json](https://github.com/wrld3d/cardboard-vr-demo/blob/master/android/assets/ApplicationConfigs/app_config.json#L7) file.
 3.  Choose a platform from the below table to see detailed instructions for building the app.
 
@@ -174,8 +174,8 @@ public:
 ### Changing Gaze Icons
 
 In order to change the interaction animation, follow these steps:
-* Replace the loading sprite sheet with the your custom image by replacing [gaze_loader.png](https://github.com/wrld3d/cardboard-vr-integration/blob/master/android/assets/mesh_example/gaze_loader.png).
-* Update the following things in the code below located in constructor of [ExampleApp.cpp](https://github.com/wrld3d/cardboard-vr-integration/blob/master/src/ExampleApp.cpp#L231)
+* Replace the loading sprite sheet with the your custom image by replacing [gaze_loader.png](https://github.com/wrld3d/cardboard-vr-demo/blob/master/android/assets/mesh_example/gaze_loader.png).
+* Update the following things in the code below located in constructor of [ExampleApp.cpp](https://github.com/wrld3d/cardboard-vr-demo/blob/master/src/ExampleApp.cpp#L231)
     * Change the `spriteSheetGridSize` according to your sprite sheet.
     * Change the last parameter `framesPerSecond` to change the speed of animation.
 
@@ -191,14 +191,14 @@ m_GazeProgress = Eegeo_NEW(Eegeo::UI::UIAnimatedSprite)(
 ...    
 ```
 
-In order to change the gaze icon replace the gaze icon with the your custom image by replacing [gaze_point.png](https://github.com/wrld3d/cardboard-vr-integration/blob/master/android/assets/mesh_example/gaze_point.png).
+In order to change the gaze icon replace the gaze icon with the your custom image by replacing [gaze_point.png](https://github.com/wrld3d/cardboard-vr-demo/blob/master/android/assets/mesh_example/gaze_point.png).
 
 ## Icon Sheet
 
-![Icon Sheet](https://github.com/eegeo/cardboard-vr-integration/blob/master/android/assets/mesh_example/PinIconTexturePage.png)
+![Icon Sheet](https://github.com/eegeo/cardboard-vr-demo/blob/master/android/assets/mesh_example/PinIconTexturePage.png)
 
 This is a default 6x6 grid that is being used by the sdk to draw the icons. In order to use different icons either add a new sheet or simply replace an icon from the placeholders provided and use their UVs to draw the appropriate image.
 
 ## License
 
-The WRLD 3D Maps Cardboard Demo is released under the Simplified BSD License. See the [LICENSE.md](https://github.com/wrld3d/cardboard-vr-integration/blob/master/LICENSE.md) file for details.
+The WRLD 3D Maps Cardboard Demo is released under the Simplified BSD License. See the [LICENSE.md](https://github.com/wrld3d/cardboard-vr-demo/blob/master/LICENSE.md) file for details.

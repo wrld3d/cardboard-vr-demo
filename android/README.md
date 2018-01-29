@@ -64,7 +64,7 @@ The following steps will guide you through installing and setting up the Android
 8.  Right click the project, and select `Android Tools > Add Native Support...`
 9.  Add the cross-platform source by right-clicking the `jni` folder and selecting `New > Folder`.
 10. Click `Advanced` and select the `Linked to alternate location` radio button. 
-11. Click `Browse..` and select the [src](https://github.com/eegeo/cardboard-vr-integration/tree/master/src) directory. 
+11. Click `Browse..` and select the [src](https://github.com/eegeo/cardboard-vr-demo/tree/master/src) directory. 
 12. To speed up compile times, see [this section below](#speeding-up-build-times) for compiling with multiple threads.
 13. To run the project, right-click it and select `Run As > Android Application`
 
