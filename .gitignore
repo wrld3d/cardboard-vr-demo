@@ -21,3 +21,5 @@ Include
 .settings/
 project.properties
 **/xcuserdata/
+/android/.externalNativeBuild
+/android/.gradle

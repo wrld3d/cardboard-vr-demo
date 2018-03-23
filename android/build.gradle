@@ -1,0 +1,106 @@
+apply plugin: 'com.android.application'
+
+buildscript {
+	repositories {
+		jcenter()
+	}
+
+	dependencies {
+		classpath 'com.android.tools.build:gradle:2.3.2'
+	}
+}
+
+allprojects {
+	repositories {
+		jcenter()
+	}
+}
+
+def keystorePropertiesFile = project.file("../eegeo-mobile/build-scripts/cardboard-vr-demo/android/keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        applicationId "com.eegeo.cardboardvrdemo"
+        minSdkVersion 19
+        targetSdkVersion 24
+        multiDexEnabled true
+        versionCode 1
+        versionName "1.0"
+	
+
+        externalNativeBuild {
+            cmake {
+                cppFlags "-Wall", "-Wno-unknown-pragmas", "-Wno-sign-compare", "-Wno-format-security",
+                         "-Wno-reorder", "-Wno-expansion-to-defined", "-frtti", "-fexceptions", "-std=c++11",
+                         "-D__STDC_FORMAT_MACROS"
+                arguments "-DANDROID=1", "-DANDROID_TOOLCHAIN=clang", "-DANDROID_ARM_MODE=arm"
+            }
+
+            ndk {
+                abiFilters "armeabi", "armeabi-v7a", "arm64-v8a"
+            }
+        }
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            res.srcDirs = ['res']
+            java.srcDirs = ['src']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']
+        }
+
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            externalNativeBuild {
+                cmake {
+                    cppFlags "-g"
+                    arguments "-DDEBUG=1"
+                }
+            }
+
+            jniDebuggable true
+            debuggable true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile 'com.android.support:multidex:1.0.1'
+
+}
