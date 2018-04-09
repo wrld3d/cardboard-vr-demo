@@ -16,9 +16,11 @@ allprojects {
 	}
 }
 
-def keystorePropertiesFile = project.file("../eegeo-mobile/build-scripts/cardboard-vr-demo/android/keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+if(project.hasProperty("external.signing") && new File(project.property("external.signing") + ".gradle").exists()) {
+    def signingGradle = project.property("external.signing") + ".gradle"
+    logger.lifecycle("applying signing properties from " + signingGradle)
+    apply from: signingGradle
+}
 
 android {
     compileSdkVersion 25
@@ -58,20 +60,10 @@ android {
 
     }
 
-    signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
 
         debug {

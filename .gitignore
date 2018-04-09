@@ -23,3 +23,6 @@ project.properties
 **/xcuserdata/
 /android/.externalNativeBuild
 /android/.gradle
+/android/local.properties
+*.iml
+
