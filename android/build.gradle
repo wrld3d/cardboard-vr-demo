@@ -16,6 +16,18 @@ allprojects {
 	}
 }
 
+def getVersionCodeFromProjectProperty = { ->
+    def code = project.hasProperty('versionCode') ? versionCode.toInteger() : 1
+    logger.lifecycle("VersionCode is set to $code")
+    return code
+}
+
+def getVersionNameFromProjectProperty = { ->
+    def name = project.hasProperty('versionName') ? versionName : "1.0"
+    logger.lifecycle("VersionName is set to $name")
+    return name
+}
+
 
 android {
     compileSdkVersion 25
@@ -26,8 +38,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 24
         multiDexEnabled true
-        versionCode 1
-        versionName "1.0"
+        versionCode getVersionCodeFromProjectProperty()
+        versionName getVersionNameFromProjectProperty()
         archivesBaseName = "app"
 
         externalNativeBuild {
