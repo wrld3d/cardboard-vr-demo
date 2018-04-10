@@ -1,19 +1,23 @@
 apply plugin: 'com.android.application'
 
 buildscript {
-	repositories {
-		jcenter()
-	}
+    repositories {
+        jcenter()
+        google()
+    }
 
-	dependencies {
-		classpath 'com.android.tools.build:gradle:2.3.2'
-	}
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.1'
+    }
 }
 
 allprojects {
-	repositories {
-		jcenter()
-	}
+    repositories {
+        jcenter()
+        maven {
+            url 'https://maven.google.com'
+        }
+    }
 }
 
 def getVersionCodeFromProjectProperty = { ->
@@ -28,10 +32,8 @@ def getVersionNameFromProjectProperty = { ->
     return name
 }
 
-
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.eegeo.cardboardvrdemo"
@@ -114,8 +116,8 @@ if (project.hasProperty("external.signing")) {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:multidex:1.0.1'
+    implementation 'com.android.support:multidex:1.0.1'
 
 }
