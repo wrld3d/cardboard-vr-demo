@@ -16,11 +16,6 @@ allprojects {
 	}
 }
 
-if(project.hasProperty("external.signing") && new File(project.property("external.signing") + ".gradle").exists()) {
-    def signingGradle = project.property("external.signing") + ".gradle"
-    logger.lifecycle("applying signing properties from " + signingGradle)
-    apply from: signingGradle
-}
 
 android {
     compileSdkVersion 25
@@ -88,6 +83,22 @@ android {
             path "CMakeLists.txt"
         }
     }
+}
+
+
+if (project.hasProperty("external.signing")) {
+
+    def signingGradlePath = project.property("external.signing") + ".gradle"
+    if (new File(signingGradlePath).exists()) {
+        def signingGradle = project.property("external.signing") + ".gradle"
+        logger.lifecycle("applying signing properties from " + signingGradle)
+        apply from: signingGradle
+    }
+    else {
+        throw new InvalidUserDataException('Project parameter external.signing supplied but gradle file does not exist at path relative to project: ' + signingGradlePath)
+    }
+} else {
+    logger.lifecycle("no external.signing property supplied." )
 }
 
 dependencies {
