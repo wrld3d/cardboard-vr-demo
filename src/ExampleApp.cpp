@@ -32,7 +32,6 @@
 #include "EnvironmentFlatteningExampleFactory.h"
 #include "EnvironmentNotifierExampleFactory.h"
 #include "FileIOExampleFactory.h"
-#include "HeatmapExampleFactory.h"
 #include "LoadModelExampleFactory.h"
 #include "ModifiedRenderingExampleFactory.h"
 #include "NavigationGraphExampleFactory.h"
